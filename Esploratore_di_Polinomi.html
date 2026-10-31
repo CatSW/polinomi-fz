@@ -1,0 +1,818 @@
+<!DOCTYPE html><html lang="it"><head><meta charset="utf-8">
+<!-- Licensed under the MIT License. See LICENSE file in the project root for full license information. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Esploratore di polinomi f(z)</title>
+<style>
+:root{--bg:#eef1f5;--fg:#12161c;--mut:#5a6572;--card:#fff;--bd:#cdd5df;--ac:#0b7f86;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1217;--fg:#e8ecf1;--mut:#93a0ae;--card:#161c24;--bd:#2a3340;--ac:#4cc3c9;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1217;--fg:#e8ecf1;--mut:#93a0ae;--card:#161c24;--bd:#2a3340;--ac:#4cc3c9;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:none;margin:0 auto;padding:16px 14px 28px}
+h1{font:600 26px/1.2 Georgia,serif;margin:0 0 2px}.sub{color:var(--mut);margin:0 0 10px;font-size:13.5px}
+.bar{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:9px 12px;margin-bottom:10px}
+.bar label{display:flex;gap:7px;align-items:center;font-size:13px;color:var(--mut)}.bar input[type=range]{width:110px;accent-color:var(--ac)}
+.bar b{color:var(--fg);font-weight:600;min-width:2.6em;display:inline-block;font-variant-numeric:tabular-nums}
+.co{font-family:ui-monospace,Menlo,monospace}.cr{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}.co input[type=number]{width:5.4em;font:inherit;font-size:13px;background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:6px;padding:2px 4px}.bar input[type=range].ov{accent-color:#e6b800}
+.fb{position:absolute;top:8px;right:8px;padding:3px 8px;font-size:12px;line-height:1.2;z-index:35}
+.panel-btn{position:absolute;top:12px;left:12px;width:36px;height:36px;font-size:18px;z-index:35;background:var(--card);border:1px solid var(--bd);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.fzbar{position:absolute;bottom:16px;left:12px;display:flex;gap:6px;z-index:35}
+.panel-btn-coeffs,.hb{min-width:36px;height:36px;padding:0 10px;font:italic 600 15px Georgia,serif;color:var(--fg);background:var(--card);border:1px solid var(--bd);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.hb{padding:0;width:36px}.hb svg{display:block}
+.surf-panel{position:absolute;top:8px;left:56px;width:320px;max-width:calc(50vw - 20px);max-height:calc(100% - 16px);background:var(--card);background:color-mix(in srgb,var(--card) 62%,transparent);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);border:1px solid var(--bd);border-radius:10px;z-index:30;display:flex;flex-direction:column;padding:12px 14px 14px;box-sizing:border-box;opacity:0;pointer-events:none;transition:opacity .2s ease;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.28);color:var(--fg);text-shadow:0 0 3px var(--card),0 0 3px var(--card)}
+@media (max-width:600px){.surf-panel{max-width:calc(100% - 70px);width:290px}}
+.surf-panel.open{opacity:1;pointer-events:auto}
+.surf-panel-header{display:flex;justify-content:space-between;align-items:center;position:sticky;top:-12px;z-index:1;margin:-12px -14px 8px;padding:12px 14px 6px;font-weight:600;font-size:14px;border-bottom:1px solid var(--bd);background:var(--card);background:color-mix(in srgb,var(--card) 94%,transparent)}
+.surf-panel-body{display:flex;flex-direction:column;gap:8px;--cols:8.2em minmax(0,1fr) 2.8em}
+#coeffs-panel .surf-panel-body{--cols:5.4em minmax(0,1fr) 4.6em}
+.surf-panel-body label{display:grid;grid-template-columns:var(--cols);align-items:center;gap:8px;font-size:12.5px;font-weight:600}
+.surf-panel-body label.pk{grid-template-columns:minmax(0,1fr) auto}
+.surf-panel-body label>b{text-align:right;font-variant-numeric:tabular-nums}
+.surf-panel-body label>span{white-space:nowrap}
+.surf-panel-body label>select{grid-column:2/4;width:100%;min-width:0}
+.surf-panel-body input[type=range]{width:100%;min-width:0;accent-color:var(--ac)}
+.surf-panel-body input[type=checkbox]{accent-color:var(--ac)}
+.surf-panel-body input[type=number]{width:100%;min-width:0;font:inherit;font-size:12px;background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:6px;padding:2px 4px}
+.surf-panel select,.surf-panel button,.surf-panel input[type=number]{text-shadow:none}
+.pbtn{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}.pbtn button{font-size:12px;padding:4px 8px}
+#w3,#wr{position:relative}
+
+/* Fullscreen Universale */
+#w3:fullscreen{background:var(--bg);width:100vw;height:100vh;position:fixed;top:0;left:0;z-index:99999}
+#w3.is-fullscreen{background:var(--bg);width:100vw;height:100vh;height:100dvh;position:fixed;top:0;left:0;z-index:99999}
+#w3:fullscreen #surf{height:100%;width:100%;aspect-ratio:auto;border:0;border-radius:0}
+#w3.is-fullscreen #surf{height:100%;width:100%;aspect-ratio:auto;border:0;border-radius:0}
+
+button:disabled,select:disabled,input:disabled{opacity:.4;cursor:default}button:disabled:hover,select:disabled:hover{border-color:var(--bd)}.co label{color:var(--fg);font-weight:600}
+select,button{font:inherit;font-size:13px;background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:7px;padding:4px 9px;cursor:pointer}
+button:hover,select:hover{border-color:var(--ac)}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(3,minmax(0,1fr))}main.r3 .grid{max-width:1100px;margin:0 auto}@media(max-width:700px){.grid{grid-template-columns:minmax(0,1fr)!important}}
+.stack{position:relative;width:100%;aspect-ratio:1;background:var(--card);border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+.stack canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}#plan{cursor:crosshair}
+canvas.c{width:100%;display:block;background:var(--card);border:1px solid var(--bd);border-radius:10px;touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+#surf{aspect-ratio:1;cursor:grab}#rl{aspect-ratio:1;cursor:grab}
+figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.chip{min-height:2.6em;font-size:12px;color:var(--ac);font-variant-numeric:tabular-nums}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:12px;margin-top:12px}
+.box{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;font-size:14px;font-variant-numeric:tabular-nums}
+.box h2{font:600 15px/1.3 Georgia,serif;margin:0 0 6px}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;border:1px solid var(--bd)}
+.ln{display:inline-block;width:22px;border-top:2.5px solid #2f6fd6;vertical-align:3px;margin-right:4px}.ln.r{border-top:2.5px dashed #d62728}
+@media (hover:none) and (pointer:coarse){#ob{display:none}}
+[hidden]{display:none!important}
+#ed-txt{width:100%;box-sizing:border-box;font:12px/1.4 ui-monospace,Menlo,Consolas,monospace;background:var(--card);color:var(--fg);border:1px solid var(--bd);border-radius:6px;padding:6px;resize:vertical}
+.ed-nav{display:flex;gap:6px;align-items:center}.ed-nav select{flex:1;min-width:0}.ed-sec{display:flex;flex-direction:column;gap:8px}
+.ed-info{font-size:12px;color:var(--mut)}.ed-msg{font-size:12px;min-height:1.3em;color:var(--mut)}.ed-msg.err{color:#d62728;font-weight:600}
+.pickbar{position:absolute;left:8px;right:8px;bottom:8px;z-index:36;background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font-size:12.5px;display:flex;gap:8px;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+#wp{position:relative}
+#wp:fullscreen,#wp.is-fullscreen{background:var(--bg);width:100vw;height:100vh;height:100dvh;position:fixed;top:0;left:0;z-index:99999;display:flex;align-items:center;justify-content:center}
+#wp:fullscreen .stack,#wp.is-fullscreen .stack{width:min(100vw,100vh);width:min(100vw,100dvh);flex:none}
+#wp:fullscreen figcaption,#wp.is-fullscreen figcaption{display:none}
+#wp:fullscreen .chip,#wp.is-fullscreen .chip{position:absolute;left:10px;bottom:6px;z-index:36;background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:2px 8px;max-width:calc(100vw - 20px);box-sizing:border-box}
+</style></head><body><main id="mn">
+<h1>Esploratore di polinomi f(z)</h1>
+<p class="sub">Polinomio fino al grado 8 con coefficienti complessi su tutti i termini; si definisce dal pulsante f(z) in basso a sinistra nella vista 3D (forma normale o a radici, con conferma finale).</p>
+<div class="box" id="fz" style="margin-bottom:10px;font:600 19px/1.5 Georgia,serif;overflow-wrap:anywhere"></div>
+<div class="bar" id="ob"><label>Disposizione <select id="gl"><option value="1" selected>G. 1 riga</option><option value="2">G. 2 righe</option><option value="3">G. 3 righe</option></select></label><button id="fs">Tutto schermo</button></div>
+<div id="ctl" hidden>
+<label>Finestra R <input id="r" type="range" min="0.1" max="10" step="0.1" value="2.0"><b id="rv">2.0</b></label>
+<label>Quota |f| <input id="lv" type="range" min="0.05" max="8" step="0.01" value="2"><b id="lvv">2.00</b></label>
+<label>Altezza <input id="h" type="range" min="0.2" max="2" step="0.05" value="1"><b id="hv">1.00</b></label>
+<label>Dominio <select id="dm"><option value="0">Cartesiano</option><option value="1" selected>Radiale</option></select></label>
+<label><input id="hf" type="checkbox"> Metà Im z ≥ 0</label>
+<button id="fit">Adatta R alle radici</button>
+<label>Sopra la quota <select id="up"><option value="full">piena</option><option value="gh" selected>trasparente</option><option value="no">nascosta</option></select></label>
+<label>Palette fase <select id="pp"><option value="att">Attuale</option><option value="iso">OKLCH isoluminante</option><option value="lum">OKLCH luminanza variabile</option></select></label>
+<label><input id="c" type="checkbox" checked> Bande di |f|</label><label><input id="l" type="checkbox" checked> Altezza logaritmica</label>
+<label><input id="rc" type="checkbox" checked> Curve reali nel 3D</label><label><input id="a" type="checkbox"> Rotazione</label><label><input id="an" type="checkbox"> Anima |f|</label>
+<button id="s1">|f| = valore critico</button>
+<div><label><input id="bn" type="checkbox"> <b style="min-width:0">Bacini di Newton</b></label>
+<label title="Passi massimi del metodo di Newton per ogni pixel del piano: i pixel che non convergono entro il limite restano neri.">Iterazioni <input id="it" type="range" min="4" max="40" step="1" value="20" disabled><b id="itv">20</b></label>
+<label>Palette bacini <select id="pb" disabled><option value="att">Attuale</option><option value="iso">OKLCH uniforme</option><option value="oi">Okabe–Ito (daltonici)</option></select></label>
+<button id="st">Passo di Newton</button><button id="rs">Riporta il punto</button><button id="d1" disabled>Tuffati nel punto giallo</button><button id="d0" disabled>Tuffati nell’origine</button><button id="vi">Vista intera</button></div></div>
+<p class="sub" id="reg" style="min-height:2.6em"></p>
+<div class="grid" id="gr">
+<figure><div id="w3">
+<canvas id="surf" class="c"></canvas>
+<button class="panel-btn" id="toggle-panel" title="Controlli 3D">⚙️</button>
+<div class="fzbar"><button class="panel-btn-coeffs" id="toggle-coeffs" title="Definisci f(z)">f(z)</button><button class="hb" id="fz-undo" hidden title="Annulla l’ultima modifica di f(z) (Ctrl+Z)" aria-label="Annulla l’ultima modifica di f(z)"><svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 14 4 9 9 4'/><path d='M20 20v-7a4 4 0 0 0-4-4H4'/></svg></button><button class="hb" id="fz-redo" hidden title="Ripristina la modifica annullata (Ctrl+Y)" aria-label="Ripristina la modifica annullata"><svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='15 14 20 9 15 4'/><path d='M4 20v-7a4 4 0 0 1 4-4h12'/></svg></button></div>
+<button class="fb" id="fs3" title="Schermo intero"><svg width='14' height='14' viewBox='0 0 14 14' fill='none' stroke='currentColor' stroke-width='1.6'><path d='M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9'/></svg></button>
+<div class="surf-panel" id="surf-panel">
+<div class="surf-panel-header"><span>Controlli Vista 3D</span><button id="close-panel">✕</button></div>
+<div class="surf-panel-body">
+<label><span>Finestra R</span><input id="p-r" type="range" min="0.1" max="10" step="0.1" value="2"><b><span id="p-rv">2.0</span></b></label>
+<label><span>Quota |f|</span><input id="p-lv" type="range" min="0.05" max="8" step="0.01" value="2"><b><span id="p-lvv">2.00</span></b></label>
+<label><span>Altezza</span><input id="p-h" type="range" min="0.2" max="2" step="0.05" value="1"><b><span id="p-hv">1.00</span></b></label>
+<label><span title="Sposta il grafico in su (+) o in giù (−); doppio clic = ricalibra">Offset |f|</span><input id="p-off" type="range" min="-0.5" max="0.5" step="0.01" value="0"><b><span id="p-offv">0.00</span></b></label>
+<label><span>Dominio</span><select id="p-dm"><option value="0">Cartesiano</option><option value="1" selected>Radiale</option></select></label>
+<label class="pk"><span>Metà Im z ≥ 0</span><input id="p-hf" type="checkbox"></label>
+<label><span>Sopra la quota</span><select id="p-up"><option value="full">piena</option><option value="gh" selected>trasparente</option><option value="no">nascosta</option></select></label>
+<label class="pk"><span>Altezza logaritmica</span><input id="p-l" type="checkbox" checked></label>
+<label class="pk"><span>Curve reali nel 3D</span><input id="p-rc" type="checkbox" checked></label>
+<label class="pk"><span>Rotazione</span><input id="p-a" type="checkbox"></label>
+<label class="pk"><span>Anima |f|</span><input id="p-an" type="checkbox"></label>
+</div></div>
+
+<div class="surf-panel" id="coeffs-panel">
+<div class="surf-panel-header"><span>Definisci f(z)</span><span style="display:flex;gap:6px"><button id="ed-ok" title="Applica la bozza a tutte le viste">✓ Conferma</button><button id="close-coeffs" title="Chiudi (scarta la bozza)">✕</button></span></div>
+<div class="surf-panel-body" id="coeffs-body" style="font-size:11.5px">
+<!-- Inseriti dinamicamente via JS -->
+</div></div>
+
+</div><figcaption>Superficie |f|, colore = fase. Trascina: ruota. Rotella o pizzico: zoom. Cerchi tratteggiati: |z| = valore indicato sull’asse reale (riferimento di scala sul piano). <span id="cap3p"></span> <span class="ln r"></span>f(x) con segno, <span class="ln"></span>|f|.</figcaption></figure>
+<figure id="wp"><div class="stack"><canvas id="planGL"></canvas><canvas id="plan"></canvas><button class="fb" id="fsp" title="Schermo intero"><svg width='14' height='14' viewBox='0 0 14 14' fill='none' stroke='currentColor' stroke-width='1.6'><path d='M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9'/></svg></button><div class="pickbar" id="movebar" hidden><span>Sposta radice: sul PC clicca una radice e trascina; sul telefono tieni premuto su una radice e trascina.</span><button id="movex">Fine</button></div><div class="pickbar" id="pickbar" hidden><span>Tocca o clicca sul piano per scegliere la radice (arrotondata a 2 decimali; trascina per spostare).</span><button id="pickx">Annulla</button></div>
+<button class="panel-btn" id="toggle-plan" title="Controlli del piano">⚙️</button>
+<div class="surf-panel" id="plan-panel">
+<div class="surf-panel-header"><span>Controlli Piano</span><button id="close-plan">✕</button></div>
+<div class="surf-panel-body">
+<label class="pk"><span>Bacini di Newton</span><input id="pl-bn" type="checkbox"></label>
+<label><span>Iterazioni</span><input id="pl-it" type="range" min="4" max="40" step="1" value="20" disabled><b><span id="pl-itv">20</span></b></label>
+<label><span>Palette bacini</span><select id="pl-pb" disabled><option value="att">Attuale</option><option value="iso">OKLCH uniforme</option><option value="oi">Okabe–Ito (daltonici)</option></select></label>
+<label><span>Palette fase</span><select id="pl-pp"><option value="att">Attuale</option><option value="iso">OKLCH isoluminante</option><option value="lum">OKLCH luminanza variabile</option></select></label>
+<label class="pk"><span>Bande di |f|</span><input id="pl-c" type="checkbox" checked></label>
+<label><span>Quota |f|</span><input id="pl-lv" type="range" min="0.05" max="8" step="0.01" value="2"><b><span id="pl-lvv">2.00</span></b></label>
+<div class="pbtn"><button id="pl-mv" title="Attiva la modalità per trascinare una radice sul piano">Sposta radice</button><button id="pl-s1">|f| = valore critico</button><button id="pl-st">Passo di Newton</button><button id="pl-rs">Riporta il punto</button><button id="pl-d1" disabled>Tuffati nel punto giallo</button><button id="pl-d0" disabled>Tuffati nell’origine</button><button id="pl-vi">Vista intera</button><button id="pl-fit">Adatta R alle radici</button></div>
+</div></div></div>
+<figcaption>Piano. <span id="capPi"></span> Curva nera spessa: |f| = quota. Curve sottili: livelli |f| = 1, 2, 5 × 10ᵏ, etichettati; la banda sale da scuro a chiaro verso |f| crescente e il salto cade sulla linea. Cerchi: |z| = costante; raggi: arg z. Passo e livelli visibili si adattano allo zoom, i valori restano quelli indicati. Sul piano, passando il cursore, la barra sotto mostra z, |z|, arg z e |f|.</figcaption><div class="chip" id="chip"></div></figure>
+<figure><div id="wr"><canvas id="rl" class="c"></canvas><button class="fb" id="rz" title="Zoom su radici e massimi/minimi relativi">Zoom radici</button></div><figcaption>Asse reale, x da −R a R (rotella: zoom verso il cursore; trascina: sposta; Vista intera ripristina). <span class="ln r"></span>f(x), <span class="ln"></span>|f(x)|; pallini rossi: radici reali; cerchi: massimi e minimi relativi. Con coefficienti non tutti reali: tratteggio = Re f(x), blu = |f(x)|; massimi e minimi di f(x) non sono definiti.</figcaption></figure>
+</div>
+<div class="info"><div class="box"><h2>Radici</h2><div id="roots"></div></div><div class="box"><h2>Punto scelto</h2><div id="probe"></div></div></div>
+<p class="sub" style="margin:18px 0 0;text-align:center">copyright: © 2026 Stefano Vesco (IK0VCK) - CatSW. All rights reserved.</p>
+</main>
+<script>
+var DQ={on:false,scale:.5,iter:10,ms:0,ema:0,n:0};function ITeff(){return DQ.on?Math.min(IT,DQ.iter):IT}function itLabel(){return DQ.on?`anteprima ${Math.round(DQ.scale*100)}% · ${ITeff()} iter · ${DQ.ms.toFixed(0)} ms/frame`:`${IT} iterazioni`}
+const $=id=>document.getElementById(id),TAU=Math.PI*2,RED='#ff1a1a',CRED='#d62728',CBLUE='#2f6fd6',ZM=1.26;
+let K=[-1,0,0,1,0,0,0,0,0],KJ=[0,0,0,0,0,0,0,0,0],FV=0,AV=-1,SEED=null,SEEDP=null,FACT=null,R=1.8,hs=1,mode='dom',cont=true,lg=true,auto=false,anim=false,upm='gh',lv=2,IT=20,polar=true,half=false,showR=true,pph='att',pbs='att';
+let yaw=-.7,pitch=.85,zoom=1,probe=[.55,.85],path=[],dpr=1,yoff=0,vcx=0,vcy=0,vs=1.8,tw=null,drag=null,CW=1,CH=1,cyw=1,syw=0,cpt=1,spt=0,SS=1;
+let RT=[],CX=[],CV=[],XN,YN,MV,CL,Q4,QD=[],HT=[],BD=[],PX,PY,PD,mmax=1,ci=0;
+const pc=$('plan'),glc=$('planGL'),sc=$('surf'),rl=$('rl'),pg=pc.getContext('2d'),sg=sc.getContext('2d'),rg=rl.getContext('2d');
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim()||'#777';
+const tr=a=>{a=a.slice();while(a.length>1&&Math.abs(a[0])<1e-12)a.shift();return a};
+const F=(x,y)=>{let fr=K[8],fi=KJ[8],dr=0,di=0;for(let k=7;k>=0;k--){const a=dr*x-di*y+fr,b=dr*y+di*x+fi;dr=a;di=b;const p=fr*x-fi*y+K[k],q=fr*y+fi*x+KJ[k];fr=p;fi=q}return[fr,fi,dr,di]};
+const mod=(x,y)=>{const f=F(x,y);return Math.hypot(f[0],f[1])};
+function newton(x,y){const f=F(x,y),d=f[2]*f[2]+f[3]*f[3];if(d<1e-18)return null;return[x-(f[0]*f[2]+f[1]*f[3])/d,y-(f[1]*f[2]-f[0]*f[3])/d]}
+function ok(L,C,h){const a=C*Math.cos(h),b=C*Math.sin(h),l=(L+.3963377774*a+.2158037573*b)**3,m=(L-.1055613458*a-.0638541728*b)**3,s=(L-.0894841775*a-1.291485548*b)**3;
+ const e=x=>{x=Math.max(0,Math.min(1,x));return x<=.0031308?12.92*x:1.055*Math.pow(x,1/2.4)-.055};
+ return[e(4.0767416621*l-3.3077115913*m+.2309699292*s),e(-1.2684380046*l+2.6097574011*m-.3413193965*s),e(-.0041960863*l-.7034186147*m+1.707614701*s)]}
+const hsl=(h,s,l)=>{const a=s*Math.min(l,1-l),f=k=>{const t=(k+h*12)%12;return l-a*Math.max(-1,Math.min(t-3,9-t,1))};return[f(0),f(8),f(4)]};
+const ST=[[0,[244,208,52]],[.25,[58,170,86]],[.5,[28,140,200]],[.75,[84,60,168]],[.875,[170,150,205]],[1,[244,208,52]]];
+const stc=t=>{for(let i=1;i<ST.length;i++)if(t<=ST[i][0]){const a=ST[i-1],b=ST[i],u=(t-a[0])/(b[0]-a[0]);return a[1].map((v,k)=>(v+(b[1][k]-v)*u)/255)}};
+const A33=f=>Array.from({length:33},(_,i)=>f(i/32));
+const PH={att:A33(stc),iso:A33(t=>ok(.74,.12,TAU*t+.9)),lum:A33(t=>ok(.66+.14*Math.cos(TAU*t+.5),.13,TAU*t+.9))};
+const OI=['#E69F00','#56B4E9','#009E73','#F0E442','#0072B2','#D55E00','#CC79A7','#999999'].map(h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255));
+const bcols=()=>{const n=Math.max(RT.length,1);return Array.from({length:8},(_,k)=>pbs==='oi'?OI[k%8]:pbs==='iso'?ok(.72,.14,TAU*k/n+.5):hsl((k/n+.3)%1,.72,.55))};
+function pcol(t){const x=(t-Math.floor(t))*32,i=Math.floor(x),u=x-i,a=PH[pph][i],b=PH[pph][Math.min(i+1,32)];return a.map((v,k)=>v+(b[k]-v)*u)}
+const nearest=(x,y)=>{let b=0,bd=1e9;RT.forEach((r,k)=>{const d=Math.hypot(x-r[0],y-r[1]);if(d<bd){bd=d;b=k}});return b};
+function colorAt(x,y){if(mode==='dom'){const f=F(x,y);return pcol(Math.atan2(f[1],f[0])/TAU)}
+ let px=x,py=y;for(let i=0;i<30;i++){const p=newton(px,py);if(!p)break;px=p[0];py=p[1];if(mod(px,py)<1e-7)break}
+ return RT.length?bcols()[nearest(px,py)]:[.2,.2,.25]}
+const FS=`#version 300 es
+precision highp float;
+uniform vec2 uRes,uC;uniform float uS,uL,uK[9],uKJ[9];uniform vec2 uR[8];uniform vec3 uP[33],uB[8];uniform int uMode,uIter,uBands,uNR;
+out vec4 o;
+vec2 cm(vec2 a,vec2 b){return vec2(a.x*b.x-a.y*b.y,a.x*b.y+a.y*b.x);}
+void fd(vec2 z,out vec2 f,out vec2 d){f=vec2(uK[8],uKJ[8]);d=vec2(0.);for(int k=7;k>=0;k--){d=cm(d,z)+f;f=cm(f,z)+vec2(uK[k],uKJ[k]);}}
+vec3 pc(float t){float x=fract(t)*32.;int i=int(x);return mix(uP[i],uP[min(i+1,32)],fract(x));}
+void main(){
+ vec2 z0=uC+(gl_FragCoord.xy/uRes*2.-1.)*uS,f0,d0;fd(z0,f0,d0);float m=length(f0);vec3 col;
+ if(uMode==0){col=pc(atan(f0.y,f0.x)/6.2831853);if(uBands==1&&length(d0)>1e-9){float g=max(length(d0),1e-12)*2.*uS/uRes.y,lg=log2(m+1e-30)*.30103,e=floor(lg),x=exp2((lg-e)*3.321928),p=exp2(e*3.321928),lo=x<2.?1.:x<5.?2.:5.,hi=x<2.?2.:x<5.?5.:10.;
+ if((hi-lo)*p/g<10.){lo=1.;hi=10.;}
+ float a=smoothstep(4.,10.,(hi-lo)*p/g),u=log(x/lo)/log(hi/lo),dp=min(m-lo*p,hi*p-m)/g;
+ col*=mix(1.,.6+.4*u,a);col=mix(col,vec3(1.),a*.5*(1.-smoothstep(1.2,2.6,dp)));col=mix(col,vec3(.08),a*.85*(1.-smoothstep(.5,1.3,dp)));}}
+ else{vec2 w=z0,f,d;float it=0.;bool good=false;
+  for(int i=0;i<1000;i++){if(i>=uIter)break;fd(w,f,d);float mm=max(length(f),1e-30);
+   if(mm<1e-5){good=true;it=float(i)+1.-log2(log(mm)/log(1e-5));break;}
+   float dd=dot(d,d);if(dd<1e-30)break;w-=vec2(f.x*d.x+f.y*d.y,f.y*d.x-f.x*d.y)/dd;}
+  col=vec3(.04,.04,.06);
+  if(good&&uNR>0){int bk=0;float bd=1e9;for(int k=0;k<8;k++){if(k>=uNR)break;float dk=length(w-uR[k]);if(dk<bd){bd=dk;bk=k;}}col=uB[bk]*clamp(1.1-.035*it,.35,1.);}}
+ float dl=abs(m-uL)/max(length(d0),1e-9)/(2.*uS/uRes.y);
+ col=mix(col,vec3(1.),1.-smoothstep(1.8,3.4,dl));col=mix(col,vec3(.07),1.-smoothstep(.7,1.5,dl));o=vec4(col,1.);}`;
+let gl=null,U={},glErr='';
+function initGL(){try{gl=glc.getContext('webgl2',{antialias:false});if(!gl){glErr='WebGL2 non disponibile';return}
+ const sh=(t,s)=>{const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);if(!gl.getShaderParameter(x,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(x));return x};
+ const p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,'#version 300 es\nin vec2 p;void main(){gl_Position=vec4(p,0.,1.);}'));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,FS));gl.bindAttribLocation(p,0,'p');gl.linkProgram(p);
+ if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));gl.useProgram(p);const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+ gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);for(const k of['uRes','uC','uS','uL','uKJ','uK','uR','uP','uB','uMode','uIter','uBands','uNR'])U[k]=gl.getUniformLocation(p,k)}catch(e){console.error(e);glErr='shader non compilato';gl=null}}
+function glDraw(){const r=new Float32Array(16);RT.slice(0,8).forEach((z,k)=>{r[2*k]=z[0];r[2*k+1]=z[1]});
+ gl.viewport(0,0,glc.width,glc.height);gl.uniform2f(U.uRes,glc.width,glc.height);gl.uniform2f(U.uC,vcx,vcy);gl.uniform1f(U.uS,vs);gl.uniform1f(U.uL,lv);gl.uniform1fv(U.uKJ,new Float32Array(KJ));gl.uniform1fv(U.uK,new Float32Array(K));gl.uniform2fv(U.uR,r);
+ gl.uniform3fv(U.uP,new Float32Array(PH[pph].flat()));gl.uniform3fv(U.uB,new Float32Array(bcols().flat()));gl.uniform1i(U.uMode,mode==='dom'?0:1);gl.uniform1i(U.uIter,ITeff());gl.uniform1i(U.uBands,cont?1:0);gl.uniform1i(U.uNR,Math.min(RT.length,8));gl.drawArrays(gl.TRIANGLES,0,3)}
+function renderPlan(){if(gl)glDraw();drawPlan();chip()}
+let hv=null;const hz=e=>{const r=pc.getBoundingClientRect();return[vcx+((e.clientX-r.left)/r.width*2-1)*vs,vcy+(1-(e.clientY-r.top)/r.height*2)*vs]};
+function chip(){const z=R/vs;let s=(gl?'GPU WebGL2':glErr)+` · zoom ×${z>=1e3?z.toExponential(1):z.toFixed(z<100?1:0)} · ${itLabel()}`;
+ if(hv){const f=F(hv[0],hv[1]),P=v=>v.toPrecision(5);s+=` · z = ${P(hv[0])} ${hv[1]<0?'−':'+'} ${P(Math.abs(hv[1]))}i · |z| = ${P(Math.hypot(hv[0],hv[1]))} · arg z = ${(Math.atan2(hv[1],hv[0])*180/Math.PI).toFixed(2)}° · |f| = ${P(Math.hypot(f[0],f[1]))}`}$('chip').textContent=s}
+let SN;
+function snap(nu,nv,W){const n=XN.length,X0=XN.slice(),Y0=YN.slice(),DX=new Float64Array(n),DY=new Float64Array(n),done=[];SN=new Uint8Array(n);
+ for(const r of RT){const rx=r[0]/R,ry=r[1]/R;if(Math.max(Math.abs(rx),Math.abs(ry))>.9||(polar&&Math.hypot(rx,ry)>.9)||(half&&ry<-1e-9)||done.some(q=>Math.hypot(q[0]-rx,q[1]-ry)<.02))continue;done.push([rx,ry]);
+  let b=0,bd=1e9;for(let k=0;k<n;k++){const d=(X0[k]-rx)**2+(Y0[k]-ry)**2;if(d<bd){bd=d;b=k}}
+  const i=Math.floor(b/W),j=b%W;if(polar&&i===0)continue;const nb=[];if(j>0)nb.push(b-1);if(j<nv)nb.push(b+1);if(i>0)nb.push(b-W);if(i<nu)nb.push(b+W);
+  const h=Math.max(...nb.map(m=>Math.hypot(X0[m]-X0[b],Y0[m]-Y0[b]))),p=2.5*h,x0=X0[b],y0=Y0[b];
+  for(let k=0;k<n;k++){const e=Math.hypot(X0[k]-x0,Y0[k]-y0);if(e<1e-9)SN[k]=1;if(e<p){const w=Math.cos(Math.PI/2*e/p)**2;DX[k]+=(rx-x0)*w;DY[k]+=(ry-y0)*w}}}
+ for(let k=0;k<n;k++){const i=Math.floor(k/W),j=k%W;if(polar?i===nu:(i===0||i===nu||j===nv||(!half&&j===0)))continue;XN[k]=X0[k]+DX[k];YN[k]=Y0[k]+(half&&(polar?(j===0||j===nv):j===0)?0:DY[k])}}
+const LV=8,CAP=42000;let SR=[],LF=[];
+function build(){const nu=polar?28:84,nv=polar?(half?48:96):(half?42:84),NU=nu*LV,NV=nv*LV,key=(U,V)=>U*(NV+1)+V,
+ pos=(U,V)=>{const u=U/LV,v=V/LV;if(polar){const r=u/nu,t=(half?Math.PI:TAU)*v/nv;return[r*Math.cos(t),r*Math.sin(t)]}return[u/nu*2-1,half?v/nv:v/nv*2-1]},
+ fix=(U,V)=>polar?U===NU:(U===0||U===NU||V===NV||(!half&&V===0)),ax=(U,V)=>half&&(polar?(V===0||V===NV):V===0);
+ SR=[];const done=[];
+ for(const r of RT){const rx=r[0]/R,ry=r[1]/R;if(Math.max(Math.abs(rx),Math.abs(ry))>.9||(polar&&Math.hypot(rx,ry)>.9)||(half&&ry<-1e-9)||done.some(q=>Math.hypot(q[0]-rx,q[1]-ry)<.02))continue;done.push([rx,ry]);
+  let bi=0,bj=0,bd=1e9;for(let i=0;i<=nu;i++)for(let j=0;j<=nv;j++){const p=pos(i*LV,j*LV),d=(p[0]-rx)**2+(p[1]-ry)**2;if(d<bd){bd=d;bi=i;bj=j}}
+  if(polar&&bi===0)continue;const p0=pos(bi*LV,bj*LV),nb=[];if(bj>0)nb.push([bi,bj-1]);if(bj<nv)nb.push([bi,bj+1]);if(bi>0)nb.push([bi-1,bj]);if(bi<nu)nb.push([bi+1,bj]);
+  const h=Math.max(...nb.map(([i,j])=>{const q=pos(i*LV,j*LV);return Math.hypot(q[0]-p0[0],q[1]-p0[1])}));SR.push({x0:p0[0],y0:p0[1],dx:rx-p0[0],dy:ry-p0[1],p:2.5*h})}
+ const warp=(U,V)=>{const p=pos(U,V);if(fix(U,V))return p;let dx=0,dy=0;for(const s of SR){const e=Math.hypot(p[0]-s.x0,p[1]-s.y0);if(e<s.p){const w=Math.cos(Math.PI/2*e/s.p)**2;dx+=s.dx*w;dy+=s.dy*w}}return[p[0]+dx,p[1]+(ax(U,V)?0:dy)]};
+ const VM=new Map(),SN=[];XN=[];YN=[];MV=[];CL=[];
+ const vid=(U,V)=>{const kk=key(U,V);let id=VM.get(kk);if(id===undefined){id=XN.length;VM.set(kk,id);const p=warp(U,V),o=pos(U,V);XN.push(p[0]);YN.push(p[1]);MV.push(mod(p[0]*R,p[1]*R));CL.push(null);SN.push(SR.some(s=>Math.hypot(o[0]-s.x0,o[1]-s.y0)<1e-9))}return id};
+ const col=id=>CL[id]||(CL[id]=colorAt(XN[id]*R+(SN[id]?1e-4*R:0),YN[id]*R)),mk=(U,V,s)=>({U,V,s,a:vid(U,V),b:vid(U+s,V),c:vid(U+s,V+s),d:vid(U,V+s)});
+ let L=[];for(let i=0;i<nu;i++)for(let j=0;j<nv;j++)L.push(mk(i*LV,j*LV,LV));
+ mmax=Math.max(1e-9,...MV);const tol=.5/Math.max(200,Math.min(sc.width,sc.height)*.36),hh=(U,V)=>{const p=warp(U,V);return hm(mod(p[0]*R,p[1]*R))};
+ const bad=c=>{const{U,V,s}=c,H=[c.a,c.b,c.c,c.d].map(k=>hm(MV[k])),h=s/2,e=Math.max(Math.abs(hh(U+h,V+h)-(H[0]+H[1]+H[2]+H[3])/4),Math.abs(hh(U+h,V)-(H[0]+H[1])/2),Math.abs(hh(U+s,V+h)-(H[1]+H[2])/2),Math.abs(hh(U+h,V+s)-(H[2]+H[3])/2),Math.abs(hh(U,V+h)-(H[3]+H[0])/2));
+  if(e>tol)return true;const C=[c.a,c.b,c.c,c.d].map(col);let m=0;for(let t=0;t<4;t++)for(let u=t+1;u<4;u++)m=Math.max(m,Math.abs(C[t][0]-C[u][0])+Math.abs(C[t][1]-C[u][1])+Math.abs(C[t][2]-C[u][2]));return m>.3};
+ for(let d=0;d<(DQ.on?1:3);d++){const N=[];let ex=0;for(const c of L){if(c.s>1&&L.length+ex<CAP&&bad(c)){const s=c.s/2;N.push(mk(c.U,c.V,s),mk(c.U+s,c.V,s),mk(c.U+s,c.V+s,s),mk(c.U,c.V+s,s));ex+=3}else N.push(c)}L=N}
+ for(let k=0;k<XN.length;k++)col(k);
+ const g=(U,V)=>VM.get(key(U,V)),poly=c=>{const{U,V,s}=c,P=[];for(let t=0;t<s;t++){const i=g(U+t,V);if(i!==undefined)P.push(i)}for(let t=0;t<s;t++){const i=g(U+s,V+t);if(i!==undefined)P.push(i)}for(let t=0;t<s;t++){const i=g(U+s-t,V+s);if(i!==undefined)P.push(i)}for(let t=0;t<s;t++){const i=g(U,V+s-t);if(i!==undefined)P.push(i)}return P};
+ LF=L.map(c=>({a:c.a,b:c.b,c:c.c,d:c.d,P:poly(c)}));PX=new Float32Array(XN.length);PY=new Float32Array(XN.length);PD=new Float32Array(XN.length);
+ BD=polar?Array.from({length:97},(_,k)=>{const t=(half?Math.PI:TAU)*k/96;return[Math.cos(t),Math.sin(t)]}):(half?[[-1,0],[1,0],[1,1],[-1,1]]:[[-1,-1],[1,-1],[1,1],[-1,1]]);heights()}
+const hm=m=>lg?.9*hs*Math.log1p(m)/Math.log1p(mmax):.9*hs*m/mmax;
+function heights(){mmax=Math.max(1e-9,...MV);const lm=Math.max(.1,+(.8*mmax).toPrecision(3));$('lv').max=lm;$('p-lv').max=lm;if(lv>lm)setLv(lm);HT=Array.from(MV,hm);QD=[];const L=[-.42,-.5,.76],Ln=Math.hypot(...L);
+ for(const{a,b,c:c2,d,P}of LF){
+  const d1=[XN[c2]-XN[a],YN[c2]-YN[a],HT[c2]-HT[a]],d2=[XN[d]-XN[b],YN[d]-YN[b],HT[d]-HT[b]];let nx=d1[1]*d2[2]-d1[2]*d2[1],ny=d1[2]*d2[0]-d1[0]*d2[2],nz=d1[0]*d2[1]-d1[1]*d2[0];const nn=Math.hypot(nx,ny,nz)||1;if(nz<0){nx=-nx;ny=-ny;nz=-nz}
+  const sh=.62+.38*Math.max(0,(nx*L[0]+ny*L[1]+nz*L[2])/(nn*Ln)),k=[0,1,2].map(t=>Math.round((CL[a][t]+CL[b][t]+CL[c2][t]+CL[d][t])/4*255*sh));
+  QD.push({a,b,c:c2,d,P,mn:Math.min(...P.map(t => MV[t])),mx:Math.max(...P.map(t => MV[t])),col:`rgb(${k})`,gh:`rgba(${k},.3)`})}}
+let _cc=null,_cq=null,_cl=null;
+function contour(){if(_cc&&_cq===QD&&_cl===lv)return _cc;const o=[];for(const q of QD){const V=q.P,E=[];for(let e=0;e<V.length;e++){const p=V[e],r=V[(e+1)%V.length],A=MV[p],B=MV[r];if((A<lv)!==(B<lv)){const t=(lv-A)/(B-A);E.push([XN[p]+t*(XN[r]-XN[p]),YN[p]+t*(YN[r]-YN[p])])}}
+ for(let t=0;t+1<E.length;t+=2)o.push(E[t],E[t+1])}_cc=o;_cq=QD;_cl=lv;return o}
+function setCam(){
+ CW=sc.width;CH=sc.height;cyw=Math.cos(yaw);syw=Math.sin(yaw);cpt=Math.cos(pitch);spt=Math.sin(pitch);
+ const isFS = document.fullscreenElement===$('w3') || $('w3').classList.contains('is-fullscreen');
+ const isMobile = window.innerWidth <= 900 || ('ontouchstart' in window);
+ const pOpen = $('surf-panel').classList.contains('open') || $('coeffs-panel').classList.contains('open');
+  const xOffset = (isFS && isMobile && pOpen && CW > CH) ? CW * 0.22 : 0;
+ SS=zoom*Math.min(CW,CH)*.36;
+ return xOffset;
+}
+function proj(X,Y,Z, xOff=0){const x1=X*cyw-Y*syw,y1=X*syw+Y*cyw,z=Z-.5,v=z*cpt+y1*spt,d=y1*cpt-z*spt,p=9/(9+d);return[CW/2 + xOff + (x1*p+.1)*SS,CH*.54-yoff*CH-v*p*SS,d]}
+function clipPoly(V,c,below){const o=[],zc=hm(c);for(let k=0;k<V.length;k++){const P=V[k],Q=V[(k+1)%V.length],iP=below?P[3]<=c:P[3]>=c,iQ=below?Q[3]<=c:Q[3]>=c;if(iP)o.push(P);if(iP!==iQ){const t=(c-P[3])/(Q[3]-P[3]);o.push([P[0]+t*(Q[0]-P[0]),P[1]+t*(Q[1]-P[1]),zc,c])}}return o}
+function toPoly(P,q,xOff){const pts=[];let d=0;for(const p of P){const s=proj(p[0],p[1],p[2],xOff);pts.push(s[0],s[1]);d+=s[2]}return{pts,d:d/P.length*4,q}}
+function fillQ(q,f,s){const P=q.P;sg.beginPath();sg.moveTo(PX[P[0]],PY[P[0]]);for(let k=1;k<P.length;k++)sg.lineTo(PX[P[k]],PY[P[k]]);sg.closePath();sg.fillStyle=f;sg.fill();if(s){sg.strokeStyle=f;sg.lineWidth=.6*dpr;sg.stroke()}}
+function fillPoly(p,f,s){sg.beginPath();sg.moveTo(p[0],p[1]);for(let k=2;k<p.length;k+=2)sg.lineTo(p[k],p[k+1]);sg.closePath();sg.fillStyle=f;sg.fill();if(s){sg.strokeStyle=f;sg.lineWidth=.6*dpr;sg.stroke()}}
+function drawSurf(){const xOff = setCam();const XS=Array.from({length:161},(_,k)=>-1+k/80).concat(RT.filter(r=>r[1]===0&&Math.abs(r[0])<=R).map(r=>r[0]/R)).sort((a,b)=>a-b);const u=dpr,zc=hm(lv),ink=css('--fg'),mut=css('--mut');sg.clearRect(0,0,CW,CH);sg.lineJoin='round';sg.lineCap='round';sg.font=`${12*u}px system-ui`;sg.textBaseline='middle';
+ for(let k=0;k<XN.length;k++){const X=XN[k],Y=YN[k],x1=X*cyw-Y*syw,y1=X*syw+Y*cyw,z=HT[k]-.5,v=z*cpt+y1*spt,d=y1*cpt-z*spt,p=9/(9+d);PX[k]=CW/2+xOff+(x1*p+.1)*SS;PY[k]=CH*.54-yoff*CH-v*p*SS;PD[k]=d}
+ const ln=(P,Q,col,w,dash)=>{const a=proj(...P,xOff),b=proj(...Q,xOff);sg.beginPath();sg.setLineDash(dash||[]);sg.moveTo(a[0],a[1]);sg.lineTo(b[0],b[1]);sg.strokeStyle=col;sg.lineWidth=w*u;sg.stroke();sg.setLineDash([])};
+ const tx=(P,s,col,al)=>{const a=proj(...P,xOff);sg.fillStyle=col;sg.textAlign=al||'center';sg.fillText(s,a[0],a[1])};
+ sg.beginPath();BD.forEach((p,k)=>{const s=proj(p[0],p[1],0,xOff);k?sg.lineTo(s[0],s[1]):sg.moveTo(s[0],s[1])});sg.closePath();sg.strokeStyle=mut;sg.lineWidth=u;sg.stroke();
+ ln([-1,0,0],[1,0,0],mut,1,[4*u,4*u]);ln([0,half?0:-1,0],[0,1,0],mut,1,[4*u,4*u]);tx([1.14,0,0],'Re(z)',ink);tx([0,1.12,0],'Im(z)',ink);
+ {const XA=-1.18,top=Math.max(...HT),hl=(P,s,col,al)=>{const a=proj(...P,xOff);sg.lineWidth=3.5*u;sg.strokeStyle=css('--card');sg.textAlign=al;sg.strokeText(s,a[0],a[1]);sg.fillStyle=col;sg.fillText(s,a[0],a[1])};let fmn=0;if(showR)for(let k=0;k<=80;k++)fmn=Math.min(fmn,F((-1+k/40)*R,0)[0]);
+  const cand=lg?Array.from({length:30},(_,k)=>[1,2,5][k%3]*10**(Math.floor(k/3)-1)).filter(v=>hm(v)<=top):ticks(0,mmax).filter(v=>v>0&&hm(v)<=top+1e-9),tk=[[0,0]],ng=[];let last=0;
+  for(const v of cand){const h=hm(v);if(h-last>.07){tk.push([v,h]);last=h}}last=0;if(fmn<0)for(const v of cand){const h=hm(v);if(v<=-fmn&&h-last>.07){ng.push([-v,-h]);last=h}}
+  const lo=ng.length?ng[ng.length-1][1]:0;ln([XA,0,lo],[XA,0,top],mut,1);for(const[v,h]of[...ng,...tk]){ln([XA,0,h],[XA-.04,0,h],mut,1);hl([XA-.07,0,h],tf(v),v===0?ink:mut,'right')}hl([XA,0,top+.09],'|f|, f(x)',ink,'center')}
+ const lo=[],hi=[],Pq=q=>{const o=[];for(const k of q.P)o.push(PX[k],PY[k]);return o},Dq=q=>PD[q.a]+PD[q.b]+PD[q.c]+PD[q.d];
+ for(const q of QD){if(q.mx<=lv)lo.push({pts:null,d:Dq(q),q});else if(q.mn>=lv){if(upm!=='no')hi.push({pts:null,d:Dq(q),q})}
+  else{const V=q.P.map(k=>[XN[k],YN[k],HT[k],MV[k]]),A=clipPoly(V,lv,true);if(A.length>2)lo.push(toPoly(A,q,xOff));if(upm!=='no'){const B=clipPoly(V,lv,false);if(B.length>2)hi.push(toPoly(B,q,xOff))}}}
+ lo.sort((x,y)=>y.d-x.d);hi.sort((x,y)=>y.d-x.d);for(const p of lo)p.pts?fillPoly(p.pts,p.q.col,true):fillQ(p.q,p.q.col,true);
+ const pl=toPoly(BD.map(p=>[p[0],p[1],zc]),null,xOff).pts;fillPoly(pl,'rgba(128,128,128,.26)');sg.strokeStyle='rgba(110,108,104,.9)';sg.lineWidth=u;sg.stroke();
+ const cs=contour();for(const[wd,col]of[[4.5,'#fff'],[2.4,'#111']]){sg.beginPath();for(let k=0;k<cs.length;k+=2){const a=proj(cs[k][0],cs[k][1],zc,xOff),b=proj(cs[k+1][0],cs[k+1][1],zc,xOff);sg.moveTo(a[0],a[1]);sg.lineTo(b[0],b[1])}sg.lineWidth=wd*u;sg.strokeStyle=col;sg.stroke()}
+ for(const p of hi){const f=upm==='gh'?p.q.gh:p.q.col,st=upm!=='gh';p.pts?fillPoly(p.pts,f,st):fillQ(p.q,f,st)}
+ if(showR)for(let[sgn,col,dash,wd]of[[0,CBLUE,[],2.6],[1,CRED,[6*u,5*u],2.4]]){sg.beginPath();sg.setLineDash(dash);for(let k=0;k<XS.length;k++){const x=XS[k],f=F(x*R,0),v=f[0],h=sgn?(v<0?-1:1)*hm(Math.abs(v)):hm(Math.hypot(f[0],f[1])),s=proj(x,0,h,xOff);k?sg.lineTo(s[0],s[1]):sg.moveTo(s[0],s[1])}sg.strokeStyle=col;sg.lineWidth=wd*u;sg.stroke();sg.setLineDash([])}
+ {const XA=-1.18,a=proj(XA+.015,0,zc,xOff),t=proj(XA+.10,0,zc,xOff),sd=t[0]>=a[0]?1:-1,lb=lv.toFixed(2),dx=a[0]-t[0],dy=a[1]-t[1],Ln=Math.hypot(dx,dy)||1,ux=dx/Ln,uy=dy/Ln,hd=6*u;
+  sg.beginPath();sg.moveTo(t[0],t[1]);sg.lineTo(a[0],a[1]);sg.strokeStyle=ink;sg.lineWidth=1.5*u;sg.stroke();
+  sg.beginPath();sg.moveTo(a[0],a[1]);sg.lineTo(a[0]-ux*hd-uy*hd*.5,a[1]-uy*hd+ux*hd*.5);sg.lineTo(a[0]-ux*hd+uy*hd*.5,a[1]-uy*hd-ux*hd*.5);sg.closePath();sg.fillStyle=ink;sg.fill();
+  sg.textAlign='center';const mx=(a[0]+2*t[0])/3,my=(a[1]+t[1])/2-9*u;sg.fillStyle=ink;sg.fillText(lb,mx,my)}
+ 
+ if(mode==='new'){
+  sg.strokeStyle='#fff';sg.lineWidth=2*u;sg.beginPath();path.forEach((p,i)=>{const s=proj(p[0]/R,p[1]/R,hm(mod(p[0],p[1])),xOff);i?sg.lineTo(s[0],s[1]):sg.moveTo(s[0],s[1])});sg.stroke();
+  const b=proj(probe[0]/R,probe[1]/R,0,xOff),t=proj(probe[0]/R,probe[1]/R,hm(mod(probe[0],probe[1])),xOff);sg.strokeStyle='#ffd400';sg.lineWidth=1.5*u;sg.beginPath();sg.moveTo(b[0],b[1]);sg.lineTo(t[0],t[1]);sg.stroke();
+  sg.fillStyle='#ffd400';sg.strokeStyle='#111';sg.beginPath();sg.arc(t[0],t[1],6*u,0,TAU);sg.fill();sg.stroke();
+ }
+
+ refCirc(u,ink,xOff);
+ for(const r of RT){if(Math.hypot(r[0],r[1])>R||(half&&r[1]<-1e-9))continue;const s=proj(r[0]/R,r[1]/R,0,xOff);sg.fillStyle=RED;sg.strokeStyle='#fff';sg.lineWidth=2*u;sg.beginPath();sg.arc(s[0],s[1],5.5*u,0,TAU);sg.fill();sg.stroke();sg.strokeStyle='#000';sg.lineWidth=u;sg.beginPath();sg.arc(s[0],s[1],6.8*u,0,TAU);sg.stroke()}
+}
+function refCirc(u,ink,xOff=0){const s=[1,2,5].flatMap(c=>[-2,-1,0,1].map(e=>c*10**e)).filter(v=>v<=R/1.65).reduce((a,b)=>Math.max(a,b),.1),V=2*s<=.9*R?[s,2*s]:[s],t1=half?Math.PI:TAU;
+ for(const v of V){const r=v/R;sg.beginPath();for(let k=0;k<=96;k++){const t=t1*k/96,p=proj(r*Math.cos(t),r*Math.sin(t),0,xOff);k?sg.lineTo(p[0],p[1]):sg.moveTo(p[0],p[1])}
+  for(const[w,c,d]of[[3.2,'rgba(255,255,255,.5)',[]],[1.3,'rgba(15,15,15,.8)',[5*u,4*u]]]){sg.setLineDash(d);sg.lineWidth=w*u;sg.strokeStyle=c;sg.stroke()}sg.setLineDash([]);
+  const a=proj(r,0,0,xOff);sg.fillStyle=ink;sg.beginPath();sg.arc(a[0],a[1],2.5*u,0,TAU);sg.fill();sg.textAlign='left';sg.lineWidth=3.5*u;sg.strokeStyle=css('--card');sg.strokeText(tf(v),a[0]+6*u,a[1]-8*u);sg.fillText(tf(v),a[0]+6*u,a[1]-8*u)}}
+function pick(e){if(mode!=='new')return;const r=sc.getBoundingClientRect(),mx=(e.clientX-r.left)*sc.width/r.width,my=(e.clientY-r.top)*sc.height/r.height;let best=1e9,hit=null;
+ for(const q of QD)for(let t=1;t<q.P.length-1;t++){const i=q.P[0],j=q.P[t],k=q.P[t+1],x1=PX[i],y1=PY[i],x2=PX[j],y2=PY[j],x3=PX[k],y3=PY[k],den=(y2-y3)*(x1-x3)+(x3-x2)*(y1-y3);if(!den)continue;
+  const l1=((y2-y3)*(mx-x3)+(x3-x2)*(my-y3))/den,l2=((y3-y1)*(mx-x3)+(x1-x3)*(my-y3))/den,l3=1-l1-l2;if(l1<-1e-9||l2<-1e-9||l3<-1e-9)continue;
+  const d=l1*PD[i]+l2*PD[j]+l3*PD[k];if(d<best){best=d;hit=[(l1*XN[i]+l2*XN[j]+l3*XN[k])*R,(l1*YN[i]+l2*YN[j]+l3*YN[k])*R]}}
+ if(hit){probe=hit;probeUpdate()}}
+const ticks=(a,b)=>{const r=(b-a)/5,m=Math.pow(10,Math.floor(Math.log10(r))),s=(r/m<2?1:r/m<5?2:5)*m,o=[];for(let v=Math.ceil(a/s)*s;v<=b+s*1e-9;v+=s)o.push(Math.abs(v)<s*1e-9?0:v);return o};
+const tf=v=>String(+v.toPrecision(3)).replace('-','−');
+function drawReal(){const w=rl.width,h=rl.height,u=dpr,ink=css('--fg'),mut=css('--mut'),bd=css('--bd'),N=400,xs=[],ys=[];rg.clearRect(0,0,w,h);let xa=-R,xb=R,lo=0,hi=0,zy=null;if(rzoom){const f=[...RT.filter(r=>r[1]===0).map(r=>[r[0],0]),...CX.filter(p=>p.t!=='flesso').map(p=>[p.x,p.y])];if(f.length){const fx=f.map(p=>p[0]),fy=f.map(p=>p[1]),m=Math.max(.3,(Math.max(...fx)-Math.min(...fx))*.12);xa=Math.min(...fx)-m;xb=Math.max(...fx)+m;zy=[Math.min(...fy),Math.max(...f.map(p=>{const q=F(p[0],0);return Math.hypot(q[0],q[1])}))]}}
+ if(rx){xa=rx[0]-rx[1];xb=rx[0]+rx[1];zy=null}RV=[xa,xb];const ms=[];for(let k=0;k<=N;k++){const x=xa+(xb-xa)*k/N,q=F(x,0),y=q[0],m=Math.hypot(q[0],q[1]);xs.push(x);ys.push(y);ms.push(m);lo=Math.min(lo,y);hi=Math.max(hi,m)}
+ if(zy){lo=zy[0];hi=zy[1]}if(hi-lo<1e-9){lo-=1;hi+=1}const pd=(hi-lo)*.08;lo-=pd;hi+=pd;const ml=52*u,mb=22*u,mt=10*u,mr=10*u,pw=w-ml-mr,ph=h-mt-mb,X=x=>ml+(x-xa)/(xb-xa)*pw,Y=y=>mt+(hi-y)/(hi-lo)*ph;
+ rg.font=`${11*u}px system-ui`;rg.textBaseline='middle';
+ for(const t of ticks(lo,hi)){rg.beginPath();rg.moveTo(ml,Y(t));rg.lineTo(ml+pw,Y(t));rg.strokeStyle=t===0?ink:bd;rg.lineWidth=u;rg.stroke();rg.fillStyle=mut;rg.textAlign='right';rg.fillText(tf(t),ml-6*u,Y(t))}
+ for(const t of ticks(xa,xb)){rg.beginPath();rg.moveTo(X(t),mt);rg.lineTo(X(t),mt+ph);rg.strokeStyle=t===0?ink:bd;rg.stroke();rg.fillStyle=mut;rg.textAlign='center';rg.fillText(tf(t),X(t),mt+ph+11*u)}
+ rg.save();rg.beginPath();rg.rect(ml,mt,pw,ph);rg.clip();
+ rg.beginPath();xs.forEach((x,k)=>{k?rg.lineTo(X(x),Y(ms[k])):rg.moveTo(X(x),Y(ms[k]))});rg.strokeStyle=CBLUE;rg.lineWidth=2.6*u;rg.lineJoin='round';rg.stroke();
+ rg.beginPath();xs.forEach((x,k)=>{k?rg.lineTo(X(x),Y(ys[k])):rg.moveTo(X(x),Y(ys[k]))});rg.setLineDash([7*u,5*u]);rg.strokeStyle=CRED;rg.lineWidth=2.4*u;rg.stroke();rg.setLineDash([]);rg.restore();
+ for(const p of CX){if(p.x<xa||p.x>xb||p.t==='flesso')continue;rg.beginPath();rg.arc(X(p.x),Y(p.y),5*u,0,TAU);rg.fillStyle=css('--card');rg.fill();rg.lineWidth=2*u;rg.strokeStyle=ink;rg.stroke();rg.fillStyle=ink;rg.textAlign='center';rg.fillText(`${p.t} ${tf(p.y)}`,X(p.x),Y(p.y)+(p.t==='max'?-14*u:14*u))}
+ for(const r of RT){if(r[1]!==0||r[0]<xa||r[0]>xb)continue;rg.beginPath();rg.arc(X(r[0]),Y(0),5.5*u,0,TAU);rg.fillStyle=RED;rg.fill();rg.lineWidth=2*u;rg.strokeStyle='#fff';rg.stroke()}}
+function planLabels(w,h,u,X,Y){const T=(s,x,y,f,k)=>{pg.lineWidth=3.2*u;pg.strokeStyle=k;pg.strokeText(s,x,y);pg.fillStyle=f;pg.fillText(s,x,y)},WH='#fff',HD='rgba(0,0,0,.7)';
+ pg.font=`600 ${11*u}px system-ui`;pg.textAlign='center';pg.textBaseline='middle';pg.lineJoin='round';
+ if(!polar){for(const t of ticks(vcx-vs,vcx+vs))T(tf(t),X(t),h-9*u,WH,HD);for(const t of ticks(vcy-vs,vcy+vs))T(tf(t),20*u,Y(t),WH,HD)}
+ else{const mr=Math.hypot(Math.abs(vcx)+vs,Math.abs(vcy)+vs),ph=Math.hypot(vcx,vcy)<1e-9?Math.PI/4:Math.atan2(vcy,vcx),ca=Math.cos(ph),sa=Math.sin(ph),ox=X(0),oy=Y(0);
+  for(const t of ticks(0,mr)){if(t<=0)continue;const x=X(t*ca),y=Y(t*sa);if(x>14*u&&x<w-14*u&&y>8*u&&y<h-8*u)T(tf(t),x,y,WH,HD)}
+  for(let k=0;k<12;k++){const dx=Math.cos(k*Math.PI/6),dy=-Math.sin(k*Math.PI/6);let a=-1e9,b=1e9;
+   for(const[o,d,L]of[[ox,dx,w],[oy,dy,h]]){if(Math.abs(d)<1e-9){if(o<0||o>L)b=-1e9}else{const p=-o/d,q=(L-o)/d;a=Math.max(a,Math.min(p,q));b=Math.min(b,Math.max(p,q))}}
+   const e=b-18*u;if(e>Math.max(a,0)+4*u)T(k*30+'°',ox+dx*e,oy+dy*e,WH,HD)}}
+ if(mode!=='dom'||!cont)return;
+ const G=96,n=G+1,M=new Float64Array(n*n),Gd=new Float64Array(n*n),Kk=new Int32Array(n*n),pz=2*vs/h,K3=m=>{const l=Math.log10(m+1e-300),e=Math.floor(l),x=10**(l-e);return 3*e+(x>=5?2:x>=2?1:0)},LVv=k=>{const e=Math.floor(k/3);return[1,2,5][k-3*e]*10**e};
+ for(let i=0;i<n;i++)for(let j=0;j<n;j++){const f=F(vcx+(j/G*2-1)*vs,vcy+(1-i/G*2)*vs),q=i*n+j;M[q]=Math.hypot(f[0],f[1]);Gd[q]=Math.hypot(f[2],f[3])*pz;Kk[q]=K3(M[q])}
+ const lab=[],add=(x,y,k)=>{if(x<24*u||x>w-24*u||y<10*u||y>h-10*u)return;for(const q of lab)if(Math.hypot(q[0]-x,q[1]-y)<(q[2]===k?170*u:40*u))return;lab.push([x,y,k])},
+ ed=(a,b,x1,y1,x2,y2)=>{const ka=Kk[a],kb=Kk[b];if(ka===kb)return;const lo=Math.min(ka,kb),hi=Math.max(ka,kb);for(let k=hi;k>lo&&k>hi-3;k--){const v=LVv(k),t=(v-M[a])/(M[b]-M[a]),g=Gd[a]+(Gd[b]-Gd[a])*t;if([.9,.5,.6][k-3*Math.floor(k/3)]*v>=12*g)add(x1+(x2-x1)*t,y1+(y2-y1)*t,k)}};
+ for(let i=0;i<n;i++)for(let j=0;j<n;j++){const q=i*n+j,x=j/G*w,y=i/G*h;if(j<G)ed(q,q+1,x,y,x+w/G,y);if(i<G)ed(q,q+n,x,y,x,y+h/G)}
+ for(const q of lab)T(tf(LVv(q[2])),q[0],q[1],'#111','rgba(255,255,255,.9)')}
+function drawPlan(){const w=pc.width,h=pc.height,u=dpr,X=x=>((x-vcx)/vs+1)/2*w,Y=y=>(1-(y-vcy)/vs)/2*h;pg.clearRect(0,0,w,h);pg.lineWidth=u;pg.strokeStyle='rgba(255,255,255,.3)';pg.beginPath();
+ if(!polar){for(const t of ticks(vcx-vs,vcx+vs)){pg.moveTo(X(t),0);pg.lineTo(X(t),h)}for(const t of ticks(vcy-vs,vcy+vs)){pg.moveTo(0,Y(t));pg.lineTo(w,Y(t))}}
+ else{const mr=Math.hypot(Math.abs(vcx)+vs,Math.abs(vcy)+vs);for(const t of ticks(0,mr)){if(t<=0)continue;pg.moveTo(X(0),Y(0));pg.arc(X(0),Y(0),t/vs*w/2,0,TAU)}for(let k=0;k<12;k++){pg.moveTo(X(0),Y(0));pg.lineTo(X(0)+Math.cos(k*Math.PI/6)*mr/vs*w,Y(0)-Math.sin(k*Math.PI/6)*mr/vs*w)}}
+ pg.stroke();pg.strokeStyle='rgba(255,255,255,.7)';pg.beginPath();pg.moveTo(0,Y(0));pg.lineTo(w,Y(0));pg.moveTo(X(0),0);pg.lineTo(X(0),h);pg.stroke();
+ if(half){pg.fillStyle='rgba(128,128,128,.5)';pg.fillRect(0,Y(0),w,h-Y(0))}planLabels(w,h,u,X,Y);
+ 
+ if(mode==='new'){
+  pg.strokeStyle='#fff';pg.lineWidth=2*u;pg.lineJoin='round';pg.beginPath();path.forEach((p,i)=>i?pg.lineTo(X(p[0]),Y(p[1])):pg.moveTo(X(p[0]),Y(p[1])));pg.stroke();
+  path.slice(1).forEach(p=>{pg.fillStyle='#fff';pg.beginPath();pg.arc(X(p[0]),Y(p[1]),2.5*u,0,TAU);pg.fill()});
+  pg.fillStyle='#ffd400';pg.strokeStyle='#111';pg.lineWidth=1.5*u;pg.beginPath();pg.arc(X(probe[0]),Y(probe[1]),6*u,0,TAU);pg.fill();pg.stroke();
+ }
+
+ RT.forEach((r,k)=>{if(k>0&&RT[k-1][0]===r[0]&&RT[k-1][1]===r[1])return;let e=k;while(e+1<RT.length&&RT[e+1][0]===r[0]&&RT[e+1][1]===r[1])e++;const lab=e>k?k+'–'+e:''+k,x=X(r[0]),y=Y(r[1]);if(x<-20||y<-20||x>w+20||y>h+20)return;pg.fillStyle=RED;pg.strokeStyle='#fff';pg.lineWidth=2*u;pg.beginPath();pg.arc(x,y,(e>k?10:7)*u,0,TAU);pg.fill();pg.stroke();pg.strokeStyle='#000';pg.lineWidth=u;pg.beginPath();pg.arc(x,y,(e>k?11.2:8.2)*u,0,TAU);pg.stroke();pg.fillStyle='#fff';pg.font=`600 ${(e>k?8:9)*u}px system-ui`;pg.textAlign='center';pg.textBaseline='middle';pg.fillText(lab,x,y+.5*u)});
+}
+const fmt=c=>c[1]===0?c[0].toFixed(3):`${c[0].toFixed(3)} ${c[1]<0?'−':'+'} ${Math.abs(c[1]).toFixed(3)}i`;
+const pol=(x,y)=>{const t=Math.atan2(y,x);return`r = ${Math.hypot(x,y).toFixed(4)}, θ = ${(t*180/Math.PI).toFixed(2)}° (${(t/Math.PI).toFixed(4)}π)`};
+function texts(){const bc=bcols();$('roots').innerHTML=RT.length?RT.map((r,k)=>`<div><span class="dot" style="background:${mode==='new'?`rgb(${bc[k%8].map(v=>Math.round(v*255))})`:RED}"></span>z<sub>${k}</sub> = ${fmt(r)}${r[1]===0?' (reale)':''}<br><span style="color:var(--mut);margin-left:16px">${pol(r[0],r[1])}</span></div>`).join(''):'Nessuna radice.';
+ const n=RT.length,nc=CV.length?CV.map(v=>v.toFixed(3)).join(', '):'—';
+ $('reg').innerHTML=`<b>Grado ${n}.</b> Valori critici di |f| (sella): ${nc}. `+(!CV.length?'':lv<CV[0]-.005?`<b>|f| sotto il primo valore critico:</b> ${n} curve chiuse separate, una per radice.`:lv>CV[CV.length-1]+.005?'<b>|f| sopra l’ultimo valore critico:</b> una sola curva chiusa che racchiude tutte le radici.':CV.some(v=>Math.abs(v-lv)<.005)?'<b>|f| è un valore critico:</b> due curve si toccano in una sella.':'<b>|f| intermedio:</b> alcune curve si sono già fuse, altre no.')}
+function calc(){
+ if(mode!=='new'){
+  $('probe').innerHTML='<span style="color:var(--mut);"><b id="nwon" role="button" tabindex="0" title="Attiva i bacini di Newton" style="color:#3b82f6;cursor:pointer">Attiva la spunta</b> &quot;Bacini di Newton&quot; per selezionare un punto e visualizzare il percorso.</span>';
+  return;
+ }
+ const f=F(probe[0],probe[1]);path=[probe.slice()];let p=probe,n=0,cv=mod(p[0],p[1])<1e-9;while(!cv&&n<200){const q=newton(p[0],p[1]);if(!q)break;n++;if(n<=40)path.push(q);p=q;cv=mod(q[0],q[1])<1e-9}
+ const l=p;$('probe').innerHTML=`<div>z = ${fmt(probe)}</div><div>${pol(probe[0],probe[1])}</div><div>f(z) = ${fmt(f)}</div><div>|f(z)| = ${Math.hypot(f[0],f[1]).toFixed(4)}, arg f = ${(Math.atan2(f[1],f[0])*180/Math.PI).toFixed(1)}°</div>`+(RT.length?`<div style="color:var(--mut);margin-top:4px">${cv?`Newton converge verso z<sub>${nearest(l[0],l[1])}</sub> in ${n} passi.`:`Newton non converge entro ${n} passi (|f| = ${mod(l[0],l[1]).toPrecision(3)}).`}</div>`:'')}
+const probeUpdate=()=>{calc();drawPlan();drawSurf()};
+const full=()=>{analyze();calc();texts();renderPlan();drawSurf();drawReal()};
+const rebuild=()=>{analyze();build();full()};
+function size(){dpr=Math.min(2,window.devicePixelRatio||1);const w=Math.round(pc.parentNode.getBoundingClientRect().width*dpr);pc.width=pc.height=glc.width=glc.height=w;const q=sc.getBoundingClientRect();sc.width=Math.round(q.width*dpr);sc.height=Math.round(q.height*dpr);
+ const rw=Math.round(rl.getBoundingClientRect().width*dpr);rl.width=rw;rl.height=rw;if(XN){build();full()}}
+const setLv=v=>{lv=Math.max(.05,Math.min(+$('lv').max,v));$('lv').value=lv;$('lvv').textContent=lv.toFixed(2);$('p-lv').value=lv;$('p-lvv').textContent=lv.toFixed(2)};
+const resetView=()=>{vcx=vcy=0;vs=R;tw=null;rx=null};
+/* ===== Coefficienti complessi, conversioni, nuovo editor di f(z) (bozza + conferma) ===== */
+const hasIm=()=>KJ.some(v=>v!==0);
+const syncHf=()=>{const h=$('hf'),ph=$('p-hf'),c=hasIm();if(c&&half){half=false;h.checked=false;ph.checked=false}h.disabled=c;ph.disabled=c;const msg=c?'Non disponibile con coefficienti non reali: la simmetria rispetto all’asse reale non vale':'';h.title=msg;ph.title=msg};
+const cmul=(a,b)=>[a[0]*b[0]-a[1]*b[1],a[0]*b[1]+a[1]*b[0]];
+const sortR=a=>a.sort((p,q)=>p[0]-q[0]||q[1]-p[1]);
+const effDeg=(Kr,Ki)=>{for(let k=8;k>=1;k--)if(Math.hypot(Kr[k],Ki[k])>=1e-12)return k;return 0};
+const coList=(Kr,Ki)=>{const n=effDeg(Kr,Ki),a=[];for(let k=n;k>=0;k--)a.push([Kr[k],Ki[k]]);return a};
+function rtsC(co){const n=co.length-1;if(n<1)return[];const real=co.every(c=>c[1]===0),lr=co[0][0],li=co[0][1],ld=lr*lr+li*li,
+ b=co.map(c=>[(c[0]*lr+c[1]*li)/ld,(c[1]*lr-c[0]*li)/ld]),r0=.6*(1+Math.max(...b.slice(1).map(c=>Math.hypot(c[0],c[1]))));
+ const z=[...Array(n)].map((_,k)=>[r0*Math.cos(TAU*k/n+.4),r0*Math.sin(TAU*k/n+.4)]);
+ for(let it=0;it<500;it++){let md=0;for(let i=0;i<n;i++){let pr=1,pi=0;for(let k=1;k<=n;k++){const t=pr*z[i][0]-pi*z[i][1]+b[k][0];pi=pr*z[i][1]+pi*z[i][0]+b[k][1];pr=t}
+  let qr=1,qi=0;for(let j=0;j<n;j++)if(j!==i){const dx=z[i][0]-z[j][0],dy=z[i][1]-z[j][1],t=qr*dx-qi*dy;qi=qr*dy+qi*dx;qr=t}
+  const dd=qr*qr+qi*qi||1e-30,sx=(pr*qr+pi*qi)/dd,sy=(pi*qr-pr*qi)/dd;z[i][0]-=sx;z[i][1]-=sy;md=Math.max(md,Math.hypot(sx,sy))}if(md<1e-13)break}
+ return sortR(z.map(([x,y])=>real&&Math.abs(y)<1e-6?[x,0]:[x,y]))}
+/* pagine radice {ap:a′, a:radice, m} -> coefficienti: f = ∏ a′ᵢ·(z−aᵢ)^mᵢ (a′ fuori dalla potenza, coefficiente direttivo = ∏a′ᵢ) */
+function expandPages(pages){let c=[[1,0]],M=[1,0];for(const q of pages){M=cmul(M,q.ap);for(let j=0;j<q.m;j++){const n=Array.from({length:c.length+1},()=>[0,0]);c.forEach((v,k)=>{n[k+1][0]+=v[0];n[k+1][1]+=v[1];const t=cmul(q.a,v);n[k][0]-=t[0];n[k][1]-=t[1]});c=n}}
+ c=c.map(v=>cmul(v,M));const Kr=Array(9).fill(0),Ki=Array(9).fill(0);c.forEach((v,k)=>{Kr[k]=v[0];Ki[k]=v[1]});
+ const sc=Math.max(...Kr.map((v,k)=>Math.hypot(v,Ki[k])));for(let k=0;k<9;k++)if(Math.abs(Ki[k])<=1e-13*sc)Ki[k]=0;return[Kr,Ki]}
+const clonePages=p=>p.map(q=>({ap:q.ap.slice(),a:q.a.slice(),m:q.m}));
+const flatten=p=>p.flatMap(q=>Array.from({length:q.m},()=>q.a.slice()));
+/* radici (con ripetizioni) -> pagine; a′₁ = cₙ, gli altri a′ = 1. Due radici vicine si fondono solo se il polinomio ricostruito con la radice unica si discosta dall’originale non più del doppio dello scarto già presente nelle radici non fuse (+1e-12 relativo): compatibilità numerica, non prova di molteplicità esatta; nei casi dubbi restano pagine separate */
+function groupRoots(R0,Kr,Ki){const n=R0.length;if(!n)return[];const lead=[Kr[n],Ki[n]],pg=L=>L.map(([a,m],i)=>({ap:i?[1,0]:lead.slice(),a,m})),
+ res=L=>{const[A,B]=expandPages(pg(L));let d=0,s=0;for(let k=0;k<9;k++){d=Math.max(d,Math.hypot(A[k]-Kr[k],B[k]-Ki[k]));s=Math.max(s,Math.hypot(Kr[k],Ki[k]))}return d/s};
+ let L=R0.map(r=>[r.slice(),1]);const lim=2*res(L)+1e-12;
+ for(let i=0;i<L.length;i++){for(let j=i+1;j<L.length;){const a=L[i],b=L[j];
+  if(Math.hypot(a[0][0]-b[0][0],a[0][1]-b[0][1])<1e-3*(1+Math.hypot(a[0][0],a[0][1]))){const m=a[1]+b[1],T=L.slice();T[i]=[[(a[0][0]*a[1]+b[0][0]*b[1])/m,(a[0][1]*a[1]+b[0][1]*b[1])/m],m];T.splice(j,1);if(res(T)<=lim){L=T;continue}}j++}}
+ return pg(L)}
+const getFact=()=>FACT;
+function analyze(){if(AV===FV)return;AV=FV;const co=coList(K,KJ),n=co.length-1;
+ FACT=SEEDP||groupRoots(SEED||rtsC(co),K,KJ);SEED=null;SEEDP=null;RT=flatten(FACT);
+ const cr=n>1?rtsC(co.slice(0,-1).map((c,k)=>[c[0]*(n-k),c[1]*(n-k)])):[];
+ CX=hasIm()?[]:cr.filter(r=>r[1]===0).map(r=>{const x=r[0],h=1e-3,s=F(x-h,0)[0]+F(x+h,0)[0]-2*F(x,0)[0];return{x,y:F(x,0)[0],t:s<-1e-9?'max':s>1e-9?'min':'flesso'}});
+ CV=[...new Set(cr.map(r=>mod(r[0],r[1]).toFixed(4)))].map(Number).filter(v=>v>1e-6).sort((p,q)=>p-q)}
+function fzText(){const fm=x=>String(+Math.abs(x).toFixed(2));let s='';
+ for(let k=8;k>=0;k--){const a=K[k],b=KJ[k],ra=Math.abs(a)>=1e-12,rb=Math.abs(b)>=1e-12;if(!ra&&!rb)continue;
+  const zp=k===0?'':k===1?'z':`z<sup>${k}</sup>`,im=+Math.abs(b).toFixed(2)===1?'':fm(b);let sg=null,t;
+  if(!rb){sg=a<0;t=(k>0&&Math.abs(a)===1?'':fm(a))+zp}
+  else if(!ra){sg=b<0;t=im+'i'+(k?'·':'')+zp}
+  else t=`(${a<0?'−':''}${fm(a)} ${b<0?'−':'+'} ${im}i)`+(k?'·':'')+zp;
+  s+=s?(sg===null?' + ':sg?' − ':' + ')+t:(sg?'−':'')+t}
+ $('fz').innerHTML='f(z) = '+(s||'0')}
+
+/* ---- Editor: bozza DR = {mode, K,KJ (coefficienti), pages, truth: rappresentazione sorgente, cOK/rOK: coerenza di ciascuna con la sorgente, solved: radici del solver per i coefficienti della bozza} ---- */
+let DR=null,closeArm=0,pickMode=false;
+const SUPD='⁰¹²³⁴⁵⁶⁷⁸',SUBD='₀₁₂₃₄₅₆₇₈',tl=k=>`c${SUBD[k]} · ${k===0?'1':k===1?'z':'z'+SUPD[k]}`,nzc=(r,i)=>Math.hypot(r,i)>=1e-12;
+const TIP=['Quattro radici simmetriche: ±1 e ±i','Tre radici reali: −1, 0 e 1','Quattro radici reali: ±1 e ±2','Radice doppia in 1 e semplice in −1: la fase gira due volte attorno a 1, Newton converge lentamente'];
+const PRE=[['z⁴ − 1',[1,0,0,0,-1],0,1.4,[[[1,0],1],[[-1,0],1],[[0,1],1],[[0,-1],1]]],['z³ − z',[0,1,0,-1,0],0,.6,[[[0,0],1],[[1,0],1],[[-1,0],1]]],['z⁴ − 5z² + 4',[1,0,-5,0,4],0,7,[[[1,0],1],[[-1,0],1],[[2,0],1],[[-2,0],1]]],['(z−1)²(z+1)',[0,1,-1,-1,1],2,1.85,[[[1,0],2],[[-1,0],1]]]];
+const degR=D=>D.pages.reduce((x,q)=>x+q.m,0),zeroAp=q=>!q.ap[0]&&!q.ap[1];
+const isZeroF=(Kr,Ki)=>effDeg(Kr,Ki)<1&&!nzc(Kr[0],Ki[0]);
+const issue=()=>{const D=DR;if(D.mode==='text'&&D.txtEdit)return'';if(D.truth==='coef'&&isZeroF(D.K,D.KJ))return'La funzione non può essere nulla (modulo 0 ovunque, fase indefinita): imposta almeno un coefficiente diverso da zero.';if(D.truth==='root'&&D.pages.some(zeroAp))return'Il coefficiente a′ deve essere diverso da zero.';return''};
+function edStatus(note,force){const D=DR,m=issue(),e=$('ed-msg');e.textContent=force&&note?note:(m||note||(D.dirty?'Modifiche non confermate.':''));e.className='ed-msg'+(m||(force&&note)?' err':'');$('ed-ok').disabled=!!m}
+function touch(src){const D=DR;D.dirty=true;closeArm=0;if(src==='coef'){D.truth='coef';D.cOK=true;D.rOK=false;D.solved=null}else{D.truth='root';D.rOK=true;D.cOK=false}}
+const EB=$('coeffs-body');
+EB.innerHTML=`<div class="ed-nav"><select id="ed-mode"><option value="coef">Forma normale</option><option value="root">Forma a radici</option><option value="text">Testo</option></select></div>
+<div class="ed-nav" id="ed-navrow"><button id="ed-prev" title="Precedente">◀</button><select id="ed-sel"></select><button id="ed-next" title="Successivo">▶</button></div>
+<div class="ed-info" id="ed-info"></div>
+<div class="ed-sec" id="ed-coef"></div>
+<div class="ed-sec" id="ed-root"></div>
+<div class="ed-sec" id="ed-text"><textarea id="ed-txt" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="z3 + (0.5 + 3.4i)·z2 − 1.73i"></textarea><div class="pbtn"><button id="ed-parse" title="Acquisisce il polinomio (o il JSON) nella bozza">Interpreta</button><button id="ed-exp" title="Copia negli appunti il JSON con f(z) e i parametri di visualizzazione">Esporta JSON</button></div><div class="ed-info">Accetta z8, z^8 o z⁸; coefficienti complessi come (0.5 + 3.4i) o 2i; ·, * o accostamento; anche forme fattorizzate come (z−1)^2(z+1). Decimali con punto o virgola. Grado massimo 8. Incollando un JSON esportato con «Esporta JSON» si ripristinano f(z) e vista.</div></div>
+<div class="ed-msg" id="ed-msg"></div>
+<div class="ed-info">Esempi:</div><div class="pbtn" id="ed-ex"></div>`;
+function mkSl(host,label,onv){const l=document.createElement('label');l.innerHTML=`<span>${label}</span><input type="range" min="-4" max="4" step="0.05" value="0"><input type="number" step="0.05" value="0">`;host.appendChild(l);const[sl,nb]=l.querySelectorAll('input');
+ sl.oninput=()=>{nb.value=+(+sl.value).toFixed(4);sl.classList.remove('ov');onv(+sl.value)};
+ nb.oninput=()=>{const v=parseFloat(nb.value);if(isNaN(v))return;sl.value=v;sl.classList.toggle('ov',Math.abs(v)>4);onv(v)};
+ return{lab:l.firstChild,set:v=>{sl.value=v;nb.value=+v.toFixed(4);sl.classList.toggle('ov',Math.abs(v)>4)}}}
+const ec=$('ed-coef'),er=$('ed-root'),et=$('ed-text');
+const cUp=()=>{touch('coef');navCoef();edStatus()},rUp=()=>{touch('root');navRoot();edStatus()};
+const cR=mkSl(ec,'Re c',v=>{DR.K[DR.t]=v;cUp()}),cI=mkSl(ec,'Im c',v=>{DR.KJ[DR.t]=v;cUp()});
+ec.insertAdjacentHTML('beforeend','<div class="pbtn"><button id="ed-zero" title="Azzera parte reale e immaginaria del termine corrente">Azzera termine</button></div>');
+const aR=mkSl(er,'Re a′',v=>{DR.pages[DR.p].ap[0]=v;rUp()}),aI=mkSl(er,'Im a′',v=>{DR.pages[DR.p].ap[1]=v;rUp()}),rR=mkSl(er,'Re a',v=>{DR.pages[DR.p].a[0]=v;rUp()}),rI=mkSl(er,'Im a',v=>{DR.pages[DR.p].a[1]=v;rUp()});
+er.insertAdjacentHTML('beforeend',`<label><span>m</span><select id="ed-m"></select></label>
+<div class="pbtn"><button id="ed-add" title="Nuova radice (m = 1, a′ = 1)">+ Radice</button><button id="ed-del" title="Riduce m di uno; se m = 1 elimina la pagina">🗑</button><button id="ed-conj" title="Aggiunge il coniugato della radice corrente">Coniugata</button><button id="ed-opp" title="Aggiunge −a: simmetrica della radice corrente rispetto all’origine">Opposta</button><button id="ed-pick" title="Sceglie la nuova radice cliccando sul piano di Gauss">Dal piano</button></div>`);
+function navCoef(){const D=DR,s=$('ed-sel');s.innerHTML='';for(let k=8;k>=0;k--){const o=document.createElement('option');o.value=k;o.textContent=tl(k)+(nzc(D.K[k],D.KJ[k])?' •':'');s.appendChild(o)}s.value=D.t;$('ed-prev').disabled=D.t>=8;$('ed-next').disabled=D.t<=0;$('ed-info').textContent='Grado effettivo: '+effDeg(D.K,D.KJ)+' (max 8)'}
+function navRoot(){const D=DR,s=$('ed-sel'),S=degR(D),q=D.pages[D.p],mx=8-(S-q.m);
+ let z0=0;s.innerHTML=D.pages.map((q,i)=>{const a=z0;z0+=q.m;return`<option value="${i}">${q.m>1?`z${a}–z${a+q.m-1}`:`z${a}`} = ${fmt(q.a)}${q.m>1?` (m = ${q.m})`:''}</option>`}).join('');s.value=D.p;
+ const ms=$('ed-m');ms.innerHTML=Array.from({length:mx},(_,i)=>`<option>${i+1}</option>`).join('');ms.value=q.m;
+ $('ed-prev').disabled=D.p<=0;$('ed-next').disabled=D.p>=D.pages.length-1;for(const i of['ed-add','ed-conj','ed-opp','ed-pick'])$(i).disabled=S>=8;$('ed-del').disabled=D.pages.length===1&&q.m===1;
+ $('ed-info').textContent=`Pagina ${D.p+1}/${D.pages.length} · grado ${S}/8 · residuo ${8-S}`}
+function edRender(note,force){const D=DR,r=D.mode==='root',tx=D.mode==='text';$('ed-mode').value=D.mode;ec.hidden=D.mode!=='coef';er.hidden=!r;et.hidden=!tx;$('ed-navrow').hidden=tx;
+ if(tx){$('ed-txt').value=D.text;$('ed-info').textContent='Grado effettivo (bozza): '+effDeg(D.K,D.KJ)+' (max 8)'}
+ else if(r){D.p=Math.max(0,Math.min(D.p,D.pages.length-1));const q=D.pages[D.p];aR.set(q.ap[0]);aI.set(q.ap[1]);rR.set(q.a[0]);rI.set(q.a[1]);navRoot()}
+ else{const t=D.t;cR.lab.textContent='Re c'+SUBD[t];cI.lab.textContent='Im c'+SUBD[t];cR.set(D.K[t]);cI.set(D.KJ[t]);navCoef()}
+ edStatus(note,force)}
+
+/* ---- Modalità Testo: parser di polinomi in z con coefficienti complessi ---- */
+class ParseErr extends Error{constructor(m,p){super(m);this.pos=p}}
+function parsePoly(src){const m0=/^\s*f\s*\(\s*z\s*\)\s*=/i.exec(src),N=src.length;let p=m0?m0[0].length:0;
+ const SUPM={'⁰':0,'¹':1,'²':2,'³':3,'⁴':4,'⁵':5,'⁶':6,'⁷':7,'⁸':8,'⁹':9},nm=c=>'−–—‐'.includes(c)?'-':'·×⋅∙'.includes(c)?'*':c,
+ ws=()=>{while(p<N&&/\s/.test(src[p]))p++},peek=()=>{ws();return p<N?nm(src[p]):''},
+ padd=(a,b,sg)=>{const n=Math.max(a.length,b.length),r=[];for(let k=0;k<n;k++){const x=a[k]||[0,0],y=b[k]||[0,0];r.push([x[0]+sg*y[0],x[1]+sg*y[1]])}return r},
+ pmul=(a,b)=>{const r=Array.from({length:a.length+b.length-1},()=>[0,0]);a.forEach((x,i)=>b.forEach((y,j)=>{const t=cmul(x,y);r[i+j][0]+=t[0];r[i+j][1]+=t[1]}));return r},
+ starts=()=>{const c=peek();return c!==''&&/[0-9.,izjIZJ(]/.test(c)};let lastNum=false;
+ function ppow(b,e,pos){if(e>16)throw new ParseErr('Esponente troppo grande (massimo 16)',pos);if((b.length-1)*e>64)throw new ParseErr('Grado troppo alto (massimo 8)',pos);let r=[[1,0]];for(let i=0;i<e;i++)r=pmul(r,b);return r}
+ function factor(){ws();const pos=p,c=p<N?nm(src[p]):'';let b,isZ=false;lastNum=false;
+  if(/[0-9.,]/.test(c)){const m=/^(?:\d+(?:[.,]\d*)?|[.,]\d+)(?:[eE][+-]?\d+)?/.exec(src.slice(p));if(!m)throw new ParseErr('Numero non valido',p);p+=m[0].length;b=[[parseFloat(m[0].replace(',','.')),0]];lastNum=true}
+  else if(/[ijIJ]/.test(c)){p++;b=[[0,1]]}
+  else if(c==='z'||c==='Z'){p++;isZ=true;b=[[0,0],[1,0]]}
+  else if(c==='('){p++;b=expr();if(peek()!==')')throw new ParseErr('Parentesi non chiusa',pos);p++}
+  else if(c==='')throw new ParseErr('Espressione incompleta: atteso un termine',p);
+  else if(c===')')throw new ParseErr('Parentesi chiusa senza apertura',p);
+  else if(c==='=')throw new ParseErr('Un solo segno = ammesso: lascia una sola forma del polinomio',p);
+  else throw new ParseErr('Carattere non riconosciuto «'+src[p]+'»',p);
+  const rest=src.slice(p);let e=null,m;
+  if(isZ&&(m=/^\d+/.exec(rest))){e=+m[0];p+=m[0].length}
+  else if((m=/^[⁰¹²³⁴⁵⁶⁷⁸⁹]+/.exec(rest))){e=+[...m[0]].map(ch=>SUPM[ch]).join('');p+=m[0].length}
+  else if((m=/^\s*\^\s*(\d+)/.exec(rest))){e=+m[1];p+=m[0].length}
+  else if((m=/^\s*\^\s*[-−]/.exec(rest)))throw new ParseErr('Esponente negativo non ammesso (solo polinomi)',p+m[0].length-1);
+  else if((m=/^\s*\^/.exec(rest)))throw new ParseErr('Esponente non valido: atteso un intero ≥ 0',p+m[0].length);
+  return e===null?b:ppow(b,e,pos)}
+ function term(){let r=factor();for(;;){const c=peek();if(c==='*'){p++;r=pmul(r,factor())}else if(starts()){if(lastNum&&/[0-9.,]/.test(c))throw new ParseErr('Due numeri consecutivi: manca un operatore',p);r=pmul(r,factor())}else break}return r}
+ function expr(){let sg=1;while(peek()==='+'||peek()==='-'){if(peek()==='-')sg=-sg;p++}let r=term();if(sg<0)r=r.map(x=>[-x[0],-x[1]]);
+  for(;;){const c=peek();if(c!=='+'&&c!=='-')break;p++;let s2=c==='-'?-1:1;while(peek()==='+'||peek()==='-'){if(peek()==='-')s2=-s2;p++}r=padd(r,term(),s2)}return r}
+ if(!src.slice(p).trim())throw new ParseErr('Inserisci un polinomio in z',p);
+ const r=expr();ws();if(p<N){const c=nm(src[p]);throw new ParseErr(c===')'?'Parentesi chiusa senza apertura':c==='='?'Un solo segno = ammesso: lascia una sola forma del polinomio':'Carattere non riconosciuto «'+src[p]+'»',p)}
+ for(let k=r.length-1;k>8;k--)if(Math.hypot(r[k][0],r[k][1])>1e-12)throw new ParseErr('Grado '+k+': supera il massimo consentito (8)',null);
+ const Kr=Array(9).fill(0),Ki=Array(9).fill(0);for(let k=0;k<=8&&k<r.length;k++){Kr[k]=r[k][0];Ki[k]=r[k][1]}return[Kr,Ki]}
+const fnum=v=>String(+Math.abs(v).toPrecision(9));
+function polyText(Kr,Ki){let s='';for(let k=8;k>=0;k--){const a=Kr[k],b=Ki[k],ra=Math.abs(a)>=1e-12,rb=Math.abs(b)>=1e-12;if(!ra&&!rb)continue;const zp=k===0?'':k===1?'z':'z'+k;let sg=null,t;
+  if(!rb){sg=a<0;t=(k>0&&Math.abs(a)===1?'':fnum(a)+(k?'·':''))+zp}
+  else if(!ra){sg=b<0;t=(Math.abs(b)===1?'':fnum(b))+'i'+(k?'·':'')+zp}
+  else t=`(${a<0?'−':''}${fnum(a)} ${b<0?'−':'+'} ${Math.abs(b)===1?'':fnum(b)}i)`+(k?'·':'')+zp;
+  s+=s?(sg===null?' + ':sg?' − ':' + ')+t:(sg?'−':'')+t}return s||'0'}
+function doParse(){const D=DR,ta=$('ed-txt');D.text=ta.value;if(D.text.trim().startsWith('{'))return doParseCfg(D.text.trim());
+ try{const[Kr,Ki]=parsePoly(D.text);D.txtEdit=false;if(!(Kr.every((v,k)=>v===D.K[k]&&Ki[k]===D.KJ[k]))){D.K=Kr;D.KJ=Ki;touch('coef')}D.t=effDeg(Kr,Ki);const g=effDeg(Kr,Ki);edStatus(g?`Acquisito: grado ${g}.`:'Acquisita una funzione costante.');$('ed-info').textContent='Grado effettivo (bozza): '+g+' (max 8)';return true}
+ catch(e){if(!(e instanceof ParseErr))throw e;edStatus(e.message+(e.pos==null?'':` (posizione ${e.pos+1})`),true);if(e.pos!=null){ta.focus();ta.setSelectionRange(e.pos,Math.min(e.pos+1,ta.value.length))}return false}}
+$('ed-parse').onclick=doParse;
+$('ed-txt').oninput=e=>{const D=DR;D.text=e.target.value;D.txtEdit=true;closeArm=0;edStatus('Testo modificato: premi Interpreta (o Conferma) per acquisirlo.')};
+
+/* ---- Nuova finestra R e quota |f| iniziale alla conferma di una nuova f(z) ---- */
+function autoView(){let m=0;for(const r of RT)m=Math.max(m,Math.hypot(r[0],r[1]));for(const p of CX)m=Math.max(m,Math.abs(p.x));
+ const setR=v=>{$('r').value=v;$('r').dispatchEvent(new Event('input',{bubbles:true}))};
+ setR(Math.max(.5,Math.min(10,m>0?Math.ceil(m*13)/10:1.6)));
+ const cv=CV.length?Math.max(...CV):0;
+ for(let i=0;i<8&&R<10&&+$('lv').max<=cv*1.02;i++)setR(Math.min(10,Math.round(R*13)/10));   // la quota deve poter stare sopra l’ultimo valore critico
+ setLv((cv+mmax)/2);full();setOff(calibOff())}
+/* ---- Salvataggio/caricamento JSON (versione 1.0) ---- */
+const APPV='1.0';
+const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},camera:{yaw,pitch,zoom},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice()});
+const JS_=(o,d=0)=>{if(o===null||typeof o!=='object'||Array.isArray(o)||d>=2)return JSON.stringify(o);const p='  '.repeat(d+1);return'{\n'+Object.entries(o).filter(([,v])=>v!==undefined).map(([k,v])=>p+JSON.stringify(k)+': '+JS_(v,d+1)).join(',\n')+'\n'+'  '.repeat(d)+'}'};
+const optOK=(id,v)=>typeof v==='string'&&[...$(id).options].some(q=>q.value===v);
+function normView(v){const o={},cur=viewState(),fin=x=>typeof x==='number'&&isFinite(x),num=(x,a,b)=>fin(x)?Math.max(a,Math.min(b,x)):undefined,bool=x=>typeof x==='boolean'?x:undefined,set=(k,x)=>{if(x!==undefined)o[k]=x};
+ if(!v||typeof v!=='object')return o;
+ set('R',num(v.R,.1,10));set('level',num(v.level,.05,1e9));set('height',num(v.height,.2,2));set('offset',num(v.offset,-.5,.5));if(v.domain==='polar'||v.domain==='cartesian')o.domain=v.domain;set('halfPlane',bool(v.halfPlane));
+ for(const[k,id]of[['aboveLevel','up'],['phasePalette','pp'],['layout','gl']])if(optOK(id,v[k]))o[k]=v[k];
+ for(const k of['bands','logHeight','realCurves3D','autoRotate','animate'])set(k,bool(v[k]));
+ const n=v.newton;if(n&&typeof n==='object'){const r=Object.assign({},cur.newton);let c=0;if(bool(n.on)!==undefined){r.on=n.on;c=1}if(fin(n.iterations)){r.iterations=Math.round(Math.max(4,Math.min(40,n.iterations)));c=1}if(optOK('pb',n.basinPalette)){r.basinPalette=n.basinPalette;c=1}if(c)o.newton=r}
+ const cm=v.camera;if(cm&&typeof cm==='object'&&(fin(cm.yaw)||fin(cm.pitch)||fin(cm.zoom)))o.camera={yaw:fin(cm.yaw)?cm.yaw:cur.camera.yaw,pitch:fin(cm.pitch)?cm.pitch:cur.camera.pitch,zoom:fin(cm.zoom)?Math.max(.5,Math.min(3,cm.zoom)):cur.camera.zoom};
+ const pl=v.plan;if(pl&&typeof pl==='object'&&fin(pl.scale)&&pl.scale>0&&fin(pl.cx)&&fin(pl.cy))o.plan={cx:pl.cx,cy:pl.cy,scale:pl.scale};
+ if(Array.isArray(v.probe)&&v.probe.length===2&&v.probe.every(fin))o.probe=v.probe.slice();return o}
+function applyView(o,needRebuild){const ev=(id,t)=>$(id).dispatchEvent(new Event(t,{bubbles:true})),sl=(id,v)=>{$(id).value=v;ev(id,'input')},
+ ck=(id,v)=>{if(v===undefined||$(id).checked===v)return;$(id).checked=v;ev(id,'change')},sel=(id,v)=>{if(v===undefined||$(id).value===v)return;$(id).value=v;ev(id,'change')};
+ if(o.newton&&mode==='new'){$('bn').checked=false;ev('bn','change')}
+ if(o.R!==undefined)sl('r',o.R);else if(needRebuild)rebuild();
+ if(o.domain!==undefined)sel('dm',o.domain==='polar'?'1':'0');
+ if(o.halfPlane!==undefined&&!$('hf').disabled)ck('hf',o.halfPlane);
+ sel('up',o.aboveLevel);sel('pp',o.phasePalette);ck('c',o.bands);ck('l',o.logHeight);ck('rc',o.realCurves3D);ck('a',o.autoRotate);ck('an',o.animate);sel('gl',o.layout);
+ if(o.height!==undefined){sl('h',o.height);ev('h','change')}
+ if(o.newton){const n=o.newton;sl('it',n.iterations);sel('pb',n.basinPalette);ck('bn',n.on)}
+ if(o.level!==undefined)setLv(o.level);
+ if(o.offset!==undefined){yoff=o.offset;$('p-off').value=yoff;$('p-offv').textContent=yoff.toFixed(2)}
+ if(o.camera){yaw=o.camera.yaw;pitch=o.camera.pitch;zoom=o.camera.zoom}
+ if(o.plan){vcx=o.plan.cx;vcy=o.plan.cy;vs=o.plan.scale;tw=null;rx=null}
+ if(o.probe){probe=o.probe.slice();path=[]}
+ syncPl();full()}
+function parseCfg(txt){let o;try{o=JSON.parse(txt)}catch(e){const m=/position (\d+)/.exec(e.message);throw new ParseErr('JSON non valido: '+e.message,m?+m[1]:null)}
+ if(!o||typeof o!=='object'||Array.isArray(o))throw new ParseErr('JSON non riconosciuto: atteso un oggetto',0);
+ if(o.app!==undefined&&o.app!=='polinomi-fz')throw new ParseErr('JSON non riconosciuto: il campo "app" deve essere "polinomi-fz"',null);
+ let note='';const vm=/^(\d+)\.(\d+)/.exec(String(o.version===undefined?'':o.version));
+ if(!vm)note=' (versione assente nel file)';else if(+vm[1]!==+APPV.split('.')[0])throw new ParseErr('Versione '+o.version+' non supportata (attesa '+APPV.split('.')[0]+'.x)',null);else if(+vm[2]>+APPV.split('.')[1])note=' (file di versione '+o.version+', più recente: campi sconosciuti ignorati)';
+ if(o.f===undefined&&o.view===undefined)throw new ParseErr('JSON non riconosciuto: mancano le sezioni "f" e "view"',null);
+ const r={note,K:null,KJ:null,pages:null,view:null};
+ if(o.f!==undefined){const f=o.f;if(!f||typeof f!=='object')throw new ParseErr('"f" deve essere un oggetto',null);let Kr,Ki;
+  if(Array.isArray(f.coeffs)){const c=f.coeffs;if(c.length<1||c.length>9||!c.every(x=>Array.isArray(x)&&x.length===2&&x.every(v=>typeof v==='number'&&isFinite(v))))throw new ParseErr('"f.coeffs": attese da 1 a 9 coppie [re, im], da c0 a c8',null);Kr=Array(9).fill(0);Ki=Array(9).fill(0);c.forEach((x,k)=>{Kr[k]=x[0];Ki[k]=x[1]})}
+  else if(typeof f.formula==='string'){try{[Kr,Ki]=parsePoly(f.formula)}catch(e){if(!(e instanceof ParseErr))throw e;throw new ParseErr('Formula nel JSON: '+e.message,null)}}
+  else throw new ParseErr('"f" deve contenere "coeffs" o "formula"',null);
+  r.K=Kr;r.KJ=Ki;const g=effDeg(Kr,Ki);
+  if(Array.isArray(f.roots)&&g>=1){const pg=f.roots.map(q=>q&&Array.isArray(q.a)&&Array.isArray(q.ap)&&q.a.length===2&&q.ap.length===2&&[...q.a,...q.ap].every(v=>typeof v==='number'&&isFinite(v))&&Number.isInteger(q.m)&&q.m>=1?{a:q.a.slice(),ap:q.ap.slice(),m:q.m}:null);
+   let good=pg.length&&pg.every(Boolean)&&pg.reduce((x,q)=>x+q.m,0)===g&&!pg.some(zeroAp);
+   if(good){const[A,B]=expandPages(pg);let d=0,sc=0;for(let k=0;k<9;k++){d=Math.max(d,Math.hypot(A[k]-Kr[k],B[k]-Ki[k]));sc=Math.max(sc,Math.hypot(Kr[k],Ki[k]))}good=d<=1e-6*sc}
+   if(good)r.pages=pg;else r.note+=' (radici del file ignorate: non coerenti con i coefficienti)'}}
+ if(o.view!==undefined){const v=normView(o.view);if(Object.keys(v).length)r.view=v}
+ if(!r.K&&!r.view)throw new ParseErr('JSON senza dati utilizzabili: nessuna f(z) né parametro di visualizzazione riconosciuto',null);return r}
+function doParseCfg(t){const D=DR,ta=$('ed-txt');
+ try{const r=parseCfg(t);D.txtEdit=false;let g=null;
+  if(r.K){const same=r.K.every((v,k)=>v===D.K[k]&&r.KJ[k]===D.KJ[k])&&!(D.truth==='root'&&!D.cOK);if(!same){D.K=r.K;D.KJ=r.KJ;touch('coef')}if(r.pages){D.pages=clonePages(r.pages);D.rOK=true;D.p=0}g=effDeg(r.K,r.KJ);D.t=g}
+  if(r.view)D.cfgView=r.view;
+  const nv=r.view?Object.keys(r.view).length:0;
+  edStatus('Configurazione acquisita'+(g===null?'':g?`: grado ${g}`:': funzione costante')+(nv?`${g===null?':':','} ${nv} parametri di visualizzazione`:'')+r.note+'. Premi Conferma per applicarla.');
+  $('ed-info').textContent='Grado effettivo (bozza): '+effDeg(D.K,D.KJ)+' (max 8)';return true}
+ catch(e){if(!(e instanceof ParseErr))throw e;edStatus(e.message+(e.pos==null?'':` (posizione ${e.pos+1})`),true);if(e.pos!=null){ta.focus();ta.setSelectionRange(e.pos,Math.min(e.pos+1,ta.value.length))}return false}}
+async function exportCfg(){const D=DR;if(D.mode==='text'&&D.txtEdit&&!doParse())return;
+ if(D.truth==='root'&&!D.cOK){if(D.pages.some(zeroAp)){edStatus('Esporta non disponibile: il coefficiente a′ deve essere diverso da zero.',true);return}[D.K,D.KJ]=expandPages(D.pages);D.cOK=true}
+ if(isZeroF(D.K,D.KJ)){edStatus('Esporta non disponibile: la funzione è nulla.',true);return}
+ const f={formula:polyText(D.K,D.KJ),coeffs:D.K.map((v,k)=>[v,D.KJ[k]])};if(D.rOK&&D.pages.length&&effDeg(D.K,D.KJ)>=1)f.roots=D.pages.map(q=>({a:q.a,ap:q.ap,m:q.m}));
+ const txt=JS_({app:'polinomi-fz',version:APPV,f,view:Object.assign(viewState(),D.cfgView||{})});
+ try{await navigator.clipboard.writeText(txt);edStatus(`JSON copiato negli appunti (${txt.length} caratteri): incollalo in Testo per ripristinare f(z) e vista.`)}
+ catch(e){const ta=$('ed-txt');ta.value=txt;D.text=txt;D.txtEdit=false;ta.focus();ta.select();edStatus('Appunti non disponibili: il JSON è nella casella e selezionato, copialo con Ctrl+C.')}}
+$('ed-exp').onclick=exportCfg;
+const newDraft=()=>({mode:'coef',K:K.slice(),KJ:KJ.slice(),pages:clonePages(getFact()),t:effDeg(K,KJ),p:0,truth:'coef',cOK:true,rOK:true,solved:null,dirty:false,cfgView:null,text:'',txtEdit:false});
+function openEd(){setMove(false);DR=newDraft();closeArm=0;pickMode=false;$('pickbar').hidden=true;$('coeffs-panel').classList.add('open');edRender();histUI()}
+function closeEd(){DR=null;$('coeffs-panel').classList.remove('open');histUI()}
+$('ed-mode').onchange=e=>{const D=DR,w=e.target.value,rv=()=>{e.target.value=D.mode};if(w===D.mode)return;
+ if(D.mode==='text'&&D.txtEdit&&!doParse()){rv();return}
+ if(w==='root'){if(D.truth==='coef'&&effDeg(D.K,D.KJ)<1){rv();edStatus('Forma a radici non disponibile per una funzione costante o nulla: non ha radici da elencare.',true);return}
+  if(!D.rOK){const raw=rtsC(coList(D.K,D.KJ));D.solved=raw;D.pages=groupRoots(raw,D.K,D.KJ);D.rOK=true;D.p=0}}
+ else if(!D.cOK){if(D.pages.some(zeroAp)){rv();edStatus('Forma normale non disponibile: il coefficiente a′ deve essere diverso da zero.',true);return}
+  [D.K,D.KJ]=expandPages(D.pages);D.cOK=true}
+ D.mode=w;if(w==='text'){D.text=polyText(D.K,D.KJ);D.txtEdit=false}edRender()};
+$('ed-sel').onchange=e=>{const D=DR;if(D.mode==='root')D.p=+e.target.value;else D.t=+e.target.value;edRender()};
+const go=d=>{const D=DR;if(D.mode==='root')D.p=Math.max(0,Math.min(D.pages.length-1,D.p+d));else D.t=Math.max(0,Math.min(8,D.t-d));edRender()};
+$('ed-prev').onclick=()=>go(-1);$('ed-next').onclick=()=>go(1);
+$('ed-zero').onclick=()=>{const D=DR;D.K[D.t]=0;D.KJ[D.t]=0;touch('coef');edRender()};
+$('ed-m').onchange=e=>{DR.pages[DR.p].m=+e.target.value;rUp()};
+$('ed-del').onclick=()=>{const D=DR,q=D.pages[D.p];if(q.m>1)q.m--;else if(D.pages.length>1){D.pages.splice(D.p,1);D.p=Math.min(D.p,D.pages.length-1)}else return;touch('root');edRender()};
+const FR=[[0,0],[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,2],[0,-2],[3,0],[-3,0]];
+$('ed-add').onclick=()=>{const D=DR;if(degR(D)>=8)return;const c=FR.find(c=>!D.pages.some(q=>q.a[0]===c[0]&&q.a[1]===c[1]))||[0,0];D.pages.push({ap:[1,0],a:c.slice(),m:1});D.p=D.pages.length-1;touch('root');edRender()};
+/* aggiunge la radice z: se esiste già una pagina con la stessa radice ne aumenta la molteplicità; rispetta il grado residuo */
+function addAt(z){const D=DR;if(degR(D)>=8)return'Grado massimo (8) raggiunto: nessuna radice aggiunta.';const j=D.pages.findIndex(q=>q.a[0]===z[0]&&q.a[1]===z[1]);let n='';
+ if(j>=0){D.pages[j].m++;D.p=j;n=`Radice già presente: molteplicità portata a ${D.pages[j].m}.`}else{D.pages.push({ap:[1,0],a:z.slice(),m:1});D.p=D.pages.length-1}touch('root');return n}
+$('ed-conj').onclick=()=>{const a=DR.pages[DR.p].a;edRender(addAt([a[0],-a[1]]))};
+$('ed-opp').onclick=()=>{const a=DR.pages[DR.p].a;edRender(addAt([-a[0],-a[1]]))};
+PRE.forEach((x,j)=>{const b=document.createElement('button');b.textContent=x[0];b.title=TIP[j];b.onclick=()=>{const D=DR,[,v,R2,L2,rt]=x;D.K=Array(9).fill(0);D.KJ=Array(9).fill(0);v.forEach((c,i)=>D.K[4-i]=c);
+ D.pages=rt.map(([a,m])=>({ap:[1,0],a:a.slice(),m}));D.solved=flatten(D.pages);D.truth='coef';D.cOK=D.rOK=true;D.dirty=true;D.cfgView=null;D.t=effDeg(D.K,D.KJ);D.p=0;closeArm=0;D.txtEdit=false;D.text=polyText(D.K,D.KJ);edRender()};$('ed-ex').appendChild(b)});
+/* conferma: applica la bozza e aggiorna stato, cache e tutte le viste */
+function applyDraft(){const D=DR;if(!D)return;if(D.mode==='text'&&D.txtEdit&&!doParse())return;if(issue())return;if(!D.dirty&&!D.cfgView){closeEd();drawSurf();return}
+ const cv=D.cfgView,fchg=D.dirty,pre=snapState();
+ if(fchg){let pg;if(D.truth==='root'){if(!D.cOK){[D.K,D.KJ]=expandPages(D.pages);D.cOK=true}pg=D.pages}else pg=D.rOK?D.pages:null;
+  K=D.K.slice();KJ=D.KJ.slice();FV++;SEED=null;SEEDP=pg&&clonePages(pg)}
+ closeEd();if(fchg){syncHf();fzText();analyze()}
+ if(cv)applyView(cv,fchg);else if(fchg)autoView();else drawSurf();histPush(pre,cv)}
+$('ed-ok').onclick=applyDraft;
+/* ---- Undo/Redo a 1 livello: l’ultima conferma di f(z). Si salvano f (coefficienti e radici) e solo i parametri di vista che la conferma ha cambiato (R, quota, offset, ...), non la fotocamera.
+   HU = stato che Undo ripristina; HR = stato che Redo ripristina. Ogni passo salva lo stato corrente nell’altro slot: Undo/Redo si possono alternare per confrontare prima e dopo.
+   Una nuova conferma sostituisce HU e azzera HR; trascinare una radice sul piano azzera HR. ---- */
+let HU=null,HR=null;
+const snapState=()=>({K:K.slice(),KJ:KJ.slice(),pages:FACT?clonePages(FACT):null,view:JSON.parse(JSON.stringify(viewState()))});
+const sameF=(a,b)=>a.K.every((v,k)=>v===b.K[k]&&a.KJ[k]===b.KJ[k])&&JSON.stringify(a.pages)===JSON.stringify(b.pages);
+function histUI(){const bu=$('fz-undo'),br=$('fz-redo'),off=!!DR||pickMode;bu.hidden=!HU;br.hidden=!HR;bu.disabled=br.disabled=off}
+function histPush(pre,cv){const post=snapState(),keys=Object.keys(post.view).filter(k=>JSON.stringify(post.view[k])!==JSON.stringify(pre.view[k])&&(k!=='camera'||(cv&&cv.camera)));
+ if(sameF(pre,post)&&!keys.length)return;pre.keys=keys;HU=pre;HR=null;histUI()}
+function histRestore(st){const cur=snapState(),fch=!sameF(cur,st),o=normView(Object.fromEntries(st.keys.map(k=>[k,st.view[k]])));
+ if(fch){K=st.K.slice();KJ=st.KJ.slice();FV++;SEED=null;SEEDP=st.pages&&clonePages(st.pages);syncHf();fzText();analyze()}
+ applyView(o,fch);cur.keys=st.keys;return cur}
+function histStep(dir){if(DR||pickMode||RD.on)return false;const st=dir<0?HU:HR;if(!st)return false;const cur=histRestore(st);if(dir<0){HU=null;HR=cur}else{HR=null;HU=cur}histUI();return true}
+$('fz-undo').onclick=()=>histStep(-1);$('fz-redo').onclick=()=>histStep(1);
+document.addEventListener('keydown',e=>{if(!(e.ctrlKey||e.metaKey)||e.altKey)return;const k=e.key.toLowerCase(),dir=k==='z'?(e.shiftKey?1:-1):k==='y'&&!e.shiftKey?1:0;if(!dir)return;
+ const t=e.target,tg=t&&t.tagName;if(tg==='TEXTAREA'||tg==='SELECT'||(t&&t.isContentEditable)||(tg==='INPUT'&&!['range','checkbox','radio','button'].includes(t.type)))return;
+ if(histStep(dir))e.preventDefault()});
+/* scelta di una radice sul piano di Gauss */
+function startPick(){const D=DR;if(!D||D.mode!=='root'||degR(D)>=8)return;pickMode=true;$('coeffs-panel').classList.remove('open');$('pickbar').hidden=false;const w=$('w3');if(document.fullscreenElement===w||w.classList.contains('is-fullscreen'))toggleFS(w);$('plan').scrollIntoView({block:'center',behavior:'smooth'});drawSurf()}
+function endPick(note){pickMode=false;$('pickbar').hidden=true;$('coeffs-panel').classList.add('open');$('w3').scrollIntoView({block:'nearest',behavior:'smooth'});edRender(note);drawSurf()}
+$('ed-pick').onclick=startPick;$('pickx').onclick=()=>endPick();
+let pk=null;
+pc.addEventListener('pointerdown',e=>{if(!pickMode)return;if(pk&&pk.id!==e.pointerId){pk.ok=false;return}pk={id:e.pointerId,x:e.clientX,y:e.clientY,ok:e.pointerType==='touch'||e.button===0}});
+pc.addEventListener('pointermove',e=>{if(pk&&pk.id===e.pointerId&&Math.hypot(e.clientX-pk.x,e.clientY-pk.y)>10)pk.ok=false});
+pc.addEventListener('pointercancel',()=>{pk=null});
+pc.addEventListener('pointerup',e=>{if(!pickMode||!pk||pk.id!==e.pointerId)return;const o=pk;pk=null;if(o.ok&&Math.hypot(e.clientX-o.x,e.clientY-o.y)<=10)endPick(addAt(hz(e).map(v=>{v=Math.round(v*100)/100;return v===0?0:v})))});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&pickMode){endPick();return}
+ if(!DR||!$('coeffs-panel').classList.contains('open')||DR.mode!=='root'||(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)return;
+ const t=e.target,tg=t&&t.tagName;if(tg==='INPUT'||tg==='SELECT'||tg==='TEXTAREA'||(t&&t.isContentEditable))return;e.preventDefault();go(e.key==='ArrowRight'?1:-1)});
+
+/* ---- Offset verticale del grafico 3D: slider manuale; il valore iniziale centra verticalmente ciò che è disegnato (calcolato una volta, senza seguire la rotazione) ---- */
+function setOff(v){yoff=Math.max(-.5,Math.min(.5,v));$('p-off').value=yoff;$('p-offv').textContent=yoff.toFixed(2);drawSurf()}
+function calibOff(){if(typeof HT==='undefined'||!HT||!HT.length)return 0;setCam();let c=1e9,e=-1e9,top=0,zl=0;
+ const add=(X,Y,Z)=>{const y1=X*syw+Y*cyw,z=Z-.5,v=z*cpt+y1*spt,d=y1*cpt-z*spt,ww=-v*9/(9+d);if(ww<c)c=ww;if(ww>e)e=ww};
+ for(let k=0;k<HT.length;k++){if(HT[k]>top)top=HT[k];add(XN[k],YN[k],HT[k])}
+ for(const p of BD)add(p[0],p[1],0);
+ if(showR)for(let k=0;k<=40;k++){const x=-1+k/20,f=F(x*R,0)[0],h=f<0?-hm(-f):hm(f);if(h<zl)zl=h;add(x,0,h)}
+ add(-1.18,0,zl);add(-1.18,0,top+.14);
+ return Math.round(Math.max(-.5,Math.min(.5,.04+(c+e)/2*SS/CH))*100)/100}
+$('p-off').oninput=e=>{yoff=+e.target.value;$('p-offv').textContent=yoff.toFixed(2);drawSurf()};
+$('p-off').ondblclick=()=>setOff(calibOff());
+
+/* ---- «Attiva la spunta» nel box Punto scelto: attiva i bacini di Newton ---- */
+const nwOn=()=>{const b=$('bn');if(b.checked)return;b.checked=true;b.dispatchEvent(new Event('change',{bubbles:true}));syncPl()};
+$('probe').addEventListener('click',e=>{if(e.target.closest('#nwon'))nwOn()});
+$('probe').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.id==='nwon'){e.preventDefault();nwOn()}});
+
+/* ===== Sposta radice (piano di Gauss): trascinamento diretto di una radice con anteprima adattiva ===== */
+/* Parametri sperimentali dell'anteprima: servono misure su PC e cellulare per tararli. */
+const RDQ={iter:10,scale0:.5,minScale:.25,maxScale:.75,slow:26,fast:19,minInt3:90,maxInt3:900};
+let moveMode=false;
+const RD={on:false,p:-1,id:null,off:[0,0],tgt:[0,0],raf:0,pend:null,timer:0,lvSaved:2,t3:0,int3:RDQ.minInt3,lastTs:0,frames:0,sumDt:0,n3:0,sum3:0};
+const setGLScale=sc=>{const w=Math.max(96,Math.round(pc.width*sc));if(glc.width!==w){glc.width=w;glc.height=w}};
+function rootScreen(k){const r=pc.getBoundingClientRect(),z=RT[k];return[r.left+((z[0]-vcx)/vs+1)/2*r.width,r.top+(1-(z[1]-vcy)/vs)/2*r.height]}
+function rootAt(e,rad){let b=-1,bd=rad;for(let k=0;k<RT.length;k++){const s=rootScreen(k),d=Math.hypot(e.clientX-s[0],e.clientY-s[1]);if(d<=bd){bd=d;b=k}}return b}
+const pageOf=k=>{let s=0;for(let i=0;i<FACT.length;i++){s+=FACT[i].m;if(k<s)return i}return -1};
+function setMove(on){const was=moveMode;moveMode=!!on&&RT.length>0;$('movebar').hidden=!moveMode;if(!moveMode){if(RD.on)endDrag();RD.pend=null;clearTimeout(RD.timer);pc.style.cursor=''}if(was!==moveMode)drawPlan()}
+function startDrag(e,k){const p=pageOf(k);if(p<0)return false;const z=hz(e),a=FACT[p].a;
+ Object.assign(RD,{on:true,p,id:e.pointerId,off:[a[0]-z[0],a[1]-z[1]],tgt:a.slice(),lvSaved:lv,t3:0,int3:RDQ.minInt3,lastTs:0,frames:0,sumDt:0,n3:0,sum3:0,scale0:RDQ.scale0});
+ DQ.on=true;DQ.scale=RDQ.scale0;DQ.ms=0;DQ.ema=0;DQ.n=0;setGLScale(DQ.scale);pc.style.cursor='grabbing';schedule();return true}
+const schedule=()=>{if(!RD.raf)RD.raf=requestAnimationFrame(dragFrame)};
+/* aggiorna la radice trascinata e, di conseguenza, coefficienti e analisi: i coefficienti si ottengono per espansione del prodotto (nessun solver per le radici) */
+function applyTarget(){if(HR){HR=null;histUI()}const a=FACT[RD.p].a;a[0]=RD.tgt[0];a[1]=RD.tgt[1];const[Kr,Ki]=expandPages(FACT);K=Kr;KJ=Ki;FV++;SEED=null;SEEDP=clonePages(FACT);syncHf();analyze();fzText()}
+function dragFrame(ts){RD.raf=0;if(!RD.on)return;const t0=performance.now(),hf=half;applyTarget();calc();texts();renderPlan();drawReal();
+ let did3=false;if(half!==hf||t0-RD.t3>=RD.int3){const b0=performance.now();build();drawSurf();const c=performance.now()-b0;RD.int3=Math.min(RDQ.maxInt3,Math.max(RDQ.minInt3,c*4));RD.t3=performance.now();RD.n3++;RD.sum3+=c;did3=true}
+ const dt=RD.lastTs?ts-RD.lastTs:0;RD.lastTs=ts;
+ if(!did3&&dt>0&&dt<150){RD.frames++;RD.sumDt+=dt;DQ.ema=DQ.ema?DQ.ema*.8+dt*.2:dt;DQ.ms=DQ.ema;
+  if(++DQ.n>=6){if(DQ.ema>RDQ.slow&&DQ.scale>RDQ.minScale){DQ.scale=Math.max(RDQ.minScale,DQ.scale*.8);setGLScale(DQ.scale);DQ.n=0}else if(DQ.ema<RDQ.fast&&DQ.scale<RDQ.maxScale){DQ.scale=Math.min(RDQ.maxScale,DQ.scale*1.15);setGLScale(DQ.scale);DQ.n=0}}}}
+/* al rilascio: ripristina risoluzione e iterazioni dell'utente e produce il rendering finale completo */
+function endDrag(){if(!RD.on)return;RD.on=false;cancelAnimationFrame(RD.raf);RD.raf=0;applyTarget();const sc=DQ.scale,ema=DQ.ema;DQ.on=false;glc.width=glc.height=pc.width;pc.style.cursor='';
+ if(Math.round(pc.parentNode.getBoundingClientRect().width*dpr)!==pc.width)size();
+ rebuild();if(lv!==RD.lvSaved){setLv(Math.min(RD.lvSaved,+$('lv').max));full()}syncPl();
+ window.__lastDrag={frames:RD.frames,avgFrameMs:RD.frames?+(RD.sumDt/RD.frames).toFixed(1):null,finalScale:+sc.toFixed(2),previewIter:RDQ.iter,userIter:IT,builds3D:RD.n3,avgBuild3DMs:RD.n3?+(RD.sum3/RD.n3).toFixed(1):null};console.info('Sposta radice',window.__lastDrag)}
+Object.assign(RD,{
+ mouseDown(e){if(!moveMode||e.button!==0||e.shiftKey)return false;const k=rootAt(e,18);return k>=0&&startDrag(e,k)},
+ mouseMove(e){if(RD.on&&RD.id===e.pointerId){const z=hz(e);RD.tgt=[z[0]+RD.off[0],z[1]+RD.off[1]];schedule();return true}if(moveMode&&e.pointerType!=='touch')pc.style.cursor=rootAt(e,18)>=0?'grab':'';return false},
+ mouseUp(e){if(RD.on&&RD.id===e.pointerId){endDrag();return true}return false},
+ tDown(e){if(!moveMode)return;if(TP.size>1){RD.pend=null;clearTimeout(RD.timer);if(RD.on)endDrag();return}
+  const k=rootAt(e,28);if(k<0)return;clearTimeout(tLP);RD.pend={id:e.pointerId};clearTimeout(RD.timer);
+  RD.timer=setTimeout(()=>{const p=TP.get(e.pointerId);if(RD.pend&&p&&!p.moved&&TP.size===1){RD.pend=null;if(navigator.vibrate)navigator.vibrate(12);startDrag({clientX:p.x,clientY:p.y,pointerId:e.pointerId},k)}},LPMS)},
+ tMove(e){if(RD.on&&RD.id===e.pointerId){const z=hz(e);RD.tgt=[z[0]+RD.off[0],z[1]+RD.off[1]];schedule();return true}return false},
+ tUp(e){if(RD.pend&&RD.pend.id===e.pointerId){RD.pend=null;clearTimeout(RD.timer)}if(RD.on&&RD.id===e.pointerId)endDrag()}});
+{const d=tpDown,m=tpMove,u=tpUp;tpDown=function(e){d(e);RD.tDown(e)};tpMove=function(e){if(RD.tMove(e))return;m(e)};tpUp=function(e){RD.tUp(e);u(e)}}
+{const dp=drawPlan;drawPlan=function(){dp();if(!moveMode)return;const w=pc.width,h=pc.height,u=dpr,X=x=>((x-vcx)/vs+1)/2*w,Y=y=>(1-(y-vcy)/vs)/2*h,done=[];
+ RT.forEach((r,k)=>{if(done.some(q=>q[0]===r[0]&&q[1]===r[1]))return;done.push(r);const x=X(r[0]),y=Y(r[1]);if(x<-30||y<-30||x>w+30||y>h+30)return;const act=RD.on&&pageOf(k)===RD.p;
+  pg.save();pg.setLineDash(act?[]:[4*u,3*u]);pg.lineWidth=(act?2.5:1.5)*u;pg.strokeStyle=act?'#ffd400':'#fff';pg.beginPath();pg.arc(x,y,(act?17:14)*u,0,TAU);pg.stroke();pg.restore()})}}
+{const sp=syncPl;syncPl=function(){sp();$('pl-mv').disabled=!RT.length}}
+$('pl-mv').onclick=()=>{$('plan-panel').classList.remove('open');setMove(true)};
+$('movex').onclick=()=>setMove(false);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&moveMode&&!pickMode)setMove(false)});
+$('fsp').onclick=()=>toggleFS($('wp'));
+
+/* Sincronizzazione controlli pannello 3D */
+$('p-r').oninput=e=>{R=+e.target.value;$('r').value=R;$('rv').textContent=R.toFixed(1);$('p-rv').textContent=R.toFixed(1);resetView();rebuild()};
+$('r').oninput=e=>{R=+e.target.value;$('rv').textContent=R.toFixed(1);$('p-r').value=R;$('p-rv').textContent=R.toFixed(1);resetView();rebuild()};
+$('p-lv').oninput=e=>{setLv(+e.target.value);full()};
+$('lv').oninput=e=>{setLv(+e.target.value);full()};
+$('p-h').oninput=e=>{hs=+e.target.value;$('h').value=hs;$('hv').textContent=hs.toFixed(2);$('p-hv').textContent=hs.toFixed(2);heights();drawSurf()};
+$('h').oninput=e=>{hs=+e.target.value;$('p-h').value=hs;$('hv').textContent=hs.toFixed(2);$('p-hv').textContent=hs.toFixed(2);heights();drawSurf()};$('h').onchange=()=>{build();drawSurf()};$('p-h').onchange=()=>{build();drawSurf()};
+$('p-dm').onchange=e=>{polar=e.target.value==='1';$('dm').value=e.target.value;build();full()};
+$('dm').onchange=e=>{polar=e.target.value==='1';$('p-dm').value=e.target.value;build();full()};
+$('p-hf').onchange=e=>{half=e.target.checked;$('hf').checked=half;build();full()};
+$('hf').onchange=e=>{half=e.target.checked;$('p-hf').checked=half;build();full()};
+$('p-up').onchange=e=>{upm=e.target.value;$('up').value=upm;drawSurf()};
+$('up').onchange=e=>{upm=e.target.value;$('p-up').value=upm;drawSurf()};
+$('p-l').onchange=e=>{lg=e.target.checked;$('l').checked=lg;build();drawSurf()};
+$('l').onchange=e=>{lg=e.target.checked;$('p-l').checked=lg;build();drawSurf()};
+$('p-a').onchange=e=>{auto=e.target.checked;$('a').checked=auto};
+$('a').onchange=e=>{auto=e.target.checked;$('p-a').checked=auto};
+$('p-an').onchange=e=>{anim=e.target.checked;$('an').checked=anim};
+$('an').onchange=e=>{anim=e.target.checked;$('p-an').checked=anim};
+
+$('fit').onclick=()=>{let m=0;for(const r of RT)m=Math.max(m,Math.hypot(r[0],r[1]));for(const p of CX)m=Math.max(m,Math.abs(p.x));R=Math.max(.5,Math.min(6,m>0?Math.ceil(m*13)/10:1.6));$('r').value=R;$('rv').textContent=R.toFixed(1);$('p-r').value=R;$('p-rv').textContent=R.toFixed(1);resetView();rebuild()};
+$('bn').onchange=e=>{mode=e.target.checked?'new':'dom';const nw=mode==='new';for(const i of['it','pb','d1','d0'])$(i).disabled=!nw;$('pp').disabled=nw;$('c').disabled=nw;rebuild()};
+$('pp').onchange=e=>{pph=e.target.value;build();full()};$('pb').onchange=e=>{pbs=e.target.value;build();full()};
+$('c').onchange=e=>{cont=e.target.checked;renderPlan()};
+$('rc').onchange=e=>{showR=e.target.checked;$('p-rc').checked=showR;drawSurf()};
+$('p-rc').onchange=e=>{showR=e.target.checked;$('rc').checked=showR;drawSurf()};
+$('s1').onclick=()=>{if(CV.length){setLv(CV[ci%CV.length]);ci++;full()}};
+$('st').onclick=()=>{if(path.length>1){probe=path[1];probeUpdate()}};$('rs').onclick=()=>{probe=[.55,.85];probeUpdate()};$('vi').onclick=()=>{resetView();renderPlan();drawReal()};
+const dive=(x,y,v1,ms)=>{tw={t0:-1,ms,x,y,x0:vcx,y0:vcy,v0:vs,v1}};$('d1').onclick=()=>dive(probe[0],probe[1],1.5e-3,6000);$('d0').onclick=()=>dive(0,0,1e-3,7000);
+let rzoom=false,rx=null,RV=null,rd=null;$('rz').onclick=()=>{rzoom=!rzoom;rx=null;$('rz').style.borderColor=rzoom?'var(--ac)':'';drawReal()};
+
+/* Gestione Fullscreen con forzatura landscape solo per mobile */
+function toggleFS(el){
+  const isFS = document.fullscreenElement === el || el.classList.contains('is-fullscreen');
+  const isMobile = window.innerWidth <= 900 || ('ontouchstart' in window);
+  if(!isFS){
+    if(el.requestFullscreen){
+      el.requestFullscreen().then(()=>{
+        if(isMobile && screen.orientation && screen.orientation.lock){
+          screen.orientation.lock('landscape').catch(()=>{});
+        }
+      }).catch(()=>{
+        el.classList.add('is-fullscreen');setTimeout(size,60);
+      });
+    }else{
+      el.classList.add('is-fullscreen');setTimeout(size,60);
+    }
+  }else{
+    if(document.exitFullscreen){
+      document.exitFullscreen().catch(()=>{});
+    }
+    if(el.classList.contains('is-fullscreen')){el.classList.remove('is-fullscreen');setTimeout(size,60)}
+    if(screen.orientation && screen.orientation.unlock){
+      screen.orientation.unlock();
+    }
+  }
+}
+
+$('fs3').onclick=()=>toggleFS($('w3'));
+$('fs').onclick=()=>toggleFS(document.documentElement);
+
+document.addEventListener('fullscreenchange',()=>setTimeout(size,60));
+window.addEventListener('orientationchange',()=>setTimeout(size,60));
+
+$('gl').onchange=e=>{const v=e.target.value;$('mn').classList.toggle('r3',v==='3');$('gr').style.gridTemplateColumns=v==='1'?'repeat(3,minmax(0,1fr))':v==='2'?'repeat(2,minmax(0,1fr))':'minmax(0,1fr)';size()};
+
+/* Gestione apertura/chiusura pannelli flottanti 3D */
+$('toggle-panel').onclick=()=>{ const p=$('surf-panel'); if(p.classList.contains('open')){p.classList.remove('open')}else{p.classList.add('open'); $('coeffs-panel').classList.remove('open')} drawSurf(); };
+$('close-panel').onclick=()=>{ $('surf-panel').classList.remove('open'); drawSurf(); };
+
+$('toggle-coeffs').onclick=()=>{ if(pickMode)return; if($('coeffs-panel').classList.contains('open')){$('close-coeffs').click();return} openEd(); $('surf-panel').classList.remove('open'); drawSurf(); };
+$('close-coeffs').onclick=()=>{ const D=DR; if(D&&(D.dirty||D.txtEdit||D.cfgView)&&!closeArm){closeArm=1;edStatus('Modifiche non confermate: premi ✕ di nuovo per scartarle, oppure Conferma.',true);return} closeEd(); drawSurf(); };
+
+const rset=(c,h)=>{rx=[c,Math.max(1e-6,Math.min(100,h))];rzoom=false;$('rz').style.borderColor='';drawReal()},rpx=e=>{const b=rl.getBoundingClientRect();return Math.max(0,Math.min(1,((e.clientX-b.left)*rl.width/b.width-52*dpr)/(rl.width-62*dpr)))};
+rl.addEventListener('wheel',e=>{e.preventDefault();if(!RV)return;const f=rpx(e),w=RV[1]-RV[0],x0=RV[0]+f*w,w2=Math.max(2e-6,Math.min(200,w*Math.exp(e.deltaY*.0015)));rset(x0-f*w2+w2/2,w2/2)},{passive:false});
+rl.onpointerdown=e=>{if(e.button!==0)return;rl.setPointerCapture(e.pointerId);rd=e.clientX;rl.style.cursor='grabbing'};
+rl.onpointerup=rl.onpointercancel=()=>{rd=null;rl.style.cursor='grab'};
+rl.onpointermove=e=>{if(rd===null||!RV)return;const b=rl.getBoundingClientRect(),w=RV[1]-RV[0],dx=(e.clientX-rd)*rl.width/b.width/(rl.width-62*dpr)*w;rd=e.clientX;rset((RV[0]+RV[1])/2-dx,w/2)};
+
+const setP=e=>{if(mode!=='new')return;const r=pc.getBoundingClientRect();probe=[vcx+((e.clientX-r.left)/r.width*2-1)*vs,vcy+(1-(e.clientY-r.top)/r.height*2)*vs];probeUpdate()};
+let pan=null,probing=false,lastTouch=0;pc.oncontextmenu=e=>e.preventDefault();sc.oncontextmenu=e=>{e.preventDefault();if(Date.now()-lastTouch<1500)return;pick(e)};
+const LPMS=450,LPPX=10;
+const zoomAt=(cx,cy,f)=>{const r=pc.getBoundingClientRect(),px=vcx+((cx-r.left)/r.width*2-1)*vs,py=vcy+(1-(cy-r.top)/r.height*2)*vs,nv=Math.min(8,Math.max(2e-4,vs*f));vcx=px-(px-vcx)*nv/vs;vcy=py-(py-vcy)*nv/vs;vs=nv;tw=null};
+const panBy=(dx,dy)=>{const r=pc.getBoundingClientRect();vcx-=dx/r.width*2*vs;vcy+=dy/r.height*2*vs;tw=null};
+/* tocco sul piano: un dito sposta, due dita fanno pizzico (zoom + sposta), pressione lunga = punto giallo (solo con Bacini di Newton) */
+const TP=new Map();let tLP=null,tProbe=false,tMid=null;
+const tMD=()=>{const[a,b]=[...TP.values()];return[(a.x+b.x)/2,(a.y+b.y)/2,Math.hypot(a.x-b.x,a.y-b.y)||1]};
+function tpDown(e){lastTouch=Date.now();TP.set(e.pointerId,{x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,moved:false});clearTimeout(tLP);tProbe=false;hv=null;
+ if(TP.size===1){if(mode==='new')tLP=setTimeout(()=>{const p=TP.size===1&&[...TP.values()][0];if(p&&!p.moved){tProbe=true;if(navigator.vibrate)navigator.vibrate(12);setP({clientX:p.x,clientY:p.y})}},LPMS)}
+ else if(TP.size===2){tProbe=false;tMid=tMD()}}
+function tpMove(e){const p=TP.get(e.pointerId);if(!p)return;const ox=p.x,oy=p.y;p.x=e.clientX;p.y=e.clientY;
+ if(TP.size>=2){const m=tMD();panBy(m[0]-tMid[0],m[1]-tMid[1]);zoomAt(m[0],m[1],tMid[2]/m[2]);tMid=m;renderPlan();return}
+ if(tProbe){setP(e);return}
+ let dx,dy;if(!p.moved){if(Math.hypot(p.x-p.x0,p.y-p.y0)<LPPX)return;p.moved=true;clearTimeout(tLP);dx=p.x-p.x0;dy=p.y-p.y0}else{dx=p.x-ox;dy=p.y-oy}
+ panBy(dx,dy);renderPlan()}
+function tpUp(e){TP.delete(e.pointerId);clearTimeout(tLP);if(TP.size===0)tProbe=false;else if(TP.size===1){const p=[...TP.values()][0];p.x0=p.x;p.y0=p.y;p.moved=true}}
+pc.onpointerdown=e=>{try{pc.setPointerCapture(e.pointerId)}catch(_){}if(e.pointerType==='touch'){tpDown(e);return}if(RD.mouseDown(e))return;if(e.button===0&&!e.shiftKey && mode==='new'){probing=true;setP(e)}else pan=[e.clientX,e.clientY]};
+pc.onpointerleave=()=>{hv=null;chip()};pc.onpointermove=e=>{if(e.pointerType==='touch'){tpMove(e);return}if(RD.mouseMove(e))return;hv=pan?null:hz(e);chip();if(probing && mode==='new')setP(e);else if(pan){panBy(e.clientX-pan[0],e.clientY-pan[1]);pan=[e.clientX,e.clientY];renderPlan()}};
+pc.onpointerup=pc.onpointercancel=e=>{if(e.pointerType==='touch'){tpUp(e);return}if(RD.mouseUp(e))return;probing=false;pan=null};
+pc.addEventListener('wheel',e=>{e.preventDefault();zoomAt(e.clientX,e.clientY,Math.exp(e.deltaY*.0015));renderPlan()},{passive:false});
+/* tocco sul 3D: un dito ruota, due dita fanno pizzico (zoom), pressione lunga = punto giallo (solo con Bacini di Newton) */
+const T3=new Map();let t3LP=null,t3D=1;
+const d3=()=>{const[a,b]=[...T3.values()];return Math.hypot(a.x-b.x,a.y-b.y)||1};
+sc.onpointerdown=e=>{
+ if(e.pointerType==='touch'){lastTouch=Date.now();try{sc.setPointerCapture(e.pointerId)}catch(_){}
+  T3.set(e.pointerId,{x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,moved:false});clearTimeout(t3LP);
+  if(T3.size===1){drag=[e.clientX,e.clientY];sc.style.cursor='grabbing';
+   t3LP=setTimeout(()=>{const p=T3.size===1&&[...T3.values()][0];if(p&&!p.moved&&mode==='new'){drag=null;if(navigator.vibrate)navigator.vibrate(12);pick({clientX:p.x,clientY:p.y})}},LPMS)}
+  else if(T3.size===2){drag=null;t3D=d3()}
+  return}
+ if(e.button!==0)return;sc.setPointerCapture(e.pointerId);drag=[e.clientX,e.clientY];sc.style.cursor='grabbing'};
+sc.onpointerup=sc.onpointercancel=e=>{if(e.pointerType==='touch'){T3.delete(e.pointerId);clearTimeout(t3LP);if(T3.size===1){const p=[...T3.values()][0];p.moved=true;drag=[p.x,p.y]}else drag=null;sc.style.cursor='grab';return}drag=null;sc.style.cursor='grab'};
+sc.onpointermove=e=>{
+ if(e.pointerType==='touch'){const p=T3.get(e.pointerId);if(!p)return;p.x=e.clientX;p.y=e.clientY;
+  if(T3.size>=2){const d=d3();zoom=Math.max(.5,Math.min(3,zoom*d/t3D));t3D=d;drawSurf();return}
+  if(!p.moved&&Math.hypot(p.x-p.x0,p.y-p.y0)>=LPPX){p.moved=true;clearTimeout(t3LP)}}
+ if(!drag)return;yaw+=(e.clientX-drag[0])*.01;pitch=Math.max(-1.5,Math.min(1.5,pitch+(e.clientY-drag[1])*.01));drag=[e.clientX,e.clientY];drawSurf()};
+/* pannello del piano: copie speculari dei controlli (le originali restano la fonte di verità) */
+const plp=$('plan-panel'),PLM=[['bn'],['it','itv'],['pb'],['pp'],['c'],['lv','lvv']],PLB=['s1','st','rs','d1','d0','vi','fit'];
+function syncPl(){for(const[k,b]of PLM){const o=$(k),p=$('pl-'+k);if(o.type==='range'&&p.max!==o.max)p.max=o.max;
+ if(o.type==='checkbox'){if(p.checked!==o.checked)p.checked=o.checked}else if(p.value!==o.value)p.value=o.value;
+ if(p.disabled!==o.disabled)p.disabled=o.disabled;if(b&&$('pl-'+b).textContent!==$(b).textContent)$('pl-'+b).textContent=$(b).textContent}
+ for(const k of PLB){const o=$(k),p=$('pl-'+k);if(p.disabled!==o.disabled)p.disabled=o.disabled}}
+for(const[k]of PLM){const o=$(k),p=$('pl-'+k);for(const t of['input','change'])p.addEventListener(t,()=>{if(o.type==='checkbox')o.checked=p.checked;else o.value=p.value;o.dispatchEvent(new Event(t,{bubbles:true}));syncPl()})}
+for(const k of PLB)$('pl-'+k).onclick=()=>{$(k).click();syncPl()};
+$('toggle-plan').onclick=()=>{const p=$('plan-panel');if(p.classList.contains('open'))p.classList.remove('open');else{p.classList.add('open');syncPl()}};$('close-plan').onclick=()=>$('plan-panel').classList.remove('open');
+$('it').oninput=e=>{IT=+e.target.value;$('itv').textContent=IT;renderPlan()};
+/* didascalie: dipendono dalla modalità Bacini di Newton */
+function capt(){const n=mode==='new';
+ $('cap3p').innerHTML=n?'<b>Tasto destro</b> (cellulare: pressione lunga): sceglie il punto giallo sulla superficie.':'Il punto giallo con il percorso di Newton si attiva con «Bacini di Newton».';
+ $('capPi').innerHTML=n?'Rotella o pizzico: zoom verso il cursore. Tasto destro o Maiusc + trascina (cellulare: un dito): sposta. Click sinistro (cellulare: pressione lunga): punto giallo con percorso di Newton.':'Rotella o pizzico: zoom verso il cursore. Trascina o tasto destro: sposta. Il punto giallo con il percorso di Newton si attiva con «Bacini di Newton».'}
+$('bn').addEventListener('change',capt);
+sc.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.5,Math.min(3,zoom*Math.exp(-e.deltaY*.001)));drawSurf()},{passive:false});
+(function loop(ts){if(tw){if(tw.t0<0)tw.t0=ts;const k=Math.min(1,(ts-tw.t0)/tw.ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+  vs=Math.exp(Math.log(tw.v0)+(Math.log(tw.v1)-Math.log(tw.v0))*e);vcx=tw.x+(tw.x0-tw.x)*vs/tw.v0;vcy=tw.y+(tw.y0-tw.y)*vs/tw.v0;renderPlan();if(k>=1)tw=null}
+ const spin=auto&&!drag;if(spin)yaw+=.008;if(anim){setLv(.1+(Math.max(.2,lg?Math.expm1(.6*Math.log1p(mmax)):.6*mmax)-.1)*(.5+.5*Math.cos(ts/1300)));full()}else if(spin)drawSurf();if(plp.classList.contains('open'))syncPl();requestAnimationFrame(loop)})(0);
+new ResizeObserver(()=>{if(DQ.on)return;size()}).observe($('mn'));
+if(window.matchMedia)window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{drawSurf();drawReal()});
+initGL();fzText();syncHf();analyze();build();size();capt();setOff(calibOff());
+</script></body></html>
