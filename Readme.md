@@ -7,7 +7,7 @@ type: root-readme
 version: 1
 updated: 2026-10-31
 ---
-# [Esploratore di polinomi](https://github.com/CatSW/polinomi-fz/Esploratore_di_Polinomi.html)
+# [Esploratore di polinomi](https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html)
 
 [Manuale_Esploratore_polinomi](Manuale_Esploratore_polinomi.md)
 
