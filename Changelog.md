@@ -6,11 +6,28 @@ type: changelog
 product: polinomi-fz
 version: 1.0.0 
 license: MIT
-updated: 2026-10-31
+updated: 2026-11-02
 ---
 # Changelog Esploratore di Polinomi
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
+
+## [1.1] - 2026-11-02
+
+### Added
+
+- Pubblicazione dell’app su GitHub Pages.
+- Pulsante Info con collegamento al README.
+- Pulsante “Condividi questa vista” copia nella clipboard di sistema URL con parametri codificati in Base64.
+
+### Changed
+
+- Aggiornamento del manuale con le nuove funzionalità.
+
+### Fixed
+
+- Correzione dei collegamenti all’app nel README.
+- Aggiunta di `index.html` con reindirizzamento all’app dall’indirizzo base del sito.
 
 ## [1.0] - 2026-10-31
 

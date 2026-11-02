@@ -9,7 +9,7 @@
 html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
 main{max-width:none;margin:0 auto;padding:16px 14px 28px}
-h1{font:600 26px/1.2 Georgia,serif;margin:0 0 2px}.sub{color:var(--mut);margin:0 0 10px;font-size:13.5px}
+h1{font:600 26px/1.2 Georgia,serif;margin:0 0 2px}.hd{display:flex;flex-wrap:wrap;align-items:center;gap:4px 1cm;margin:0 0 2px}.hd h1{margin:0}.lnkbtn{font-size:13px;background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:7px;padding:4px 9px;text-decoration:none;cursor:pointer}.lnkbtn:hover{border-color:var(--ac)}#lkmsg{cursor:pointer;margin:0 0 8px}.sub{color:var(--mut);margin:0 0 10px;font-size:13.5px}
 .bar{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:9px 12px;margin-bottom:10px}
 .bar label{display:flex;gap:7px;align-items:center;font-size:13px;color:var(--mut)}.bar input[type=range]{width:110px;accent-color:var(--ac)}
 .bar b{color:var(--fg);font-weight:600;min-width:2.6em;display:inline-block;font-variant-numeric:tabular-nums}
@@ -68,8 +68,9 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.chi
 #wp:fullscreen figcaption,#wp.is-fullscreen figcaption{display:none}
 #wp:fullscreen .chip,#wp.is-fullscreen .chip{position:absolute;left:10px;bottom:6px;z-index:36;background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:2px 8px;max-width:calc(100vw - 20px);box-sizing:border-box}
 </style></head><body><main id="mn">
-<h1>Esploratore di polinomi f(z)</h1>
+<div class="hd"><h1>Esploratore di polinomi f(z)</h1><a id="rdm" class="lnkbtn" href="https://github.com/CatSW/polinomi-fz/blob/master/Readme.md" target="_blank" rel="noopener noreferrer" title="Apre il README su GitHub (manuale, note storiche, changelog) in una nuova scheda">Readme</a></div>
 <p class="sub">Polinomio fino al grado 8 con coefficienti complessi su tutti i termini; si definisce dal pulsante f(z) in basso a sinistra nella vista 3D (forma normale o a radici, con conferma finale).</p>
+<div id="lkmsg" class="ed-msg" title="Clic per chiudere" hidden></div>
 <div class="box" id="fz" style="margin-bottom:10px;font:600 19px/1.5 Georgia,serif;overflow-wrap:anywhere"></div>
 <div class="bar" id="ob"><label>Disposizione <select id="gl"><option value="1" selected>G. 1 riga</option><option value="2">G. 2 righe</option><option value="3">G. 3 righe</option></select></label><button id="fs">Tutto schermo</button></div>
 <div id="ctl" hidden>
@@ -411,7 +412,7 @@ EB.innerHTML=`<div class="ed-nav"><select id="ed-mode"><option value="coef">Form
 <div class="ed-info" id="ed-info"></div>
 <div class="ed-sec" id="ed-coef"></div>
 <div class="ed-sec" id="ed-root"></div>
-<div class="ed-sec" id="ed-text"><textarea id="ed-txt" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="z3 + (0.5 + 3.4i)·z2 − 1.73i"></textarea><div class="pbtn"><button id="ed-parse" title="Acquisisce il polinomio (o il JSON) nella bozza">Interpreta</button><button id="ed-exp" title="Copia negli appunti il JSON con f(z) e i parametri di visualizzazione">Esporta JSON</button></div><div class="ed-info">Accetta z8, z^8 o z⁸; coefficienti complessi come (0.5 + 3.4i) o 2i; ·, * o accostamento; anche forme fattorizzate come (z−1)^2(z+1). Decimali con punto o virgola. Grado massimo 8. Incollando un JSON esportato con «Esporta JSON» si ripristinano f(z) e vista.</div></div>
+<div class="ed-sec" id="ed-text"><textarea id="ed-txt" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="z3 + (0.5 + 3.4i)·z2 − 1.73i"></textarea><div class="pbtn"><button id="ed-parse" title="Acquisisce il polinomio (o il JSON) nella bozza">Interpreta</button><button id="ed-exp" title="Copia negli appunti il JSON con f(z) e i parametri di visualizzazione">Esporta JSON</button><button id="ed-share" title="Copia negli appunti un link che riapre la stessa f(z) con la stessa vista">Condividi questa vista</button></div><div class="ed-info">Accetta z8, z^8 o z⁸; coefficienti complessi come (0.5 + 3.4i) o 2i; ·, * o accostamento; anche forme fattorizzate come (z−1)^2(z+1). Decimali con punto o virgola. Grado massimo 8. Incollando un JSON esportato con «Esporta JSON» si ripristinano f(z) e vista. «Condividi questa vista» copia un link che riapre la stessa f(z) e la stessa vista; il JSON resta il formato di riferimento.</div></div>
 <div class="ed-msg" id="ed-msg"></div>
 <div class="ed-info">Esempi:</div><div class="pbtn" id="ed-ex"></div>`;
 function mkSl(host,label,onv){const l=document.createElement('label');l.innerHTML=`<span>${label}</span><input type="range" min="-4" max="4" step="0.05" value="0"><input type="number" step="0.05" value="0">`;host.appendChild(l);const[sl,nb]=l.querySelectorAll('input');
@@ -488,8 +489,8 @@ function autoView(){let m=0;for(const r of RT)m=Math.max(m,Math.hypot(r[0],r[1])
  const cv=CV.length?Math.max(...CV):0;
  for(let i=0;i<8&&R<10&&+$('lv').max<=cv*1.02;i++)setR(Math.min(10,Math.round(R*13)/10));   // la quota deve poter stare sopra l’ultimo valore critico
  setLv((cv+mmax)/2);full();setOff(calibOff())}
-/* ---- Salvataggio/caricamento JSON (versione 1.0) ---- */
-const APPV='1.0';
+/* ---- Salvataggio/caricamento JSON e link condivisibili (versione 1.1) ---- */
+const APPV='1.1';$('rdm').textContent='Readme - Ver. '+APPV;
 const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},camera:{yaw,pitch,zoom},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice()});
 const JS_=(o,d=0)=>{if(o===null||typeof o!=='object'||Array.isArray(o)||d>=2)return JSON.stringify(o);const p='  '.repeat(d+1);return'{\n'+Object.entries(o).filter(([,v])=>v!==undefined).map(([k,v])=>p+JSON.stringify(k)+': '+JS_(v,d+1)).join(',\n')+'\n'+'  '.repeat(d)+'}'};
 const optOK=(id,v)=>typeof v==='string'&&[...$(id).options].some(q=>q.value===v);
@@ -543,14 +544,36 @@ function doParseCfg(t){const D=DR,ta=$('ed-txt');
   edStatus('Configurazione acquisita'+(g===null?'':g?`: grado ${g}`:': funzione costante')+(nv?`${g===null?':':','} ${nv} parametri di visualizzazione`:'')+r.note+'. Premi Conferma per applicarla.');
   $('ed-info').textContent='Grado effettivo (bozza): '+effDeg(D.K,D.KJ)+' (max 8)';return true}
  catch(e){if(!(e instanceof ParseErr))throw e;edStatus(e.message+(e.pos==null?'':` (posizione ${e.pos+1})`),true);if(e.pos!=null){ta.focus();ta.setSelectionRange(e.pos,Math.min(e.pos+1,ta.value.length))}return false}}
-async function exportCfg(){const D=DR;if(D.mode==='text'&&D.txtEdit&&!doParse())return;
- if(D.truth==='root'&&!D.cOK){if(D.pages.some(zeroAp)){edStatus('Esporta non disponibile: il coefficiente a′ deve essere diverso da zero.',true);return}[D.K,D.KJ]=expandPages(D.pages);D.cOK=true}
- if(isZeroF(D.K,D.KJ)){edStatus('Esporta non disponibile: la funzione è nulla.',true);return}
+/* controlli comuni a Esporta JSON e Condividi: acquisisce il testo in bozza, porta in forma normale, rifiuta la funzione nulla */
+function draftCfg(what){const D=DR;if(D.mode==='text'&&D.txtEdit&&!doParse())return null;
+ if(D.truth==='root'&&!D.cOK){if(D.pages.some(zeroAp)){edStatus(what+' non disponibile: il coefficiente a′ deve essere diverso da zero.',true);return null}[D.K,D.KJ]=expandPages(D.pages);D.cOK=true}
+ if(isZeroF(D.K,D.KJ)){edStatus(what+' non disponibile: la funzione è nulla.',true);return null}
+ return D}
+async function exportCfg(){const D=draftCfg('Esporta');if(!D)return;
  const f={formula:polyText(D.K,D.KJ),coeffs:D.K.map((v,k)=>[v,D.KJ[k]])};if(D.rOK&&D.pages.length&&effDeg(D.K,D.KJ)>=1)f.roots=D.pages.map(q=>({a:q.a,ap:q.ap,m:q.m}));
  const txt=JS_({app:'polinomi-fz',version:APPV,f,view:Object.assign(viewState(),D.cfgView||{})});
  try{await navigator.clipboard.writeText(txt);edStatus(`JSON copiato negli appunti (${txt.length} caratteri): incollalo in Testo per ripristinare f(z) e vista.`)}
  catch(e){const ta=$('ed-txt');ta.value=txt;D.text=txt;D.txtEdit=false;ta.focus();ta.select();edStatus('Appunti non disponibili: il JSON è nella casella e selezionato, copialo con Ctrl+C.')}}
 $('ed-exp').onclick=exportCfg;
+/* ---- Link condiviso: #v=<Base64url del JSON compatto>. Stesso schema del JSON (app, version, f.coeffs, view), senza formula né radici; i parametri di vista hanno 5 cifre significative. Nessuna compressione: ~700-1300 caratteri. ---- */
+const b64u=s=>{let b='';new TextEncoder().encode(s).forEach(c=>b+=String.fromCharCode(c));return btoa(b).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
+const unb64u=t=>{t=t.replace(/-/g,'+').replace(/_/g,'/');while(t.length%4)t+='=';const b=atob(t),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return new TextDecoder('utf-8',{fatal:true}).decode(u)};
+const sig=x=>typeof x==='number'?Number(x.toPrecision(5)):Array.isArray(x)?x.map(sig):x&&typeof x==='object'?Object.fromEntries(Object.entries(x).map(([k,v])=>[k,sig(v)])):x;
+const SHARE_BASE='https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html';
+async function shareView(){const D=draftCfg('Condividi');if(!D)return;
+ const o={app:'polinomi-fz',version:APPV,f:{coeffs:D.K.map((v,k)=>[v,D.KJ[k]])},view:sig(Object.assign(viewState(),D.cfgView||{}))};
+ const url=(location.protocol==='file:'?SHARE_BASE:location.href.split('#')[0])+'#v='+b64u(JSON.stringify(o));
+ try{await navigator.clipboard.writeText(url);edStatus(`Link copiato negli appunti (${url.length} caratteri).`)}
+ catch(e){const ta=$('ed-txt');ta.value=url;D.text=url;D.txtEdit=false;ta.focus();ta.select();edStatus('Appunti non disponibili: il link è nella casella e selezionato, copialo con Ctrl+C.')}}
+$('ed-share').onclick=shareView;
+/* apertura da link: applica f(z) e vista senza passare dalla bozza (come una conferma, senza Undo) */
+function loadHash(){const m=/^#v=([A-Za-z0-9_-]+)$/.exec(location.hash);if(!m)return;const msg=$('lkmsg');
+ const show=(t,err)=>{msg.textContent=t;msg.className='ed-msg'+(err?' err':'');msg.hidden=false};msg.onclick=()=>{msg.hidden=true};
+ try{const r=parseCfg(unb64u(m[1]));if(r.K&&isZeroF(r.K,r.KJ))throw new ParseErr('la funzione è nulla',null);
+  if(r.K){K=r.K.slice();KJ=r.KJ.slice();FV++;SEED=null;SEEDP=null;syncHf();fzText();analyze()}
+  if(r.view)applyView(r.view,!!r.K);else if(r.K)autoView();
+  if(r.note)show('Link caricato'+r.note+'.')}
+ catch(e){show('Link non valido: '+(e instanceof ParseErr?e.message:'dati non decodificabili ('+e.message+')')+'. Mostrata la vista predefinita.',true)}}
 const newDraft=()=>({mode:'coef',K:K.slice(),KJ:KJ.slice(),pages:clonePages(getFact()),t:effDeg(K,KJ),p:0,truth:'coef',cOK:true,rOK:true,solved:null,dirty:false,cfgView:null,text:'',txtEdit:false});
 function openEd(){setMove(false);DR=newDraft();closeArm=0;pickMode=false;$('pickbar').hidden=true;$('coeffs-panel').classList.add('open');edRender();histUI()}
 function closeEd(){DR=null;$('coeffs-panel').classList.remove('open');histUI()}
@@ -814,5 +837,5 @@ sc.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.5,Math.min(3,z
  const spin=auto&&!drag;if(spin)yaw+=.008;if(anim){setLv(.1+(Math.max(.2,lg?Math.expm1(.6*Math.log1p(mmax)):.6*mmax)-.1)*(.5+.5*Math.cos(ts/1300)));full()}else if(spin)drawSurf();if(plp.classList.contains('open'))syncPl();requestAnimationFrame(loop)})(0);
 new ResizeObserver(()=>{if(DQ.on)return;size()}).observe($('mn'));
 if(window.matchMedia)window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{drawSurf();drawReal()});
-initGL();fzText();syncHf();analyze();build();size();capt();setOff(calibOff());
+initGL();fzText();syncHf();analyze();build();size();capt();setOff(calibOff());loadHash();
 </script></body></html>

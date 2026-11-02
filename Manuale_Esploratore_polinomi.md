@@ -1,5 +1,5 @@
 ---
-updated: 2026-10-31
+updated: 2026-11-02
 ---
 # Esploratore di polinomi f(z)
 
@@ -48,9 +48,10 @@ Con l'Esploratore puoi:
 - **seguire** le curve di livello di |f| e trovare i *punti di sella*, dove due «valli» si incontrano;
 - **lanciare** il metodo di Newton da un punto qualsiasi e osservare i suoi **frattali**;
 - **confrontare** una funzione prima e dopo una modifica, alternando **Annulla** e **Ripristina**;
-- **salvare** tutto ciò che hai costruito in un testo (un JSON) e ritrovarlo identico un altro giorno.
+- **salvare** tutto ciò che hai costruito in un testo (un JSON) e ritrovarlo identico un altro giorno;
+- **condividere** la tua funzione e la tua vista con un semplice **link**, che chi lo riceve apre con un clic.
 
-Funziona nel browser, senza installare nulla, sul computer e sul telefono. Tutto si decide da una finestra sola, quella che si apre dal pulsante **f(z)** (lo incontrerai nella sezione 5).
+Funziona nel browser, senza installare nulla, sul computer e sul telefono: lo trovi online all'indirizzo `https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html`. Tutto si decide da una finestra sola, quella che si apre dal pulsante **f(z)** (lo incontrerai nella sezione 5).
 
 ## 2. Due minuti di numeri complessi
 
@@ -126,6 +127,7 @@ Sotto le tre finestre trovi due riquadri: **Radici** (l'elenco `z0, z1, …` con
 
 ### I pulsanti importanti
 
+- **Readme - Ver. x.y**, a destra del titolo in alto: apre in una nuova scheda il Readme su GitHub, punto d'accesso a questo manuale, alle note storiche, al changelog e alle note legali. Il numero è la versione dell'Esploratore che stai usando.
 - **f(z)**, in basso a sinistra nella vista 3D: apre l'**editor della funzione** (sezione 5).
 - **↶** e **↷**, subito a destra di f(z): **annullano** e **ripristinano** l'ultima conferma (sezione 5). Compaiono solo quando c'è qualcosa da annullare o da ripristinare.
 - **⚙️ nella vista 3D**: i controlli della superficie.
@@ -468,7 +470,7 @@ Nella modalità Testo, il pulsante **Esporta JSON** copia negli appunti un testo
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.0",
+  "version": "1.1",
   "f": {
     "formula": "z3 − 1",
     "coeffs": [[-1, 0], [0, 0], [0, 0], [1, 0], [0, 0], …],
@@ -478,11 +480,36 @@ Nella modalità Testo, il pulsante **Esporta JSON** copia negli appunti un testo
 }
 ```
 
+Il campo `version` dice con quale versione del formato è stato scritto il file (ora **1.1**). I file salvati con le versioni precedenti (1.0) si caricano senza problemi; se il file è più recente del programma, i campi sconosciuti vengono ignorati e un avviso te lo segnala.
+
 ### Il ripristino
 
 Un altro giorno: apri l'Esploratore, **f(z)** → **Testo**, **incolla il JSON** e premi **Interpreta** poi **✓ Conferma**. Ritrovi la stessa funzione e lo stesso paesaggio, identici, senza rimettere a mano nessun coefficiente.
 
-> 🎒 **Idea per la classe:** ognuno costruisce la sua funzione più bella, esporta il JSON e lo manda a un compagno con una sola domanda: *«Quante radici ha? Indovina prima di incollare.»*
+### Condividere con un link
+
+Il JSON è completo ma scomodo da mandare in giro. Quando vuoi solo dire a qualcuno «guarda che bella», c'è il **link**.
+
+Nell'editor, in modalità **Testo**, subito a destra di **Esporta JSON** trovi **Condividi questa vista**. Premilo: negli appunti finisce un indirizzo di questo tipo:
+
+```
+https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIs…
+```
+
+Chi lo apre, dal computer o dal telefono, vede **subito** la tua funzione con la tua vista (finestra R, quota, altezza, offset, dominio, tavolozze, bacini di Newton, inquadratura del 3D e del piano, punto giallo): niente da incollare, niente da confermare. La parte dopo `#v=` è la configurazione codificata e resta nel browser: non viene inviata al server della pagina.
+
+Qualche cosa da sapere:
+
+- **Il link non sostituisce il JSON.** Contiene la funzione (i coefficienti) e i parametri di vista, ma non la forma a radici. Se avevi costruito la funzione a radici, chi apre il link trova la stessa funzione, ma con i coefficienti *a′* ridistribuiti (il coefficiente direttivo va sul primo fattore, gli altri valgono 1). Per conservare tutto, usa **Esporta JSON**.
+- **Condivide la bozza così com'è**, anche se non l'hai ancora confermata, come fa Esporta JSON. Con la funzione nulla il pulsante non è disponibile.
+- **Quanto è lungo?** Da circa 700 a circa 1300 caratteri, secondo la funzione: va bene per un messaggio o un'e-mail. Se per qualche motivo ti arriva troncato, la via sicura resta il JSON.
+- **Il link si apre nel browser**: non va incollato nell'editor, dove serve invece il JSON.
+- **Aprire un link non si può annullare** con **↶**: lo strumento non ricorda la funzione con cui si era aperto.
+- **Se il link non è valido** (per esempio copiato a metà), sotto il sottotitolo compare un avviso rosso e lo strumento parte con la vista predefinita; con un clic sull'avviso lo chiudi. Lo stesso accade se il link contiene la funzione nulla.
+- **Se usi lo strumento da un file sul tuo computer**, il link punta comunque all'indirizzo pubblico su GitHub Pages: chi lo apre vede la versione pubblicata, che potrebbe essere diversa dalla tua.
+- **Se gli appunti non sono disponibili**, il link appare nella casella di testo già selezionato: copialo con Ctrl+C.
+
+> 🎒 **Idea per la classe:** ognuno costruisce la sua funzione più bella, esporta il JSON e lo manda a un compagno con una sola domanda: *«Quante radici ha? Indovina prima di incollare.»* Oppure, più comodo, mandagli il link di **Condividi questa vista**: si apre da solo.
 
 ## 14. Missioni
 
@@ -567,6 +594,8 @@ Per **tutti** quelli di grado 2 con due radici distinte: il confine è la **perp
 | Tornare a un'inquadratura pulita | **Vista intera** (⚙️ del piano) |
 | Passare da una radice all'altra nell'editor | Le frecce **◀ ▶** o il menu a tendina; su computer anche le frecce ← → della tastiera |
 | Scartare le modifiche non ancora confermate | **✕** (premilo due volte se la bozza è modificata) |
+| Mandare a qualcuno la tua funzione e la tua vista | **f(z)** → **Testo** → **Condividi questa vista**, poi incolla il link |
+| Aprire il Readme (manuale, changelog, note legali) | Pulsante **Readme - Ver. x.y** accanto al titolo |
 | Annullare l'ultima funzione confermata | **↶** (a destra di f(z)) oppure **Ctrl+Z** |
 | Ripristinare la modifica annullata | **↷** oppure **Ctrl+Y** |
 | Confrontare prima e dopo una modifica | Dopo la conferma, alterna **Ctrl+Z** e **Ctrl+Y** |
@@ -595,7 +624,13 @@ Per **tutti** quelli di grado 2 con due radici distinte: il confine è la **perp
 
 **Il Ripristino (↷) è sparito.** L'hai perso trascinando una radice sul piano dopo l'Annulla, oppure con una nuova conferma.
 
-**Ho chiuso tutto e ho perso la mia funzione.** Se non hai salvato un JSON, torna a scriverla nella modalità Testo: dalla formula leggibile nel box in alto ritrovi i coefficienti.
+**«Condividi questa vista» dice «non disponibile».** La funzione è nulla (tutti i coefficienti a zero) oppure, in Forma a radici, un coefficiente *a′* è zero: correggi e riprova.
+
+**Apro un link e vedo la vista predefinita con un avviso rosso.** Il link è incompleto o rovinato (capita se viene troncato o se se ne copia solo una parte): chiedi di rimandartelo, o fatti mandare il JSON.
+
+**Il link non si apre uguale a come lo vedeva chi l'ha mandato.** Ricorda che il link porta la funzione e la vista ma non la forma a radici, e che chi lo ha creato da un file locale ti manda alla versione pubblicata su GitHub Pages.
+
+**Ho chiuso tutto e ho perso la mia funzione.** Se non hai salvato un JSON (o un link), torna a scriverla nella modalità Testo: dalla formula leggibile nel box in alto ritrovi i coefficienti.
 
 ## 17. Glossario lampo
 
@@ -725,4 +760,4 @@ Esplora il seguente esempio intorno all'origine:
 
 ---
 
-*Manuale scritto per l'Esploratore di polinomi f(z), versione 7.6. Buone esplorazioni, e ricordati: dove i colori si annodano, c'è una radice.*
+*Manuale scritto per l'Esploratore di polinomi f(z), versione 1.1. Buone esplorazioni, e ricordati: dove i colori si annodano, c'è una radice.*

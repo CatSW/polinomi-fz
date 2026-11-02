@@ -5,7 +5,7 @@ author: IK0VCK
 product: polinomi-fz
 type: root-readme
 version: 1
-updated: 2026-10-31
+updated: 2026-11-02
 ---
 # [Esploratore di polinomi](https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html)
 
