@@ -67,6 +67,13 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.chi
 #wp:fullscreen .stack,#wp.is-fullscreen .stack{width:min(100vw,100vh);width:min(100vw,100dvh);flex:none}
 #wp:fullscreen figcaption,#wp.is-fullscreen figcaption{display:none}
 #wp:fullscreen .chip,#wp.is-fullscreen .chip{position:absolute;left:10px;bottom:6px;z-index:36;background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:2px 8px;max-width:calc(100vw - 20px);box-sizing:border-box}
+#w3{border:1px solid var(--bd);border-radius:10px}
+#surf{border:0;border-radius:9px;background:transparent;position:relative;z-index:2}
+#surfBG,#surfGL{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:9px}
+#surfBG{background:var(--card);z-index:0}#surfGL{z-index:1}
+.nogl3d #surf{background:var(--card);border:1px solid var(--bd);border-radius:10px}.nogl3d #surfBG,.nogl3d #surfGL{display:none}
+#w3:fullscreen,#w3.is-fullscreen{border:0;border-radius:0}
+#w3:fullscreen #surf,#w3.is-fullscreen #surf,#w3:fullscreen #surfBG,#w3.is-fullscreen #surfBG,#w3:fullscreen #surfGL,#w3.is-fullscreen #surfGL{border-radius:0}
 </style></head><body><main id="mn">
 <div class="hd"><h1>Esploratore di polinomi f(z)</h1><a id="rdm" class="lnkbtn" href="https://github.com/CatSW/polinomi-fz/blob/master/Readme.md" target="_blank" rel="noopener noreferrer" title="Apre il README su GitHub (manuale, note storiche, changelog) in una nuova scheda">Readme</a></div>
 <p class="sub">Polinomio fino al grado 8 con coefficienti complessi su tutti i termini; si definisce dal pulsante f(z) in basso a sinistra nella vista 3D (forma normale o a radici, con conferma finale).</p>
@@ -92,7 +99,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.chi
 <p class="sub" id="reg" style="min-height:2.6em"></p>
 <div class="grid" id="gr">
 <figure><div id="w3">
-<canvas id="surf" class="c"></canvas>
+<canvas id="surfBG"></canvas><canvas id="surfGL"></canvas><canvas id="surf" class="c"></canvas>
 <button class="panel-btn" id="toggle-panel" title="Controlli 3D">⚙️</button>
 <div class="fzbar"><button class="panel-btn-coeffs" id="toggle-coeffs" title="Definisci f(z)">f(z)</button><button class="hb" id="fz-undo" hidden title="Annulla l’ultima modifica di f(z) (Ctrl+Z)" aria-label="Annulla l’ultima modifica di f(z)"><svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 14 4 9 9 4'/><path d='M20 20v-7a4 4 0 0 0-4-4H4'/></svg></button><button class="hb" id="fz-redo" hidden title="Ripristina la modifica annullata (Ctrl+Y)" aria-label="Ripristina la modifica annullata"><svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='15 14 20 9 15 4'/><path d='M4 20v-7a4 4 0 0 1 4-4h12'/></svg></button></div>
 <button class="fb" id="fs3" title="Schermo intero"><svg width='14' height='14' viewBox='0 0 14 14' fill='none' stroke='currentColor' stroke-width='1.6'><path d='M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9'/></svg></button>
@@ -118,7 +125,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.chi
 <!-- Inseriti dinamicamente via JS -->
 </div></div>
 
-</div><figcaption>Superficie |f|, colore = fase. Trascina: ruota. Rotella o pizzico: zoom. Cerchi tratteggiati: |z| = valore indicato sull’asse reale (riferimento di scala sul piano). <span id="cap3p"></span> <span class="ln r"></span>f(x) con segno, <span class="ln"></span>|f|.</figcaption></figure>
+</div><figcaption>Superficie |f|, colore = fase. Trascina: ruota. Rotella o pizzico: zoom. Cerchi tratteggiati: |z| = valore indicato sull’asse reale (riferimento di scala sul piano). <span id="cap3p"></span><span id="cap3g" style="color:#d62728"></span> <span class="ln r"></span>f(x) con segno, <span class="ln"></span>|f|.</figcaption></figure>
 <figure id="wp"><div class="stack"><canvas id="planGL"></canvas><canvas id="plan"></canvas><button class="fb" id="fsp" title="Schermo intero"><svg width='14' height='14' viewBox='0 0 14 14' fill='none' stroke='currentColor' stroke-width='1.6'><path d='M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9'/></svg></button><div class="pickbar" id="movebar" hidden><span>Sposta radice: sul PC clicca una radice e trascina; sul telefono tieni premuto su una radice e trascina.</span><button id="movex">Fine</button></div><div class="pickbar" id="pickbar" hidden><span>Tocca o clicca sul piano per scegliere la radice (arrotondata a 2 decimali; trascina per spostare).</span><button id="pickx">Annulla</button></div>
 <button class="panel-btn" id="toggle-plan" title="Controlli del piano">⚙️</button>
 <div class="surf-panel" id="plan-panel">
@@ -144,8 +151,8 @@ const $=id=>document.getElementById(id),TAU=Math.PI*2,RED='#ff1a1a',CRED='#d6272
 let K=[-1,0,0,1,0,0,0,0,0],KJ=[0,0,0,0,0,0,0,0,0],FV=0,AV=-1,SEED=null,SEEDP=null,FACT=null,R=1.8,hs=1,mode='dom',cont=true,lg=true,auto=false,anim=false,upm='gh',lv=2,IT=20,polar=true,half=false,showR=true,pph='att',pbs='att';
 let yaw=-.7,pitch=.85,zoom=1,probe=[.55,.85],path=[],dpr=1,yoff=0,vcx=0,vcy=0,vs=1.8,tw=null,drag=null,CW=1,CH=1,cyw=1,syw=0,cpt=1,spt=0,SS=1;
 let RT=[],CX=[],CV=[],XN,YN,MV,CL,Q4,QD=[],HT=[],BD=[],PX,PY,PD,mmax=1,ci=0;
-const pc=$('plan'),glc=$('planGL'),sc=$('surf'),rl=$('rl'),pg=pc.getContext('2d'),sg=sc.getContext('2d'),rg=rl.getContext('2d');
-const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim()||'#777';
+const pc=$('plan'),glc=$('planGL'),sc=$('surf'),rl=$('rl'),pg=pc.getContext('2d'),sf=sc.getContext('2d'),sb=$('surfBG'),bg=sb.getContext('2d'),sgl=$('surfGL'),rg=rl.getContext('2d');let sg=sf;
+const CC={},css=v=>CC[v]||(CC[v]=getComputedStyle(document.documentElement).getPropertyValue(v).trim()||'#777');
 const tr=a=>{a=a.slice();while(a.length>1&&Math.abs(a[0])<1e-12)a.shift();return a};
 const F=(x,y)=>{let fr=K[8],fi=KJ[8],dr=0,di=0;for(let k=7;k>=0;k--){const a=dr*x-di*y+fr,b=dr*y+di*x+fi;dr=a;di=b;const p=fr*x-fi*y+K[k],q=fr*y+fi*x+KJ[k];fr=p;fi=q}return[fr,fi,dr,di]};
 const mod=(x,y)=>{const f=F(x,y);return Math.hypot(f[0],f[1])};
@@ -234,7 +241,7 @@ function heights(){mmax=Math.max(1e-9,...MV);const lm=Math.max(.1,+(.8*mmax).toP
  for(const{a,b,c:c2,d,P}of LF){
   const d1=[XN[c2]-XN[a],YN[c2]-YN[a],HT[c2]-HT[a]],d2=[XN[d]-XN[b],YN[d]-YN[b],HT[d]-HT[b]];let nx=d1[1]*d2[2]-d1[2]*d2[1],ny=d1[2]*d2[0]-d1[0]*d2[2],nz=d1[0]*d2[1]-d1[1]*d2[0];const nn=Math.hypot(nx,ny,nz)||1;if(nz<0){nx=-nx;ny=-ny;nz=-nz}
   const sh=.62+.38*Math.max(0,(nx*L[0]+ny*L[1]+nz*L[2])/(nn*Ln)),k=[0,1,2].map(t=>Math.round((CL[a][t]+CL[b][t]+CL[c2][t]+CL[d][t])/4*255*sh));
-  QD.push({a,b,c:c2,d,P,mn:Math.min(...P.map(t => MV[t])),mx:Math.max(...P.map(t => MV[t])),col:`rgb(${k})`,gh:`rgba(${k},.3)`})}}
+  const q={a,b,c:c2,d,P,k};if(!g3){q.mn=Math.min(...P.map(t=>MV[t]));q.mx=Math.max(...P.map(t=>MV[t]));q.col=`rgb(${k})`;q.gh=`rgba(${k},.3)`}QD.push(q)}M3.dirty=true}
 let _cc=null,_cq=null,_cl=null;
 function contour(){if(_cc&&_cq===QD&&_cl===lv)return _cc;const o=[];for(const q of QD){const V=q.P,E=[];for(let e=0;e<V.length;e++){const p=V[e],r=V[(e+1)%V.length],A=MV[p],B=MV[r];if((A<lv)!==(B<lv)){const t=(lv-A)/(B-A);E.push([XN[p]+t*(XN[r]-XN[p]),YN[p]+t*(YN[r]-YN[p])])}}
  for(let t=0;t+1<E.length;t+=2)o.push(E[t],E[t+1])}_cc=o;_cq=QD;_cl=lv;return o}
@@ -252,23 +259,25 @@ function clipPoly(V,c,below){const o=[],zc=hm(c);for(let k=0;k<V.length;k++){con
 function toPoly(P,q,xOff){const pts=[];let d=0;for(const p of P){const s=proj(p[0],p[1],p[2],xOff);pts.push(s[0],s[1]);d+=s[2]}return{pts,d:d/P.length*4,q}}
 function fillQ(q,f,s){const P=q.P;sg.beginPath();sg.moveTo(PX[P[0]],PY[P[0]]);for(let k=1;k<P.length;k++)sg.lineTo(PX[P[k]],PY[P[k]]);sg.closePath();sg.fillStyle=f;sg.fill();if(s){sg.strokeStyle=f;sg.lineWidth=.6*dpr;sg.stroke()}}
 function fillPoly(p,f,s){sg.beginPath();sg.moveTo(p[0],p[1]);for(let k=2;k<p.length;k+=2)sg.lineTo(p[k],p[k+1]);sg.closePath();sg.fillStyle=f;sg.fill();if(s){sg.strokeStyle=f;sg.lineWidth=.6*dpr;sg.stroke()}}
-function drawSurf(){const xOff = setCam();const XS=Array.from({length:161},(_,k)=>-1+k/80).concat(RT.filter(r=>r[1]===0&&Math.abs(r[0])<=R).map(r=>r[0]/R)).sort((a,b)=>a-b);const u=dpr,zc=hm(lv),ink=css('--fg'),mut=css('--mut');sg.clearRect(0,0,CW,CH);sg.lineJoin='round';sg.lineCap='round';sg.font=`${12*u}px system-ui`;sg.textBaseline='middle';
- for(let k=0;k<XN.length;k++){const X=XN[k],Y=YN[k],x1=X*cyw-Y*syw,y1=X*syw+Y*cyw,z=HT[k]-.5,v=z*cpt+y1*spt,d=y1*cpt-z*spt,p=9/(9+d);PX[k]=CW/2+xOff+(x1*p+.1)*SS;PY[k]=CH*.54-yoff*CH-v*p*SS;PD[k]=d}
+function drawSurf2D(ph){sg=ph==='bg'?bg:sf;const xOff = setCam();const XS=ph==='bg'?null:Array.from({length:161},(_,k)=>-1+k/80).concat(RT.filter(r=>r[1]===0&&Math.abs(r[0])<=R).map(r=>r[0]/R)).sort((a,b)=>a-b);const u=dpr,zc=hm(lv),ink=css('--fg'),mut=css('--mut');sg.clearRect(0,0,CW,CH);sg.lineJoin='round';sg.lineCap='round';sg.font=`${12*u}px system-ui`;sg.textBaseline='middle';
+ if(!ph)for(let k=0;k<XN.length;k++){const X=XN[k],Y=YN[k],x1=X*cyw-Y*syw,y1=X*syw+Y*cyw,z=HT[k]-.5,v=z*cpt+y1*spt,d=y1*cpt-z*spt,p=9/(9+d);PX[k]=CW/2+xOff+(x1*p+.1)*SS;PY[k]=CH*.54-yoff*CH-v*p*SS;PD[k]=d}
  const ln=(P,Q,col,w,dash)=>{const a=proj(...P,xOff),b=proj(...Q,xOff);sg.beginPath();sg.setLineDash(dash||[]);sg.moveTo(a[0],a[1]);sg.lineTo(b[0],b[1]);sg.strokeStyle=col;sg.lineWidth=w*u;sg.stroke();sg.setLineDash([])};
  const tx=(P,s,col,al)=>{const a=proj(...P,xOff);sg.fillStyle=col;sg.textAlign=al||'center';sg.fillText(s,a[0],a[1])};
- sg.beginPath();BD.forEach((p,k)=>{const s=proj(p[0],p[1],0,xOff);k?sg.lineTo(s[0],s[1]):sg.moveTo(s[0],s[1])});sg.closePath();sg.strokeStyle=mut;sg.lineWidth=u;sg.stroke();
+ if(ph!=='fg'){sg.beginPath();BD.forEach((p,k)=>{const s=proj(p[0],p[1],0,xOff);k?sg.lineTo(s[0],s[1]):sg.moveTo(s[0],s[1])});sg.closePath();sg.strokeStyle=mut;sg.lineWidth=u;sg.stroke();
  ln([-1,0,0],[1,0,0],mut,1,[4*u,4*u]);ln([0,half?0:-1,0],[0,1,0],mut,1,[4*u,4*u]);tx([1.14,0,0],'Re(z)',ink);tx([0,1.12,0],'Im(z)',ink);
  {const XA=-1.18,top=Math.max(...HT),hl=(P,s,col,al)=>{const a=proj(...P,xOff);sg.lineWidth=3.5*u;sg.strokeStyle=css('--card');sg.textAlign=al;sg.strokeText(s,a[0],a[1]);sg.fillStyle=col;sg.fillText(s,a[0],a[1])};let fmn=0;if(showR)for(let k=0;k<=80;k++)fmn=Math.min(fmn,F((-1+k/40)*R,0)[0]);
   const cand=lg?Array.from({length:30},(_,k)=>[1,2,5][k%3]*10**(Math.floor(k/3)-1)).filter(v=>hm(v)<=top):ticks(0,mmax).filter(v=>v>0&&hm(v)<=top+1e-9),tk=[[0,0]],ng=[];let last=0;
   for(const v of cand){const h=hm(v);if(h-last>.07){tk.push([v,h]);last=h}}last=0;if(fmn<0)for(const v of cand){const h=hm(v);if(v<=-fmn&&h-last>.07){ng.push([-v,-h]);last=h}}
   const lo=ng.length?ng[ng.length-1][1]:0;ln([XA,0,lo],[XA,0,top],mut,1);for(const[v,h]of[...ng,...tk]){ln([XA,0,h],[XA-.04,0,h],mut,1);hl([XA-.07,0,h],tf(v),v===0?ink:mut,'right')}hl([XA,0,top+.09],'|f|, f(x)',ink,'center')}
- const lo=[],hi=[],Pq=q=>{const o=[];for(const k of q.P)o.push(PX[k],PY[k]);return o},Dq=q=>PD[q.a]+PD[q.b]+PD[q.c]+PD[q.d];
+ }
+ if(ph==='bg'){sg=sf;return}
+ if(ph!=='fg'){const lo=[],hi=[],Pq=q=>{const o=[];for(const k of q.P)o.push(PX[k],PY[k]);return o},Dq=q=>PD[q.a]+PD[q.b]+PD[q.c]+PD[q.d];
  for(const q of QD){if(q.mx<=lv)lo.push({pts:null,d:Dq(q),q});else if(q.mn>=lv){if(upm!=='no')hi.push({pts:null,d:Dq(q),q})}
   else{const V=q.P.map(k=>[XN[k],YN[k],HT[k],MV[k]]),A=clipPoly(V,lv,true);if(A.length>2)lo.push(toPoly(A,q,xOff));if(upm!=='no'){const B=clipPoly(V,lv,false);if(B.length>2)hi.push(toPoly(B,q,xOff))}}}
  lo.sort((x,y)=>y.d-x.d);hi.sort((x,y)=>y.d-x.d);for(const p of lo)p.pts?fillPoly(p.pts,p.q.col,true):fillQ(p.q,p.q.col,true);
  const pl=toPoly(BD.map(p=>[p[0],p[1],zc]),null,xOff).pts;fillPoly(pl,'rgba(128,128,128,.26)');sg.strokeStyle='rgba(110,108,104,.9)';sg.lineWidth=u;sg.stroke();
  const cs=contour();for(const[wd,col]of[[4.5,'#fff'],[2.4,'#111']]){sg.beginPath();for(let k=0;k<cs.length;k+=2){const a=proj(cs[k][0],cs[k][1],zc,xOff),b=proj(cs[k+1][0],cs[k+1][1],zc,xOff);sg.moveTo(a[0],a[1]);sg.lineTo(b[0],b[1])}sg.lineWidth=wd*u;sg.strokeStyle=col;sg.stroke()}
- for(const p of hi){const f=upm==='gh'?p.q.gh:p.q.col,st=upm!=='gh';p.pts?fillPoly(p.pts,f,st):fillQ(p.q,f,st)}
+ for(const p of hi){const f=upm==='gh'?p.q.gh:p.q.col,st=upm!=='gh';p.pts?fillPoly(p.pts,f,st):fillQ(p.q,f,st)}}
  if(showR)for(let[sgn,col,dash,wd]of[[0,CBLUE,[],2.6],[1,CRED,[6*u,5*u],2.4]]){sg.beginPath();sg.setLineDash(dash);for(let k=0;k<XS.length;k++){const x=XS[k],f=F(x*R,0),v=f[0],h=sgn?(v<0?-1:1)*hm(Math.abs(v)):hm(Math.hypot(f[0],f[1])),s=proj(x,0,h,xOff);k?sg.lineTo(s[0],s[1]):sg.moveTo(s[0],s[1])}sg.strokeStyle=col;sg.lineWidth=wd*u;sg.stroke();sg.setLineDash([])}
  {const XA=-1.18,a=proj(XA+.015,0,zc,xOff),t=proj(XA+.10,0,zc,xOff),sd=t[0]>=a[0]?1:-1,lb=lv.toFixed(2),dx=a[0]-t[0],dy=a[1]-t[1],Ln=Math.hypot(dx,dy)||1,ux=dx/Ln,uy=dy/Ln,hd=6*u;
   sg.beginPath();sg.moveTo(t[0],t[1]);sg.lineTo(a[0],a[1]);sg.strokeStyle=ink;sg.lineWidth=1.5*u;sg.stroke();
@@ -283,12 +292,118 @@ function drawSurf(){const xOff = setCam();const XS=Array.from({length:161},(_,k)
 
  refCirc(u,ink,xOff);
  for(const r of RT){if(Math.hypot(r[0],r[1])>R||(half&&r[1]<-1e-9))continue;const s=proj(r[0]/R,r[1]/R,0,xOff);sg.fillStyle=RED;sg.strokeStyle='#fff';sg.lineWidth=2*u;sg.beginPath();sg.arc(s[0],s[1],5.5*u,0,TAU);sg.fill();sg.stroke();sg.strokeStyle='#000';sg.lineWidth=u;sg.beginPath();sg.arc(s[0],s[1],6.8*u,0,TAU);sg.stroke()}
-}
+sg=sf}
 function refCirc(u,ink,xOff=0){const s=[1,2,5].flatMap(c=>[-2,-1,0,1].map(e=>c*10**e)).filter(v=>v<=R/1.65).reduce((a,b)=>Math.max(a,b),.1),V=2*s<=.9*R?[s,2*s]:[s],t1=half?Math.PI:TAU;
  for(const v of V){const r=v/R;sg.beginPath();for(let k=0;k<=96;k++){const t=t1*k/96,p=proj(r*Math.cos(t),r*Math.sin(t),0,xOff);k?sg.lineTo(p[0],p[1]):sg.moveTo(p[0],p[1])}
   for(const[w,c,d]of[[3.2,'rgba(255,255,255,.5)',[]],[1.3,'rgba(15,15,15,.8)',[5*u,4*u]]]){sg.setLineDash(d);sg.lineWidth=w*u;sg.strokeStyle=c;sg.stroke()}sg.setLineDash([]);
   const a=proj(r,0,0,xOff);sg.fillStyle=ink;sg.beginPath();sg.arc(a[0],a[1],2.5*u,0,TAU);sg.fill();sg.textAlign='left';sg.lineWidth=3.5*u;sg.strokeStyle=css('--card');sg.strokeText(tf(v),a[0]+6*u,a[1]-8*u);sg.fillText(tf(v),a[0]+6*u,a[1]-8*u)}}
-function pick(e){if(mode!=='new')return;const r=sc.getBoundingClientRect(),mx=(e.clientX-r.left)*sc.width/r.width,my=(e.clientY-r.top)*sc.height/r.height;let best=1e9,hit=null;
+/* ===== Vista 3D accelerata (WebGL2, dalla 1.2) =====
+   Geometria di riferimento in FP64 sulla CPU (XN, YN, HT, MV, colori per quad, radici, punti critici, Newton: invariati).
+   Sulla GPU va una copia FP32 in coordinate normalizzate (X,Y in [-1,1], altezza 0..~1.8, |f|): caricata solo quando la mesh cambia
+   (build/heights), non a ogni frame. In rotazione/zoom si aggiornano solo le uniform di camera. Proiezione identica a proj().
+   Livelli: sfondo 2D (assi, scala) -> WebGL (superficie, piano, curva di livello) -> 2D in primo piano (curve reali, punto di Newton, cerchi, radici).
+   Senza WebGL2 accelerato si usa il vecchio disegno Canvas 2D (drawSurf2D). */
+let g3=null,P3={},B3={},M3={dirty:true,cs:null,n:0,np:0,nc:0,tl:[]},sgErr='',surfDirty=false;
+const CU=['uCam','uScr','uYo','uDz','uBias'];
+const SCAM=`uniform vec4 uCam,uScr;uniform float uYo,uDz,uBias;
+vec4 cp(vec3 p){p.z+=uDz;float x1=p.x*uCam.x-p.y*uCam.y,y1=p.x*uCam.y+p.y*uCam.x,z=p.z-.5,v=z*uCam.z+y1*uCam.w,d=y1*uCam.z-z*uCam.w,w=(9.+d)/9.;
+return vec4(2.*((uScr.x*.5+uScr.w+.1*uScr.z)*w+x1*uScr.z)/uScr.x-w,w-2.*((uScr.y*.54-uYo*uScr.y)*w-v*uScr.z)/uScr.y,(1.45*w-1.)/.8-uBias*w,w);}`;
+const VSM=`#version 300 es
+precision highp float;
+layout(location=0) in vec3 aP;layout(location=1) in float aM;layout(location=2) in vec4 aC;
+${SCAM}
+out float vM;out vec4 vC;
+void main(){gl_Position=cp(aP);vM=aM;vC=aC;}`;
+const FSM=`#version 300 es
+precision highp float;
+in float vM;in vec4 vC;uniform float uLv,uA;uniform int uPass;uniform vec4 uCol;out vec4 o;
+void main(){if(uPass==0&&vM>uLv)discard;if(uPass==1&&vM<uLv)discard;
+vec4 c=uPass==3?uCol:vec4(vC.rgb,vC.a*uA);o=vec4(c.rgb*c.a,c.a);}`;
+const VSL=`#version 300 es
+precision highp float;
+layout(location=0) in vec3 aA;layout(location=1) in vec3 aB;layout(location=2) in vec2 aS;
+${SCAM}
+uniform float uHw;
+void main(){vec4 ca=cp(aA),cb=cp(aB);vec2 sz=uScr.xy*.5,pa=ca.xy/ca.w*sz,pb=cb.xy/cb.w*sz,dd=pb-pa;float l=length(dd);
+vec2 t=l>1e-4?dd/l:vec2(1.,0.),n=vec2(-t.y,t.x);bool e=aS.y>.5;vec4 c=e?cb:ca;vec2 off=n*aS.x*uHw+t*(e?uHw:-uHw);
+gl_Position=vec4(c.xy+off/sz*c.w,c.z,c.w);}`;
+const FSL=`#version 300 es
+precision highp float;
+uniform vec4 uCol;out vec4 o;void main(){o=vec4(uCol.rgb*uCol.a,uCol.a);}`;
+const setGL3=(on,why)=>{$('w3').classList.toggle('nogl3d',!on);$('cap3g').textContent=on?'':` Vista 3D su Canvas 2D (${why}): funziona, ma è più lenta.`};
+function initSG(){sgErr='';try{
+ const g=sgl.getContext('webgl2',{antialias:true,alpha:true,depth:true,premultipliedAlpha:true,failIfMajorPerformanceCaveat:true});
+ if(!g){sgErr='WebGL2 non disponibile o solo software';return false}
+ const sh=(t,s)=>{const x=g.createShader(t);g.shaderSource(x,s);g.compileShader(x);if(!g.getShaderParameter(x,g.COMPILE_STATUS))throw new Error(g.getShaderInfoLog(x));return x},
+  pr=(v,f,us)=>{const p=g.createProgram();g.attachShader(p,sh(g.VERTEX_SHADER,v));g.attachShader(p,sh(g.FRAGMENT_SHADER,f));g.linkProgram(p);if(!g.getProgramParameter(p,g.LINK_STATUS))throw new Error(g.getProgramInfoLog(p));const o={p};for(const k of us)o[k]=g.getUniformLocation(p,k);return o},
+  vao=(st,at)=>{const b=g.createBuffer(),v=g.createVertexArray();g.bindVertexArray(v);g.bindBuffer(g.ARRAY_BUFFER,b);at.forEach(([i,n,t,nm,o])=>{g.enableVertexAttribArray(i);g.vertexAttribPointer(i,n,t,nm,st,o)});return[b,v]};
+ P3.m=pr(VSM,FSM,[...CU,'uLv','uA','uPass','uCol']);P3.l=pr(VSL,FSL,[...CU,'uHw','uCol']);
+ const mA=[[0,3,g.FLOAT,false,0],[1,1,g.FLOAT,false,12],[2,4,g.UNSIGNED_BYTE,true,16]];
+ [B3.m,B3.vm]=vao(20,mA);[B3.p,B3.vp]=vao(20,mA);[B3.c,B3.vc]=vao(32,[[0,3,g.FLOAT,false,0],[1,3,g.FLOAT,false,12],[2,2,g.FLOAT,false,24]]);
+ g.bindVertexArray(null);g3=g;M3.dirty=true;M3.cs=null;return true}
+ catch(e){console.error(e);sgErr='shader 3D non compilato';g3=null;return false}}
+sgl.addEventListener('webglcontextlost',e=>{e.preventDefault();g3=null;setGL3(false,'contesto WebGL perso');if(XN){heights();size()}});
+sgl.addEventListener('webglcontextrestored',()=>{if(initSG()){setGL3(true);if(XN){heights();size()}}});
+/* poligono P (anche concavo: vicino alle radici la mesh è deformata) -> triangoli. Ventaglio da P[0] se tutti i triangoli hanno lo stesso verso, altrimenti ear clipping nel piano (X,Y). */
+function triQ(P,out){const n=P.length,a0=P[0];let A=0;
+ for(let i=0;i<n;i++){const a=P[i],b=P[(i+1)%n];A+=XN[a]*YN[b]-XN[b]*YN[a]}
+ const sg=A>=0?1:-1,cr=(a,b,c)=>((XN[b]-XN[a])*(YN[c]-YN[a])-(XN[c]-XN[a])*(YN[b]-YN[a]))*sg;
+ let ok=true;for(let j=1;j<n-1;j++)if(cr(a0,P[j],P[j+1])<-1e-18){ok=false;break}
+ if(ok){for(let j=1;j<n-1;j++)out.push(a0,P[j],P[j+1]);return}
+ const I=P.slice();
+ while(I.length>3){const m=I.length;let e=-1;
+  for(let i=0;i<m&&e<0;i++){const a=I[(i+m-1)%m],b=I[i],c=I[(i+1)%m];if(cr(a,b,c)<=1e-18)continue;
+   let f=true;for(let k=0;k<m;k++){const p=I[k];if(p===a||p===b||p===c)continue;if(cr(a,b,p)>=-1e-18&&cr(b,c,p)>=-1e-18&&cr(c,a,p)>=-1e-18){f=false;break}}
+   if(f)e=i}
+  if(e<0){let bv=-Infinity;for(let i=0;i<m;i++){const v=cr(I[(i+m-1)%m],I[i],I[(i+1)%m]);if(v>bv){bv=v;e=i}}}
+  out.push(I[(e+m-1)%m],I[e],I[(e+1)%m]);I.splice(e,1)}
+ out.push(I[0],I[1],I[2])}
+/* mesh -> buffer GPU: triangoli del poligono P del quad (include i nodi sospesi, mesh senza crepe); vertici non condivisi perché il colore è piatto per quad come nel vecchio disegno.
+   I triangoli sono raggruppati in 8x8 tessere in (X,Y): servono solo a ordinare da lontano a vicino la passata trasparente. */
+function glMesh(){M3.dirty=false;const n=QD.length,TN=8,T2=TN*TN,tri=M3.tra||(M3.tra=[]);tri.length=0;
+ if(!M3.qn||M3.qn.length<n)M3.qn=new Int32Array(Math.ceil(n*1.3)+16);
+ const qn=M3.qn;for(let i=0;i<n;i++){const s0=tri.length;triQ(QD[i].P,tri);qn[i]=(tri.length-s0)/3}
+ const nt=tri.length/3;
+ if(!M3.qt||M3.qt.length<n)M3.qt=new Uint8Array(Math.ceil(n*1.3)+16);
+ const qt=M3.qt,cnt=new Int32Array(T2),zs=new Float64Array(T2),zn=new Int32Array(T2),tc=v=>Math.min(TN-1,Math.max(0,Math.floor((v+1)/2*TN)));
+ for(let i=0;i<n;i++){const q=QD[i],t=tc(XN[q.a]/2+XN[q.c]/2)+TN*tc(YN[q.a]/2+YN[q.c]/2);qt[i]=t;cnt[t]+=qn[i];zs[t]+=HT[q.a];zn[t]++}
+ const pw=new Int32Array(T2);let s=0;M3.tl=[];
+ for(let t=0;t<T2;t++){pw[t]=s*3;if(cnt[t])M3.tl.push({f:s*3,c:cnt[t]*3,x:((t%TN)+.5)/TN*2-1,y:(Math.floor(t/TN)+.5)/TN*2-1,z:zs[t]/zn[t],d:0});s+=cnt[t]}
+ const nv=nt*3,need=nv*20;if(!M3.ab||M3.ab.byteLength<need)M3.ab=new ArrayBuffer((Math.ceil(need*1.25/4)+5)*4);
+ const f=new Float32Array(M3.ab),u=new Uint8Array(M3.ab);let o=0,k,ti=0;
+ const put=id=>{const b=o*5,c=o*20+16;f[b]=XN[id];f[b+1]=YN[id];f[b+2]=HT[id];f[b+3]=MV[id];u[c]=k[0];u[c+1]=k[1];u[c+2]=k[2];u[c+3]=255;o++};
+ for(let i=0;i<n;i++){const t=qt[i],e=ti+qn[i]*3;k=QD[i].k;o=pw[t];for(;ti<e;ti++)put(tri[ti]);pw[t]=o}
+ g3.bindBuffer(g3.ARRAY_BUFFER,B3.m);g3.bufferData(g3.ARRAY_BUFFER,u.subarray(0,need),g3.DYNAMIC_DRAW);M3.n=nv;
+ const pf=new Float32Array(BD.length*5);BD.forEach((p,i)=>{pf[i*5]=p[0];pf[i*5+1]=p[1]});
+ g3.bindBuffer(g3.ARRAY_BUFFER,B3.p);g3.bufferData(g3.ARRAY_BUFFER,pf,g3.STATIC_DRAW);M3.np=BD.length}
+/* curva di livello |f| = quota: segmenti allargati nel vertex shader (6 vertici per segmento); ricaricata solo se cambia contour() */
+function glCont(cs){M3.cs=cs;const n=cs.length>>1,need=n*48;if(!M3.cf||M3.cf.length<need)M3.cf=new Float32Array(Math.ceil(need*1.25)+48);
+ const f=M3.cf,SD=[[-1,0],[1,0],[-1,1],[1,0],[1,1],[-1,1]];let o=0;
+ for(let i=0;i<n;i++){const A=cs[2*i],B=cs[2*i+1];for(const s of SD){f[o++]=A[0];f[o++]=A[1];f[o++]=0;f[o++]=B[0];f[o++]=B[1];f[o++]=0;f[o++]=s[0];f[o++]=s[1]}}
+ g3.bindBuffer(g3.ARRAY_BUFFER,B3.c);g3.bufferData(g3.ARRAY_BUFFER,f.subarray(0,need),g3.DYNAMIC_DRAW);M3.nc=n*6}
+function glSurf(xOff){const g=g3;if(M3.dirty)glMesh();const cs=contour();if(cs!==M3.cs)glCont(cs);
+ const zc=hm(lv),cam=P=>{g.uniform4f(P.uCam,cyw,syw,cpt,spt);g.uniform4f(P.uScr,CW,CH,SS,xOff);g.uniform1f(P.uYo,yoff)};
+ g.viewport(0,0,sgl.width,sgl.height);g.depthMask(true);g.clearColor(0,0,0,0);g.clear(g.COLOR_BUFFER_BIT|g.DEPTH_BUFFER_BIT);
+ g.enable(g.DEPTH_TEST);g.depthFunc(g.LEQUAL);g.disable(g.BLEND);g.depthMask(true);
+ let m=P3.m;g.useProgram(m.p);cam(m);g.uniform1f(m.uLv,lv);g.uniform1f(m.uA,1);g.uniform1f(m.uDz,0);g.uniform1f(m.uBias,0);
+ /* 1) parte opaca con profondità: sotto quota (o tutta la superficie se «piena») */
+ g.bindVertexArray(B3.vm);g.uniform1i(m.uPass,upm==='full'?2:0);g.drawArrays(g.TRIANGLES,0,M3.n);
+ /* 2) piano a quota |f| (grigio .26) e suo contorno, senza scrivere la profondità */
+ g.enable(g.BLEND);g.blendFunc(g.ONE,g.ONE_MINUS_SRC_ALPHA);g.depthMask(false);
+ g.bindVertexArray(B3.vp);g.uniform1i(m.uPass,3);g.uniform1f(m.uDz,zc);g.uniform4f(m.uCol,.5,.5,.5,.26);g.drawArrays(g.TRIANGLE_FAN,0,M3.np);
+ g.uniform4f(m.uCol,.431,.424,.408,.9);g.drawArrays(g.LINE_LOOP,0,M3.np);
+ /* 3) curva di livello: bordo bianco 4.5 px + nucleo scuro 2.4 px, con leggero bias di profondità verso la camera */
+ if(M3.nc){m=P3.l;g.useProgram(m.p);cam(m);g.uniform1f(m.uDz,zc);g.uniform1f(m.uBias,.004);g.bindVertexArray(B3.vc);
+  for(const[w,c]of[[4.5,1],[2.4,.067]]){g.uniform1f(m.uHw,w*dpr/2);g.uniform4f(m.uCol,c,c,c,1);g.drawArrays(g.TRIANGLES,0,M3.nc)}}
+ /* 4) sopra quota trasparente (alpha .3): tessere ordinate da lontano a vicino, test di profondità contro la parte opaca */
+ if(upm==='gh'){m=P3.m;g.useProgram(m.p);g.uniform1i(m.uPass,1);g.uniform1f(m.uA,.3);g.uniform1f(m.uDz,0);g.bindVertexArray(B3.vm);
+  const T=M3.tl;for(const t of T){const y1=t.x*syw+t.y*cyw;t.d=y1*cpt-(t.z-.5)*spt}T.sort((a,b)=>b.d-a.d);for(const t of T)g.drawArrays(g.TRIANGLES,t.f,t.c)}
+ g.bindVertexArray(null)}
+function drawSurf(){surfDirty=false;if(!g3){drawSurf2D();return}const xOff=setCam();drawSurf2D('bg');glSurf(xOff);drawSurf2D('fg')}
+/* proiezione CPU di tutti i vertici: serve solo a pick() (tasto destro / pressione lunga) */
+function projAll(){const xOff=setCam();for(let k=0;k<XN.length;k++){const X=XN[k],Y=YN[k],x1=X*cyw-Y*syw,y1=X*syw+Y*cyw,z=HT[k]-.5,v=z*cpt+y1*spt,d=y1*cpt-z*spt,p=9/(9+d);PX[k]=CW/2+xOff+(x1*p+.1)*SS;PY[k]=CH*.54-yoff*CH-v*p*SS;PD[k]=d}}
+
+function pick(e){if(mode!=='new')return;if(g3)projAll();const r=sc.getBoundingClientRect(),mx=(e.clientX-r.left)*sc.width/r.width,my=(e.clientY-r.top)*sc.height/r.height;let best=1e9,hit=null;
  for(const q of QD)for(let t=1;t<q.P.length-1;t++){const i=q.P[0],j=q.P[t],k=q.P[t+1],x1=PX[i],y1=PY[i],x2=PX[j],y2=PY[j],x3=PX[k],y3=PY[k],den=(y2-y3)*(x1-x3)+(x3-x2)*(y1-y3);if(!den)continue;
   const l1=((y2-y3)*(mx-x3)+(x3-x2)*(my-y3))/den,l2=((y3-y1)*(mx-x3)+(x1-x3)*(my-y3))/den,l3=1-l1-l2;if(l1<-1e-9||l2<-1e-9||l3<-1e-9)continue;
   const d=l1*PD[i]+l2*PD[j]+l3*PD[k];if(d<best){best=d;hit=[(l1*XN[i]+l2*XN[j]+l3*XN[k])*R,(l1*YN[i]+l2*YN[j]+l3*YN[k])*R]}}
@@ -348,9 +463,9 @@ function calc(){
  const f=F(probe[0],probe[1]);path=[probe.slice()];let p=probe,n=0,cv=mod(p[0],p[1])<1e-9;while(!cv&&n<200){const q=newton(p[0],p[1]);if(!q)break;n++;if(n<=40)path.push(q);p=q;cv=mod(q[0],q[1])<1e-9}
  const l=p;$('probe').innerHTML=`<div>z = ${fmt(probe)}</div><div>${pol(probe[0],probe[1])}</div><div>f(z) = ${fmt(f)}</div><div>|f(z)| = ${Math.hypot(f[0],f[1]).toFixed(4)}, arg f = ${(Math.atan2(f[1],f[0])*180/Math.PI).toFixed(1)}°</div>`+(RT.length?`<div style="color:var(--mut);margin-top:4px">${cv?`Newton converge verso z<sub>${nearest(l[0],l[1])}</sub> in ${n} passi.`:`Newton non converge entro ${n} passi (|f| = ${mod(l[0],l[1]).toPrecision(3)}).`}</div>`:'')}
 const probeUpdate=()=>{calc();drawPlan();drawSurf()};
-const full=()=>{analyze();calc();texts();renderPlan();drawSurf();drawReal()};
+const full=()=>{analyze();calc();texts();renderPlan();drawSurf();drawReal()},fullLv=()=>{texts();renderPlan();drawSurf()};
 const rebuild=()=>{analyze();build();full()};
-function size(){dpr=Math.min(2,window.devicePixelRatio||1);const w=Math.round(pc.parentNode.getBoundingClientRect().width*dpr);pc.width=pc.height=glc.width=glc.height=w;const q=sc.getBoundingClientRect();sc.width=Math.round(q.width*dpr);sc.height=Math.round(q.height*dpr);
+function size(){dpr=Math.min(2,window.devicePixelRatio||1);const w=Math.round(pc.parentNode.getBoundingClientRect().width*dpr);pc.width=pc.height=glc.width=glc.height=w;const q=sc.getBoundingClientRect();sc.width=Math.round(q.width*dpr);sc.height=Math.round(q.height*dpr);sb.width=sgl.width=sc.width;sb.height=sgl.height=sc.height;
  const rw=Math.round(rl.getBoundingClientRect().width*dpr);rl.width=rw;rl.height=rw;if(XN){build();full()}}
 const setLv=v=>{lv=Math.max(.05,Math.min(+$('lv').max,v));$('lv').value=lv;$('lvv').textContent=lv.toFixed(2);$('p-lv').value=lv;$('p-lvv').textContent=lv.toFixed(2)};
 const resetView=()=>{vcx=vcy=0;vs=R;tw=null;rx=null};
@@ -489,8 +604,8 @@ function autoView(){let m=0;for(const r of RT)m=Math.max(m,Math.hypot(r[0],r[1])
  const cv=CV.length?Math.max(...CV):0;
  for(let i=0;i<8&&R<10&&+$('lv').max<=cv*1.02;i++)setR(Math.min(10,Math.round(R*13)/10));   // la quota deve poter stare sopra l’ultimo valore critico
  setLv((cv+mmax)/2);full();setOff(calibOff())}
-/* ---- Salvataggio/caricamento JSON e link condivisibili (versione 1.1) ---- */
-const APPV='1.1';$('rdm').textContent='Readme - Ver. '+APPV;
+/* ---- Salvataggio/caricamento JSON e link condivisibili (versione 1.1; superficie 3D WebGL dalla 1.2) ---- */
+const APPV='1.2';$('rdm').textContent='Readme - Ver. '+APPV;
 const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},camera:{yaw,pitch,zoom},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice()});
 const JS_=(o,d=0)=>{if(o===null||typeof o!=='object'||Array.isArray(o)||d>=2)return JSON.stringify(o);const p='  '.repeat(d+1);return'{\n'+Object.entries(o).filter(([,v])=>v!==undefined).map(([k,v])=>p+JSON.stringify(k)+': '+JS_(v,d+1)).join(',\n')+'\n'+'  '.repeat(d)+'}'};
 const optOK=(id,v)=>typeof v==='string'&&[...$(id).options].some(q=>q.value===v);
@@ -659,7 +774,7 @@ $('probe').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.t
 const RDQ={iter:10,scale0:.5,minScale:.25,maxScale:.75,slow:26,fast:19,minInt3:90,maxInt3:900};
 let moveMode=false;
 const RD={on:false,p:-1,id:null,off:[0,0],tgt:[0,0],raf:0,pend:null,timer:0,lvSaved:2,t3:0,int3:RDQ.minInt3,lastTs:0,frames:0,sumDt:0,n3:0,sum3:0};
-const setGLScale=sc=>{const w=Math.max(96,Math.round(pc.width*sc));if(glc.width!==w){glc.width=w;glc.height=w}};
+const setGLScale=sc=>{const w=Math.max(96,Math.round(pc.width*sc));if(glc.width!==w){glc.width=w;glc.height=w;if(gl)glDraw()}};
 function rootScreen(k){const r=pc.getBoundingClientRect(),z=RT[k];return[r.left+((z[0]-vcx)/vs+1)/2*r.width,r.top+(1-(z[1]-vcy)/vs)/2*r.height]}
 function rootAt(e,rad){let b=-1,bd=rad;for(let k=0;k<RT.length;k++){const s=rootScreen(k),d=Math.hypot(e.clientX-s[0],e.clientY-s[1]);if(d<=bd){bd=d;b=k}}return b}
 const pageOf=k=>{let s=0;for(let i=0;i<FACT.length;i++){s+=FACT[i].m;if(k<s)return i}return -1};
@@ -702,8 +817,8 @@ $('fsp').onclick=()=>toggleFS($('wp'));
 /* Sincronizzazione controlli pannello 3D */
 $('p-r').oninput=e=>{R=+e.target.value;$('r').value=R;$('rv').textContent=R.toFixed(1);$('p-rv').textContent=R.toFixed(1);resetView();rebuild()};
 $('r').oninput=e=>{R=+e.target.value;$('rv').textContent=R.toFixed(1);$('p-r').value=R;$('p-rv').textContent=R.toFixed(1);resetView();rebuild()};
-$('p-lv').oninput=e=>{setLv(+e.target.value);full()};
-$('lv').oninput=e=>{setLv(+e.target.value);full()};
+$('p-lv').oninput=e=>{setLv(+e.target.value);fullLv()};
+$('lv').oninput=e=>{setLv(+e.target.value);fullLv()};
 $('p-h').oninput=e=>{hs=+e.target.value;$('h').value=hs;$('hv').textContent=hs.toFixed(2);$('p-hv').textContent=hs.toFixed(2);heights();drawSurf()};
 $('h').oninput=e=>{hs=+e.target.value;$('p-h').value=hs;$('hv').textContent=hs.toFixed(2);$('p-hv').textContent=hs.toFixed(2);heights();drawSurf()};$('h').onchange=()=>{build();drawSurf()};$('p-h').onchange=()=>{build();drawSurf()};
 $('p-dm').onchange=e=>{polar=e.target.value==='1';$('dm').value=e.target.value;build();full()};
@@ -813,9 +928,9 @@ sc.onpointerdown=e=>{
 sc.onpointerup=sc.onpointercancel=e=>{if(e.pointerType==='touch'){T3.delete(e.pointerId);clearTimeout(t3LP);if(T3.size===1){const p=[...T3.values()][0];p.moved=true;drag=[p.x,p.y]}else drag=null;sc.style.cursor='grab';return}drag=null;sc.style.cursor='grab'};
 sc.onpointermove=e=>{
  if(e.pointerType==='touch'){const p=T3.get(e.pointerId);if(!p)return;p.x=e.clientX;p.y=e.clientY;
-  if(T3.size>=2){const d=d3();zoom=Math.max(.5,Math.min(3,zoom*d/t3D));t3D=d;drawSurf();return}
+  if(T3.size>=2){const d=d3();zoom=Math.max(.5,Math.min(3,zoom*d/t3D));t3D=d;surfDirty=true;return}
   if(!p.moved&&Math.hypot(p.x-p.x0,p.y-p.y0)>=LPPX){p.moved=true;clearTimeout(t3LP)}}
- if(!drag)return;yaw+=(e.clientX-drag[0])*.01;pitch=Math.max(-1.5,Math.min(1.5,pitch+(e.clientY-drag[1])*.01));drag=[e.clientX,e.clientY];drawSurf()};
+ if(!drag)return;yaw+=(e.clientX-drag[0])*.01;pitch=Math.max(-1.5,Math.min(1.5,pitch+(e.clientY-drag[1])*.01));drag=[e.clientX,e.clientY];surfDirty=true};
 /* pannello del piano: copie speculari dei controlli (le originali restano la fonte di verità) */
 const plp=$('plan-panel'),PLM=[['bn'],['it','itv'],['pb'],['pp'],['c'],['lv','lvv']],PLB=['s1','st','rs','d1','d0','vi','fit'];
 function syncPl(){for(const[k,b]of PLM){const o=$(k),p=$('pl-'+k);if(o.type==='range'&&p.max!==o.max)p.max=o.max;
@@ -831,11 +946,12 @@ function capt(){const n=mode==='new';
  $('cap3p').innerHTML=n?'<b>Tasto destro</b> (cellulare: pressione lunga): sceglie il punto giallo sulla superficie.':'Il punto giallo con il percorso di Newton si attiva con «Bacini di Newton».';
  $('capPi').innerHTML=n?'Rotella o pizzico: zoom verso il cursore. Tasto destro o Maiusc + trascina (cellulare: un dito): sposta. Click sinistro (cellulare: pressione lunga): punto giallo con percorso di Newton.':'Rotella o pizzico: zoom verso il cursore. Trascina o tasto destro: sposta. Il punto giallo con il percorso di Newton si attiva con «Bacini di Newton».'}
 $('bn').addEventListener('change',capt);
-sc.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.5,Math.min(3,zoom*Math.exp(-e.deltaY*.001)));drawSurf()},{passive:false});
+sc.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.5,Math.min(3,zoom*Math.exp(-e.deltaY*.001)));surfDirty=true},{passive:false});
 (function loop(ts){if(tw){if(tw.t0<0)tw.t0=ts;const k=Math.min(1,(ts-tw.t0)/tw.ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
   vs=Math.exp(Math.log(tw.v0)+(Math.log(tw.v1)-Math.log(tw.v0))*e);vcx=tw.x+(tw.x0-tw.x)*vs/tw.v0;vcy=tw.y+(tw.y0-tw.y)*vs/tw.v0;renderPlan();if(k>=1)tw=null}
- const spin=auto&&!drag;if(spin)yaw+=.008;if(anim){setLv(.1+(Math.max(.2,lg?Math.expm1(.6*Math.log1p(mmax)):.6*mmax)-.1)*(.5+.5*Math.cos(ts/1300)));full()}else if(spin)drawSurf();if(plp.classList.contains('open'))syncPl();requestAnimationFrame(loop)})(0);
+ const spin=auto&&!drag;if(spin)yaw+=.008;if(anim){setLv(.1+(Math.max(.2,lg?Math.expm1(.6*Math.log1p(mmax)):.6*mmax)-.1)*(.5+.5*Math.cos(ts/1300)));fullLv()}else if(spin||surfDirty)drawSurf();if(plp.classList.contains('open'))syncPl();requestAnimationFrame(loop)})(0);
 new ResizeObserver(()=>{if(DQ.on)return;size()}).observe($('mn'));
-if(window.matchMedia)window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{drawSurf();drawReal()});
-initGL();fzText();syncHf();analyze();build();size();capt();setOff(calibOff());loadHash();
+const themeRefresh=()=>{for(const k in CC)delete CC[k];drawSurf();drawReal()};new MutationObserver(themeRefresh).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme','class']});
+if(window.matchMedia)window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',themeRefresh);
+initGL();initSG();if(!g3)setGL3(false,sgErr);fzText();syncHf();analyze();build();size();capt();setOff(calibOff());loadHash();
 </script></body></html>
