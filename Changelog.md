@@ -11,6 +11,14 @@ updated: 2026-11-06
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
 
+## [1.6] - 2026-11-06
+
+### Added
+
+- Nella vista sezione agiunta la curva Im f(Z) verde puntinata e nel cursore aggiunti Re f(z) e Im f(z) (stessi separatori), aggiunti anche nel cursore del piano di Gauss.
+- Nel pannello aperto dall'ingranaggio, aggiunti due checkbox, per defualt marcati, per attivare/disattivare il plot di Re f(z) e Im f(z).
+.
+
 ## [1.5] - 2026-11-06
 
 ### Added
