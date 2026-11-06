@@ -14,7 +14,7 @@ h1{font:600 26px/1.2 Georgia,serif;margin:0 0 2px}.hd{display:flex;flex-wrap:wra
 .bar label{display:flex;gap:7px;align-items:center;font-size:13px;color:var(--mut)}.bar input[type=range]{width:110px;accent-color:var(--ac)}
 .bar b{color:var(--fg);font-weight:600;min-width:2.6em;display:inline-block;font-variant-numeric:tabular-nums}
 .co{font-family:ui-monospace,Menlo,monospace}.cr{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}.co input[type=number]{width:5.4em;font:inherit;font-size:13px;background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:6px;padding:2px 4px}.bar input[type=range].ov{accent-color:#e6b800}
-.fb{position:absolute;top:8px;right:8px;padding:3px 8px;font-size:12px;line-height:1.2;z-index:35}
+.fb{position:absolute;top:8px;right:8px;padding:3px 8px;font-size:12px;line-height:1.2;z-index:35}.fbg{position:absolute;top:8px;right:8px;display:flex;gap:6px;z-index:35}.fbg .fb{position:static}#ranote{display:block;margin-top:4px;color:var(--mut)}
 .panel-btn{position:absolute;top:12px;left:12px;width:36px;height:36px;font-size:18px;z-index:35;background:var(--card);border:1px solid var(--bd);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 .fzbar{position:absolute;bottom:16px;left:12px;display:flex;gap:6px;z-index:35}
 .panel-btn-coeffs,.hb{min-width:36px;height:36px;padding:0 10px;font:italic 600 15px Georgia,serif;color:var(--fg);background:var(--card);border:1px solid var(--bd);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}
@@ -137,10 +137,10 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.chi
 <label><span>Palette fase</span><select id="pl-pp"><option value="att">Attuale</option><option value="iso">OKLCH isoluminante</option><option value="lum">OKLCH luminanza variabile</option></select></label>
 <label class="pk"><span>Bande di |f|</span><input id="pl-c" type="checkbox" checked></label>
 <label><span>Quota |f|</span><input id="pl-lv" type="range" min="0.05" max="8" step="0.01" value="2"><b><span id="pl-lvv">2.00</span></b></label>
-<div class="pbtn"><button id="pl-mv" title="Attiva la modalità per trascinare una radice sul piano">Sposta radice</button><button id="pl-s1">|f| = valore critico</button><button id="pl-st">Passo di Newton</button><button id="pl-rs">Riporta il punto</button><button id="pl-d1" disabled>Tuffati nel punto giallo</button><button id="pl-d0" disabled>Tuffati nell’origine</button><button id="pl-vi">Vista intera</button><button id="pl-fit">Adatta R alle radici</button></div>
+<div class="pbtn"><button id="pl-mv" title="Attiva la modalità per trascinare una radice sul piano">Sposta radice</button><button id="pl-pick" title="Sceglie la nuova radice cliccando sul piano di Gauss">Radice dal piano</button><button id="pl-s1">|f| = valore critico</button><button id="pl-st">Passo di Newton</button><button id="pl-rs">Riporta il punto</button><button id="pl-d1" disabled>Tuffati nel punto giallo</button><button id="pl-d0" disabled>Tuffati nell’origine</button><button id="pl-vi">Vista intera</button><button id="pl-fit">Adatta R alle radici</button></div>
 </div></div></div>
 <figcaption>Piano. <span id="capPi"></span> Curva nera spessa: |f| = quota. Curve sottili: livelli |f| = 1, 2, 5 × 10ᵏ, etichettati; la banda sale da scuro a chiaro verso |f| crescente e il salto cade sulla linea. Cerchi: |z| = costante; raggi: arg z. Passo e livelli visibili si adattano allo zoom, i valori restano quelli indicati. Sul piano, passando il cursore, la barra sotto mostra z, |z|, arg z e |f|.</figcaption><div class="chip" id="chip"></div></figure>
-<figure><div id="wr"><canvas id="rl" class="c"></canvas><button class="fb" id="rz" title="Zoom su radici e massimi/minimi relativi">Zoom radici</button></div><figcaption>Asse reale, x da −R a R (rotella: zoom verso il cursore; trascina: sposta; Vista intera ripristina). <span class="ln r"></span>f(x), <span class="ln"></span>|f(x)|; pallini rossi: radici reali; cerchi: massimi e minimi relativi. Con coefficienti non tutti reali: tratteggio = Re f(x), blu = |f(x)|; massimi e minimi di f(x) non sono definiti.</figcaption></figure>
+<figure><div id="wr"><canvas id="rl" class="c"></canvas><div class="fbg"><button class="fb" id="rauto" title="Intervallo x automatico: evita che valori molto grandi di |f| schiaccino radici, minimi e massimi">Auto</button><button class="fb" id="rz" title="Zoom su radici e massimi/minimi relativi">Zoom radici</button></div></div><figcaption>Asse reale, x da −R a R (rotella: zoom verso il cursore; trascina: sposta; Vista intera ripristina). <span class="ln r"></span>f(x), <span class="ln"></span>|f(x)|; pallini rossi: radici reali; cerchi: massimi e minimi relativi. Con coefficienti non tutti reali: tratteggio = Re f(x), blu = |f(x)|; massimi e minimi di f(x) non sono definiti; frecce arancioni: punti in cui si annulla solo Re f(x) (non sono radici), con il valore di Im f(x). «Auto» sceglie l’intervallo x in modo che i valori molto grandi di |f| non schiaccino i dettagli; i valori della funzione non vengono alterati.<span id="ranote"></span></figcaption></figure>
 </div>
 <div class="info"><div class="box"><h2>Radici</h2><div id="roots"></div></div><div class="box"><h2>Punto scelto</h2><div id="probe"></div></div></div>
 <p class="sub" style="margin:18px 0 0;text-align:center">copyright: © 2026 Stefano Vesco (IK0VCK) - CatSW. All rights reserved.</p>
@@ -177,17 +177,19 @@ precision highp float;
 uniform vec2 uRes,uC;uniform float uS,uL,uK[9],uKJ[9];uniform vec2 uR[8];uniform vec3 uP[33],uB[8];uniform int uMode,uIter,uBands,uNR;
 out vec4 o;
 vec2 cm(vec2 a,vec2 b){return vec2(a.x*b.x-a.y*b.y,a.x*b.y+a.y*b.x);}
-void fd(vec2 z,out vec2 f,out vec2 d){f=vec2(uK[8],uKJ[8]);d=vec2(0.);for(int k=7;k>=0;k--){d=cm(d,z)+f;f=cm(f,z)+vec2(uK[k],uKJ[k]);}}
+/* s = sum |c_k||z|^k (Horner sui moduli): scala del rumore di arrotondamento fp32 di f(z) */
+void fd(vec2 z,out vec2 f,out vec2 d,out float s){f=vec2(uK[8],uKJ[8]);d=vec2(0.);float az=length(z);s=length(f);for(int k=7;k>=0;k--){d=cm(d,z)+f;f=cm(f,z)+vec2(uK[k],uKJ[k]);s=s*az+length(vec2(uK[k],uKJ[k]));}}
 vec3 pc(float t){float x=fract(t)*32.;int i=int(x);return mix(uP[i],uP[min(i+1,32)],fract(x));}
 void main(){
- vec2 z0=uC+(gl_FragCoord.xy/uRes*2.-1.)*uS,f0,d0;fd(z0,f0,d0);float m=length(f0);vec3 col;
+ vec2 z0=uC+(gl_FragCoord.xy/uRes*2.-1.)*uS,f0,d0;float s0;fd(z0,f0,d0,s0);float m=length(f0);vec3 col;
  if(uMode==0){col=pc(atan(f0.y,f0.x)/6.2831853);if(uBands==1&&length(d0)>1e-9){float g=max(length(d0),1e-12)*2.*uS/uRes.y,lg=log2(m+1e-30)*.30103,e=floor(lg),x=exp2((lg-e)*3.321928),p=exp2(e*3.321928),lo=x<2.?1.:x<5.?2.:5.,hi=x<2.?2.:x<5.?5.:10.;
  if((hi-lo)*p/g<10.){lo=1.;hi=10.;}
  float a=smoothstep(4.,10.,(hi-lo)*p/g),u=log(x/lo)/log(hi/lo),dp=min(m-lo*p,hi*p-m)/g;
  col*=mix(1.,.6+.4*u,a);col=mix(col,vec3(1.),a*.5*(1.-smoothstep(1.2,2.6,dp)));col=mix(col,vec3(.08),a*.85*(1.-smoothstep(.5,1.3,dp)));}}
- else{vec2 w=z0,f,d;float it=0.;bool good=false;
-  for(int i=0;i<1000;i++){if(i>=uIter)break;fd(w,f,d);float mm=max(length(f),1e-30);
-   if(mm<1e-5){good=true;it=float(i)+1.-log2(log(mm)/log(1e-5));break;}
+ else{vec2 w=z0,f,d;float it=0.,sn;bool good=false;
+  for(int i=0;i<1000;i++){if(i>=uIter)break;fd(w,f,d,sn);float mm=max(length(f),1e-30);
+   float th=max(1e-5,4e-7*sn),lt=log(th);
+   if(mm<th){good=true;it=float(i)+1.-(lt<-.01?log2(max(log(mm)/lt,1.)):0.);break;}
    float dd=dot(d,d);if(dd<1e-30)break;w-=vec2(f.x*d.x+f.y*d.y,f.y*d.x-f.x*d.y)/dd;}
   col=vec3(.04,.04,.06);
   if(good&&uNR>0){int bk=0;float bd=1e9;for(int k=0;k<8;k++){if(k>=uNR)break;float dk=length(w-uR[k]);if(dk<bd){bd=dk;bk=k;}}col=uB[bk]*clamp(1.1-.035*it,.35,1.);}}
@@ -410,7 +412,36 @@ function pick(e){if(mode!=='new')return;if(g3)projAll();const r=sc.getBoundingCl
  if(hit){probe=hit;probeUpdate()}}
 const ticks=(a,b)=>{const r=(b-a)/5,m=Math.pow(10,Math.floor(Math.log10(r))),s=(r/m<2?1:r/m<5?2:5)*m,o=[];for(let v=Math.ceil(a/s)*s;v<=b+s*1e-9;v+=s)o.push(Math.abs(v)<s*1e-9?0:v);return o};
 const tf=v=>String(+v.toPrecision(3)).replace('-','−');
-function drawReal(){const w=rl.width,h=rl.height,u=dpr,ink=css('--fg'),mut=css('--mut'),bd=css('--bd'),N=400,xs=[],ys=[];rg.clearRect(0,0,w,h);let xa=-R,xb=R,lo=0,hi=0,zy=null;if(rzoom){const f=[...RT.filter(r=>r[1]===0).map(r=>[r[0],0]),...CX.filter(p=>p.t!=='flesso').map(p=>[p.x,p.y])];if(f.length){const fx=f.map(p=>p[0]),fy=f.map(p=>p[1]),m=Math.max(.3,(Math.max(...fx)-Math.min(...fx))*.12);xa=Math.min(...fx)-m;xb=Math.max(...fx)+m;zy=[Math.min(...fy),Math.max(...f.map(p=>{const q=F(p[0],0);return Math.hypot(q[0],q[1])}))]}}
+
+/* ---- Asse reale: caratteristiche (zeri di Re f, estremi di |f|), intervallo automatico, frecce sugli zeri della sola parte reale (1.3) ---- */
+const RKAPPA=6;
+function realZerosOf(ca){let sc=0;for(const v of ca)sc=Math.max(sc,Math.abs(v));let n=ca.length-1;while(n>0&&Math.abs(ca[n])<1e-12*sc)n--;if(n<1||!sc)return[];
+ const P=x=>{let a=0;for(let k=n;k>=0;k--)a=a*x+ca[k];return a},D=x=>{let a=0;for(let k=n;k>=1;k--)a=a*x+k*ca[k];return a},co=[];for(let k=n;k>=0;k--)co.push([ca[k],0]);
+ const o=[];for(const r of rtsC(co)){if(Math.abs(r[1])>1e-6*(1+Math.abs(r[0])))continue;let x=r[0];for(let i=0;i<4;i++){const d=D(x);if(!d)break;const t=x-P(x)/d;if(Math.abs(P(t))<=Math.abs(P(x)))x=t;else break}o.push(x)}
+ o.sort((a,b)=>a-b);return o.filter((x,i)=>!i||x-o[i-1]>1e-7*(1+Math.abs(x)))}
+const pmul=(a,b)=>{const c=Array(a.length+b.length-1).fill(0);a.forEach((u,i)=>b.forEach((v,j)=>{c[i+j]+=u*v}));return c},pder=a=>a.slice(1).map((v,k)=>v*(k+1));
+let RFC={fv:-1,c:null};
+/* coefficienti non tutti reali: zeri di Re f(x) (radici vere se anche Im f = 0, altrimenti «incroci») ed estremi di |f(x)|; calcolati una volta per versione di f */
+function reFeat(){if(RFC.fv===FV&&RFC.c)return RFC.c;const Pr=K.slice(),Pi=KJ.slice(),cross=[],roots=[],ext=[];
+ for(const x of realZerosOf(Pr)){const q=F(x,0);let s=0;for(let k=0;k<9;k++)s+=Math.hypot(K[k],KJ[k])*Math.abs(x)**k;if(Math.hypot(q[0],q[1])<=1e-9*s)roots.push(x);else cross.push({x,im:q[1]})}
+ const g1=pmul(Pr,pder(Pr)),g2=pmul(Pi,pder(Pi)),g=g1.map((v,k)=>v+g2[k]);
+ for(const x of realZerosOf(g)){const q=F(x,0);ext.push({x,h:Math.hypot(q[0],q[1])})}
+ return RFC={fv:FV,c:{cross,roots,ext}}.c}
+/* Intervallo x automatico: parte da [x0,x1] e, se |f| vi diventa molto più grande degli estremi significativi (> RKAPPA volte il più alto),
+   sceglie la finestra contigua di caratteristiche (radici, estremi, incroci) che ne contiene di più con max|f| ≤ RKAPPA·H. I valori non sono alterati;
+   ciò che resta fuori viene elencato nella didascalia. Se la finestra di partenza è già leggibile non cambia nulla. */
+function autoRange(x0,x1){const M=480,hv=[];for(let k=0;k<=M;k++){const q=F(x0+(x1-x0)*k/M,0);hv.push(Math.hypot(q[0],q[1]))}
+ let fe=[];if(hasIm()){const c=reFeat();fe=[...c.roots.map(x=>({x,k:'r',h:0})),...c.ext.map(p=>({x:p.x,k:'e',h:p.h})),...c.cross.map(p=>({x:p.x,k:'c',h:Math.abs(p.im)}))]}
+ else fe=[...RT.filter(r=>r[1]===0).map(r=>({x:r[0],k:'r',h:0})),...CX.filter(p=>p.t!=='flesso').map(p=>({x:p.x,k:'e',h:Math.abs(p.y)}))];
+ fe=fe.filter(p=>p.x>=x0&&p.x<=x1).sort((p,q)=>p.x-q.x);const ex=fe.filter(p=>p.k==='e');if(!ex.length)return null;
+ const H=Math.max(...ex.map(p=>p.h)),cap=RKAPPA*H,mx0=Math.max(...hv);if(mx0<=cap)return null;
+ const W=x1-x0,ix=x=>Math.max(0,Math.min(M,Math.round((x-x0)/W*M))),wmax=(a,b)=>{let m=0;for(let k=ix(a);k<=ix(b);k++)m=Math.max(m,hv[k]);return m},wt={r:1,e:2,c:1};
+ let best=null;for(let i=0;i<fe.length;i++)for(let j=i;j<fe.length;j++){const sp=fe[j].x-fe[i].x,m=Math.max(.1*sp,.01*W),st=W/M;let a=Math.max(x0,fe[i].x-m),b=Math.min(x1,fe[j].x+m);while(a<fe[i].x&&hv[ix(a)]>cap)a+=st;while(b>fe[j].x&&hv[ix(b)]>cap)b-=st;a=Math.min(a,fe[i].x);b=Math.max(b,fe[j].x);const ym=wmax(a,b);if(ym>cap)continue;
+  let sc=0;for(const p of fe)if(p.x>=a&&p.x<=b)sc+=wt[p.k];if(!best||sc>best.sc||(sc===best.sc&&ym<best.ym))best={a,b,sc,ym}}
+ if(!best)return null;const pd=.025*(best.b-best.a);best.a=Math.max(x0,best.a-pd);best.b=Math.min(x1,best.b+pd);const out=fe.filter(p=>p.x<best.a||p.x>best.b);return{a:best.a,b:best.b,out,mx0}}
+const rdesc=p=>p.k==='c'?`Re f = 0 in x = ${tf(p.x)} (Im f = ${tf(p.im!==undefined?p.im:p.h)})`:p.k==='e'?`estremo di |f| in x = ${tf(p.x)} (|f| = ${tf(p.h)})`:`radice reale x = ${tf(p.x)}`;
+function drawReal(){const w=rl.width,h=rl.height,u=dpr,ink=css('--fg'),mut=css('--mut'),bd=css('--bd'),N=400,xs=[],ys=[];rg.clearRect(0,0,w,h);let xa=-R,xb=R,lo=0,hi=0,zy=null,zd=false,au=null;if(rzoom){const f=[...RT.filter(r=>r[1]===0).map(r=>[r[0],0]),...CX.filter(p=>p.t!=='flesso').map(p=>[p.x,p.y])];if(f.length){zd=true;const fx=f.map(p=>p[0]),fy=f.map(p=>p[1]),m=Math.max(.3,(Math.max(...fx)-Math.min(...fx))*.12);xa=Math.min(...fx)-m;xb=Math.max(...fx)+m;zy=[Math.min(...fy),Math.max(...f.map(p=>{const q=F(p[0],0);return Math.hypot(q[0],q[1])}))]}}
+ if(!zd&&!rx&&rauto){au=autoRange(-R,R);if(au){xa=au.a;xb=au.b}}
  if(rx){xa=rx[0]-rx[1];xb=rx[0]+rx[1];zy=null}RV=[xa,xb];const ms=[];for(let k=0;k<=N;k++){const x=xa+(xb-xa)*k/N,q=F(x,0),y=q[0],m=Math.hypot(q[0],q[1]);xs.push(x);ys.push(y);ms.push(m);lo=Math.min(lo,y);hi=Math.max(hi,m)}
  if(zy){lo=zy[0];hi=zy[1]}if(hi-lo<1e-9){lo-=1;hi+=1}const pd=(hi-lo)*.08;lo-=pd;hi+=pd;const ml=52*u,mb=22*u,mt=10*u,mr=10*u,pw=w-ml-mr,ph=h-mt-mb,X=x=>ml+(x-xa)/(xb-xa)*pw,Y=y=>mt+(hi-y)/(hi-lo)*ph;
  rg.font=`${11*u}px system-ui`;rg.textBaseline='middle';
@@ -420,7 +451,19 @@ function drawReal(){const w=rl.width,h=rl.height,u=dpr,ink=css('--fg'),mut=css('
  rg.beginPath();xs.forEach((x,k)=>{k?rg.lineTo(X(x),Y(ms[k])):rg.moveTo(X(x),Y(ms[k]))});rg.strokeStyle=CBLUE;rg.lineWidth=2.6*u;rg.lineJoin='round';rg.stroke();
  rg.beginPath();xs.forEach((x,k)=>{k?rg.lineTo(X(x),Y(ys[k])):rg.moveTo(X(x),Y(ys[k]))});rg.setLineDash([7*u,5*u]);rg.strokeStyle=CRED;rg.lineWidth=2.4*u;rg.stroke();rg.setLineDash([]);rg.restore();
  for(const p of CX){if(p.x<xa||p.x>xb||p.t==='flesso')continue;rg.beginPath();rg.arc(X(p.x),Y(p.y),5*u,0,TAU);rg.fillStyle=css('--card');rg.fill();rg.lineWidth=2*u;rg.strokeStyle=ink;rg.stroke();rg.fillStyle=ink;rg.textAlign='center';rg.fillText(`${p.t} ${tf(p.y)}`,X(p.x),Y(p.y)+(p.t==='max'?-14*u:14*u))}
- for(const r of RT){if(r[1]!==0||r[0]<xa||r[0]>xb)continue;rg.beginPath();rg.arc(X(r[0]),Y(0),5.5*u,0,TAU);rg.fillStyle=RED;rg.fill();rg.lineWidth=2*u;rg.strokeStyle='#fff';rg.stroke()}}
+ for(const r of RT){if(r[1]!==0||r[0]<xa||r[0]>xb)continue;rg.beginPath();rg.arc(X(r[0]),Y(0),5.5*u,0,TAU);rg.fillStyle=RED;rg.fill();rg.lineWidth=2*u;rg.strokeStyle='#fff';rg.stroke()}
+ if(hasIm()){const c=reFeat(),dot=x=>{rg.beginPath();rg.arc(X(x),Y(0),5.5*u,0,TAU);rg.fillStyle=RED;rg.fill();rg.lineWidth=2*u;rg.strokeStyle='#fff';rg.stroke()};
+  for(const x of c.roots)if(x>=xa&&x<=xb)dot(x);/* vere radici reali: Re f = Im f = 0 */
+  const AO='#f28c00',L0=24*u,fs=11*u,bx=[],hit=(a,b)=>a[0]<b[2]&&a[2]>b[0]&&a[1]<b[3]&&a[3]>b[1];rg.font=`600 ${fs}px system-ui`;rg.textBaseline='middle';rg.textAlign='center';
+  for(const p of c.cross){if(p.x<xa||p.x>xb)continue;const x=X(p.x),y0=Y(0),txt=`Im f(x) = ${tf(p.im)}`,tw2=rg.measureText(txt).width,lx=Math.max(ml+tw2/2+2*u,Math.min(ml+pw-tw2/2-2*u,x));
+   const sides=p.im>=0?[-1,1]:[1,-1];let pick=null;
+   for(const d of sides){for(const ex of[0,16*u,32*u]){const ty=y0+d*(L0+ex),ly=ty+d*(fs*.8),r=[lx-tw2/2-2*u,ly-fs*.65,lx+tw2/2+2*u,ly+fs*.65];if(ly-fs<mt||ly+fs>mt+ph)continue;if(bx.some(b=>hit(r,b)))continue;if(!pick)pick={d,ty,ly,r}}if(pick)break}
+   if(!pick){const d=sides[0],ty=y0+d*L0;pick={d,ty,ly:ty+d*fs*.8,r:[lx-tw2/2,ty,lx+tw2/2,ty+fs]}}
+   bx.push(pick.r,[x-3*u,Math.min(y0,pick.ty),x+3*u,Math.max(y0,pick.ty)]);
+   rg.strokeStyle=AO;rg.fillStyle=AO;rg.lineWidth=2.6*u;rg.lineCap='round';rg.beginPath();rg.moveTo(x,pick.ty);rg.lineTo(x,y0+pick.d*8*u);rg.stroke();
+   rg.beginPath();rg.moveTo(x,y0);rg.lineTo(x-5*u,y0+pick.d*9*u);rg.lineTo(x+5*u,y0+pick.d*9*u);rg.closePath();rg.fill();
+   rg.lineWidth=3.2*u;rg.lineJoin='round';rg.strokeStyle=css('--card');rg.strokeText(txt,lx,pick.ly);rg.fillStyle=ink;rg.fillText(txt,lx,pick.ly)}}
+ {const el=$('ranote');if(el)el.textContent=au?`Intervallo x automatico: da ${tf(au.a)} a ${tf(au.b)} (su [−R, R] |f| arriva a ${tf(au.mx0)} e schiaccerebbe i dettagli).`+(au.out.length?' Fuori intervallo: '+au.out.slice(0,4).map(rdesc).join('; ')+(au.out.length>4?'; …':'')+'. «Auto» li mostra tutti, disattivandolo.':''):''}}
 function planLabels(w,h,u,X,Y){const T=(s,x,y,f,k)=>{pg.lineWidth=3.2*u;pg.strokeStyle=k;pg.strokeText(s,x,y);pg.fillStyle=f;pg.fillText(s,x,y)},WH='#fff',HD='rgba(0,0,0,.7)';
  pg.font=`600 ${11*u}px system-ui`;pg.textAlign='center';pg.textBaseline='middle';pg.lineJoin='round';
  if(!polar){for(const t of ticks(vcx-vs,vcx+vs))T(tf(t),X(t),h-9*u,WH,HD);for(const t of ticks(vcy-vs,vcy+vs))T(tf(t),20*u,Y(t),WH,HD)}
@@ -461,7 +504,7 @@ function calc(){
   return;
  }
  const f=F(probe[0],probe[1]);path=[probe.slice()];let p=probe,n=0,cv=mod(p[0],p[1])<1e-9;while(!cv&&n<200){const q=newton(p[0],p[1]);if(!q)break;n++;if(n<=40)path.push(q);p=q;cv=mod(q[0],q[1])<1e-9}
- const l=p;$('probe').innerHTML=`<div>z = ${fmt(probe)}</div><div>${pol(probe[0],probe[1])}</div><div>f(z) = ${fmt(f)}</div><div>|f(z)| = ${Math.hypot(f[0],f[1]).toFixed(4)}, arg f = ${(Math.atan2(f[1],f[0])*180/Math.PI).toFixed(1)}°</div>`+(RT.length?`<div style="color:var(--mut);margin-top:4px">${cv?`Newton converge verso z<sub>${nearest(l[0],l[1])}</sub> in ${n} passi.`:`Newton non converge entro ${n} passi (|f| = ${mod(l[0],l[1]).toPrecision(3)}).`}</div>`:'')}
+ const l=p;$('probe').innerHTML=`<div>z = ${fmt(probe)}</div><div>${pol(probe[0],probe[1])}</div><div>f(z) = ${fmt(f)}</div><div>|f(z)| = ${Math.hypot(f[0],f[1]).toFixed(4)}, arg f = ${(Math.atan2(f[1],f[0])*180/Math.PI).toFixed(1)}°</div>`+(RT.length?`<div style="color:var(--mut);margin-top:4px">${cv?`Newton converge verso z<sub>${nearest(l[0],l[1])}</sub> in ${n} passi.`:`Newton non converge entro ${n} passi (|f| = ${mod(l[0],l[1]).toPrecision(3)}).`}</div>`:'')+`<div style="margin-top:6px"><b id="phon" role="button" tabindex="0" title="Disattiva i bacini di Newton e torna alla modalità fase" style="color:#3b82f6;cursor:pointer">Modalità fase</b></div>`}
 const probeUpdate=()=>{calc();drawPlan();drawSurf()};
 const full=()=>{analyze();calc();texts();renderPlan();drawSurf();drawReal()},fullLv=()=>{texts();renderPlan();drawSurf()};
 const rebuild=()=>{analyze();build();full()};
@@ -527,7 +570,8 @@ EB.innerHTML=`<div class="ed-nav"><select id="ed-mode"><option value="coef">Form
 <div class="ed-info" id="ed-info"></div>
 <div class="ed-sec" id="ed-coef"></div>
 <div class="ed-sec" id="ed-root"></div>
-<div class="ed-sec" id="ed-text"><textarea id="ed-txt" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="z3 + (0.5 + 3.4i)·z2 − 1.73i"></textarea><div class="pbtn"><button id="ed-parse" title="Acquisisce il polinomio (o il JSON) nella bozza">Interpreta</button><button id="ed-exp" title="Copia negli appunti il JSON con f(z) e i parametri di visualizzazione">Esporta JSON</button><button id="ed-share" title="Copia negli appunti un link che riapre la stessa f(z) con la stessa vista">Condividi questa vista</button></div><div class="ed-info">Accetta z8, z^8 o z⁸; coefficienti complessi come (0.5 + 3.4i) o 2i; ·, * o accostamento; anche forme fattorizzate come (z−1)^2(z+1). Decimali con punto o virgola. Grado massimo 8. Incollando un JSON esportato con «Esporta JSON» si ripristinano f(z) e vista. «Condividi questa vista» copia un link che riapre la stessa f(z) e la stessa vista; il JSON resta il formato di riferimento.</div></div>
+<div class="ed-sec" id="ed-text"><textarea id="ed-txt" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="z3 + (0.5 + 3.4i)·z2 − 1.73i"></textarea><div class="pbtn"><button id="ed-parse" title="Acquisisce il polinomio (o il JSON) nella bozza">Interpreta</button></div><div class="ed-info">Accetta z8, z^8 o z⁸; coefficienti complessi come (0.5 + 3.4i) o 2i; ·, * o accostamento; anche forme fattorizzate come (z−1)^2(z+1). Decimali con punto o virgola. Grado massimo 8. Incollando un JSON esportato con «Esporta JSON» si ripristinano f(z) e vista. «Condividi questa vista» copia un link che riapre la stessa f(z) e la stessa vista; il JSON resta il formato di riferimento.</div></div>
+<div class="pbtn" id="ed-act"><button id="ed-exp" title="Copia negli appunti il JSON con f(z) e i parametri di visualizzazione">Esporta JSON</button><button id="ed-share" title="Copia negli appunti un link che riapre la stessa f(z) con la stessa vista">Condividi questa vista</button></div>
 <div class="ed-msg" id="ed-msg"></div>
 <div class="ed-info">Esempi:</div><div class="pbtn" id="ed-ex"></div>`;
 function mkSl(host,label,onv){const l=document.createElement('label');l.innerHTML=`<span>${label}</span><input type="range" min="-4" max="4" step="0.05" value="0"><input type="number" step="0.05" value="0">`;host.appendChild(l);const[sl,nb]=l.querySelectorAll('input');
@@ -540,7 +584,7 @@ const cR=mkSl(ec,'Re c',v=>{DR.K[DR.t]=v;cUp()}),cI=mkSl(ec,'Im c',v=>{DR.KJ[DR.
 ec.insertAdjacentHTML('beforeend','<div class="pbtn"><button id="ed-zero" title="Azzera parte reale e immaginaria del termine corrente">Azzera termine</button></div>');
 const aR=mkSl(er,'Re a′',v=>{DR.pages[DR.p].ap[0]=v;rUp()}),aI=mkSl(er,'Im a′',v=>{DR.pages[DR.p].ap[1]=v;rUp()}),rR=mkSl(er,'Re a',v=>{DR.pages[DR.p].a[0]=v;rUp()}),rI=mkSl(er,'Im a',v=>{DR.pages[DR.p].a[1]=v;rUp()});
 er.insertAdjacentHTML('beforeend',`<label><span>m</span><select id="ed-m"></select></label>
-<div class="pbtn"><button id="ed-add" title="Nuova radice (m = 1, a′ = 1)">+ Radice</button><button id="ed-del" title="Riduce m di uno; se m = 1 elimina la pagina">🗑</button><button id="ed-conj" title="Aggiunge il coniugato della radice corrente">Coniugata</button><button id="ed-opp" title="Aggiunge −a: simmetrica della radice corrente rispetto all’origine">Opposta</button><button id="ed-pick" title="Sceglie la nuova radice cliccando sul piano di Gauss">Dal piano</button></div>`);
+<div class="pbtn"><button id="ed-add" title="Nuova radice (m = 1, a′ = 1)">+ Radice</button><button id="ed-del" title="Riduce m di uno; se m = 1 elimina la pagina">🗑</button><button id="ed-conj" title="Aggiunge il coniugato della radice corrente">Coniugata</button><button id="ed-opp" title="Aggiunge −a: simmetrica della radice corrente rispetto all’origine">Opposta</button><button id="ed-pick" title="Sceglie la nuova radice cliccando sul piano di Gauss">Radice dal piano</button></div>`);
 function navCoef(){const D=DR,s=$('ed-sel');s.innerHTML='';for(let k=8;k>=0;k--){const o=document.createElement('option');o.value=k;o.textContent=tl(k)+(nzc(D.K[k],D.KJ[k])?' •':'');s.appendChild(o)}s.value=D.t;$('ed-prev').disabled=D.t>=8;$('ed-next').disabled=D.t<=0;$('ed-info').textContent='Grado effettivo: '+effDeg(D.K,D.KJ)+' (max 8)'}
 function navRoot(){const D=DR,s=$('ed-sel'),S=degR(D),q=D.pages[D.p],mx=8-(S-q.m);
  let z0=0;s.innerHTML=D.pages.map((q,i)=>{const a=z0;z0+=q.m;return`<option value="${i}">${q.m>1?`z${a}–z${a+q.m-1}`:`z${a}`} = ${fmt(q.a)}${q.m>1?` (m = ${q.m})`:''}</option>`}).join('');s.value=D.p;
@@ -605,7 +649,7 @@ function autoView(){let m=0;for(const r of RT)m=Math.max(m,Math.hypot(r[0],r[1])
  for(let i=0;i<8&&R<10&&+$('lv').max<=cv*1.02;i++)setR(Math.min(10,Math.round(R*13)/10));   // la quota deve poter stare sopra l’ultimo valore critico
  setLv((cv+mmax)/2);full();setOff(calibOff())}
 /* ---- Salvataggio/caricamento JSON e link condivisibili (versione 1.1; superficie 3D WebGL dalla 1.2) ---- */
-const APPV='1.2';$('rdm').textContent='Readme - Ver. '+APPV;
+const APPV='1.3';$('rdm').textContent='Readme - Ver. '+APPV;
 const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},camera:{yaw,pitch,zoom},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice()});
 const JS_=(o,d=0)=>{if(o===null||typeof o!=='object'||Array.isArray(o)||d>=2)return JSON.stringify(o);const p='  '.repeat(d+1);return'{\n'+Object.entries(o).filter(([,v])=>v!==undefined).map(([k,v])=>p+JSON.stringify(k)+': '+JS_(v,d+1)).join(',\n')+'\n'+'  '.repeat(d)+'}'};
 const optOK=(id,v)=>typeof v==='string'&&[...$(id).options].some(q=>q.value===v);
@@ -766,8 +810,9 @@ $('p-off').ondblclick=()=>setOff(calibOff());
 
 /* ---- «Attiva la spunta» nel box Punto scelto: attiva i bacini di Newton ---- */
 const nwOn=()=>{const b=$('bn');if(b.checked)return;b.checked=true;b.dispatchEvent(new Event('change',{bubbles:true}));syncPl()};
-$('probe').addEventListener('click',e=>{if(e.target.closest('#nwon'))nwOn()});
-$('probe').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.id==='nwon'){e.preventDefault();nwOn()}});
+const nwOff=()=>{const b=$('bn');if(!b.checked)return;b.checked=false;b.dispatchEvent(new Event('change',{bubbles:true}));syncPl()};
+$('probe').addEventListener('click',e=>{if(e.target.closest('#nwon'))nwOn();else if(e.target.closest('#phon'))nwOff()});
+$('probe').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&(e.target.id==='nwon'||e.target.id==='phon')){e.preventDefault();e.target.id==='nwon'?nwOn():nwOff()}});
 
 /* ===== Sposta radice (piano di Gauss): trascinamento diretto di una radice con anteprima adattiva ===== */
 /* Parametri sperimentali dell'anteprima: servono misure su PC e cellulare per tararli. */
@@ -808,7 +853,16 @@ Object.assign(RD,{
 {const dp=drawPlan;drawPlan=function(){dp();if(!moveMode)return;const w=pc.width,h=pc.height,u=dpr,X=x=>((x-vcx)/vs+1)/2*w,Y=y=>(1-(y-vcy)/vs)/2*h,done=[];
  RT.forEach((r,k)=>{if(done.some(q=>q[0]===r[0]&&q[1]===r[1]))return;done.push(r);const x=X(r[0]),y=Y(r[1]);if(x<-30||y<-30||x>w+30||y>h+30)return;const act=RD.on&&pageOf(k)===RD.p;
   pg.save();pg.setLineDash(act?[]:[4*u,3*u]);pg.lineWidth=(act?2.5:1.5)*u;pg.strokeStyle=act?'#ffd400':'#fff';pg.beginPath();pg.arc(x,y,(act?17:14)*u,0,TAU);pg.stroke();pg.restore()})}}
-{const sp=syncPl;syncPl=function(){sp();$('pl-mv').disabled=!RT.length}}
+/* «Radice dal piano»: stessa startPick() del pulsante nell'editor, stessi vincoli (grado totale < 8, nessuna scelta già in corso).
+   Se l'editor è chiuso o non è in «Forma a radici», lo apre/vi passa con gli stessi gestori usati a mano (openEd, #ed-mode) e poi avvia la scelta. */
+const pickState=()=>{if(pickMode)return'Scelta della radice già in corso';let S;if(DR)S=DR.mode==='root'||DR.truth==='root'?degR(DR):effDeg(DR.K,DR.KJ);else S=effDeg(K,KJ);
+ if(S>=8)return'Grado massimo (8) raggiunto: non si possono aggiungere radici';if(S<1&&!(DR&&DR.mode==='root'))return'Funzione costante: non ha radici da elencare';return''};
+{const sp=syncPl;syncPl=function(){sp();$('pl-mv').disabled=!RT.length;
+ const why=pickState(),b=$('pl-pick');b.disabled=!!why;
+ b.title=why||(DR&&DR.mode==='root'?'Sceglie la nuova radice cliccando sul piano di Gauss':'Apre l’editor f(z) in «Forma a radici» e sceglie la nuova radice cliccando sul piano di Gauss')}}
+$('pl-pick').onclick=()=>{if(pickState())return;if(!DR)openEd();const D=DR;
+ if(D.mode!=='root'){const m=$('ed-mode');m.value='root';m.onchange({target:m})}
+ startPick();if(pickMode)$('plan-panel').classList.remove('open');else $('w3').scrollIntoView({block:'nearest',behavior:'smooth'})};
 $('pl-mv').onclick=()=>{$('plan-panel').classList.remove('open');setMove(true)};
 $('movex').onclick=()=>setMove(false);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&moveMode&&!pickMode)setMove(false)});
@@ -843,7 +897,8 @@ $('p-rc').onchange=e=>{showR=e.target.checked;$('rc').checked=showR;drawSurf()};
 $('s1').onclick=()=>{if(CV.length){setLv(CV[ci%CV.length]);ci++;full()}};
 $('st').onclick=()=>{if(path.length>1){probe=path[1];probeUpdate()}};$('rs').onclick=()=>{probe=[.55,.85];probeUpdate()};$('vi').onclick=()=>{resetView();renderPlan();drawReal()};
 const dive=(x,y,v1,ms)=>{tw={t0:-1,ms,x,y,x0:vcx,y0:vcy,v0:vs,v1}};$('d1').onclick=()=>dive(probe[0],probe[1],1.5e-3,6000);$('d0').onclick=()=>dive(0,0,1e-3,7000);
-let rzoom=false,rx=null,RV=null,rd=null;$('rz').onclick=()=>{rzoom=!rzoom;rx=null;$('rz').style.borderColor=rzoom?'var(--ac)':'';drawReal()};
+let rzoom=false,rx=null,RV=null,rd=null,rauto=true;$('rz').onclick=()=>{rzoom=!rzoom;rx=null;$('rz').style.borderColor=rzoom?'var(--ac)':'';drawReal()};
+$('rauto').style.borderColor='var(--ac)';$('rauto').onclick=()=>{rauto=!rauto;rx=null;$('rauto').style.borderColor=rauto?'var(--ac)':'';drawReal()};
 
 /* Gestione Fullscreen con forzatura landscape solo per mobile */
 function toggleFS(el){

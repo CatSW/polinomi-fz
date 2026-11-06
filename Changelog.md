@@ -4,13 +4,28 @@ copyright: "© 2026 Stefano Vesco (IK0VCK) - CatSW. All rights reserved."
 author: IK0VCK
 type: changelog
 product: polinomi-fz
-version: 1.0.0 
 license: MIT
-updated: 2026-11-05
+updated: 2026-11-06
 ---
 # Changelog Esploratore di Polinomi
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
+
+## [1.3] - 2026-11-05
+
+### Added
+- Pannello «Controlli piano»: pulsante «Radice dal piano», collegato alla stessa funzione (`startPick`) del pulsante nell'editor f(z). Con l'editor chiuso o in Forma normale/Testo apre l'editor, passa a «Forma a radici» con i gestori esistenti e avvia la scelta sul piano. Resta disabilitato, con tooltip che ne spiega il motivo, se la scelta è già in corso, se il grado totale è già 8 o se f(z) è costante.
+- Grafico sull'asse reale, pulsante «Auto» (attivo di default): sceglie l'intervallo x in modo che i valori molto grandi di |f| non schiaccino radici, minimi e massimi. I valori della funzione non vengono alterati; le caratteristiche rimaste fuori intervallo sono elencate sotto il grafico e «Auto» disattivato ripristina [−R, R].
+- Grafico sull'asse reale, coefficienti non tutti reali: frecce arancioni verticali nei punti in cui si annulla solo Re f(x), con l'etichetta «Im f(x) = n» sul lato della coda e anti-sovrapposizione tra etichette. Le vere radici reali (Re f = Im f = 0) sono disegnate come punto rosso, senza freccia.
+- Box «Punto scelto», con i bacini di Newton attivi: scritta blu in grassetto «Modalità fase», cliccabile (anche da tastiera) per disattivare i bacini.
+
+### Changed
+- Pannello f(z) della vista 3D: «Esporta JSON» e «Condividi questa vista» sono in una riga comune (`#ed-act`), esterna alle sezioni che cambiano con la combo, e sono quindi disponibili in Forma normale, Forma a radici e Testo (prima solo in Testo). Stessi id, gestori e stato dei due comandi.
+- Editor f(z), «Forma a radici»: il pulsante «Dal piano» è ora «Radice dal piano».
+- Versione dell'app da 1.2 a 1.3 (i file JSON della 1.2 restano caricabili).
+
+### Fixed
+- Bacini di Newton (shader WebGL): il test di convergenza usava una soglia fissa |f| < 1e-5, inferiore al rumore di arrotondamento fp32 di f(z) dove i termini del polinomio sono grandi (qui vicino alla radice z₅ ≈ 3.94 − 0.46i, con |z| ≈ 4). La soglia è ora max(1e-5, 4e-7·Σ|c_k||z|^k). La zona risultava nera o granulosa a seconda dell'hardware; ora è classificata allo stesso modo ovunque.
 
 ## [1.2] - 2026-11-05
 
