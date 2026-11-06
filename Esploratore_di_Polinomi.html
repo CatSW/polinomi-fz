@@ -52,8 +52,10 @@ button:hover,select:hover{border-color:var(--ac)}button:focus-visible,select:foc
 canvas.c{width:100%;display:block;background:var(--card);border:1px solid var(--bd);border-radius:10px;touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 #wr:fullscreen,#wr.is-fullscreen{background:var(--bg);width:100vw;height:100vh;height:100dvh;position:fixed;top:0;left:0;z-index:99999}#wr:fullscreen #rl,#wr.is-fullscreen #rl{height:100%;aspect-ratio:auto;border:0;border-radius:0}
 .mseg{display:flex;gap:6px;width:100%}.mseg button{flex:1;min-height:40px;font:600 14px Georgia,serif;border:2px solid var(--bd);border-radius:8px}.mseg button[aria-checked=true]{border-color:#1a9850;background:color-mix(in srgb,#1a9850 18%,var(--bg));box-shadow:inset 0 -3px 0 #1a9850}.mseg button[aria-checked=true]::before{content:'✓ '}
-#surf{aspect-ratio:1;cursor:grab}#rl{aspect-ratio:1;cursor:grab}
-figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.chip{min-height:2.6em;font-size:12px;color:var(--ac);font-variant-numeric:tabular-nums}
+#surf{aspect-ratio:1;cursor:grab}#rl{aspect-ratio:1;cursor:crosshair}
+figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk{display:grid;font-size:12px;color:var(--ac);font-variant-numeric:tabular-nums}.stk>*{grid-area:1/1;min-width:0}.stk .gh{visibility:hidden;pointer-events:none}.stk .it{white-space:nowrap}.gpuln{margin-top:3px}
+/* riga «Cursore»: solo se esiste un puntatore con hover (mouse, trackpad, penna); sui dispositivi solo touch è display:none, senza spazio residuo. Il browser rivaluta la query al variare dei dispositivi di puntamento */
+.cur{display:none;margin-bottom:3px}@media (any-hover:hover){.cur{display:grid}}
 .info{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:12px;margin-top:12px}
 .box{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;font-size:14px;font-variant-numeric:tabular-nums}
 .box h2{font:600 15px/1.3 Georgia,serif;margin:0 0 6px}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;border:1px solid var(--bd)}
@@ -67,8 +69,8 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.chi
 #wp{position:relative}
 #wp:fullscreen,#wp.is-fullscreen{background:var(--bg);width:100vw;height:100vh;height:100dvh;position:fixed;top:0;left:0;z-index:99999;display:flex;align-items:center;justify-content:center}
 #wp:fullscreen .stack,#wp.is-fullscreen .stack{width:min(100vw,100vh);width:min(100vw,100dvh);flex:none}
-#wp:fullscreen figcaption,#wp.is-fullscreen figcaption{display:none}
-#wp:fullscreen .chip,#wp.is-fullscreen .chip{position:absolute;left:10px;bottom:6px;z-index:36;background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:2px 8px;max-width:calc(100vw - 20px);box-sizing:border-box}
+#wp:fullscreen .ctx,#wp.is-fullscreen .ctx{display:none}
+#wp:fullscreen figcaption,#wp.is-fullscreen figcaption{margin:0;position:absolute;left:10px;bottom:6px;z-index:36;background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:2px 8px;max-width:calc(100vw - 20px);box-sizing:border-box}#wp:fullscreen .cur,#wp.is-fullscreen .cur{margin-bottom:2px}#wp:fullscreen .gpuln,#wp.is-fullscreen .gpuln{margin-top:0}
 #w3{border:1px solid var(--bd);border-radius:10px}
 #surf{border:0;border-radius:9px;background:transparent;position:relative;z-index:2}
 #surfBG,#surfGL{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:9px}
@@ -141,7 +143,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.chi
 <label><span>Quota |f|</span><input id="pl-lv" type="range" min="0.05" max="8" step="0.01" value="2"><b><span id="pl-lvv">2.00</span></b></label>
 <div class="pbtn"><button id="pl-mv" title="Attiva la modalità per trascinare una radice sul piano">Sposta radice</button><button id="pl-pick" title="Sceglie la nuova radice cliccando sul piano di Gauss">Radice dal piano</button><button id="pl-s1">|f| = valore critico</button><button id="pl-st">Passo di Newton</button><button id="pl-rs">Riporta il punto</button><button id="pl-d1" disabled>Tuffati nel punto giallo</button><button id="pl-d0" disabled>Tuffati nell’origine</button><button id="pl-vi">Vista intera</button><button id="pl-fit">Adatta R alle radici</button></div>
 </div></div></div>
-<figcaption>Piano. <span id="capPi"></span> Curva nera spessa: |f| = quota. Curve sottili: livelli |f| = 1, 2, 5 × 10ᵏ, etichettati; la banda sale da scuro a chiaro verso |f| crescente e il salto cade sulla linea. Cerchi: |z| = costante; raggi: arg z. Passo e livelli visibili si adattano allo zoom, i valori restano quelli indicati. Sul piano, passando il cursore, la barra sotto mostra z, |z|, arg z e |f|.</figcaption><div class="chip" id="chip"></div></figure>
+<figcaption><div class="stk cur" id="curp"><span id="chipv"></span><span class="gh" id="curpg" aria-hidden="true"></span></div><span class="ctx">Piano. <span id="capPi"></span> Curva nera spessa: |f| = quota. Curve sottili: livelli |f| = 1, 2, 5 × 10ᵏ, etichettati; la banda sale da scuro a chiaro verso |f| crescente e il salto cade sulla linea. Cerchi: |z| = costante; raggi: arg z. Passo e livelli visibili si adattano allo zoom, i valori restano quelli indicati. Dove c’è un puntatore con hover, la riga «Cursore» sopra mostra z, |z|, arg z, |f(z)| e arg f(z); l’ultima riga riporta GPU, zoom e iterazioni.</span><div class="stk gpuln"><span id="gpuv"></span><span class="gh" aria-hidden="true">GPU WebGL2 · zoom ×1.0e+10 · anteprima 100% · 40 iter · 999 ms/frame</span></div></figcaption></figure>
 <figure><div id="wr"><canvas id="rl" class="c"></canvas><button class="panel-btn" id="toggle-sec" title="Configura il piano di sezione" aria-label="Configura il piano di sezione">⚙️</button>
 <div class="surf-panel" id="sec-panel"><div class="surf-panel-header"><span>Vista intersezione piano di sezione</span><button id="close-sec">✕</button></div>
 <div class="surf-panel-body" style="--cols:5.2em minmax(0,1fr) 3.8em">
@@ -150,7 +152,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.chi
 <label title="Orientamento della retta nel piano di Gauss; non è una rotazione di fase di f(z)"><span>Angolo θ</span><input id="sec-th" type="range" min="0" max="360" step="1" value="0"><b><span id="sec-thv">0°</span></b></label>
 <div class="pbtn"><button id="sec-rs">Taglio sull’asse reale (d=0, θ=0°)</button></div></div><div id="sec-B" style="display:contents"></div><div class="ed-msg" id="sec-msg" role="status"></div>
 <div class="ed-info">Il piano di sezione è ortogonale al piano di Gauss e contiene la retta z(t) = u·(t + i·d), u = e<sup>iθ</sup>. Asse t: t=0 è il punto della retta più vicino all’origine.</div></div></div>
-<div class="fbg"><button class="fb" id="rz" title="Zoom su radici e massimi/minimi relativi">Zoom radici</button><button class="fb" id="fsr" title="Schermo intero" aria-label="Schermo intero"><svg width='14' height='14' viewBox='0 0 14 14' fill='none' stroke='currentColor' stroke-width='1.6'><path d='M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9'/></svg></button></div></div><figcaption>Vista intersezione piano di sezione (ingranaggio: Modalità «Offset e angolo» o «Due punti»). Asse t: ascissa lungo la retta di sezione, t=0 nel punto più vicino all’origine, verso crescente da P₁ a P₂ (o secondo θ); θ è l’orientamento della retta, non una fase di f. Sopra: <span class="ln r"></span>Re f(z(t)) (tratteggio) e <span class="ln"></span>|f(z(t))|; pallini rossi: radici sulla retta, alla loro t. Sotto: arg f(z(t)) in [0°,360°), con la stessa t; la curva si interrompe ai salti 360°↔0° e alle radici, dove la fase non è definita (linee rosse punteggiate). Con coefficienti composti reali compaiono massimi e minimi di Re f; altrimenti non sono definiti. Frecce arancioni: punti in cui si annulla solo Re f (non sono radici), con il valore di Im f. Rotella: zoom verso il cursore; trascina: sposta; Vista intera ripristina. L’intervallo t si adatta automaticamente (i valori non vengono alterati).<span id="ranote"></span></figcaption></figure>
+<div class="fbg"><button class="fb" id="rz" title="Zoom su radici e massimi/minimi relativi">Zoom radici</button><button class="fb" id="fsr" title="Schermo intero" aria-label="Schermo intero"><svg width='14' height='14' viewBox='0 0 14 14' fill='none' stroke='currentColor' stroke-width='1.6'><path d='M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9'/></svg></button></div></div><figcaption><div class="stk cur"><span id="rcur"></span><span class="gh" id="rcg" aria-hidden="true"></span></div>Vista intersezione piano di sezione (ingranaggio: Modalità «Offset e angolo» o «Due punti»). Asse t: ascissa lungo la retta di sezione, t=0 nel punto più vicino all’origine, verso crescente da P₁ a P₂ (o secondo θ); θ è l’orientamento della retta, non una fase di f. Sopra: <span class="ln r"></span>Re f(z) (tratteggio) e <span class="ln"></span>|f(z)|; pallini rossi: radici sulla retta, alla loro t. Sotto: arg f(z) in [0°,360°), con la stessa t; la curva si interrompe ai salti 360°↔0° e alle radici, dove la fase non è definita (linee rosse punteggiate). Con coefficienti composti reali compaiono massimi e minimi di Re f; altrimenti non sono definiti. Frecce arancioni: punti in cui si annulla solo Re f (non sono radici), con il valore di Im f. Dove c’è un puntatore con hover, la riga «Cursore» riporta z (il punto della sezione per quel t), |z|, arg z, |f(z)| e arg f(z). Rotella: zoom verso il cursore; trascina: sposta; Vista intera ripristina. L’intervallo t si adatta automaticamente (i valori non vengono alterati).<span id="ranote"></span></figcaption></figure>
 </div>
 <div class="info"><div class="box"><h2>Radici</h2><div id="roots"></div></div><div class="box"><h2>Punto scelto</h2><div id="probe"></div></div></div>
 <p class="sub" style="margin:18px 0 0;text-align:center">copyright: © 2026 Stefano Vesco (IK0VCK) - CatSW. All rights reserved.</p>
@@ -216,8 +218,8 @@ function glDraw(){const r=new Float32Array(16);RT.slice(0,8).forEach((z,k)=>{r[2
  gl.uniform3fv(U.uP,new Float32Array(PH[pph].flat()));gl.uniform3fv(U.uB,new Float32Array(bcols().flat()));gl.uniform1i(U.uMode,mode==='dom'?0:1);gl.uniform1i(U.uIter,ITeff());gl.uniform1i(U.uBands,cont?1:0);gl.uniform1i(U.uNR,Math.min(RT.length,8));gl.drawArrays(gl.TRIANGLES,0,3)}
 function renderPlan(){if(gl)glDraw();drawPlan();chip()}
 let hv=null;const hz=e=>{const r=pc.getBoundingClientRect();return[vcx+((e.clientX-r.left)/r.width*2-1)*vs,vcy+(1-(e.clientY-r.top)/r.height*2)*vs]};
-function chip(){const z=R/vs;let s=(gl?'GPU WebGL2':glErr)+` · zoom ×${z>=1e3?z.toExponential(1):z.toFixed(z<100?1:0)} · ${itLabel()}`;
- if(hv){const f=F(hv[0],hv[1]),P=v=>v.toPrecision(5);s+=` · z = ${P(hv[0])} ${hv[1]<0?'−':'+'} ${P(Math.abs(hv[1]))}i · |z| = ${P(Math.hypot(hv[0],hv[1]))} · arg z = ${(Math.atan2(hv[1],hv[0])*180/Math.PI).toFixed(2)}° · |f| = ${P(Math.hypot(f[0],f[1]))}`}$('chip').textContent=s}
+function chip(){const z=R/vs;$('gpuv').textContent=(gl?'GPU WebGL2':glErr)+` · zoom ×${z>=1e3?z.toExponential(1):z.toFixed(z<100?1:0)} · ${itLabel()}`;
+ let s='Cursore: ?';if(hv){const a=curItems(hv[0],hv[1],F(hv[0],hv[1]),0);if(a)s=curHTML(a)}$('chipv').innerHTML=s}
 let SN;
 function snap(nu,nv,W){const n=XN.length,X0=XN.slice(),Y0=YN.slice(),DX=new Float64Array(n),DY=new Float64Array(n),done=[];SN=new Uint8Array(n);
  for(const r of RT){const rx=r[0]/R,ry=r[1]/R;if(Math.max(Math.abs(rx),Math.abs(ry))>.9||(polar&&Math.hypot(rx,ry)>.9)||(half&&ry<-1e-9)||done.some(q=>Math.hypot(q[0]-rx,q[1]-ry)<.02))continue;done.push([rx,ry]);
@@ -444,15 +446,28 @@ function secDer(){const dx=SP[1].x-SP[0].x,dy=SP[1].y-SP[0].y,L=Math.hypot(dx,dy
 function secPre(){if(SM!=='B')return;let ch=secRes();const D=secDer(),bad=!D;if(bad!==SBAD){SBAD=bad;ch=true}if(D&&(D.d!==SD||D.th!==STH)){SD=D.d;STH=D.th;ch=true}if(ch)secSync()}
 function secBad(c,u,x,y){if(!SBAD)return;c.save();c.font=`600 ${11*u}px system-ui`;c.textAlign='left';c.textBaseline='top';c.fillStyle='#d62728';c.fillText('Servono due punti distinti: sezione precedente',x,y);c.restore()}
 function secLbl(){secBad(rg,dpr,58*dpr,40*dpr);const u=dpr;rg.save();rg.font=`600 ${11*u}px system-ui`;rg.textAlign='left';rg.textBaseline='top';const t='t — coordinata lungo la sezione';rg.lineWidth=3.2*u;rg.strokeStyle=css('--card');rg.strokeText(t,58*u,14*u);rg.fillStyle=css('--mut');rg.fillText(t,58*u,14*u);if(!secId()){const q=`d = ${tf(SD)}, θ = ${tf(STH)}°`;rg.strokeText(q,58*u,27*u);rg.fillText(q,58*u,27*u)}rg.restore()}
-function drawReal(){secPre();if(secId()){drawReal0();secLbl();return}const sv=[K,KJ,RT,CX],[A,B]=secCoef();K=A;KJ=B;RT=secRoots().map(t=>[t,0]);CX=[];RFC={fv:-1,c:null};{const sc=Math.max(1e-300,...A.map(Math.abs),...B.map(Math.abs));if(B.every(v=>Math.abs(v)<=1e-9*sc)){KJ=B.map(()=>0);const co=coList(K,KJ),n=co.length-1,cr=n>1?rtsC(co.slice(0,-1).map((c,k)=>[c[0]*(n-k),c[1]*(n-k)])):[];CX=cr.filter(r=>Math.abs(r[1])<=1e-9*(1+Math.abs(r[0]))).map(r=>{const x=r[0],h=1e-3,q=F(x-h,0)[0]+F(x+h,0)[0]-2*F(x,0)[0];return{x,y:F(x,0)[0],t:q<-1e-9?'max':q>1e-9?'min':'flesso'}})}}
- try{drawReal0()}finally{[K,KJ,RT,CX]=sv;RFC={fv:-1,c:null}}secLbl()}
+function drawReal(){secPre();if(secId()){drawReal0();secLbl();rcur();return}const sv=[K,KJ,RT,CX],[A,B]=secCoef();K=A;KJ=B;RT=secRoots().map(t=>[t,0]);CX=[];RFC={fv:-1,c:null};{const sc=Math.max(1e-300,...A.map(Math.abs),...B.map(Math.abs));if(B.every(v=>Math.abs(v)<=1e-9*sc)){KJ=B.map(()=>0);const co=coList(K,KJ),n=co.length-1,cr=n>1?rtsC(co.slice(0,-1).map((c,k)=>[c[0]*(n-k),c[1]*(n-k)])):[];CX=cr.filter(r=>Math.abs(r[1])<=1e-9*(1+Math.abs(r[0]))).map(r=>{const x=r[0],h=1e-3,q=F(x-h,0)[0]+F(x+h,0)[0]-2*F(x,0)[0];return{x,y:F(x,0)[0],t:q<-1e-9?'max':q>1e-9?'min':'flesso'}})}}
+ try{drawReal0()}finally{[K,KJ,RT,CX]=sv;RFC={fv:-1,c:null}}secLbl();rcur()}
 function realZerosOf(ca){let sc=0;for(const v of ca)sc=Math.max(sc,Math.abs(v));let n=ca.length-1;while(n>0&&Math.abs(ca[n])<1e-12*sc)n--;if(n<1||!sc)return[];
  const P=x=>{let a=0;for(let k=n;k>=0;k--)a=a*x+ca[k];return a},D=x=>{let a=0;for(let k=n;k>=1;k--)a=a*x+k*ca[k];return a},co=[];for(let k=n;k>=0;k--)co.push([ca[k],0]);
  const o=[];for(const r of rtsC(co)){if(Math.abs(r[1])>1e-6*(1+Math.abs(r[0])))continue;let x=r[0];for(let i=0;i<4;i++){const d=D(x);if(!d)break;const t=x-P(x)/d;if(Math.abs(P(t))<=Math.abs(P(x)))x=t;else break}o.push(x)}
  o.sort((a,b)=>a-b);return o.filter((x,i)=>!i||x-o[i-1]>1e-7*(1+Math.abs(x)))}
 const pmul=(a,b)=>{const c=Array(a.length+b.length-1).fill(0);a.forEach((u,i)=>b.forEach((v,j)=>{c[i+j]+=u*v}));return c},pder=a=>a.slice(1).map((v,k)=>v*(k+1));
 let RFC={fv:-1,c:null};
-/* coefficienti non tutti reali: zeri di Re f(x) (radici vere se anche Im f = 0, altrimenti «incroci») ed estremi di |f(x)|; calcolati una volta per versione di f */
+/* lettura del cursore (1.5), uguale nel piano di Gauss e nella sezione: z, |z|, arg z, |f(z)|, arg f(z). arg z in (−180°,180°]; arg f(z) in [0°,360°) come nel grafico della fase,
+   «non definita» se |f| ≤ tz. Ogni voce è non divisibile: a capo solo tra una voce e l'altra. Valori e formati numerici invariati (5 cifre significative, angoli a 2 decimali). */
+const cP=v=>v.toPrecision(5);
+function curItems(x,y,f,tz){const m=Math.hypot(f[0],f[1]);if(!isFinite(m))return null;let a='non definita';
+ if(m>tz){let d=Math.atan2(f[1],f[0])*180/Math.PI;if(d<0)d+=360;a=d.toFixed(2);if(+a>=360)a='0.00';a+='°'}
+ return[`z = ${cP(x)} ${y<0?'−':'+'} ${cP(Math.abs(y))}i`,`|z| = ${cP(Math.hypot(x,y))}`,`arg z = ${(Math.atan2(y,x)*180/Math.PI).toFixed(2)}°`,`|f(z)| = ${cP(m)}`,`arg f(z) = ${a}`]}
+const curHTML=a=>'Cursore: '+a.map((t,i)=>`<span class="it">${t}${i<a.length-1?'&nbsp;·':''}</span>`).join(' ');
+const CUR_GH=curHTML(['z = −1.2345e-7 − 1.2345e-7i','|z| = 1.2345e-7','arg z = −179.99°','|f(z)| = 1.2345e+8','arg f(z) = non definita']);
+let RG=null,RTZ=0,RCP=null;
+function rcur(){const el=$('rcur');if(!el)return;let s='Cursore: ?';
+ if(RCP&&RV&&RG){const b=rl.getBoundingClientRect(),px=(RCP.x-b.left)*rl.width/b.width,py=(RCP.y-b.top)*rl.height/b.height;
+  if(px>=RG[0]&&px<=RG[0]+RG[1]&&py>=RG[2]&&py<=RG[3]){const t=RV[0]+(px-RG[0])/RG[1]*(RV[1]-RV[0]),p=secP(t),a=curItems(p[0],p[1],F(p[0],p[1]),RTZ);if(a)s=curHTML(a)}}
+ el.innerHTML=s}
+/* coefficienti non tutti reali: zeri di Re f(z(t)) (radici vere se anche Im f = 0, altrimenti «incroci») ed estremi di |f(z(t))|; calcolati una volta per versione di f */
 function reFeat(){if(RFC.fv===FV&&RFC.c)return RFC.c;const Pr=K.slice(),Pi=KJ.slice(),cross=[],roots=[],ext=[];
  for(const x of realZerosOf(Pr)){const q=F(x,0);let s=0;for(let k=0;k<9;k++)s+=Math.hypot(K[k],KJ[k])*Math.abs(x)**k;if(Math.hypot(q[0],q[1])<=1e-9*s)roots.push(x);else cross.push({x,im:q[1]})}
  const g1=pmul(Pr,pder(Pr)),g2=pmul(Pi,pder(Pi)),g=g1.map((v,k)=>v+g2[k]);
@@ -472,11 +487,11 @@ function autoRange(x0,x1){const M=480,hv=[];for(let k=0;k<=M;k++){const q=F(x0+(
  if(!best)return null;const pd=.025*(best.b-best.a);best.a=Math.max(x0,best.a-pd);best.b=Math.min(x1,best.b+pd);const out=fe.filter(p=>p.x<best.a||p.x>best.b);return{a:best.a,b:best.b,out,mx0}}
 const rdesc=p=>p.k==='c'?`Re f = 0 in x = ${tf(p.x)} (Im f = ${tf(p.im!==undefined?p.im:p.h)})`:p.k==='e'?`estremo di |f| in x = ${tf(p.x)} (|f| = ${tf(p.h)})`:`radice reale x = ${tf(p.x)}`;
 /* grafico inferiore: arg f(z(t)) in [0°,360°); polilinea interrotta ai salti 360°↔0° (con raccordo ai bordi), agli zeri noti e dove |f| ≤ 1e-9·max|f| */
-function drawPhase(xs,ms,ys,zi,xa,xb,X,ml,pw,top,ph,u,ink,mut,bd){const Y=a=>top+ph*(1-a/360),mx=Math.max(...ms.filter(isFinite),0),tz=1e-9*mx,rt=[...RT.filter(r=>r[1]===0).map(r=>r[0]),...(hasIm()?reFeat().roots:[])];
+function drawPhase(xs,ms,ys,zi,xa,xb,X,ml,pw,top,ph,u,ink,mut,bd){const Y=a=>top+ph*(1-a/360),mx=Math.max(...ms.filter(isFinite),0),tz=1e-9*mx;RTZ=tz;const rt=[...RT.filter(r=>r[1]===0).map(r=>r[0]),...(hasIm()?reFeat().roots:[])];
  rg.font=`${11*u}px system-ui`;rg.textBaseline='middle';
  for(const a of[0,90,180,270,360]){rg.beginPath();rg.moveTo(ml,Y(a));rg.lineTo(ml+pw,Y(a));rg.strokeStyle=bd;rg.lineWidth=u;rg.stroke();rg.fillStyle=mut;rg.textAlign='right';rg.fillText(a+'°',ml-6*u,Y(a))}
  for(const t of ticks(xa,xb)){rg.beginPath();rg.moveTo(X(t),top);rg.lineTo(X(t),top+ph);rg.strokeStyle=t===0?ink:bd;rg.stroke();rg.fillStyle=mut;rg.textAlign='center';rg.fillText(tf(t),X(t),top+ph+11*u)}
- rg.textAlign='left';rg.fillStyle=mut;rg.fillText('arg f(z(t))',ml+6*u,top+9*u);
+ rg.textAlign='left';rg.fillStyle=mut;rg.fillText('arg f(z)',ml+6*u,top+9*u);
  rg.save();rg.beginPath();rg.rect(ml,top,pw,ph);rg.clip();rg.strokeStyle=CBLUE;rg.lineWidth=2.2*u;rg.lineJoin='round';rg.beginPath();let pa=null,px=0;
  const mv=(x,a)=>rg.moveTo(X(x),Y(a)),lt=(x,a)=>rg.lineTo(X(x),Y(a));
  for(let k=0;k<xs.length;k++){const z=ms[k]>tz&&isFinite(ms[k])&&isFinite(zi[k])&&isFinite(ys[k]);if(!z){pa=null;continue}let a=Math.atan2(zi[k],ys[k])*180/Math.PI;if(a<0)a+=360;if(a>=360)a=0;
@@ -486,7 +501,7 @@ function drawPhase(xs,ms,ys,zi,xa,xb,X,ml,pw,top,ph,u,ink,mut,bd){const Y=a=>top
 function drawReal0(){const w=rl.width,h=rl.height,u=dpr,ink=css('--fg'),mut=css('--mut'),bd=css('--bd'),N=400,xs=[],ys=[],zi=[];rg.clearRect(0,0,w,h);let xa=-R,xb=R,lo=0,hi=0,zy=null,zd=false,au=null;if(rzoom){const f=[...RT.filter(r=>r[1]===0).map(r=>[r[0],0]),...CX.filter(p=>p.t!=='flesso').map(p=>[p.x,p.y])];if(f.length){zd=true;const fx=f.map(p=>p[0]),fy=f.map(p=>p[1]),m=Math.max(.3,(Math.max(...fx)-Math.min(...fx))*.12);xa=Math.min(...fx)-m;xb=Math.max(...fx)+m;zy=[Math.min(...fy),Math.max(...f.map(p=>{const q=F(p[0],0);return Math.hypot(q[0],q[1])}))]}}
  if(!zd&&!rx&&rauto){au=autoRange(-R,R);if(au){xa=au.a;xb=au.b}}
  if(rx){xa=rx[0]-rx[1];xb=rx[0]+rx[1];zy=null}RV=[xa,xb];const ms=[];for(let k=0;k<=N;k++){const x=xa+(xb-xa)*k/N,q=F(x,0),y=q[0],m=Math.hypot(q[0],q[1]);xs.push(x);ys.push(y);ms.push(m);zi.push(q[1]);lo=Math.min(lo,y);hi=Math.max(hi,m)}
- if(zy){lo=zy[0];hi=zy[1]}if(hi-lo<1e-9){lo-=1;hi+=1}const pd=(hi-lo)*.08;lo-=pd;hi+=pd;const ml=52*u,mb=22*u,mt=10*u,mr=10*u,GP=12*u,pw=w-ml-mr,HV=h-mt-mb-GP,ph=HV*.75,pf=HV*.25,X=x=>ml+(x-xa)/(xb-xa)*pw,Y=y=>mt+(hi-y)/(hi-lo)*ph;
+ if(zy){lo=zy[0];hi=zy[1]}if(hi-lo<1e-9){lo-=1;hi+=1}const pd=(hi-lo)*.08;lo-=pd;hi+=pd;const ml=52*u,mb=22*u,mt=10*u,mr=10*u,GP=12*u,pw=w-ml-mr,HV=h-mt-mb-GP,ph=HV*.75,pf=HV*.25,X=x=>ml+(x-xa)/(xb-xa)*pw,Y=y=>mt+(hi-y)/(hi-lo)*ph;RG=[ml,pw,mt,h-mb];
  rg.font=`${11*u}px system-ui`;rg.textBaseline='middle';
  for(const t of ticks(lo,hi)){rg.beginPath();rg.moveTo(ml,Y(t));rg.lineTo(ml+pw,Y(t));rg.strokeStyle=t===0?ink:bd;rg.lineWidth=u;rg.stroke();rg.fillStyle=mut;rg.textAlign='right';rg.fillText(tf(t),ml-6*u,Y(t))}
  for(const t of ticks(xa,xb)){rg.beginPath();rg.moveTo(X(t),mt);rg.lineTo(X(t),mt+ph);rg.strokeStyle=t===0?ink:bd;rg.stroke();rg.fillStyle=mut;rg.textAlign='center';}
@@ -498,7 +513,7 @@ function drawReal0(){const w=rl.width,h=rl.height,u=dpr,ink=css('--fg'),mut=css(
  if(hasIm()){const c=reFeat(),dot=x=>{rg.beginPath();rg.arc(X(x),Y(0),5.5*u,0,TAU);rg.fillStyle=RED;rg.fill();rg.lineWidth=2*u;rg.strokeStyle='#fff';rg.stroke()};
   for(const x of c.roots)if(x>=xa&&x<=xb)dot(x);/* vere radici reali: Re f = Im f = 0 */
   const AO='#f28c00',L0=24*u,fs=11*u,bx=[],hit=(a,b)=>a[0]<b[2]&&a[2]>b[0]&&a[1]<b[3]&&a[3]>b[1];rg.font=`600 ${fs}px system-ui`;rg.textBaseline='middle';rg.textAlign='center';
-  for(const p of c.cross){if(p.x<xa||p.x>xb)continue;const x=X(p.x),y0=Y(0),txt=`Im f(x) = ${tf(p.im)}`,tw2=rg.measureText(txt).width,lx=Math.max(ml+tw2/2+2*u,Math.min(ml+pw-tw2/2-2*u,x));
+  for(const p of c.cross){if(p.x<xa||p.x>xb)continue;const x=X(p.x),y0=Y(0),txt=`Im f(z) = ${tf(p.im)}`,tw2=rg.measureText(txt).width,lx=Math.max(ml+tw2/2+2*u,Math.min(ml+pw-tw2/2-2*u,x));
    const sides=p.im>=0?[-1,1]:[1,-1];let pick=null;
    for(const d of sides){for(const ex of[0,16*u,32*u]){const ty=y0+d*(L0+ex),ly=ty+d*(fs*.8),r=[lx-tw2/2-2*u,ly-fs*.65,lx+tw2/2+2*u,ly+fs*.65];if(ly-fs<mt||ly+fs>mt+ph)continue;if(bx.some(b=>hit(r,b)))continue;if(!pick)pick={d,ty,ly,r}}if(pick)break}
    if(!pick){const d=sides[0],ty=y0+d*L0;pick={d,ty,ly:ty+d*fs*.8,r:[lx-tw2/2,ty,lx+tw2/2,ty+fs]}}
@@ -693,7 +708,7 @@ function autoView(){let m=0;for(const r of RT)m=Math.max(m,Math.hypot(r[0],r[1])
  for(let i=0;i<8&&R<10&&+$('lv').max<=cv*1.02;i++)setR(Math.min(10,Math.round(R*13)/10));   // la quota deve poter stare sopra l’ultimo valore critico
  setLv((cv+mmax)/2);full();setOff(calibOff())}
 /* ---- Salvataggio/caricamento JSON e link condivisibili (versione 1.1; superficie 3D WebGL dalla 1.2) ---- */
-const APPV='1.4';$('rdm').textContent='Readme - Ver. '+APPV;
+const APPV='1.5';$('rdm').textContent='Readme - Ver. '+APPV;
 const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},camera:{yaw,pitch,zoom},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice(),section:{mode:SM,offset:SD,angleDeg:STH,points:SP.map(p=>({root:p.k,re:p.x,im:p.y}))}});
 const JS_=(o,d=0)=>{if(o===null||typeof o!=='object'||Array.isArray(o)||d>=2)return JSON.stringify(o);const p='  '.repeat(d+1);return'{\n'+Object.entries(o).filter(([,v])=>v!==undefined).map(([k,v])=>p+JSON.stringify(k)+': '+JS_(v,d+1)).join(',\n')+'\n'+'  '.repeat(d)+'}'};
 const optOK=(id,v)=>typeof v==='string'&&[...$(id).options].some(q=>q.value===v);
@@ -995,8 +1010,9 @@ $('close-coeffs').onclick=()=>{ const D=DR; if(D&&(D.dirty||D.txtEdit||D.cfgView
 
 const rset=(c,h)=>{rx=[c,Math.max(1e-6,Math.min(100,h))];rzoom=false;$('rz').style.borderColor='';drawReal()},rpx=e=>{const b=rl.getBoundingClientRect();return Math.max(0,Math.min(1,((e.clientX-b.left)*rl.width/b.width-52*dpr)/(rl.width-62*dpr)))};
 rl.addEventListener('wheel',e=>{e.preventDefault();if(!RV)return;const f=rpx(e),w=RV[1]-RV[0],x0=RV[0]+f*w,w2=Math.max(2e-6,Math.min(200,w*Math.exp(e.deltaY*.0015)));rset(x0-f*w2+w2/2,w2/2)},{passive:false});
-rl.onpointerdown=e=>{if(e.button!==0)return;rl.setPointerCapture(e.pointerId);rd=e.clientX;rl.style.cursor='grabbing'};
-rl.onpointerup=rl.onpointercancel=()=>{rd=null;rl.style.cursor='grab'};
+rl.onpointerdown=e=>{if(e.button!==0)return;rl.setPointerCapture(e.pointerId);rd=e.clientX};
+rl.onpointerup=rl.onpointercancel=()=>{rd=null};
+rl.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;RCP={x:e.clientX,y:e.clientY};rcur()});rl.addEventListener('pointerleave',()=>{RCP=null;rcur()});rl.addEventListener('pointercancel',()=>{RCP=null;rcur()});
 rl.onpointermove=e=>{if(rd===null||!RV)return;const b=rl.getBoundingClientRect(),w=RV[1]-RV[0],dx=(e.clientX-rd)*rl.width/b.width/(rl.width-62*dpr)*w;rd=e.clientX;rset((RV[0]+RV[1])/2-dx,w/2)};
 
 const setP=e=>{if(mode!=='new')return;const r=pc.getBoundingClientRect();probe=[vcx+((e.clientX-r.left)/r.width*2-1)*vs,vcy+(1-(e.clientY-r.top)/r.height*2)*vs];probeUpdate()};
@@ -1076,5 +1092,7 @@ sc.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.5,Math.min(3,z
 new ResizeObserver(()=>{if(DQ.on)return;size()}).observe($('mn'));
 const themeRefresh=()=>{for(const k in CC)delete CC[k];drawSurf();drawReal()};new MutationObserver(themeRefresh).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme','class']});
 if(window.matchMedia)window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',themeRefresh);
+$('curpg').innerHTML=CUR_GH;$('rcg').innerHTML=CUR_GH;
+{const q=window.matchMedia&&matchMedia('(any-hover:hover)');if(q){const hc=()=>{if(!q.matches){hv=null;RCP=null}chip();rcur()};q.addEventListener?q.addEventListener('change',hc):q.addListener&&q.addListener(hc)}}
 initGL();initSG();if(!g3)setGL3(false,sgErr);fzText();syncHf();analyze();build();size();capt();setOff(calibOff());loadHash();
 </script></body></html>

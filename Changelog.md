@@ -11,6 +11,22 @@ updated: 2026-11-06
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
 
+## [1.5] - 2026-11-06
+
+### Added
+
+- Lettura dinamica del cursore nella vista sezione, con valore di z complesso, modulo di z, arg di z espressa in gradi, modulo |f(z| e fase arg f(z) espressa in gradi.
+
+### Changed
+
+- Uniformate le letture del cursore della vista sezione e del piano di Gauss nella prima riga delle rispettive didascalie, con prefisso fisso 'Cursore:' e impaginazione stabile.
+- Adottato il puntatore a crocetta nel grafico della vista sezione.
+- Uniformata la notazione delle etichette comprese quelle accanto alle frecce arancioni e l’etichetta arg f(z) del grafico della fase, senza modificare parametrizzazione o calcoli.
+
+### Fixed
+
+- Corretta la notazione nelle etichette accanto alle frecce della vista sezione: f(z) al posto di f(x).
+
 ## [1.4] - 2026-11-06
 
 ### Added
