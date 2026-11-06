@@ -11,6 +11,41 @@ updated: 2026-11-06
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
 
+## [1.4] - 2026-11-06
+
+### Added
+
+- **Vista intersezione piano di sezione** (ex «Vista asse reale»): la terza vista mostra f lungo una retta qualunque del piano di Gauss; il piano di sezione resta ortogonale al piano di Gauss. L'asse reale è il caso d=0, θ=0° (default, identico alla 1.3). Un'icona a ingranaggio apre il pannello di configurazione.
+- Geometria condivisa z(t) = u·(t + i·d), con u = e^(iθ): la usano piano di Gauss, vista 3D e grafico di sezione. L'asse orizzontale è etichettato «t — coordinata lungo la sezione»; t=0 è il piede della perpendicolare dall'origine (z₀ = i·d·u), non z=0.
+- Modalità A «Offset e angolo»: slider d (da −10 a 10, passo 0,05; l'intervallo si allarga se il valore corrente lo supera) e θ (0°–360°, passo 1°, orientamento geometrico della retta e non fase di f); pulsante «Taglio sull'asse reale (d=0, θ=0°)».
+- Modalità B «Due punti»: per ciascuno dei due punti una combo («Punto libero» oppure «Radice k: coordinate») e due slider Re/Im (passo 0,01), disabilitati quando il punto è collegato a una radice. Verso positivo da P₁ a P₂; il pannello mostra t₁, t₂, d e θ derivati. I punti collegati seguono le radici in tempo reale.
+- Casi degeneri: con punti coincidenti o numericamente indistinguibili (distanza ≤ 1e-9·(1+|P|)) compare «Servono due punti distinti», viene conservata l'ultima sezione valida e la condizione è segnalata anche nelle altre due viste. Se una radice collegata sparisce o cambia, il punto diventa libero con le ultime coordinate e il pannello lo dice.
+- Passaggio tra modalità senza salti: da B ad A gli slider ripartono da d e θ derivati; da A a B si ripristinano i punti precedenti se descrivono ancora lo stesso taglio, altrimenti si creano due punti liberi sulla retta (a t = ∓R/2). Le radici non vengono mai spostate.
+- Grafico della fase sotto il grafico principale della terza vista (altezze 3:1, stesso asse t, stesso zoom e panoramica): arg f(z(t)) in [0°, 360°) con atan2. La polilinea si interrompe ai salti 360°↔0° (raccordandosi ai bordi, senza segmenti verticali) e dove la fase non è definita, cioè alle radici note e dove |f| ≤ 1e-9·max|f|; le radici sono segnate con linee rosse punteggiate.
+- Piano di Gauss: retta di sezione magenta tratteggiata, ritagliata ai bordi della finestra, con tacchetta «t=0» in z₀.
+- Vista 3D: stessa traccia sul piano di Gauss, contorno tratteggiato del piano di sezione ortogonale e tacchetta «t=0».
+- Terza vista: pulsante schermo intero a destra di «Zoom radici», con lo stesso comportamento delle altre due viste (espande entrambi i grafici, mantiene il rapporto 3:1).
+- Grafico di sezione: i massimi e minimi relativi di Re f compaiono anche quando il polinomio composto lungo la retta ha coefficienti reali (riconosciuti con tolleranza relativa 1e-9, per esempio per θ=180°). Con coefficienti composti complessi non vengono etichettati.
+- Editor f(z): tre pulsanti a selezione esclusiva, zⁿ (Forma normale), (z−a) (Forma a radici) e TXT (Testo), con tooltip, nome accessibile, `aria-checked`, bordo verde e segno ✓ sul selezionato.
+- Stato: nuovo campo `view.section` (`mode`, `offset`, `angleDeg`, `points` con `root`, `re`, `im`) incluso in salvataggio, «Esporta JSON», «Condividi questa vista» e Annulla/Ripristina.
+
+### Changed
+
+- «Condividi questa vista» è ora un'icona a tre nodi collegati accanto al titolo, a sinistra di «Readme - Ver. x.y», con tooltip; funziona anche con il pannello f(z) chiuso. Il vecchio pulsante nel pannello f(z) è stato rimosso; «Esporta JSON» resta nel pannello in tutte e tre le forme.
+- Terza vista: la curva rossa tratteggiata è documentata come Re f(z(t)) (parte reale), non come la funzione complessa; il modulo |f(z(t))| resta blu. Frecce arancioni e pallini rossi seguono la coordinata t; i pallini rossi indicano le radici che appartengono davvero alla retta (tolleranza 1e-9·(1+|z|)).
+- Vista 3D: le «Curve reali nel 3D» seguono la retta di sezione e sono limitate al dominio |z| ≤ R (con |d| ≥ R non si disegnano).
+- Versione dell'app da 1.3 a 1.4. I file JSON e i link della 1.3 (e precedenti), privi di `view.section`, restano caricabili e ripristinano il taglio sull'asse reale.
+
+### Removed
+
+- Terza vista: pulsante «Auto». L'adattamento automatico dell'intervallo t resta attivo internamente; «Zoom radici» è invariato.
+
+### Known limitations
+
+- Il collegamento di un punto a una radice è per indice, non per identificatore persistente: se le radici vengono rinumerate senza cambiare il loro numero, il punto resta sull'indice.
+- Passando da B ad A con un θ non intero lo slider mostra il valore arrotondato; il taglio non salta, ma al primo movimento dello slider l'angolo si aggancia al grado intero.
+- Verifiche automatiche eseguite in Chromium headless (desktop e mobile); non eseguite prove su dispositivi reali.
+
 ## [1.3] - 2026-11-05
 
 ### Added

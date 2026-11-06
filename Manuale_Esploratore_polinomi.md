@@ -1,5 +1,5 @@
 ---
-updated: 2026-11-02
+updated: 2026-11-06
 ---
 # Esploratore di polinomi f(z)
 
@@ -29,7 +29,7 @@ Questo manuale ti porta per mano, dal primo clic fino a un frattale. Puoi legger
 - [8. Esplorazione 3: dalle radici al polinomio](#8-esplorazione-3-dalle-radici-al-polinomio)
 - [9. Esplorazione 4: simmetrie e coniugati](#9-esplorazione-4-simmetrie-e-coniugati)
 - [10. Esplorazione 5: le curve di livello e i passi di montagna](#10-esplorazione-5-le-curve-di-livello-e-i-passi-di-montagna)
-- [11. Esplorazione 6: l'asse reale e le costanti](#11-esplorazione-6-lasse-reale-e-le-costanti)
+- [11. Esplorazione 6: l'asse reale, le sezioni e le costanti](#11-esplorazione-6-lasse-reale-le-sezioni-e-le-costanti)
 - [12. Esplorazione 7: il metodo di Newton e i suoi frattali](#12-esplorazione-7-il-metodo-di-newton-e-i-suoi-frattali)
 - [13. Esplorazione 8: salvare, condividere, riprendere](#13-esplorazione-8-salvare-condividere-riprendere)
 - [14. Missioni](#14-missioni)
@@ -46,6 +46,7 @@ Con l'Esploratore puoi:
 - **costruire** un polinomio scegliendo le sue radici (e vedere i coefficienti che ne escono) oppure scegliendo i coefficienti (e vedere le radici che ne escono);
 - **scoprire** perché un polinomio di grado *n* ha sempre *n* radici (il *Teorema fondamentale dell'algebra*);
 - **seguire** le curve di livello di |f| e trovare i *punti di sella*, dove due «valli» si incontrano;
+- **tagliare** il paesaggio lungo una retta qualunque e leggere modulo, parte reale e fase della funzione su quella retta;
 - **lanciare** il metodo di Newton da un punto qualsiasi e osservare i suoi **frattali**;
 - **confrontare** una funzione prima e dopo una modifica, alternando **Annulla** e **Ripristina**;
 - **salvare** tutto ciò che hai costruito in un testo (un JSON) e ritrovarlo identico un altro giorno;
@@ -119,19 +120,21 @@ Questo modo di colorare le funzioni complesse si chiama *domain coloring* (link 
 
 | Finestra | Cosa mostra | Cosa ci puoi fare |
 |---|---|---|
-| **Vista 3D** | La superficie |f(z)|, colorata con la fase. Dischi tratteggiati: |z| costante. Sull'asse reale, due curve: f(x) (rosso tratteggiato, con segno) e |f(x)| (blu). | Trascina per ruotare; rotella o pizzico per ingrandire. |
+| **Vista 3D** | La superficie |f(z)|, colorata con la fase. Dischi tratteggiati: |z| costante. Lungo la retta di sezione (all'inizio l'asse reale), due curve: Re f (rosso tratteggiato, con segno) e |f| (blu). | Trascina per ruotare; rotella o pizzico per ingrandire. |
 | **Piano di Gauss** | La mappa dall'alto: colore = fase, curve sottili = livelli di |f| (1, 2, 5, 10…), curva nera spessa = livello della *quota*. I pallini rossi numerati sono le radici. | Rotella o pizzico per zoomare verso il cursore; trascina (o tasto destro) per spostarti. |
-| **Asse reale** | Il grafico «da scuola»: f(x) e |f(x)| per x reale. Pallini rossi = radici reali, cerchi = massimi e minimi relativi. | Rotella per zoomare; trascina per spostarti; **Zoom radici** per centrare sulle radici. |
+| **Sezione** (*Vista intersezione piano di sezione*) | Due grafici impilati, con lo stesso asse orizzontale **t**: sopra Re f (rosso tratteggiato) e |f| (blu) lungo una retta del piano; sotto la fase arg f. All'inizio la retta è l'asse reale, cioè il grafico «da scuola». Pallini rossi = radici sulla retta, cerchi = massimi e minimi relativi di Re f (solo quando lungo la retta i coefficienti sono reali). | Rotella per zoomare; trascina per spostarti; **Zoom radici** per centrare sulle radici; **⚙️** per scegliere la retta (sezione 11). |
 
 Sotto le tre finestre trovi due riquadri: **Radici** (l'elenco `z0, z1, …` con valori e moduli) e **Punto scelto** (le informazioni sul punto giallo, quando i bacini di Newton sono attivi). Appena sopra c'è una riga di sintesi, per esempio *«Grado 3. Valori critici di |f| (sella): 1.000. |f| sopra l'ultimo valore critico: una sola curva chiusa che racchiude tutte le radici.»*
 
 ### I pulsanti importanti
 
 - **Readme - Ver. x.y**, a destra del titolo in alto: apre in una nuova scheda il Readme su GitHub, punto d'accesso a questo manuale, alle note storiche, al changelog e alle note legali. Il numero è la versione dell'Esploratore che stai usando.
+- **Condividi questa vista** (icona a tre nodi collegati), accanto al titolo e a sinistra di Readme: copia negli appunti un link alla tua funzione e alla tua vista (sezione 13). Funziona anche con l'editor chiuso.
 - **f(z)**, in basso a sinistra nella vista 3D: apre l'**editor della funzione** (sezione 5).
 - **↶** e **↷**, subito a destra di f(z): **annullano** e **ripristinano** l'ultima conferma (sezione 5). Compaiono solo quando c'è qualcosa da annullare o da ripristinare.
 - **⚙️ nella vista 3D**: i controlli della superficie.
 - **⚙️ nel piano di Gauss**: i controlli del piano e dei bacini di Newton.
+- **⚙️ nella vista Sezione**: la scelta della retta di sezione (sezione 11).
 - **⛶** (angolo in alto a destra delle finestre): schermo intero per quella finestra.
 - Solo su computer, in alto: **Disposizione** (le tre finestre su 1, 2 o 3 righe) e **Tutto schermo**.
 
@@ -147,7 +150,7 @@ Sotto le tre finestre trovi due riquadri: **Radici** (l'elenco `z0, z1, …` con
 | **Metà Im z ≥ 0** | Mostra solo il semipiano superiore (vedi sezione 9). |
 | **Sopra la quota** | La parte di superficie sopra il piano grigio: *piena*, *trasparente* o *nascosta*. |
 | **Altezza logaritmica** | Comprime le altezze grandi, così si vedono anche i dettagli vicino alle radici. |
-| **Curve reali nel 3D** | Mostra o nasconde f(x) e \|f(x)\| sopra l'asse reale. |
+| **Curve reali nel 3D** | Mostra o nasconde Re f e \|f\| sopra la retta di sezione (all'inizio l'asse reale). Le curve seguono la retta e restano dentro il dominio \|z\| ≤ R. |
 | **Rotazione** | Fa girare lentamente il grafico. |
 | **Anima \|f\|** | Fa salire e scendere la quota avanti e indietro, da sola. |
 
@@ -165,8 +168,9 @@ Sotto le tre finestre trovi due riquadri: **Radici** (l'elenco `z0, z1, …` con
 | **Tuffati nel punto giallo** / **nell'origine** | Uno zoom animato molto profondo. |
 | **Vista intera** | Ripristina l'inquadratura del piano. |
 | **Adatta R alle radici** | Sceglie una finestra che contenga tutte le radici. |
+| **Radice dal piano** | Con la scelta sul piano: tocca un punto e diventa una nuova radice (apre da solo l'editor in Forma a radici). Resta spento se la scelta è già in corso, se il grado è già 8 o se f(z) è costante. |
 
-> 📱 **Sul telefono** le barre in alto non ci sono: tutto passa dai due ingranaggi e dal pulsante **f(z)**. Per scegliere il punto di Newton nel piano **tieni premuto** un istante (come per far comparire un menu); nella vista 3D lo stesso gesto, oppure il tasto destro del mouse su computer.
+> 📱 **Sul telefono** le barre in alto non ci sono: tutto passa dai tre ingranaggi e dal pulsante **f(z)**. Per scegliere il punto di Newton nel piano **tieni premuto** un istante (come per far comparire un menu); nella vista 3D lo stesso gesto, oppure il tasto destro del mouse su computer.
 
 ## 5. Primi passi: la tua prima funzione
 
@@ -174,7 +178,7 @@ Apriamo i motori in cinque mosse.
 
 1. Nella **vista 3D**, in basso a sinistra, tocca **f(z)**. Si apre l'editor.
 2. In fondo trovi quattro **Esempi**: tocca **z³ − z**.
-3. Guarda l'editor: il selettore in alto ha tre modalità (*Forma normale*, *Forma a radici*, *Testo*). Non toccare ancora niente.
+3. Guarda l'editor: in alto ci sono tre pulsanti, uno per modalità: **zⁿ** (*Forma normale*), **(z−a)** (*Forma a radici*), **TXT** (*Testo*). Quello attivo ha il bordo verde e una spunta ✓. Non toccare ancora niente.
 4. Premi **✓ Conferma** (in alto nell'editor).
 5. Ecco il tuo primo paesaggio: tre radici reali (−1, 0, 1), tre colonne di pallini rossi sul piano, una superficie con tre «punte» che toccano terra.
 
@@ -203,7 +207,7 @@ Passando il cursore sui pulsanti compare un suggerimento. Sulla tastiera funzion
 Come si comportano:
 
 - **Si ricorda un solo passo**: l'ultima conferma. Una nuova conferma prende il posto della precedente.
-- **Torna indietro più della sola formula.** Insieme alla funzione (coefficienti e radici) tornano anche i parametri di visualizzazione che la conferma aveva cambiato: la **Finestra R**, la **quota |f|** e l'**offset** scelti in automatico, oppure quelli contenuti in un JSON incollato. L'inquadratura del 3D che hai ruotato non viene toccata, salvo che la conferma l'abbia cambiata (un JSON con la camera).
+- **Torna indietro più della sola formula.** Insieme alla funzione (coefficienti e radici) tornano anche i parametri di visualizzazione che la conferma aveva cambiato: la **Finestra R**, la **quota |f|** e l'**offset** scelti in automatico, oppure quelli contenuti in un JSON incollato (compresa la retta di sezione, se il JSON ne contiene una). L'inquadratura del 3D che hai ruotato non viene toccata, salvo che la conferma l'abbia cambiata (un JSON con la camera).
 - **I pulsanti compaiono solo se servono.** Appena aperto lo strumento non c'è niente da annullare, quindi non si vede nessuno dei due. Dopo una conferma compare **↶**; dopo un Annulla scompare **↶** e compare **↷**, e viceversa.
 - **Con l'editor aperto sono spenti**, anche le scorciatoie: la bozza che stai scrivendo partiva dalla funzione attuale, e cambiarla sotto i tuoi piedi creerebbe confusione. Conferma o chiudi con ✕, poi usali.
 - **Nelle caselle di testo** (per esempio la modalità Testo) Ctrl+Z continua ad annullare la digitazione, come in qualsiasi altro programma.
@@ -300,7 +304,7 @@ Le radici si numerano **z0, z1, …**: la pagina 1 comprende z0 (e z1 se m = 2, 
 | **🗑** | Diminuisce m di 1; se m = 1 elimina la pagina. L'ultima radice non si può cancellare. |
 | **Coniugata** | Aggiunge il **coniugato** della radice corrente (lo specchio rispetto all'asse reale). |
 | **Opposta** | Aggiunge l'**opposto** −a (lo specchio rispetto all'origine). |
-| **Dal piano** | L'editor si nasconde: **tocca un punto del piano di Gauss** e quella diventa la nuova radice (arrotondata a due decimali). |
+| **Radice dal piano** | L'editor si nasconde: **tocca un punto del piano di Gauss** e quella diventa la nuova radice (arrotondata a due decimali). |
 
 Il grado totale (la somma delle molteplicità) non supera mai **8**: quando lo raggiungi, i pulsanti di aggiunta si spengono.
 
@@ -372,20 +376,83 @@ Prova con `z^4 - 5z^2 + 4`. Qui i valori critici sono **due**: 2,250 e 4,000 (la
 - **Altezza logaritmica**: spegnila e guarda cosa succede alle radici (le punte diventano meno evidenti, i picchi molto più alti).
 - **Bande di |f|**: nel piano, le fasce chiaro-scure marcano i livelli |f| = 1, 2, 5, 10, 20…; le etichette ti dicono i valori.
 
-## 11. Esplorazione 6: l'asse reale e le costanti
+## 11. Esplorazione 6: l'asse reale, le sezioni e le costanti
 
 ### Il grafico che conosci
 
-La terza finestra mostra l'asse reale: scegli `z^3 - z`.
+La terza finestra, appena aperta, mostra l'asse reale: scegli `z^3 - z`.
 
-- La curva **rossa tratteggiata** è f(x) *con il segno*: sale e scende come i grafici di scuola.
-- La curva **blu** è |f(x)|: il valore assoluto, sempre sopra lo zero.
-- I **pallini rossi** sono le radici reali: −1, 0, 1.
-- I **cerchi** sono massimi e minimi relativi di f(x).
+- La curva **rossa tratteggiata** è **Re f**, la *parte reale* di f, con il segno: se i coefficienti sono reali, sull'asse reale è proprio la f(x) che sale e scende come nei grafici di scuola.
+- La curva **blu** è |f|: il valore assoluto (il modulo), sempre sopra lo zero.
+- I **pallini rossi** sono le radici che stanno sulla retta: −1, 0, 1.
+- I **cerchi** sono massimi e minimi relativi di Re f.
 
-Rotella per zoomare, trascina per spostarti, **Zoom radici** per centrarti sulle radici.
+Rotella per zoomare, trascina per spostarti, **Zoom radici** per centrarti sulle radici, **⛶** per lo schermo intero. L'intervallo dell'asse orizzontale si adatta da solo, così valori molto grandi di |f| non schiacciano i dettagli (i valori non vengono alterati; le caratteristiche rimaste fuori intervallo sono elencate sotto il grafico).
 
-Se un coefficiente ha parte immaginaria, f(x) non è più un numero reale: *massimo* e *minimo* non hanno più senso (non si possono ordinare i numeri complessi) e i cerchi spariscono. Resta solo il modulo |f(x)|.
+Se un coefficiente ha parte immaginaria, f non è più un numero reale: *massimo* e *minimo* non hanno più senso (non si possono ordinare i numeri complessi) e i cerchi spariscono. Restano il modulo |f| e la parte reale Re f. In quel caso, dove Re f si annulla compare una **freccia arancione** con la scritta «Im f = …»: **non è una radice**, perché la parte immaginaria è ancora diversa da zero. Una vera radice richiede che si annullino *entrambe* (e quindi il modulo): è il pallino rosso.
+
+> 💡 Il modulo può toccare lo zero senza attraversarlo (è sempre ≥ 0), mentre Re f cambia segno. Un punto in cui Re f = 0 non è dunque una radice, e una radice è un punto dove |f| = 0.
+
+### Cambiare la retta di sezione
+
+L'asse reale è soltanto un caso particolare: la terza finestra, chiamata **Vista intersezione piano di sezione**, può tagliare il paesaggio lungo **una retta qualunque** del piano di Gauss. Immagina un foglio verticale che attraversa la superficie: la curva in cui il foglio taglia il paesaggio è quello che vedi nel grafico.
+
+Tocca **⚙️** nell'angolo in alto a sinistra della finestra. Il menu **Modalità** ha due voci.
+
+**Modalità «Offset e angolo»** (quella di partenza):
+
+| Controllo | Significato |
+|---|---|
+| **Offset d** | Quanto la retta è lontana dall'origine, misurato perpendicolarmente alla retta. Può essere positivo o negativo (da −10 a 10; se serve di più, il cursore si allarga). |
+| **Angolo θ** | Da 0° a 360°, a passi di 1°: l'orientamento della retta *nel piano di Gauss*. È un angolo geometrico, **non** una rotazione di fase dei valori di f: non cambia i colori, cambia dove tagli. |
+| **Taglio sull'asse reale** | Rimette d = 0 e θ = 0°. |
+
+Prova con `z^3 - 1`: porta θ a 90° e guarda piano e 3D: la retta magenta tratteggiata è diventata l'asse immaginario. Sulla retta z = *i t* si ha f = −*i t*³ − 1: la parte reale Re f è costante e vale −1 (la curva rossa è piatta) e il modulo non tocca mai lo zero, perché su quella retta non cade nessuna radice. Ora porta θ a 0° e d a 2: la retta è z = *t* + 2*i*, parallela all'asse reale e due unità più in alto.
+
+### L'asse t: dove sta lo zero?
+
+L'asse orizzontale del grafico si chiama **t — coordinata lungo la sezione**: non è la parte reale di z, ma la posizione *lungo la retta*, misurata nelle stesse unità del piano di Gauss, e cresce nel verso della retta.
+
+> **t = 0 è il punto della retta più vicino all'origine** (il piede della perpendicolare dall'origine alla retta). Coincide con z = 0 solo se la retta passa per l'origine.
+
+Esempio: sulla retta z(t) = *t* + 2*i* (d = 2, θ = 0°) il punto t = 0 è z = 2*i*; il punto z = 3 + 2*i* ha t = 3, e z = −1 + 2*i* ha t = −1. Una radice che sta sulla retta appare **alla sua t**, non alla sua parte reale.
+
+Il punto t = 0 è segnato con una tacchetta e la scritta «t=0» sia sul piano di Gauss sia nella vista 3D, così lo ritrovi in tutte e tre le finestre. Sul piano e in 3D la retta è **magenta tratteggiata**; in 3D vedi anche il contorno tratteggiato del «foglio» di sezione.
+
+Due cose da sapere:
+
+- invertire il verso (θ + 180° e −d) dà la stessa retta, ma il grafico si specchia da sinistra a destra: non è un errore;
+- θ = 0° e θ = 360° sono la stessa retta.
+
+### Una retta per due punti
+
+Scegli **Modalità → Due punti**. Compaiono due gruppi, **Punto 1** e **Punto 2**. Ciascuno ha un menu **Sorgente** e due cursori, **Re** e **Im**:
+
+- **Punto libero**: sposti il punto con i due cursori.
+- **Radice k**: il punto *coincide* con una radice della funzione (le voci sono tutte le radici correnti, con coordinate). I cursori restano visibili ma spenti e mostrano le coordinate esatte. Se sposti la radice (con **Sposta radice**), la retta la segue in tempo reale.
+
+I due menu sono indipendenti: puoi scegliere due punti liberi, un punto libero e una radice, oppure due radici. La retta passa per i due punti, **per tutta la sua lunghezza**, non solo tra i due, e il verso positivo di t va dal Punto 1 al Punto 2: scambiarli specchia il grafico. Sotto i cursori il pannello scrive t₁ e t₂ (dove stanno i due punti sull'asse t), insieme a d e θ. Non è detto che t = 0 sia uno dei due punti: lo zero resta sempre il punto della retta più vicino all'origine.
+
+Come si comporta:
+
+- Tornando a **Punto libero** il punto resta dov'era: la retta non salta.
+- Se cambi funzione e la radice collegata sparisce (o cambia), quel punto diventa libero, rimane nelle ultime coordinate e il pannello te lo dice.
+- Se i due punti coincidono (o quasi), la retta non è definita: compare «**Servono due punti distinti**», viene conservata l'ultima retta valida e lo stesso avviso appare nelle altre due finestre.
+- Passando da una modalità all'altra la retta non si muove: da *Due punti* a *Offset e angolo* i cursori partono dai valori derivati; nel verso inverso tornano i punti di prima, se descrivono ancora la stessa retta, altrimenti ne vengono creati due liberi sulla retta. Le radici non vengono mai spostate.
+
+> 🎯 **Prova:** con `z^3 - 1`, scegli come Punto 1 e Punto 2 le due radici complesse (quelle con parte immaginaria ±0,866; Punto 1 quella in alto). Ottieni la retta verticale Re z = −0,5 (d = −0,5, θ = 270°) e le due radici compaiono a t ≈ −0,87 e t ≈ +0,87.
+
+### La fase sotto il grafico
+
+Sotto il grafico principale (alto circa un quarto del totale) c'è un secondo grafico con la **fase** arg f lungo la stessa retta, con lo stesso asse t, lo stesso zoom e la stessa panoramica. L'asse verticale va da 0° a 360°, con tacche ogni 90°. La fase è l'angolo del numero f(z(t)), calcolato con atan2 e riportato in [0°, 360°).
+
+Come leggerlo:
+
+- Quando la fase supera 360° ricomincia da 0°: la curva *non* disegna un segmento verticale attraverso il grafico, ma arriva al bordo e riparte dal bordo opposto.
+- In una radice la fase non è definita (f = 0 non ha direzione): la curva si **interrompe** e lì compare una linea rossa punteggiata, allineata al pallino rosso del grafico superiore. Anche dove |f| è praticamente nullo la curva si interrompe.
+- Con `z^3 - 1` sull'asse reale la fase vale 180° a sinistra della radice x = 1 (f è negativa) e 0° a destra (f è positiva): due tratti piatti separati dalla linea rossa.
+
+> 🎯 La fase è la metà dell'informazione che i colori ti danno sul piano: qui la leggi come numero, lungo la retta che hai scelto.
 
 ### Le funzioni costanti: piani colorati
 
@@ -465,22 +532,23 @@ Premi **Interpreta** (o direttamente **✓ Conferma**): se la formula è sbaglia
 
 ### Il salvataggio
 
-Nella modalità Testo, il pulsante **Esporta JSON** copia negli appunti un testo con **tutto**: la funzione (coefficienti e radici) e l'aspetto (finestra R, quota, altezza, palette, dominio, bacini di Newton, inquadratura del 3D e del piano…). Incollalo dove vuoi: nelle note, in un'e-mail, in un messaggio ai compagni, in un file di testo. Somiglia a questo:
+In ognuna delle tre forme dell'editor, il pulsante **Esporta JSON** copia negli appunti un testo con **tutto**: la funzione (coefficienti e radici) e l'aspetto (finestra R, quota, altezza, palette, dominio, bacini di Newton, inquadratura del 3D e del piano, retta di sezione…). Incollalo dove vuoi: nelle note, in un'e-mail, in un messaggio ai compagni, in un file di testo. Somiglia a questo:
 
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.1",
+  "version": "1.4",
   "f": {
     "formula": "z3 − 1",
     "coeffs": [[-1, 0], [0, 0], [0, 0], [1, 0], [0, 0], …],
     "roots": [ … ]
   },
-  "view": { "R": 1.8, "level": 2, "domain": "polar", … }
+  "view": { "R": 1.8, "level": 2, "domain": "polar",
+            "section": { "mode": "A", "offset": 0, "angleDeg": 0 }, … }
 }
 ```
 
-Il campo `version` dice con quale versione del formato è stato scritto il file (ora **1.1**). I file salvati con le versioni precedenti (1.0) si caricano senza problemi; se il file è più recente del programma, i campi sconosciuti vengono ignorati e un avviso te lo segnala.
+Il campo `version` dice con quale versione del formato è stato scritto il file (ora **1.4**). I file salvati con le versioni precedenti si caricano senza problemi (se non contengono la retta di sezione, riparti dal taglio sull'asse reale); se il file è più recente del programma, i campi sconosciuti vengono ignorati e un avviso te lo segnala.
 
 ### Il ripristino
 
@@ -490,18 +558,18 @@ Un altro giorno: apri l'Esploratore, **f(z)** → **Testo**, **incolla il JSON**
 
 Il JSON è completo ma scomodo da mandare in giro. Quando vuoi solo dire a qualcuno «guarda che bella», c'è il **link**.
 
-Nell'editor, in modalità **Testo**, subito a destra di **Esporta JSON** trovi **Condividi questa vista**. Premilo: negli appunti finisce un indirizzo di questo tipo:
+In alto, accanto al titolo e a sinistra di **Readme**, trovi l'icona **Condividi questa vista** (tre punti collegati). Funziona con l'editor chiuso o aperto. Premila: negli appunti finisce un indirizzo di questo tipo:
 
 ```
 https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIs…
 ```
 
-Chi lo apre, dal computer o dal telefono, vede **subito** la tua funzione con la tua vista (finestra R, quota, altezza, offset, dominio, tavolozze, bacini di Newton, inquadratura del 3D e del piano, punto giallo): niente da incollare, niente da confermare. La parte dopo `#v=` è la configurazione codificata e resta nel browser: non viene inviata al server della pagina.
+Chi lo apre, dal computer o dal telefono, vede **subito** la tua funzione con la tua vista (finestra R, quota, altezza, offset, dominio, tavolozze, bacini di Newton, inquadratura del 3D e del piano, punto giallo, retta di sezione): niente da incollare, niente da confermare. La parte dopo `#v=` è la configurazione codificata e resta nel browser: non viene inviata al server della pagina.
 
 Qualche cosa da sapere:
 
 - **Il link non sostituisce il JSON.** Contiene la funzione (i coefficienti) e i parametri di vista, ma non la forma a radici. Se avevi costruito la funzione a radici, chi apre il link trova la stessa funzione, ma con i coefficienti *a′* ridistribuiti (il coefficiente direttivo va sul primo fattore, gli altri valgono 1). Per conservare tutto, usa **Esporta JSON**.
-- **Condivide la bozza così com'è**, anche se non l'hai ancora confermata, come fa Esporta JSON. Con la funzione nulla il pulsante non è disponibile.
+- **Con l'editor aperto condivide la bozza così com'è**, anche se non l'hai ancora confermata, come fa Esporta JSON; con l'editor chiuso condivide la funzione attuale. Con la funzione nulla, nell'editor, non è disponibile.
 - **Quanto è lungo?** Da circa 700 a circa 1300 caratteri, secondo la funzione: va bene per un messaggio o un'e-mail. Se per qualche motivo ti arriva troncato, la via sicura resta il JSON.
 - **Il link si apre nel browser**: non va incollato nell'editor, dove serve invece il JSON.
 - **Aprire un link non si può annullare** con **↶**: lo strumento non ricorda la funzione con cui si era aperto.
@@ -578,6 +646,27 @@ Basta rendere non nullo un solo coefficiente immaginario: per esempio Im c₁ = 
 Per **tutti** quelli di grado 2 con due radici distinte: il confine è la **perpendicolare al segmento che unisce le radici, nel punto medio** (l'asse del segmento). Provalo con `z^2 - 1`, `z^2 + 1` e `(z-1)(z-3)`.
 </details>
 
+**Missione 11 — Radici nascoste.** Con `z^2 + 1` l'asse reale non mostra radici. Trova una retta di sezione sulla quale la curva blu *tocca* lo zero e il grafico mostra pallini rossi. Dove stanno e che cosa fa la fase?
+
+<details><summary>Soluzione</summary>
+
+L'asse immaginario: Modalità *Offset e angolo*, d = 0, θ = 90°. Lì z = *i t* e f = 1 − t², quindi i pallini rossi stanno in t = −1 e t = 1 (le radici ±*i*). La fase vale 0° tra le due radici (f positiva) e 180° fuori (f negativa), con due interruzioni, una per radice.
+</details>
+
+**Missione 12 — La retta per due radici.** Con `z^4 - 1`, trova (con *Due punti*) la retta che passa per le radici 1 e *i*. Quanto valgono d e θ? Dove sta t = 0 sul piano?
+
+<details><summary>Soluzione</summary>
+
+d = −√2/2 ≈ −0,707 e θ = 135°. Le due radici compaiono in t = ∓0,707. Il punto t = 0 è z = 0,5 + 0,5*i*, il punto medio tra 1 e *i*, il più vicino all'origine su quella retta. Le altre due radici (−1 e −*i*) non stanno sulla retta, quindi non hanno pallini.
+</details>
+
+**Missione 13 — Il confine non è una radice.** Con coefficienti complessi, per esempio `z^2 + 0,5i z - 1`, trova sull'asse reale un punto in cui compare una freccia arancione. Perché non è una radice?
+
+<details><summary>Soluzione</summary>
+
+La freccia segna dove Re f = 0, ma la scritta «Im f = …» mostra che la parte immaginaria è ancora diversa da zero: f non è zero, e infatti |f| (la curva blu) non tocca lo zero in quel punto. Una radice richiede Re f = Im f = 0.
+</details>
+
 **Missione 10 — Caccia al frattale.** Trova un polinomio di grado ≤ 5 il cui bordo dei bacini di Newton sia, a tuo giudizio, il più bello. Esporta il JSON e confrontalo con quello dei compagni.
 
 ## 15. Trucchi e scorciatoie
@@ -594,7 +683,11 @@ Per **tutti** quelli di grado 2 con due radici distinte: il confine è la **perp
 | Tornare a un'inquadratura pulita | **Vista intera** (⚙️ del piano) |
 | Passare da una radice all'altra nell'editor | Le frecce **◀ ▶** o il menu a tendina; su computer anche le frecce ← → della tastiera |
 | Scartare le modifiche non ancora confermate | **✕** (premilo due volte se la bozza è modificata) |
-| Mandare a qualcuno la tua funzione e la tua vista | **f(z)** → **Testo** → **Condividi questa vista**, poi incolla il link |
+| Mandare a qualcuno la tua funzione e la tua vista | Icona **Condividi questa vista** accanto a Readme, poi incolla il link |
+| Scegliere la retta di sezione | **⚙️** nella terza finestra: *Offset e angolo* oppure *Due punti* |
+| Tornare al taglio sull'asse reale | **Taglio sull'asse reale** nel pannello della sezione |
+| Mostrare la sola vista Sezione a tutto schermo | **⛶** a destra di **Zoom radici** |
+| Cambiare la forma di f(z) | I tre pulsanti **zⁿ**, **(z−a)**, **TXT** in alto nell'editor |
 | Aprire il Readme (manuale, changelog, note legali) | Pulsante **Readme - Ver. x.y** accanto al titolo |
 | Annullare l'ultima funzione confermata | **↶** (a destra di f(z)) oppure **Ctrl+Z** |
 | Ripristinare la modifica annullata | **↷** oppure **Ctrl+Y** |
@@ -624,11 +717,21 @@ Per **tutti** quelli di grado 2 con due radici distinte: il confine è la **perp
 
 **Il Ripristino (↷) è sparito.** L'hai perso trascinando una radice sul piano dopo l'Annulla, oppure con una nuova conferma.
 
-**«Condividi questa vista» dice «non disponibile».** La funzione è nulla (tutti i coefficienti a zero) oppure, in Forma a radici, un coefficiente *a′* è zero: correggi e riprova.
+**«Condividi questa vista» dice «non disponibile».** Con l'editor aperto, la funzione è nulla (tutti i coefficienti a zero) oppure, in Forma a radici, un coefficiente *a′* è zero: correggi e riprova.
 
 **Apro un link e vedo la vista predefinita con un avviso rosso.** Il link è incompleto o rovinato (capita se viene troncato o se se ne copia solo una parte): chiedi di rimandartelo, o fatti mandare il JSON.
 
 **Il link non si apre uguale a come lo vedeva chi l'ha mandato.** Ricorda che il link porta la funzione e la vista ma non la forma a radici, e che chi lo ha creato da un file locale ti manda alla versione pubblicata su GitHub Pages.
+
+**Compare «Servono due punti distinti».** Nella Modalità *Due punti* i due punti coincidono, o sono troppo vicini (per esempio hai scelto la stessa radice due volte). Finché non li separi vedi l'ultima retta valida, segnalata anche sul piano e in 3D.
+
+**Un punto non segue più la radice.** La radice collegata è sparita o è cambiata (hai confermato una funzione con radici diverse): il punto è tornato libero e rimane dov'era. Selezionalo di nuovo dal menu **Sorgente**.
+
+**Nel grafico della fase la curva si interrompe.** È normale: si interrompe quando la fase passa da 360° a 0° e nelle radici, dove la fase non è definita.
+
+**La retta di sezione non si vede sul piano.** Controlla di non aver zoomato su una zona lontana: la retta è ritagliata alla finestra e può restarne fuori. **Vista intera** nel pannello del piano ti riporta all'inquadratura iniziale.
+
+**Il pulsante Auto non c'è più.** Dalla 1.4 l'intervallo dell'asse t si adatta da solo; resta **Zoom radici**.
 
 **Ho chiuso tutto e ho perso la mia funzione.** Se non hai salvato un JSON (o un link), torna a scriverla nella modalità Testo: dalla formula leggibile nel box in alto ritrovi i coefficienti.
 
@@ -648,6 +751,9 @@ Per **tutti** quelli di grado 2 con due radici distinte: il confine è la **perp
 | **Punto critico, valore critico** | Un punto dove f′ = 0, e il valore di |f| in quel punto. |
 | **Sella** | Un punto critico che è un passo di montagna: sale da un lato e scende dall'altro. |
 | **Curva di livello** | Tutti i punti dove |f| ha lo stesso valore. |
+| **Retta di sezione** | La retta del piano di Gauss lungo cui si taglia il paesaggio nella terza finestra. |
+| **Coordinata t** | La posizione lungo la retta di sezione; t = 0 è il punto più vicino all'origine. |
+| **Offset d, angolo θ** | Distanza orientata della retta dall'origine e suo orientamento nel piano di Gauss (non una fase). |
 | **Bacino di attrazione** | L'insieme dei punti da cui il metodo di Newton arriva alla stessa radice. |
 | **Frattale** | Una figura con dettagli simili a tutte le scale di ingrandimento. |
 
@@ -760,4 +866,4 @@ Esplora il seguente esempio intorno all'origine:
 
 ---
 
-*Manuale scritto per l'Esploratore di polinomi f(z), versione 1.1. Buone esplorazioni, e ricordati: dove i colori si annodano, c'è una radice.*
+*Manuale scritto per l'Esploratore di polinomi f(z), versione 1.4. Buone esplorazioni, e ricordati: dove i colori si annodano, c'è una radice.*

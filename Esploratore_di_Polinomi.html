@@ -50,6 +50,8 @@ button:hover,select:hover{border-color:var(--ac)}button:focus-visible,select:foc
 .stack{position:relative;width:100%;aspect-ratio:1;background:var(--card);border:1px solid var(--bd);border-radius:10px;overflow:hidden}
 .stack canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}#plan{cursor:crosshair}
 canvas.c{width:100%;display:block;background:var(--card);border:1px solid var(--bd);border-radius:10px;touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+#wr:fullscreen,#wr.is-fullscreen{background:var(--bg);width:100vw;height:100vh;height:100dvh;position:fixed;top:0;left:0;z-index:99999}#wr:fullscreen #rl,#wr.is-fullscreen #rl{height:100%;aspect-ratio:auto;border:0;border-radius:0}
+.mseg{display:flex;gap:6px;width:100%}.mseg button{flex:1;min-height:40px;font:600 14px Georgia,serif;border:2px solid var(--bd);border-radius:8px}.mseg button[aria-checked=true]{border-color:#1a9850;background:color-mix(in srgb,#1a9850 18%,var(--bg));box-shadow:inset 0 -3px 0 #1a9850}.mseg button[aria-checked=true]::before{content:'✓ '}
 #surf{aspect-ratio:1;cursor:grab}#rl{aspect-ratio:1;cursor:grab}
 figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.chip{min-height:2.6em;font-size:12px;color:var(--ac);font-variant-numeric:tabular-nums}
 .info{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:12px;margin-top:12px}
@@ -75,7 +77,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.chi
 #w3:fullscreen,#w3.is-fullscreen{border:0;border-radius:0}
 #w3:fullscreen #surf,#w3.is-fullscreen #surf,#w3:fullscreen #surfBG,#w3.is-fullscreen #surfBG,#w3:fullscreen #surfGL,#w3.is-fullscreen #surfGL{border-radius:0}
 </style></head><body><main id="mn">
-<div class="hd"><h1>Esploratore di polinomi f(z)</h1><a id="rdm" class="lnkbtn" href="https://github.com/CatSW/polinomi-fz/blob/master/Readme.md" target="_blank" rel="noopener noreferrer" title="Apre il README su GitHub (manuale, note storiche, changelog) in una nuova scheda">Readme</a></div>
+<div class="hd"><h1>Esploratore di polinomi f(z)</h1><button class="lnkbtn" id="shr" title="Condividi questa vista" aria-label="Condividi questa vista" style="display:inline-flex;align-items:center;padding:4px 7px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg></button><a id="rdm" class="lnkbtn" href="https://github.com/CatSW/polinomi-fz/blob/master/Readme.md" target="_blank" rel="noopener noreferrer" title="Apre il README su GitHub (manuale, note storiche, changelog) in una nuova scheda">Readme</a></div>
 <p class="sub">Polinomio fino al grado 8 con coefficienti complessi su tutti i termini; si definisce dal pulsante f(z) in basso a sinistra nella vista 3D (forma normale o a radici, con conferma finale).</p>
 <div id="lkmsg" class="ed-msg" title="Clic per chiudere" hidden></div>
 <div class="box" id="fz" style="margin-bottom:10px;font:600 19px/1.5 Georgia,serif;overflow-wrap:anywhere"></div>
@@ -140,7 +142,15 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.chi
 <div class="pbtn"><button id="pl-mv" title="Attiva la modalità per trascinare una radice sul piano">Sposta radice</button><button id="pl-pick" title="Sceglie la nuova radice cliccando sul piano di Gauss">Radice dal piano</button><button id="pl-s1">|f| = valore critico</button><button id="pl-st">Passo di Newton</button><button id="pl-rs">Riporta il punto</button><button id="pl-d1" disabled>Tuffati nel punto giallo</button><button id="pl-d0" disabled>Tuffati nell’origine</button><button id="pl-vi">Vista intera</button><button id="pl-fit">Adatta R alle radici</button></div>
 </div></div></div>
 <figcaption>Piano. <span id="capPi"></span> Curva nera spessa: |f| = quota. Curve sottili: livelli |f| = 1, 2, 5 × 10ᵏ, etichettati; la banda sale da scuro a chiaro verso |f| crescente e il salto cade sulla linea. Cerchi: |z| = costante; raggi: arg z. Passo e livelli visibili si adattano allo zoom, i valori restano quelli indicati. Sul piano, passando il cursore, la barra sotto mostra z, |z|, arg z e |f|.</figcaption><div class="chip" id="chip"></div></figure>
-<figure><div id="wr"><canvas id="rl" class="c"></canvas><div class="fbg"><button class="fb" id="rauto" title="Intervallo x automatico: evita che valori molto grandi di |f| schiaccino radici, minimi e massimi">Auto</button><button class="fb" id="rz" title="Zoom su radici e massimi/minimi relativi">Zoom radici</button></div></div><figcaption>Asse reale, x da −R a R (rotella: zoom verso il cursore; trascina: sposta; Vista intera ripristina). <span class="ln r"></span>f(x), <span class="ln"></span>|f(x)|; pallini rossi: radici reali; cerchi: massimi e minimi relativi. Con coefficienti non tutti reali: tratteggio = Re f(x), blu = |f(x)|; massimi e minimi di f(x) non sono definiti; frecce arancioni: punti in cui si annulla solo Re f(x) (non sono radici), con il valore di Im f(x). «Auto» sceglie l’intervallo x in modo che i valori molto grandi di |f| non schiaccino i dettagli; i valori della funzione non vengono alterati.<span id="ranote"></span></figcaption></figure>
+<figure><div id="wr"><canvas id="rl" class="c"></canvas><button class="panel-btn" id="toggle-sec" title="Configura il piano di sezione" aria-label="Configura il piano di sezione">⚙️</button>
+<div class="surf-panel" id="sec-panel"><div class="surf-panel-header"><span>Vista intersezione piano di sezione</span><button id="close-sec">✕</button></div>
+<div class="surf-panel-body" style="--cols:5.2em minmax(0,1fr) 3.8em">
+<label><span>Modalità</span><select id="sec-mode"><option value="A" selected>Offset e angolo</option><option value="B">Due punti</option></select></label>
+<div id="sec-A" style="display:contents"><label title="Distanza orientata della retta dall’origine, misurata lungo la sua normale"><span>Offset d</span><input id="sec-d" type="range" min="-10" max="10" step="0.05" value="0"><b><span id="sec-dv">0.00</span></b></label>
+<label title="Orientamento della retta nel piano di Gauss; non è una rotazione di fase di f(z)"><span>Angolo θ</span><input id="sec-th" type="range" min="0" max="360" step="1" value="0"><b><span id="sec-thv">0°</span></b></label>
+<div class="pbtn"><button id="sec-rs">Taglio sull’asse reale (d=0, θ=0°)</button></div></div><div id="sec-B" style="display:contents"></div><div class="ed-msg" id="sec-msg" role="status"></div>
+<div class="ed-info">Il piano di sezione è ortogonale al piano di Gauss e contiene la retta z(t) = u·(t + i·d), u = e<sup>iθ</sup>. Asse t: t=0 è il punto della retta più vicino all’origine.</div></div></div>
+<div class="fbg"><button class="fb" id="rz" title="Zoom su radici e massimi/minimi relativi">Zoom radici</button><button class="fb" id="fsr" title="Schermo intero" aria-label="Schermo intero"><svg width='14' height='14' viewBox='0 0 14 14' fill='none' stroke='currentColor' stroke-width='1.6'><path d='M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9'/></svg></button></div></div><figcaption>Vista intersezione piano di sezione (ingranaggio: Modalità «Offset e angolo» o «Due punti»). Asse t: ascissa lungo la retta di sezione, t=0 nel punto più vicino all’origine, verso crescente da P₁ a P₂ (o secondo θ); θ è l’orientamento della retta, non una fase di f. Sopra: <span class="ln r"></span>Re f(z(t)) (tratteggio) e <span class="ln"></span>|f(z(t))|; pallini rossi: radici sulla retta, alla loro t. Sotto: arg f(z(t)) in [0°,360°), con la stessa t; la curva si interrompe ai salti 360°↔0° e alle radici, dove la fase non è definita (linee rosse punteggiate). Con coefficienti composti reali compaiono massimi e minimi di Re f; altrimenti non sono definiti. Frecce arancioni: punti in cui si annulla solo Re f (non sono radici), con il valore di Im f. Rotella: zoom verso il cursore; trascina: sposta; Vista intera ripristina. L’intervallo t si adatta automaticamente (i valori non vengono alterati).<span id="ranote"></span></figcaption></figure>
 </div>
 <div class="info"><div class="box"><h2>Radici</h2><div id="roots"></div></div><div class="box"><h2>Punto scelto</h2><div id="probe"></div></div></div>
 <p class="sub" style="margin:18px 0 0;text-align:center">copyright: © 2026 Stefano Vesco (IK0VCK) - CatSW. All rights reserved.</p>
@@ -261,13 +271,13 @@ function clipPoly(V,c,below){const o=[],zc=hm(c);for(let k=0;k<V.length;k++){con
 function toPoly(P,q,xOff){const pts=[];let d=0;for(const p of P){const s=proj(p[0],p[1],p[2],xOff);pts.push(s[0],s[1]);d+=s[2]}return{pts,d:d/P.length*4,q}}
 function fillQ(q,f,s){const P=q.P;sg.beginPath();sg.moveTo(PX[P[0]],PY[P[0]]);for(let k=1;k<P.length;k++)sg.lineTo(PX[P[k]],PY[P[k]]);sg.closePath();sg.fillStyle=f;sg.fill();if(s){sg.strokeStyle=f;sg.lineWidth=.6*dpr;sg.stroke()}}
 function fillPoly(p,f,s){sg.beginPath();sg.moveTo(p[0],p[1]);for(let k=2;k<p.length;k+=2)sg.lineTo(p[k],p[k+1]);sg.closePath();sg.fillStyle=f;sg.fill();if(s){sg.strokeStyle=f;sg.lineWidth=.6*dpr;sg.stroke()}}
-function drawSurf2D(ph){sg=ph==='bg'?bg:sf;const xOff = setCam();const XS=ph==='bg'?null:Array.from({length:161},(_,k)=>-1+k/80).concat(RT.filter(r=>r[1]===0&&Math.abs(r[0])<=R).map(r=>r[0]/R)).sort((a,b)=>a-b);const u=dpr,zc=hm(lv),ink=css('--fg'),mut=css('--mut');sg.clearRect(0,0,CW,CH);sg.lineJoin='round';sg.lineCap='round';sg.font=`${12*u}px system-ui`;sg.textBaseline='middle';
+function drawSurf2D(ph){secPre();sg=ph==='bg'?bg:sf;const xOff = setCam();const tm=secTm(),XS=ph==='bg'?null:Array.from({length:161},(_,k)=>(-1+k/80)*tm/R).concat(secRoots().filter(t=>Math.abs(t)<=tm).map(t=>t/R)).sort((a,b)=>a-b);const u=dpr,zc=hm(lv),ink=css('--fg'),mut=css('--mut');sg.clearRect(0,0,CW,CH);sg.lineJoin='round';sg.lineCap='round';sg.font=`${12*u}px system-ui`;sg.textBaseline='middle';
  if(!ph)for(let k=0;k<XN.length;k++){const X=XN[k],Y=YN[k],x1=X*cyw-Y*syw,y1=X*syw+Y*cyw,z=HT[k]-.5,v=z*cpt+y1*spt,d=y1*cpt-z*spt,p=9/(9+d);PX[k]=CW/2+xOff+(x1*p+.1)*SS;PY[k]=CH*.54-yoff*CH-v*p*SS;PD[k]=d}
  const ln=(P,Q,col,w,dash)=>{const a=proj(...P,xOff),b=proj(...Q,xOff);sg.beginPath();sg.setLineDash(dash||[]);sg.moveTo(a[0],a[1]);sg.lineTo(b[0],b[1]);sg.strokeStyle=col;sg.lineWidth=w*u;sg.stroke();sg.setLineDash([])};
  const tx=(P,s,col,al)=>{const a=proj(...P,xOff);sg.fillStyle=col;sg.textAlign=al||'center';sg.fillText(s,a[0],a[1])};
  if(ph!=='fg'){sg.beginPath();BD.forEach((p,k)=>{const s=proj(p[0],p[1],0,xOff);k?sg.lineTo(s[0],s[1]):sg.moveTo(s[0],s[1])});sg.closePath();sg.strokeStyle=mut;sg.lineWidth=u;sg.stroke();
  ln([-1,0,0],[1,0,0],mut,1,[4*u,4*u]);ln([0,half?0:-1,0],[0,1,0],mut,1,[4*u,4*u]);tx([1.14,0,0],'Re(z)',ink);tx([0,1.12,0],'Im(z)',ink);
- {const XA=-1.18,top=Math.max(...HT),hl=(P,s,col,al)=>{const a=proj(...P,xOff);sg.lineWidth=3.5*u;sg.strokeStyle=css('--card');sg.textAlign=al;sg.strokeText(s,a[0],a[1]);sg.fillStyle=col;sg.fillText(s,a[0],a[1])};let fmn=0;if(showR)for(let k=0;k<=80;k++)fmn=Math.min(fmn,F((-1+k/40)*R,0)[0]);
+ {const XA=-1.18,top=Math.max(...HT),hl=(P,s,col,al)=>{const a=proj(...P,xOff);sg.lineWidth=3.5*u;sg.strokeStyle=css('--card');sg.textAlign=al;sg.strokeText(s,a[0],a[1]);sg.fillStyle=col;sg.fillText(s,a[0],a[1])};let fmn=0;if(showR)for(let k=0;k<=80;k++)fmn=Math.min(fmn,secF((-1+k/40)*tm)[0]);
   const cand=lg?Array.from({length:30},(_,k)=>[1,2,5][k%3]*10**(Math.floor(k/3)-1)).filter(v=>hm(v)<=top):ticks(0,mmax).filter(v=>v>0&&hm(v)<=top+1e-9),tk=[[0,0]],ng=[];let last=0;
   for(const v of cand){const h=hm(v);if(h-last>.07){tk.push([v,h]);last=h}}last=0;if(fmn<0)for(const v of cand){const h=hm(v);if(v<=-fmn&&h-last>.07){ng.push([-v,-h]);last=h}}
   const lo=ng.length?ng[ng.length-1][1]:0;ln([XA,0,lo],[XA,0,top],mut,1);for(const[v,h]of[...ng,...tk]){ln([XA,0,h],[XA-.04,0,h],mut,1);hl([XA-.07,0,h],tf(v),v===0?ink:mut,'right')}hl([XA,0,top+.09],'|f|, f(x)',ink,'center')}
@@ -280,7 +290,7 @@ function drawSurf2D(ph){sg=ph==='bg'?bg:sf;const xOff = setCam();const XS=ph==='
  const pl=toPoly(BD.map(p=>[p[0],p[1],zc]),null,xOff).pts;fillPoly(pl,'rgba(128,128,128,.26)');sg.strokeStyle='rgba(110,108,104,.9)';sg.lineWidth=u;sg.stroke();
  const cs=contour();for(const[wd,col]of[[4.5,'#fff'],[2.4,'#111']]){sg.beginPath();for(let k=0;k<cs.length;k+=2){const a=proj(cs[k][0],cs[k][1],zc,xOff),b=proj(cs[k+1][0],cs[k+1][1],zc,xOff);sg.moveTo(a[0],a[1]);sg.lineTo(b[0],b[1])}sg.lineWidth=wd*u;sg.strokeStyle=col;sg.stroke()}
  for(const p of hi){const f=upm==='gh'?p.q.gh:p.q.col,st=upm!=='gh';p.pts?fillPoly(p.pts,f,st):fillQ(p.q,f,st)}}
- if(showR)for(let[sgn,col,dash,wd]of[[0,CBLUE,[],2.6],[1,CRED,[6*u,5*u],2.4]]){sg.beginPath();sg.setLineDash(dash);for(let k=0;k<XS.length;k++){const x=XS[k],f=F(x*R,0),v=f[0],h=sgn?(v<0?-1:1)*hm(Math.abs(v)):hm(Math.hypot(f[0],f[1])),s=proj(x,0,h,xOff);k?sg.lineTo(s[0],s[1]):sg.moveTo(s[0],s[1])}sg.strokeStyle=col;sg.lineWidth=wd*u;sg.stroke();sg.setLineDash([])}
+ if(showR&&tm>0)for(let[sgn,col,dash,wd]of[[0,CBLUE,[],2.6],[1,CRED,[6*u,5*u],2.4]]){sg.beginPath();sg.setLineDash(dash);for(let k=0;k<XS.length;k++){const x=XS[k],f=secF(x*R),pp=secP(x*R),v=f[0],h=sgn?(v<0?-1:1)*hm(Math.abs(v)):hm(Math.hypot(f[0],f[1])),s=proj(pp[0]/R,pp[1]/R,h,xOff);k?sg.lineTo(s[0],s[1]):sg.moveTo(s[0],s[1])}sg.strokeStyle=col;sg.lineWidth=wd*u;sg.stroke();sg.setLineDash([])}
  {const XA=-1.18,a=proj(XA+.015,0,zc,xOff),t=proj(XA+.10,0,zc,xOff),sd=t[0]>=a[0]?1:-1,lb=lv.toFixed(2),dx=a[0]-t[0],dy=a[1]-t[1],Ln=Math.hypot(dx,dy)||1,ux=dx/Ln,uy=dy/Ln,hd=6*u;
   sg.beginPath();sg.moveTo(t[0],t[1]);sg.lineTo(a[0],a[1]);sg.strokeStyle=ink;sg.lineWidth=1.5*u;sg.stroke();
   sg.beginPath();sg.moveTo(a[0],a[1]);sg.lineTo(a[0]-ux*hd-uy*hd*.5,a[1]-uy*hd+ux*hd*.5);sg.lineTo(a[0]-ux*hd+uy*hd*.5,a[1]-uy*hd-ux*hd*.5);sg.closePath();sg.fillStyle=ink;sg.fill();
@@ -292,7 +302,7 @@ function drawSurf2D(ph){sg=ph==='bg'?bg:sf;const xOff = setCam();const XS=ph==='
   sg.fillStyle='#ffd400';sg.strokeStyle='#111';sg.beginPath();sg.arc(t[0],t[1],6*u,0,TAU);sg.fill();sg.stroke();
  }
 
- refCirc(u,ink,xOff);
+ secDraw3(ln,tx,zc,u);refCirc(u,ink,xOff);
  for(const r of RT){if(Math.hypot(r[0],r[1])>R||(half&&r[1]<-1e-9))continue;const s=proj(r[0]/R,r[1]/R,0,xOff);sg.fillStyle=RED;sg.strokeStyle='#fff';sg.lineWidth=2*u;sg.beginPath();sg.arc(s[0],s[1],5.5*u,0,TAU);sg.fill();sg.stroke();sg.strokeStyle='#000';sg.lineWidth=u;sg.beginPath();sg.arc(s[0],s[1],6.8*u,0,TAU);sg.stroke()}
 sg=sf}
 function refCirc(u,ink,xOff=0){const s=[1,2,5].flatMap(c=>[-2,-1,0,1].map(e=>c*10**e)).filter(v=>v<=R/1.65).reduce((a,b)=>Math.max(a,b),.1),V=2*s<=.9*R?[s,2*s]:[s],t1=half?Math.PI:TAU;
@@ -414,7 +424,28 @@ const ticks=(a,b)=>{const r=(b-a)/5,m=Math.pow(10,Math.floor(Math.log10(r))),s=(
 const tf=v=>String(+v.toPrecision(3)).replace('-','−');
 
 /* ---- Asse reale: caratteristiche (zeri di Re f, estremi di |f|), intervallo automatico, frecce sugli zeri della sola parte reale (1.3) ---- */
-const RKAPPA=6;
+const RKAPPA=6,SECC='#d100d1';let SD=0,STH=0,SM='A',SBAD=false,SMSG='',SP=[{k:null,n:0,x:-1,y:0},{k:null,n:0,x:1,y:0}];
+/* ---- Piano di sezione (1.4): retta z(t)=u·(t+i·d), u=exp(iθ). d=0, θ=0° = asse reale ---- */
+const secId=()=>SD===0&&STH%360===0,secCS=()=>{const a=STH*Math.PI/180;return[Math.cos(a),Math.sin(a)]},secP=t=>{const[c,s]=secCS();return[t*c-SD*s,t*s+SD*c]},secF=t=>{const p=secP(t);return F(p[0],p[1])},secTm=()=>Math.abs(SD)<R?Math.sqrt(R*R-SD*SD):0;
+function secClip(x0,x1,y0,y1){const[c,s]=secCS();let a=-1e9,b=1e9;for(const[o,d,lo,hi]of[[-SD*s,c,x0,x1],[SD*c,s,y0,y1]]){if(Math.abs(d)<1e-12){if(o<lo||o>hi)return null}else{const p=(lo-o)/d,q=(hi-o)/d;a=Math.max(a,Math.min(p,q));b=Math.min(b,Math.max(p,q))}}return a<b?[a,b]:null}
+function secRoots(){const[c,s]=secCS(),o=[];for(const r of RT){const n=-r[0]*s+r[1]*c-SD;if(Math.abs(n)<=1e-9*(1+Math.hypot(r[0],r[1])))o.push(r[0]*c+r[1]*s)}return o}
+function secCoef(){const[c,s]=secCS(),wx=-SD*s,wy=SD*c,A=K.slice(),B=KJ.slice();for(let i=0;i<8;i++)for(let k=7;k>=i;k--){A[k]+=wx*A[k+1]-wy*B[k+1];B[k]+=wx*B[k+1]+wy*A[k+1]}
+ let pr=1,pi=0;for(let k=0;k<9;k++){const a=A[k],b=B[k];A[k]=a*pr-b*pi;B[k]=a*pi+b*pr;const q=pr*c-pi*s;pi=pr*s+pi*c;pr=q}return[A,B]}
+function secDrawPlan(X,Y,u){secBad(pg,u,8*u,8*u);const P=secClip(vcx-vs,vcx+vs,vcy-vs,vcy+vs);if(!P)return;const a=secP(P[0]),b=secP(P[1]),[c,s]=secCS();pg.save();pg.lineCap='round';
+ for(const[w,col,d]of[[4.5,'rgba(0,0,0,.55)',[]],[2.4,SECC,[9*u,5*u]]]){pg.setLineDash(d);pg.lineWidth=w*u;pg.strokeStyle=col;pg.beginPath();pg.moveTo(X(a[0]),Y(a[1]));pg.lineTo(X(b[0]),Y(b[1]));pg.stroke()}
+ pg.setLineDash([]);const zx=-SD*s,zy=SD*c,tl=9*u*2*vs/pc.width;if(zx>=vcx-vs&&zx<=vcx+vs&&zy>=vcy-vs&&zy<=vcy+vs){pg.beginPath();pg.moveTo(X(zx+s*tl),Y(zy-c*tl));pg.lineTo(X(zx-s*tl),Y(zy+c*tl));pg.lineWidth=3.2*u;pg.strokeStyle=SECC;pg.stroke();
+  pg.font=`600 ${11*u}px system-ui`;pg.textAlign='center';pg.textBaseline='middle';const lx=X(zx-s*tl*2.6),ly=Y(zy+c*tl*2.6);pg.lineWidth=3.2*u;pg.strokeStyle='rgba(0,0,0,.7)';pg.strokeText('t=0',lx,ly);pg.fillStyle='#fff';pg.fillText('t=0',lx,ly)}pg.restore()}
+function secDraw3(ln,tx,zc,u){secBad(sg,u,8*u,8*u);const P=secClip(-R,R,-R,R);if(!P)return;const A=secP(P[0]).map(q=>q/R),B=secP(P[1]).map(q=>q/R),D=[4*u,4*u];
+ ln([A[0],A[1],0],[B[0],B[1],0],'rgba(255,255,255,.85)',4);ln([A[0],A[1],0],[B[0],B[1],0],SECC,2.2);
+ ln([A[0],A[1],zc],[B[0],B[1],zc],SECC,1.2,D);ln([A[0],A[1],0],[A[0],A[1],zc],SECC,1.2,D);ln([B[0],B[1],0],[B[0],B[1],zc],SECC,1.2,D);
+ const[c,s]=secCS(),zx=-SD*s/R,zy=SD*c/R;if(Math.abs(zx)<=1&&Math.abs(zy)<=1){ln([zx+s*.035,zy-c*.035,0],[zx-s*.035,zy+c*.035,0],SECC,3.2);tx([zx-s*.09,zy+c*.09,0],'t=0',SECC)}}
+function secRes(){let ch=false;SP.forEach((p,i)=>{if(p.k!==null){if(RT.length!==p.n||!RT[p.k]){p.k=null;SMSG+=`Punto ${i+1}: la radice collegata non esiste più o è cambiata; il punto resta libero nelle ultime coordinate. `;ch=true}else if(RT[p.k][0]!==p.x||RT[p.k][1]!==p.y){p.x=RT[p.k][0];p.y=RT[p.k][1];ch=true}}});return ch}
+function secDer(){const dx=SP[1].x-SP[0].x,dy=SP[1].y-SP[0].y,L=Math.hypot(dx,dy),tol=1e-9*(1+Math.max(Math.hypot(SP[0].x,SP[0].y),Math.hypot(SP[1].x,SP[1].y)));if(!(L>tol)||!isFinite(L))return null;const c=dx/L,s=dy/L;return{d:c*SP[0].y-s*SP[0].x,th:((Math.atan2(s,c)*180/Math.PI)%360+360)%360,c,s}}
+function secPre(){if(SM!=='B')return;let ch=secRes();const D=secDer(),bad=!D;if(bad!==SBAD){SBAD=bad;ch=true}if(D&&(D.d!==SD||D.th!==STH)){SD=D.d;STH=D.th;ch=true}if(ch)secSync()}
+function secBad(c,u,x,y){if(!SBAD)return;c.save();c.font=`600 ${11*u}px system-ui`;c.textAlign='left';c.textBaseline='top';c.fillStyle='#d62728';c.fillText('Servono due punti distinti: sezione precedente',x,y);c.restore()}
+function secLbl(){secBad(rg,dpr,58*dpr,40*dpr);const u=dpr;rg.save();rg.font=`600 ${11*u}px system-ui`;rg.textAlign='left';rg.textBaseline='top';const t='t — coordinata lungo la sezione';rg.lineWidth=3.2*u;rg.strokeStyle=css('--card');rg.strokeText(t,58*u,14*u);rg.fillStyle=css('--mut');rg.fillText(t,58*u,14*u);if(!secId()){const q=`d = ${tf(SD)}, θ = ${tf(STH)}°`;rg.strokeText(q,58*u,27*u);rg.fillText(q,58*u,27*u)}rg.restore()}
+function drawReal(){secPre();if(secId()){drawReal0();secLbl();return}const sv=[K,KJ,RT,CX],[A,B]=secCoef();K=A;KJ=B;RT=secRoots().map(t=>[t,0]);CX=[];RFC={fv:-1,c:null};{const sc=Math.max(1e-300,...A.map(Math.abs),...B.map(Math.abs));if(B.every(v=>Math.abs(v)<=1e-9*sc)){KJ=B.map(()=>0);const co=coList(K,KJ),n=co.length-1,cr=n>1?rtsC(co.slice(0,-1).map((c,k)=>[c[0]*(n-k),c[1]*(n-k)])):[];CX=cr.filter(r=>Math.abs(r[1])<=1e-9*(1+Math.abs(r[0]))).map(r=>{const x=r[0],h=1e-3,q=F(x-h,0)[0]+F(x+h,0)[0]-2*F(x,0)[0];return{x,y:F(x,0)[0],t:q<-1e-9?'max':q>1e-9?'min':'flesso'}})}}
+ try{drawReal0()}finally{[K,KJ,RT,CX]=sv;RFC={fv:-1,c:null}}secLbl()}
 function realZerosOf(ca){let sc=0;for(const v of ca)sc=Math.max(sc,Math.abs(v));let n=ca.length-1;while(n>0&&Math.abs(ca[n])<1e-12*sc)n--;if(n<1||!sc)return[];
  const P=x=>{let a=0;for(let k=n;k>=0;k--)a=a*x+ca[k];return a},D=x=>{let a=0;for(let k=n;k>=1;k--)a=a*x+k*ca[k];return a},co=[];for(let k=n;k>=0;k--)co.push([ca[k],0]);
  const o=[];for(const r of rtsC(co)){if(Math.abs(r[1])>1e-6*(1+Math.abs(r[0])))continue;let x=r[0];for(let i=0;i<4;i++){const d=D(x);if(!d)break;const t=x-P(x)/d;if(Math.abs(P(t))<=Math.abs(P(x)))x=t;else break}o.push(x)}
@@ -440,13 +471,25 @@ function autoRange(x0,x1){const M=480,hv=[];for(let k=0;k<=M;k++){const q=F(x0+(
   let sc=0;for(const p of fe)if(p.x>=a&&p.x<=b)sc+=wt[p.k];if(!best||sc>best.sc||(sc===best.sc&&ym<best.ym))best={a,b,sc,ym}}
  if(!best)return null;const pd=.025*(best.b-best.a);best.a=Math.max(x0,best.a-pd);best.b=Math.min(x1,best.b+pd);const out=fe.filter(p=>p.x<best.a||p.x>best.b);return{a:best.a,b:best.b,out,mx0}}
 const rdesc=p=>p.k==='c'?`Re f = 0 in x = ${tf(p.x)} (Im f = ${tf(p.im!==undefined?p.im:p.h)})`:p.k==='e'?`estremo di |f| in x = ${tf(p.x)} (|f| = ${tf(p.h)})`:`radice reale x = ${tf(p.x)}`;
-function drawReal(){const w=rl.width,h=rl.height,u=dpr,ink=css('--fg'),mut=css('--mut'),bd=css('--bd'),N=400,xs=[],ys=[];rg.clearRect(0,0,w,h);let xa=-R,xb=R,lo=0,hi=0,zy=null,zd=false,au=null;if(rzoom){const f=[...RT.filter(r=>r[1]===0).map(r=>[r[0],0]),...CX.filter(p=>p.t!=='flesso').map(p=>[p.x,p.y])];if(f.length){zd=true;const fx=f.map(p=>p[0]),fy=f.map(p=>p[1]),m=Math.max(.3,(Math.max(...fx)-Math.min(...fx))*.12);xa=Math.min(...fx)-m;xb=Math.max(...fx)+m;zy=[Math.min(...fy),Math.max(...f.map(p=>{const q=F(p[0],0);return Math.hypot(q[0],q[1])}))]}}
+/* grafico inferiore: arg f(z(t)) in [0°,360°); polilinea interrotta ai salti 360°↔0° (con raccordo ai bordi), agli zeri noti e dove |f| ≤ 1e-9·max|f| */
+function drawPhase(xs,ms,ys,zi,xa,xb,X,ml,pw,top,ph,u,ink,mut,bd){const Y=a=>top+ph*(1-a/360),mx=Math.max(...ms.filter(isFinite),0),tz=1e-9*mx,rt=[...RT.filter(r=>r[1]===0).map(r=>r[0]),...(hasIm()?reFeat().roots:[])];
+ rg.font=`${11*u}px system-ui`;rg.textBaseline='middle';
+ for(const a of[0,90,180,270,360]){rg.beginPath();rg.moveTo(ml,Y(a));rg.lineTo(ml+pw,Y(a));rg.strokeStyle=bd;rg.lineWidth=u;rg.stroke();rg.fillStyle=mut;rg.textAlign='right';rg.fillText(a+'°',ml-6*u,Y(a))}
+ for(const t of ticks(xa,xb)){rg.beginPath();rg.moveTo(X(t),top);rg.lineTo(X(t),top+ph);rg.strokeStyle=t===0?ink:bd;rg.stroke();rg.fillStyle=mut;rg.textAlign='center';rg.fillText(tf(t),X(t),top+ph+11*u)}
+ rg.textAlign='left';rg.fillStyle=mut;rg.fillText('arg f(z(t))',ml+6*u,top+9*u);
+ rg.save();rg.beginPath();rg.rect(ml,top,pw,ph);rg.clip();rg.strokeStyle=CBLUE;rg.lineWidth=2.2*u;rg.lineJoin='round';rg.beginPath();let pa=null,px=0;
+ const mv=(x,a)=>rg.moveTo(X(x),Y(a)),lt=(x,a)=>rg.lineTo(X(x),Y(a));
+ for(let k=0;k<xs.length;k++){const z=ms[k]>tz&&isFinite(ms[k])&&isFinite(zi[k])&&isFinite(ys[k]);if(!z){pa=null;continue}let a=Math.atan2(zi[k],ys[k])*180/Math.PI;if(a<0)a+=360;if(a>=360)a=0;
+  if(pa!==null&&rt.some(r=>r>Math.min(px,xs[k])&&r<=Math.max(px,xs[k])))pa=null;
+  if(pa===null)mv(xs[k],a);else if(Math.abs(a-pa)>180){const b=a>pa?a-360:a+360,e=a>pa?0:360,f=(e-pa)/(b-pa),xm=px+(xs[k]-px)*f;lt(xm,e);mv(xm,360-e);lt(xs[k],a)}else lt(xs[k],a);pa=a;px=xs[k]}
+ rg.stroke();rg.setLineDash([2*u,4*u]);rg.strokeStyle=RED;rg.lineWidth=1.6*u;for(const r of rt){if(r<xa||r>xb)continue;rg.beginPath();rg.moveTo(X(r),top);rg.lineTo(X(r),top+ph);rg.stroke()}rg.setLineDash([]);rg.restore()}
+function drawReal0(){const w=rl.width,h=rl.height,u=dpr,ink=css('--fg'),mut=css('--mut'),bd=css('--bd'),N=400,xs=[],ys=[],zi=[];rg.clearRect(0,0,w,h);let xa=-R,xb=R,lo=0,hi=0,zy=null,zd=false,au=null;if(rzoom){const f=[...RT.filter(r=>r[1]===0).map(r=>[r[0],0]),...CX.filter(p=>p.t!=='flesso').map(p=>[p.x,p.y])];if(f.length){zd=true;const fx=f.map(p=>p[0]),fy=f.map(p=>p[1]),m=Math.max(.3,(Math.max(...fx)-Math.min(...fx))*.12);xa=Math.min(...fx)-m;xb=Math.max(...fx)+m;zy=[Math.min(...fy),Math.max(...f.map(p=>{const q=F(p[0],0);return Math.hypot(q[0],q[1])}))]}}
  if(!zd&&!rx&&rauto){au=autoRange(-R,R);if(au){xa=au.a;xb=au.b}}
- if(rx){xa=rx[0]-rx[1];xb=rx[0]+rx[1];zy=null}RV=[xa,xb];const ms=[];for(let k=0;k<=N;k++){const x=xa+(xb-xa)*k/N,q=F(x,0),y=q[0],m=Math.hypot(q[0],q[1]);xs.push(x);ys.push(y);ms.push(m);lo=Math.min(lo,y);hi=Math.max(hi,m)}
- if(zy){lo=zy[0];hi=zy[1]}if(hi-lo<1e-9){lo-=1;hi+=1}const pd=(hi-lo)*.08;lo-=pd;hi+=pd;const ml=52*u,mb=22*u,mt=10*u,mr=10*u,pw=w-ml-mr,ph=h-mt-mb,X=x=>ml+(x-xa)/(xb-xa)*pw,Y=y=>mt+(hi-y)/(hi-lo)*ph;
+ if(rx){xa=rx[0]-rx[1];xb=rx[0]+rx[1];zy=null}RV=[xa,xb];const ms=[];for(let k=0;k<=N;k++){const x=xa+(xb-xa)*k/N,q=F(x,0),y=q[0],m=Math.hypot(q[0],q[1]);xs.push(x);ys.push(y);ms.push(m);zi.push(q[1]);lo=Math.min(lo,y);hi=Math.max(hi,m)}
+ if(zy){lo=zy[0];hi=zy[1]}if(hi-lo<1e-9){lo-=1;hi+=1}const pd=(hi-lo)*.08;lo-=pd;hi+=pd;const ml=52*u,mb=22*u,mt=10*u,mr=10*u,GP=12*u,pw=w-ml-mr,HV=h-mt-mb-GP,ph=HV*.75,pf=HV*.25,X=x=>ml+(x-xa)/(xb-xa)*pw,Y=y=>mt+(hi-y)/(hi-lo)*ph;
  rg.font=`${11*u}px system-ui`;rg.textBaseline='middle';
  for(const t of ticks(lo,hi)){rg.beginPath();rg.moveTo(ml,Y(t));rg.lineTo(ml+pw,Y(t));rg.strokeStyle=t===0?ink:bd;rg.lineWidth=u;rg.stroke();rg.fillStyle=mut;rg.textAlign='right';rg.fillText(tf(t),ml-6*u,Y(t))}
- for(const t of ticks(xa,xb)){rg.beginPath();rg.moveTo(X(t),mt);rg.lineTo(X(t),mt+ph);rg.strokeStyle=t===0?ink:bd;rg.stroke();rg.fillStyle=mut;rg.textAlign='center';rg.fillText(tf(t),X(t),mt+ph+11*u)}
+ for(const t of ticks(xa,xb)){rg.beginPath();rg.moveTo(X(t),mt);rg.lineTo(X(t),mt+ph);rg.strokeStyle=t===0?ink:bd;rg.stroke();rg.fillStyle=mut;rg.textAlign='center';}
  rg.save();rg.beginPath();rg.rect(ml,mt,pw,ph);rg.clip();
  rg.beginPath();xs.forEach((x,k)=>{k?rg.lineTo(X(x),Y(ms[k])):rg.moveTo(X(x),Y(ms[k]))});rg.strokeStyle=CBLUE;rg.lineWidth=2.6*u;rg.lineJoin='round';rg.stroke();
  rg.beginPath();xs.forEach((x,k)=>{k?rg.lineTo(X(x),Y(ys[k])):rg.moveTo(X(x),Y(ys[k]))});rg.setLineDash([7*u,5*u]);rg.strokeStyle=CRED;rg.lineWidth=2.4*u;rg.stroke();rg.setLineDash([]);rg.restore();
@@ -463,6 +506,7 @@ function drawReal(){const w=rl.width,h=rl.height,u=dpr,ink=css('--fg'),mut=css('
    rg.strokeStyle=AO;rg.fillStyle=AO;rg.lineWidth=2.6*u;rg.lineCap='round';rg.beginPath();rg.moveTo(x,pick.ty);rg.lineTo(x,y0+pick.d*8*u);rg.stroke();
    rg.beginPath();rg.moveTo(x,y0);rg.lineTo(x-5*u,y0+pick.d*9*u);rg.lineTo(x+5*u,y0+pick.d*9*u);rg.closePath();rg.fill();
    rg.lineWidth=3.2*u;rg.lineJoin='round';rg.strokeStyle=css('--card');rg.strokeText(txt,lx,pick.ly);rg.fillStyle=ink;rg.fillText(txt,lx,pick.ly)}}
+ drawPhase(xs,ms,ys,zi,xa,xb,X,ml,pw,mt+ph+GP,pf,u,ink,mut,bd);
  {const el=$('ranote');if(el)el.textContent=au?`Intervallo x automatico: da ${tf(au.a)} a ${tf(au.b)} (su [−R, R] |f| arriva a ${tf(au.mx0)} e schiaccerebbe i dettagli).`+(au.out.length?' Fuori intervallo: '+au.out.slice(0,4).map(rdesc).join('; ')+(au.out.length>4?'; …':'')+'. «Auto» li mostra tutti, disattivandolo.':''):''}}
 function planLabels(w,h,u,X,Y){const T=(s,x,y,f,k)=>{pg.lineWidth=3.2*u;pg.strokeStyle=k;pg.strokeText(s,x,y);pg.fillStyle=f;pg.fillText(s,x,y)},WH='#fff',HD='rgba(0,0,0,.7)';
  pg.font=`600 ${11*u}px system-ui`;pg.textAlign='center';pg.textBaseline='middle';pg.lineJoin='round';
@@ -479,11 +523,11 @@ function planLabels(w,h,u,X,Y){const T=(s,x,y,f,k)=>{pg.lineWidth=3.2*u;pg.strok
  ed=(a,b,x1,y1,x2,y2)=>{const ka=Kk[a],kb=Kk[b];if(ka===kb)return;const lo=Math.min(ka,kb),hi=Math.max(ka,kb);for(let k=hi;k>lo&&k>hi-3;k--){const v=LVv(k),t=(v-M[a])/(M[b]-M[a]),g=Gd[a]+(Gd[b]-Gd[a])*t;if([.9,.5,.6][k-3*Math.floor(k/3)]*v>=12*g)add(x1+(x2-x1)*t,y1+(y2-y1)*t,k)}};
  for(let i=0;i<n;i++)for(let j=0;j<n;j++){const q=i*n+j,x=j/G*w,y=i/G*h;if(j<G)ed(q,q+1,x,y,x+w/G,y);if(i<G)ed(q,q+n,x,y,x,y+h/G)}
  for(const q of lab)T(tf(LVv(q[2])),q[0],q[1],'#111','rgba(255,255,255,.9)')}
-function drawPlan(){const w=pc.width,h=pc.height,u=dpr,X=x=>((x-vcx)/vs+1)/2*w,Y=y=>(1-(y-vcy)/vs)/2*h;pg.clearRect(0,0,w,h);pg.lineWidth=u;pg.strokeStyle='rgba(255,255,255,.3)';pg.beginPath();
+function drawPlan(){secPre();const w=pc.width,h=pc.height,u=dpr,X=x=>((x-vcx)/vs+1)/2*w,Y=y=>(1-(y-vcy)/vs)/2*h;pg.clearRect(0,0,w,h);pg.lineWidth=u;pg.strokeStyle='rgba(255,255,255,.3)';pg.beginPath();
  if(!polar){for(const t of ticks(vcx-vs,vcx+vs)){pg.moveTo(X(t),0);pg.lineTo(X(t),h)}for(const t of ticks(vcy-vs,vcy+vs)){pg.moveTo(0,Y(t));pg.lineTo(w,Y(t))}}
  else{const mr=Math.hypot(Math.abs(vcx)+vs,Math.abs(vcy)+vs);for(const t of ticks(0,mr)){if(t<=0)continue;pg.moveTo(X(0),Y(0));pg.arc(X(0),Y(0),t/vs*w/2,0,TAU)}for(let k=0;k<12;k++){pg.moveTo(X(0),Y(0));pg.lineTo(X(0)+Math.cos(k*Math.PI/6)*mr/vs*w,Y(0)-Math.sin(k*Math.PI/6)*mr/vs*w)}}
  pg.stroke();pg.strokeStyle='rgba(255,255,255,.7)';pg.beginPath();pg.moveTo(0,Y(0));pg.lineTo(w,Y(0));pg.moveTo(X(0),0);pg.lineTo(X(0),h);pg.stroke();
- if(half){pg.fillStyle='rgba(128,128,128,.5)';pg.fillRect(0,Y(0),w,h-Y(0))}planLabels(w,h,u,X,Y);
+ if(half){pg.fillStyle='rgba(128,128,128,.5)';pg.fillRect(0,Y(0),w,h-Y(0))}secDrawPlan(X,Y,u);planLabels(w,h,u,X,Y);
  
  if(mode==='new'){
   pg.strokeStyle='#fff';pg.lineWidth=2*u;pg.lineJoin='round';pg.beginPath();path.forEach((p,i)=>i?pg.lineTo(X(p[0]),Y(p[1])):pg.moveTo(X(p[0]),Y(p[1])));pg.stroke();
@@ -506,10 +550,10 @@ function calc(){
  const f=F(probe[0],probe[1]);path=[probe.slice()];let p=probe,n=0,cv=mod(p[0],p[1])<1e-9;while(!cv&&n<200){const q=newton(p[0],p[1]);if(!q)break;n++;if(n<=40)path.push(q);p=q;cv=mod(q[0],q[1])<1e-9}
  const l=p;$('probe').innerHTML=`<div>z = ${fmt(probe)}</div><div>${pol(probe[0],probe[1])}</div><div>f(z) = ${fmt(f)}</div><div>|f(z)| = ${Math.hypot(f[0],f[1]).toFixed(4)}, arg f = ${(Math.atan2(f[1],f[0])*180/Math.PI).toFixed(1)}°</div>`+(RT.length?`<div style="color:var(--mut);margin-top:4px">${cv?`Newton converge verso z<sub>${nearest(l[0],l[1])}</sub> in ${n} passi.`:`Newton non converge entro ${n} passi (|f| = ${mod(l[0],l[1]).toPrecision(3)}).`}</div>`:'')+`<div style="margin-top:6px"><b id="phon" role="button" tabindex="0" title="Disattiva i bacini di Newton e torna alla modalità fase" style="color:#3b82f6;cursor:pointer">Modalità fase</b></div>`}
 const probeUpdate=()=>{calc();drawPlan();drawSurf()};
-const full=()=>{analyze();calc();texts();renderPlan();drawSurf();drawReal()},fullLv=()=>{texts();renderPlan();drawSurf()};
+const full=()=>{analyze();calc();texts();secPre();secSync();renderPlan();drawSurf();drawReal()},fullLv=()=>{texts();renderPlan();drawSurf()};
 const rebuild=()=>{analyze();build();full()};
 function size(){dpr=Math.min(2,window.devicePixelRatio||1);const w=Math.round(pc.parentNode.getBoundingClientRect().width*dpr);pc.width=pc.height=glc.width=glc.height=w;const q=sc.getBoundingClientRect();sc.width=Math.round(q.width*dpr);sc.height=Math.round(q.height*dpr);sb.width=sgl.width=sc.width;sb.height=sgl.height=sc.height;
- const rw=Math.round(rl.getBoundingClientRect().width*dpr);rl.width=rw;rl.height=rw;if(XN){build();full()}}
+ const rw=Math.round(rl.getBoundingClientRect().width*dpr);rl.width=rw;rl.height=Math.round(rl.getBoundingClientRect().height*dpr)||rw;if(XN){build();full()}}
 const setLv=v=>{lv=Math.max(.05,Math.min(+$('lv').max,v));$('lv').value=lv;$('lvv').textContent=lv.toFixed(2);$('p-lv').value=lv;$('p-lvv').textContent=lv.toFixed(2)};
 const resetView=()=>{vcx=vcy=0;vs=R;tw=null;rx=null};
 /* ===== Coefficienti complessi, conversioni, nuovo editor di f(z) (bozza + conferma) ===== */
@@ -565,13 +609,13 @@ const issue=()=>{const D=DR;if(D.mode==='text'&&D.txtEdit)return'';if(D.truth===
 function edStatus(note,force){const D=DR,m=issue(),e=$('ed-msg');e.textContent=force&&note?note:(m||note||(D.dirty?'Modifiche non confermate.':''));e.className='ed-msg'+(m||(force&&note)?' err':'');$('ed-ok').disabled=!!m}
 function touch(src){const D=DR;D.dirty=true;closeArm=0;if(src==='coef'){D.truth='coef';D.cOK=true;D.rOK=false;D.solved=null}else{D.truth='root';D.rOK=true;D.cOK=false}}
 const EB=$('coeffs-body');
-EB.innerHTML=`<div class="ed-nav"><select id="ed-mode"><option value="coef">Forma normale</option><option value="root">Forma a radici</option><option value="text">Testo</option></select></div>
+EB.innerHTML=`<div class="ed-nav"><select id="ed-mode" hidden aria-hidden="true" tabindex="-1"><option value="coef">Forma normale</option><option value="root">Forma a radici</option><option value="text">Testo</option></select><div class="mseg" id="ed-seg" role="radiogroup" aria-label="Forma di inserimento di f(z)"><button type="button" role="radio" data-m="coef" title="Forma normale" aria-label="Forma normale">zⁿ</button><button type="button" role="radio" data-m="root" title="Forma a radici" aria-label="Forma a radici">(z−a)</button><button type="button" role="radio" data-m="text" title="Testo" aria-label="Testo">TXT</button></div></div>
 <div class="ed-nav" id="ed-navrow"><button id="ed-prev" title="Precedente">◀</button><select id="ed-sel"></select><button id="ed-next" title="Successivo">▶</button></div>
 <div class="ed-info" id="ed-info"></div>
 <div class="ed-sec" id="ed-coef"></div>
 <div class="ed-sec" id="ed-root"></div>
-<div class="ed-sec" id="ed-text"><textarea id="ed-txt" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="z3 + (0.5 + 3.4i)·z2 − 1.73i"></textarea><div class="pbtn"><button id="ed-parse" title="Acquisisce il polinomio (o il JSON) nella bozza">Interpreta</button></div><div class="ed-info">Accetta z8, z^8 o z⁸; coefficienti complessi come (0.5 + 3.4i) o 2i; ·, * o accostamento; anche forme fattorizzate come (z−1)^2(z+1). Decimali con punto o virgola. Grado massimo 8. Incollando un JSON esportato con «Esporta JSON» si ripristinano f(z) e vista. «Condividi questa vista» copia un link che riapre la stessa f(z) e la stessa vista; il JSON resta il formato di riferimento.</div></div>
-<div class="pbtn" id="ed-act"><button id="ed-exp" title="Copia negli appunti il JSON con f(z) e i parametri di visualizzazione">Esporta JSON</button><button id="ed-share" title="Copia negli appunti un link che riapre la stessa f(z) con la stessa vista">Condividi questa vista</button></div>
+<div class="ed-sec" id="ed-text"><textarea id="ed-txt" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="z3 + (0.5 + 3.4i)·z2 − 1.73i"></textarea><div class="pbtn"><button id="ed-parse" title="Acquisisce il polinomio (o il JSON) nella bozza">Interpreta</button></div><div class="ed-info">Accetta z8, z^8 o z⁸; coefficienti complessi come (0.5 + 3.4i) o 2i; ·, * o accostamento; anche forme fattorizzate come (z−1)^2(z+1). Decimali con punto o virgola. Grado massimo 8. Incollando un JSON esportato con «Esporta JSON» si ripristinano f(z) e vista. «Condividi questa vista» (icona accanto a Readme) copia un link che riapre la stessa f(z) e la stessa vista; il JSON resta il formato di riferimento.</div></div>
+<div class="pbtn" id="ed-act"><button id="ed-exp" title="Copia negli appunti il JSON con f(z) e i parametri di visualizzazione">Esporta JSON</button></div>
 <div class="ed-msg" id="ed-msg"></div>
 <div class="ed-info">Esempi:</div><div class="pbtn" id="ed-ex"></div>`;
 function mkSl(host,label,onv){const l=document.createElement('label');l.innerHTML=`<span>${label}</span><input type="range" min="-4" max="4" step="0.05" value="0"><input type="number" step="0.05" value="0">`;host.appendChild(l);const[sl,nb]=l.querySelectorAll('input');
@@ -591,7 +635,7 @@ function navRoot(){const D=DR,s=$('ed-sel'),S=degR(D),q=D.pages[D.p],mx=8-(S-q.m
  const ms=$('ed-m');ms.innerHTML=Array.from({length:mx},(_,i)=>`<option>${i+1}</option>`).join('');ms.value=q.m;
  $('ed-prev').disabled=D.p<=0;$('ed-next').disabled=D.p>=D.pages.length-1;for(const i of['ed-add','ed-conj','ed-opp','ed-pick'])$(i).disabled=S>=8;$('ed-del').disabled=D.pages.length===1&&q.m===1;
  $('ed-info').textContent=`Pagina ${D.p+1}/${D.pages.length} · grado ${S}/8 · residuo ${8-S}`}
-function edRender(note,force){const D=DR,r=D.mode==='root',tx=D.mode==='text';$('ed-mode').value=D.mode;ec.hidden=D.mode!=='coef';er.hidden=!r;et.hidden=!tx;$('ed-navrow').hidden=tx;
+function edRender(note,force){const D=DR,r=D.mode==='root',tx=D.mode==='text';$('ed-mode').value=D.mode;document.querySelectorAll('#ed-seg button').forEach(b=>b.setAttribute('aria-checked',b.dataset.m===D.mode));ec.hidden=D.mode!=='coef';er.hidden=!r;et.hidden=!tx;$('ed-navrow').hidden=tx;
  if(tx){$('ed-txt').value=D.text;$('ed-info').textContent='Grado effettivo (bozza): '+effDeg(D.K,D.KJ)+' (max 8)'}
  else if(r){D.p=Math.max(0,Math.min(D.p,D.pages.length-1));const q=D.pages[D.p];aR.set(q.ap[0]);aI.set(q.ap[1]);rR.set(q.a[0]);rI.set(q.a[1]);navRoot()}
  else{const t=D.t;cR.lab.textContent='Re c'+SUBD[t];cI.lab.textContent='Im c'+SUBD[t];cR.set(D.K[t]);cI.set(D.KJ[t]);navCoef()}
@@ -649,8 +693,8 @@ function autoView(){let m=0;for(const r of RT)m=Math.max(m,Math.hypot(r[0],r[1])
  for(let i=0;i<8&&R<10&&+$('lv').max<=cv*1.02;i++)setR(Math.min(10,Math.round(R*13)/10));   // la quota deve poter stare sopra l’ultimo valore critico
  setLv((cv+mmax)/2);full();setOff(calibOff())}
 /* ---- Salvataggio/caricamento JSON e link condivisibili (versione 1.1; superficie 3D WebGL dalla 1.2) ---- */
-const APPV='1.3';$('rdm').textContent='Readme - Ver. '+APPV;
-const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},camera:{yaw,pitch,zoom},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice()});
+const APPV='1.4';$('rdm').textContent='Readme - Ver. '+APPV;
+const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},camera:{yaw,pitch,zoom},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice(),section:{mode:SM,offset:SD,angleDeg:STH,points:SP.map(p=>({root:p.k,re:p.x,im:p.y}))}});
 const JS_=(o,d=0)=>{if(o===null||typeof o!=='object'||Array.isArray(o)||d>=2)return JSON.stringify(o);const p='  '.repeat(d+1);return'{\n'+Object.entries(o).filter(([,v])=>v!==undefined).map(([k,v])=>p+JSON.stringify(k)+': '+JS_(v,d+1)).join(',\n')+'\n'+'  '.repeat(d)+'}'};
 const optOK=(id,v)=>typeof v==='string'&&[...$(id).options].some(q=>q.value===v);
 function normView(v){const o={},cur=viewState(),fin=x=>typeof x==='number'&&isFinite(x),num=(x,a,b)=>fin(x)?Math.max(a,Math.min(b,x)):undefined,bool=x=>typeof x==='boolean'?x:undefined,set=(k,x)=>{if(x!==undefined)o[k]=x};
@@ -661,6 +705,9 @@ function normView(v){const o={},cur=viewState(),fin=x=>typeof x==='number'&&isFi
  const n=v.newton;if(n&&typeof n==='object'){const r=Object.assign({},cur.newton);let c=0;if(bool(n.on)!==undefined){r.on=n.on;c=1}if(fin(n.iterations)){r.iterations=Math.round(Math.max(4,Math.min(40,n.iterations)));c=1}if(optOK('pb',n.basinPalette)){r.basinPalette=n.basinPalette;c=1}if(c)o.newton=r}
  const cm=v.camera;if(cm&&typeof cm==='object'&&(fin(cm.yaw)||fin(cm.pitch)||fin(cm.zoom)))o.camera={yaw:fin(cm.yaw)?cm.yaw:cur.camera.yaw,pitch:fin(cm.pitch)?cm.pitch:cur.camera.pitch,zoom:fin(cm.zoom)?Math.max(.5,Math.min(3,cm.zoom)):cur.camera.zoom};
  const pl=v.plan;if(pl&&typeof pl==='object'&&fin(pl.scale)&&pl.scale>0&&fin(pl.cx)&&fin(pl.cy))o.plan={cx:pl.cx,cy:pl.cy,scale:pl.scale};
+ const sc=v.section;if(sc&&typeof sc==='object'){const q={mode:sc.mode==='B'?'B':'A',offset:fin(sc.offset)?Math.max(-1e6,Math.min(1e6,sc.offset)):cur.section.offset,angleDeg:fin(sc.angleDeg)?((sc.angleDeg%360)+360)%360:cur.section.angleDeg};
+ if(Array.isArray(sc.points)&&sc.points.length===2&&sc.points.every(p=>p&&fin(p.re)&&fin(p.im)))q.points=sc.points.map(p=>({root:Number.isInteger(p.root)&&p.root>=0?p.root:null,re:p.re,im:p.im}));
+ if(fin(sc.offset)||fin(sc.angleDeg)||q.points)o.section=q}
  if(Array.isArray(v.probe)&&v.probe.length===2&&v.probe.every(fin))o.probe=v.probe.slice();return o}
 function applyView(o,needRebuild){const ev=(id,t)=>$(id).dispatchEvent(new Event(t,{bubbles:true})),sl=(id,v)=>{$(id).value=v;ev(id,'input')},
  ck=(id,v)=>{if(v===undefined||$(id).checked===v)return;$(id).checked=v;ev(id,'change')},sel=(id,v)=>{if(v===undefined||$(id).value===v)return;$(id).value=v;ev(id,'change')};
@@ -676,6 +723,7 @@ function applyView(o,needRebuild){const ev=(id,t)=>$(id).dispatchEvent(new Event
  if(o.camera){yaw=o.camera.yaw;pitch=o.camera.pitch;zoom=o.camera.zoom}
  if(o.plan){vcx=o.plan.cx;vcy=o.plan.cy;vs=o.plan.scale;tw=null;rx=null}
  if(o.probe){probe=o.probe.slice();path=[]}
+ if(o.section){const q=o.section;SM=q.mode;SD=q.offset;STH=q.angleDeg;SBAD=false;SMSG='';if(q.points)SP=q.points.map(p=>({k:p.root!==null&&p.root<RT.length?p.root:null,n:RT.length,x:p.re,y:p.im}));secPre();secSync()}
  syncPl();full()}
 function parseCfg(txt){let o;try{o=JSON.parse(txt)}catch(e){const m=/position (\d+)/.exec(e.message);throw new ParseErr('JSON non valido: '+e.message,m?+m[1]:null)}
  if(!o||typeof o!=='object'||Array.isArray(o))throw new ParseErr('JSON non riconosciuto: atteso un oggetto',0);
@@ -693,7 +741,7 @@ function parseCfg(txt){let o;try{o=JSON.parse(txt)}catch(e){const m=/position (\
    let good=pg.length&&pg.every(Boolean)&&pg.reduce((x,q)=>x+q.m,0)===g&&!pg.some(zeroAp);
    if(good){const[A,B]=expandPages(pg);let d=0,sc=0;for(let k=0;k<9;k++){d=Math.max(d,Math.hypot(A[k]-Kr[k],B[k]-Ki[k]));sc=Math.max(sc,Math.hypot(Kr[k],Ki[k]))}good=d<=1e-6*sc}
    if(good)r.pages=pg;else r.note+=' (radici del file ignorate: non coerenti con i coefficienti)'}}
- if(o.view!==undefined){const v=normView(o.view);if(Object.keys(v).length)r.view=v}
+ if(o.view!==undefined){const v=normView(o.view);if(!v.section)v.section={mode:'A',offset:0,angleDeg:0};if(Object.keys(v).length)r.view=v}
  if(!r.K&&!r.view)throw new ParseErr('JSON senza dati utilizzabili: nessuna f(z) né parametro di visualizzazione riconosciuto',null);return r}
 function doParseCfg(t){const D=DR,ta=$('ed-txt');
  try{const r=parseCfg(t);D.txtEdit=false;let g=null;
@@ -724,7 +772,9 @@ async function shareView(){const D=draftCfg('Condividi');if(!D)return;
  const url=(location.protocol==='file:'?SHARE_BASE:location.href.split('#')[0])+'#v='+b64u(JSON.stringify(o));
  try{await navigator.clipboard.writeText(url);edStatus(`Link copiato negli appunti (${url.length} caratteri).`)}
  catch(e){const ta=$('ed-txt');ta.value=url;D.text=url;D.txtEdit=false;ta.focus();ta.select();edStatus('Appunti non disponibili: il link è nella casella e selezionato, copialo con Ctrl+C.')}}
-$('ed-share').onclick=shareView;
+async function shareTop(){if(DR)return shareView();const o={app:'polinomi-fz',version:APPV,f:{coeffs:K.map((v,k)=>[v,KJ[k]])},view:sig(viewState())},url=(location.protocol==='file:'?SHARE_BASE:location.href.split('#')[0])+'#v='+b64u(JSON.stringify(o)),m=$('lkmsg');let t;
+ try{await navigator.clipboard.writeText(url);t=`Link copiato negli appunti (${url.length} caratteri).`}catch(e){t='Appunti non disponibili, copia il link: '+url}m.textContent=t;m.className='ed-msg';m.hidden=false;m.onclick=()=>{m.hidden=true}}
+$('shr').onclick=shareTop;
 /* apertura da link: applica f(z) e vista senza passare dalla bozza (come una conferma, senza Undo) */
 function loadHash(){const m=/^#v=([A-Za-z0-9_-]+)$/.exec(location.hash);if(!m)return;const msg=$('lkmsg');
  const show=(t,err)=>{msg.textContent=t;msg.className='ed-msg'+(err?' err':'');msg.hidden=false};msg.onclick=()=>{msg.hidden=true};
@@ -743,6 +793,7 @@ $('ed-mode').onchange=e=>{const D=DR,w=e.target.value,rv=()=>{e.target.value=D.m
  else if(!D.cOK){if(D.pages.some(zeroAp)){rv();edStatus('Forma normale non disponibile: il coefficiente a′ deve essere diverso da zero.',true);return}
   [D.K,D.KJ]=expandPages(D.pages);D.cOK=true}
  D.mode=w;if(w==='text'){D.text=polyText(D.K,D.KJ);D.txtEdit=false}edRender()};
+document.querySelectorAll('#ed-seg button').forEach(b=>b.onclick=()=>{const m=$('ed-mode');m.value=b.dataset.m;m.onchange({target:m});if(DR)edRender()});
 $('ed-sel').onchange=e=>{const D=DR;if(D.mode==='root')D.p=+e.target.value;else D.t=+e.target.value;edRender()};
 const go=d=>{const D=DR;if(D.mode==='root')D.p=Math.max(0,Math.min(D.pages.length-1,D.p+d));else D.t=Math.max(0,Math.min(8,D.t-d));edRender()};
 $('ed-prev').onclick=()=>go(-1);$('ed-next').onclick=()=>go(1);
@@ -898,7 +949,7 @@ $('s1').onclick=()=>{if(CV.length){setLv(CV[ci%CV.length]);ci++;full()}};
 $('st').onclick=()=>{if(path.length>1){probe=path[1];probeUpdate()}};$('rs').onclick=()=>{probe=[.55,.85];probeUpdate()};$('vi').onclick=()=>{resetView();renderPlan();drawReal()};
 const dive=(x,y,v1,ms)=>{tw={t0:-1,ms,x,y,x0:vcx,y0:vcy,v0:vs,v1}};$('d1').onclick=()=>dive(probe[0],probe[1],1.5e-3,6000);$('d0').onclick=()=>dive(0,0,1e-3,7000);
 let rzoom=false,rx=null,RV=null,rd=null,rauto=true;$('rz').onclick=()=>{rzoom=!rzoom;rx=null;$('rz').style.borderColor=rzoom?'var(--ac)':'';drawReal()};
-$('rauto').style.borderColor='var(--ac)';$('rauto').onclick=()=>{rauto=!rauto;rx=null;$('rauto').style.borderColor=rauto?'var(--ac)':'';drawReal()};
+$('fsr').onclick=()=>toggleFS($('wr'));document.addEventListener('fullscreenchange',()=>setTimeout(size,80));
 
 /* Gestione Fullscreen con forzatura landscape solo per mobile */
 function toggleFS(el){
@@ -994,6 +1045,23 @@ function syncPl(){for(const[k,b]of PLM){const o=$(k),p=$('pl-'+k);if(o.type==='r
  for(const k of PLB){const o=$(k),p=$('pl-'+k);if(p.disabled!==o.disabled)p.disabled=o.disabled}}
 for(const[k]of PLM){const o=$(k),p=$('pl-'+k);for(const t of['input','change'])p.addEventListener(t,()=>{if(o.type==='checkbox')o.checked=p.checked;else o.value=p.value;o.dispatchEvent(new Event(t,{bubbles:true}));syncPl()})}
 for(const k of PLB)$('pl-'+k).onclick=()=>{$(k).click();syncPl()};
+const sec$=document.getElementById.bind(document);
+$('sec-B').innerHTML=[0,1].map(i=>`<div style="display:contents"><b style="font-size:12.5px">Punto ${i+1}</b><label><span>Sorgente</span><select id="sp${i}" aria-label="Sorgente del punto ${i+1}"></select></label><label><span>Re</span><input id="sx${i}" type="range" min="-10" max="10" step="0.01"><b><span id="vx${i}"></span></b></label><label><span>Im</span><input id="sy${i}" type="range" min="-10" max="10" step="0.01"><b><span id="vy${i}"></span></b></label></div>`).join('')+'<div class="ed-info" id="sec-tt"></div>';
+function secSync(){const m=Math.max(10,Math.ceil(Math.abs(SD))),e=$('sec-d');e.min=-m;e.max=m;e.value=SD;$('sec-dv').textContent=SD.toFixed(2);$('sec-th').value=STH;$('sec-thv').textContent=+STH.toFixed(2)+'°';
+ $('sec-mode').value=SM;$('sec-A').hidden=SM!=='A';$('sec-B').hidden=SM!=='B';$('sec-A').style.display=SM==='A'?'contents':'none';$('sec-B').style.display=SM==='B'?'contents':'none';
+ SP.forEach((p,i)=>{const sl=$('sp'+i);if(sl.options.length!==RT.length+1){sl.innerHTML='';sl.add(new Option('Punto libero','f'));RT.forEach((r,k)=>sl.add(new Option('',k)))}
+  RT.forEach((r,k)=>sl.options[k+1].textContent=`Radice ${k}: ${fmt(r)}`);sl.value=p.k===null?'f':p.k;
+  for(const[c,v]of[['x',p.x],['y',p.y]]){const e=$('s'+c+i),mm=Math.max(10,Math.ceil(Math.abs(v)));e.min=-mm;e.max=mm;e.value=v;e.disabled=p.k!==null;$('v'+c+i).textContent=v.toFixed(3)}});
+ const D=secDer(),c=Math.cos(STH*Math.PI/180),s=Math.sin(STH*Math.PI/180);$('sec-tt').textContent=SM==='B'&&D?`t₁ = ${tf(c*SP[0].x+s*SP[0].y)}, t₂ = ${tf(c*SP[1].x+s*SP[1].y)}; d = ${tf(SD)}, θ = ${tf(STH)}°`:'';
+ $('sec-msg').textContent=SBAD?'Servono due punti distinti. Mostrata e conservata l’ultima sezione valida.':SMSG;$('sec-msg').className='ed-msg'+(SBAD?' err':'')}
+let secRaf=0;const secUp=()=>{if(secRaf)return;secRaf=requestAnimationFrame(()=>{secRaf=0;drawPlan();drawSurf();drawReal()})};
+$('sec-d').oninput=e=>{SMSG='';SD=+e.target.value;secSync();secUp()};$('sec-th').oninput=e=>{STH=+e.target.value;secSync();secUp()};$('sec-rs').onclick=()=>{SMSG='';SD=0;STH=0;secSync();secUp()};
+$('sec-mode').onchange=e=>{const m=e.target.value;if(m===SM)return;SMSG='';
+ if(m==='B'){secRes();const D=secDer();if(!D||Math.abs(D.d-SD)>1e-9*(1+Math.abs(SD))||Math.abs(((D.th-STH+540)%360)-180)>1e-7){const a=secP(-R/2),b=secP(R/2);SP=[{k:null,n:0,x:a[0],y:a[1]},{k:null,n:0,x:b[0],y:b[1]}]}}else SBAD=false;
+ SM=m;secPre();secSync();secUp()};
+SP.forEach((p,i)=>{const q=()=>SP[i];$('sp'+i).onchange=e=>{SMSG='';const v=e.target.value;if(v==='f')q().k=null;else{q().k=+v;q().n=RT.length}secPre();secSync();secUp()};
+ for(const c of['x','y'])$('s'+c+i).oninput=e=>{SMSG='';q()[c]=+e.target.value;secPre();secSync();secUp()}});
+$('toggle-sec').onclick=()=>$('sec-panel').classList.toggle('open');$('close-sec').onclick=()=>$('sec-panel').classList.remove('open');
 $('toggle-plan').onclick=()=>{const p=$('plan-panel');if(p.classList.contains('open'))p.classList.remove('open');else{p.classList.add('open');syncPl()}};$('close-plan').onclick=()=>$('plan-panel').classList.remove('open');
 $('it').oninput=e=>{IT=+e.target.value;$('itv').textContent=IT;renderPlan()};
 /* didascalie: dipendono dalla modalità Bacini di Newton */
