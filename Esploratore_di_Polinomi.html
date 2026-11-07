@@ -27,6 +27,8 @@ h1{font:600 26px/1.2 Georgia,serif;margin:0 0 2px}.hd{display:flex;flex-wrap:wra
 #coeffs-panel .surf-panel-body{--cols:5.4em minmax(0,1fr) 4.6em}
 .surf-panel-body label{display:grid;grid-template-columns:var(--cols);align-items:center;gap:8px;font-size:12.5px;font-weight:600}
 .surf-panel-body label.pk{grid-template-columns:minmax(0,1fr) auto}
+.surf-panel-body label.rp{grid-template-columns:8.2em minmax(0,1fr) 4.0em}
+.rl{color:#3b82f6;font-weight:bold;cursor:pointer;user-select:none;-webkit-user-select:none}
 .surf-panel-body label>b{text-align:right;font-variant-numeric:tabular-nums}
 .surf-panel-body label>span{white-space:nowrap}
 .surf-panel-body label>select{grid-column:2/4;width:100%;min-width:0}
@@ -100,7 +102,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 <div class="box" id="fz" style="margin-bottom:10px;font:600 19px/1.5 Georgia,serif;overflow-wrap:anywhere"></div>
 <div class="bar" id="ob"><label>Disposizione <select id="gl"><option value="1" selected>G. 1 riga</option><option value="2">G. 2 righe</option><option value="3">G. 3 righe</option></select></label><button id="fs">Tutto schermo</button></div>
 <div id="ctl" hidden>
-<label>Finestra R <input id="r" type="range" min="0.1" max="10" step="0.1" value="2.0"><b id="rv">2.0</b></label>
+<label>Range pdg <input id="r" type="range" min="0.1" max="10" step="0.1" value="2.0"><b id="rv">2.0</b></label>
 <label>Quota |f| <input id="lv" type="range" min="0.05" max="8" step="0.01" value="2"><b id="lvv">2.00</b></label>
 <label>Altezza <input id="h" type="range" min="0.2" max="2" step="0.05" value="1"><b id="hv">1.00</b></label>
 <label>Dominio <select id="dm"><option value="0">Cartesiano</option><option value="1" selected>Radiale</option></select></label>
@@ -125,7 +127,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 <div class="surf-panel" id="surf-panel">
 <div class="surf-panel-header"><span>Controlli Vista 3D</span><button id="close-panel">✕</button></div>
 <div class="surf-panel-body">
-<label><span>Finestra R</span><input id="p-r" type="range" min="0.1" max="10" step="0.1" value="2"><b><span id="p-rv">2.0</span></b></label>
+<label class="rp"><span id="p-rl" class="rl" role="button" tabindex="0" title="Range Piano di Gauss">Range pdg</span><input id="p-r" type="range" min="0.1" max="10" step="0.1" value="2"><input id="p-rn" type="number" min="0.1" max="100" step="0.05" value="2" inputmode="decimal" aria-label="Range Piano di Gauss"></label>
 <label><span>Quota |f|</span><input id="p-lv" type="range" min="0.05" max="8" step="0.01" value="2"><b><span id="p-lvv">2.00</span></b></label>
 <label><span>Altezza</span><input id="p-h" type="range" min="0.2" max="2" step="0.05" value="1"><b><span id="p-hv">1.00</span></b></label>
 <label><span title="Sposta il grafico in su (+) o in giù (−); doppio clic = ricalibra">Offset |f|</span><input id="p-off" type="range" min="-0.5" max="0.5" step="0.01" value="0"><b><span id="p-offv">0.00</span></b></label>
@@ -234,7 +236,7 @@ function glDraw(){const r=new Float32Array(16);RT.slice(0,8).forEach((z,k)=>{r[2
 function renderPlan(){if(gl)glDraw();drawPlan();chip()}
 let hv=null;const hz=e=>{const r=pc.getBoundingClientRect();return[vcx+((e.clientX-r.left)/r.width*2-1)*vs,vcy+(1-(e.clientY-r.top)/r.height*2)*vs]};
 function chip(){const z=R/vs;$('gpuv').textContent=(gl?'GPU WebGL2':glErr)+` · zoom ×${z>=1e3?z.toExponential(1):z.toFixed(z<100?1:0)} · ${itLabel()}`;
- let s='Cursore: ?';if(hv){const a=curItems(hv[0],hv[1],F(hv[0],hv[1]),0);if(a)s=curHTML(a)}$('chipv').innerHTML=s}
+ let s='Cursore: ?';if(hv){const a=curItems(hv[0],hv[1],F(hv[0],hv[1]),0);if(a)s=curHTML(a)}$('chipv').innerHTML=s;eolFix($('chipv'))}
 let SN;
 function snap(nu,nv,W){const n=XN.length,X0=XN.slice(),Y0=YN.slice(),DX=new Float64Array(n),DY=new Float64Array(n),done=[];SN=new Uint8Array(n);
  for(const r of RT){const rx=r[0]/R,ry=r[1]/R;if(Math.max(Math.abs(rx),Math.abs(ry))>.9||(polar&&Math.hypot(rx,ry)>.9)||(half&&ry<-1e-9)||done.some(q=>Math.hypot(q[0]-rx,q[1]-ry)<.02))continue;done.push([rx,ry]);
@@ -475,7 +477,10 @@ const cP=v=>v.toPrecision(5);
 function curItems(x,y,f,tz){const m=Math.hypot(f[0],f[1]);if(!isFinite(m))return null;let a='non definita';
  if(m>tz){let d=Math.atan2(f[1],f[0])*180/Math.PI;if(d<0)d+=360;a=d.toFixed(2);if(+a>=360)a='0.00';a+='°'}
  return[`z = ${cP(x)} ${y<0?'−':'+'} ${cP(Math.abs(y))}i`,`|z| = ${cP(Math.hypot(x,y))}`,`arg z = ${(Math.atan2(y,x)*180/Math.PI).toFixed(2)}°`,`Re f(z) = ${cP(f[0])}`,`Im f(z) = ${cP(f[1])}`,`|f(z)| = ${cP(m)}`,`arg f(z) = ${a}`]}
-const curHTML=a=>'Cursore: '+a.map((t,i)=>`<span class="it">${t}${i<a.length-1?'&nbsp;·':''}</span>`).join(' ');
+const curHTML=a=>'Cursore: '+a.map((t,i)=>`<span class="it">${t}${i<a.length-1?'<span class="sp">&nbsp;·</span>':''}</span>`).join(' ');
+/* 1.8: il «·» finale di una riga che va a capo viene nascosto (visibility: la larghezza resta, quindi l'a capo non cambia); vale per tutte le presentazioni del readout */
+function eolFix(el){if(!el||el.offsetParent===null)return;const it=el.querySelectorAll('.it');for(let i=0;i<it.length-1;i++){const sp=it[i].querySelector('.sp');if(sp)sp.style.visibility=it[i+1].offsetTop>it[i].offsetTop+2?'hidden':''}}
+const eolAll=()=>{eolFix($('chipv'));eolFix($('rcur'));eolFix($('rcur2'))};
 const CUR_GH=curHTML(['z = −1.2345e-7 − 1.2345e-7i','|z| = 1.2345e-7','arg z = −179.99°','Re f(z) = −1.2345e+8','Im f(z) = −1.2345e+8','|f(z)| = 1.2345e+8','arg f(z) = non definita']);
 let RG=null,RTZ=0,RCP=null,RMB=.75,fsDown=false,_modb='',RH2=0;
 /* 1.7: bordo inferiore dell'area del modulo (px CSS dall'alto del contenitore) per la posizione «in basso» del pannello a schermo intero */
@@ -483,7 +488,7 @@ function fsLay(){const v=Math.round(RMB*rl.clientHeight)+'px';if(v!==_modb){_mod
 function rcur(){const el=$('rcur');if(!el)return;let s='Cursore: ?';
  if(RCP&&RV&&RG){const b=rl.getBoundingClientRect(),px=(RCP.x-b.left)*rl.width/b.width,py=(RCP.y-b.top)*rl.height/b.height;
   if(px>=RG[0]&&px<=RG[0]+RG[1]&&py>=RG[2]&&py<=RG[3]){const t=RV[0]+(px-RG[0])/RG[1]*(RV[1]-RV[0]),p=secP(t),a=curItems(p[0],p[1],F(p[0],p[1]),RTZ);if(a)s=curHTML(a)}}
- el.innerHTML=s;const e2=$('rcur2');if(e2){/* pannello a schermo intero: senza dati mantiene l'ultima altezza, così il pulsante non si sposta sotto il puntatore */const k=e2.parentNode,nd=s==='Cursore: ?';k.style.minHeight=nd&&RH2?RH2+'px':'';e2.innerHTML=s;if(!nd&&k.offsetParent!==null)RH2=k.offsetHeight}}
+ el.innerHTML=s;const e2=$('rcur2');if(e2){/* pannello a schermo intero: senza dati mantiene l'ultima altezza, così il pulsante non si sposta sotto il puntatore */const k=e2.parentNode,nd=s==='Cursore: ?';k.style.minHeight=nd&&RH2?RH2+'px':'';e2.innerHTML=s;eolFix(e2);if(!nd&&k.offsetParent!==null)RH2=k.offsetHeight}eolFix(el)}
 /* coefficienti non tutti reali: zeri di Re f(z(t)) (radici vere se anche Im f = 0, altrimenti «incroci») ed estremi di |f(z(t))|; calcolati una volta per versione di f */
 function reFeat(){if(RFC.fv===FV&&RFC.c)return RFC.c;const Pr=K.slice(),Pi=KJ.slice(),cross=[],roots=[],ext=[];
  for(const x of realZerosOf(Pr)){const q=F(x,0);let s=0;for(let k=0;k<9;k++)s+=Math.hypot(K[k],KJ[k])*Math.abs(x)**k;if(Math.hypot(q[0],q[1])<=1e-9*s)roots.push(x);else cross.push({x,im:q[1]})}
@@ -727,13 +732,13 @@ function autoView(){let m=0;for(const r of RT)m=Math.max(m,Math.hypot(r[0],r[1])
  for(let i=0;i<8&&R<10&&+$('lv').max<=cv*1.02;i++)setR(Math.min(10,Math.round(R*13)/10));   // la quota deve poter stare sopra l’ultimo valore critico
  setLv((cv+mmax)/2);full();setOff(calibOff())}
 /* ---- Salvataggio/caricamento JSON e link condivisibili (versione 1.1; superficie 3D WebGL dalla 1.2) ---- */
-const APPV='1.7';$('rdm').textContent='Readme - Ver. '+APPV;
+const APPV='1.8';$('rdm').textContent='Readme - Ver. '+APPV;
 const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},camera:{yaw,pitch,zoom},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice(),section:{mode:SM,offset:SD,angleDeg:STH,showRe:SRE,showIm:SIM,points:SP.map(p=>({root:p.k,re:p.x,im:p.y}))}});
 const JS_=(o,d=0)=>{if(o===null||typeof o!=='object'||Array.isArray(o)||d>=2)return JSON.stringify(o);const p='  '.repeat(d+1);return'{\n'+Object.entries(o).filter(([,v])=>v!==undefined).map(([k,v])=>p+JSON.stringify(k)+': '+JS_(v,d+1)).join(',\n')+'\n'+'  '.repeat(d)+'}'};
 const optOK=(id,v)=>typeof v==='string'&&[...$(id).options].some(q=>q.value===v);
 function normView(v){const o={},cur=viewState(),fin=x=>typeof x==='number'&&isFinite(x),num=(x,a,b)=>fin(x)?Math.max(a,Math.min(b,x)):undefined,bool=x=>typeof x==='boolean'?x:undefined,set=(k,x)=>{if(x!==undefined)o[k]=x};
  if(!v||typeof v!=='object')return o;
- set('R',num(v.R,.1,10));set('level',num(v.level,.05,1e9));set('height',num(v.height,.2,2));set('offset',num(v.offset,-.5,.5));if(v.domain==='polar'||v.domain==='cartesian')o.domain=v.domain;set('halfPlane',bool(v.halfPlane));
+ set('R',num(v.R,.1,100));set('level',num(v.level,.05,1e9));set('height',num(v.height,.2,2));set('offset',num(v.offset,-.5,.5));if(v.domain==='polar'||v.domain==='cartesian')o.domain=v.domain;set('halfPlane',bool(v.halfPlane));
  for(const[k,id]of[['aboveLevel','up'],['phasePalette','pp'],['layout','gl']])if(optOK(id,v[k]))o[k]=v[k];
  for(const k of['bands','logHeight','realCurves3D','autoRotate','animate'])set(k,bool(v[k]));
  const n=v.newton;if(n&&typeof n==='object'){const r=Object.assign({},cur.newton);let c=0;if(bool(n.on)!==undefined){r.on=n.on;c=1}if(fin(n.iterations)){r.iterations=Math.round(Math.max(4,Math.min(40,n.iterations)));c=1}if(optOK('pb',n.basinPalette)){r.basinPalette=n.basinPalette;c=1}if(c)o.newton=r}
@@ -746,7 +751,7 @@ function normView(v){const o={},cur=viewState(),fin=x=>typeof x==='number'&&isFi
 function applyView(o,needRebuild){const ev=(id,t)=>$(id).dispatchEvent(new Event(t,{bubbles:true})),sl=(id,v)=>{$(id).value=v;ev(id,'input')},
  ck=(id,v)=>{if(v===undefined||$(id).checked===v)return;$(id).checked=v;ev(id,'change')},sel=(id,v)=>{if(v===undefined||$(id).value===v)return;$(id).value=v;ev(id,'change')};
  if(o.newton&&mode==='new'){$('bn').checked=false;ev('bn','change')}
- if(o.R!==undefined)sl('r',o.R);else if(needRebuild)rebuild();
+ if(o.R!==undefined){rScale(o.R>10?100:10);setRv(o.R,'v')}else if(needRebuild)rebuild();
  if(o.domain!==undefined)sel('dm',o.domain==='polar'?'1':'0');
  if(o.halfPlane!==undefined&&!$('hf').disabled)ck('hf',o.halfPlane);
  sel('up',o.aboveLevel);sel('pp',o.phasePalette);ck('c',o.bands);ck('l',o.logHeight);ck('rc',o.realCurves3D);ck('a',o.autoRotate);ck('an',o.animate);sel('gl',o.layout);
@@ -954,8 +959,23 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&moveMode&&!pickMode
 $('fsp').onclick=()=>toggleFS($('wp'));
 
 /* Sincronizzazione controlli pannello 3D */
-$('p-r').oninput=e=>{R=+e.target.value;$('r').value=R;$('rv').textContent=R.toFixed(1);$('p-rv').textContent=R.toFixed(1);resetView();rebuild()};
-$('r').oninput=e=>{R=+e.target.value;$('rv').textContent=R.toFixed(1);$('p-r').value=R;$('p-rv').textContent=R.toFixed(1);resetView();rebuild()};
+/* ---- Range pdg (R), 1.8: fondo scala 10 o 100 (clic sull'etichetta), valore al centesimo da input numerico.
+   R è lo stato; slider (step 0,1), input numerico (step 0,05) e slider nascosto #r sono solo viste di R.
+   Scala 100 anche per valori importati o digitati > 10; la scala ridotta non tronca mai un valore > 10 (resta estesa finché R non rientra). ---- */
+let RSC=10;
+const rFmt=v=>String(+v.toFixed(2));
+function rScale(m){RSC=m;$('r').max=m;$('p-r').max=m}
+function rSync(src){$('r').value=R;$('p-r').value=R;if(src!=='n')$('p-rn').value=rFmt(R);$('rv').textContent=rFmt(R)}
+function setRv(v,src){v=Math.round(Math.max(.1,Math.min(100,v))*100)/100;if(v>10&&RSC<100)rScale(100);R=v;rSync(src);resetView();rebuild()}
+const rTog=()=>{if(RSC===10)rScale(100);else if(R<=10)rScale(10);rSync()};
+$('p-rl').onclick=e=>{e.preventDefault();rTog()};
+$('p-rl').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();rTog()}};
+{const rn=$('p-rn'),cl=v=>Math.round(Math.max(.1,Math.min(100,v))*100)/100;
+ rn.oninput=()=>{const v=parseFloat(rn.value);if(!isFinite(v)||v<.1||v>100)return;if(cl(v)!==R)setRv(v,'n')};
+ rn.onchange=()=>{const v=parseFloat(rn.value);if(!isFinite(v)){rSync();return}if(cl(v)!==R)setRv(v);else rSync()};
+ rn.addEventListener('wheel',e=>{if(document.activeElement!==rn)return;e.preventDefault();setRv(R+(e.deltaY<0?.05:-.05))},{passive:false})}
+$('p-r').oninput=e=>setRv(+e.target.value,'s');
+$('r').oninput=e=>setRv(+e.target.value,'s');
 $('p-lv').oninput=e=>{setLv(+e.target.value);fullLv()};
 $('lv').oninput=e=>{setLv(+e.target.value);fullLv()};
 $('p-h').oninput=e=>{hs=+e.target.value;$('h').value=hs;$('hv').textContent=hs.toFixed(2);$('p-hv').textContent=hs.toFixed(2);heights();drawSurf()};
@@ -973,7 +993,7 @@ $('a').onchange=e=>{auto=e.target.checked;$('p-a').checked=auto};
 $('p-an').onchange=e=>{anim=e.target.checked;$('an').checked=anim};
 $('an').onchange=e=>{anim=e.target.checked;$('p-an').checked=anim};
 
-$('fit').onclick=()=>{let m=0;for(const r of RT)m=Math.max(m,Math.hypot(r[0],r[1]));for(const p of CX)m=Math.max(m,Math.abs(p.x));R=Math.max(.5,Math.min(6,m>0?Math.ceil(m*13)/10:1.6));$('r').value=R;$('rv').textContent=R.toFixed(1);$('p-r').value=R;$('p-rv').textContent=R.toFixed(1);resetView();rebuild()};
+$('fit').onclick=()=>{let m=0;for(const r of RT)m=Math.max(m,Math.hypot(r[0],r[1]));for(const p of CX)m=Math.max(m,Math.abs(p.x));setRv(Math.max(.5,Math.min(6,m>0?Math.ceil(m*13)/10:1.6)),'f')};
 $('bn').onchange=e=>{mode=e.target.checked?'new':'dom';const nw=mode==='new';for(const i of['it','pb','d1','d0'])$(i).disabled=!nw;$('pp').disabled=nw;$('c').disabled=nw;rebuild()};
 $('pp').onchange=e=>{pph=e.target.value;build();full()};$('pb').onchange=e=>{pbs=e.target.value;build();full()};
 $('c').onchange=e=>{cont=e.target.checked;renderPlan()};
@@ -1117,6 +1137,7 @@ $('curpg').innerHTML=CUR_GH;$('rcg').innerHTML=CUR_GH;$('rcg2').innerHTML=CUR_GH
 /* pulsante alto/basso del pannello dati a schermo intero (1.7): due posizioni, entro l'area del modulo */
 function fsPos(){const t=fsDown?'Sposta il pannello dei dati in alto':'Sposta il pannello dei dati in basso',b=$('rfs-pos');$('rfs').classList.toggle('dn',fsDown);b.title=t;b.setAttribute('aria-label',t);b.firstElementChild.style.transform=fsDown?'rotate(180deg)':''}
 $('rfs-pos').onclick=()=>{fsDown=!fsDown;fsPos();fsLay()};fsPos();
+window.addEventListener('resize',()=>setTimeout(eolAll,120));window.addEventListener('orientationchange',()=>setTimeout(eolAll,300));document.addEventListener('fullscreenchange',()=>setTimeout(eolAll,200));
 {const q=window.matchMedia&&matchMedia('(any-hover:hover)');if(q){const hc=()=>{if(!q.matches){hv=null;RCP=null}chip();rcur()};q.addEventListener?q.addEventListener('change',hc):q.addListener&&q.addListener(hc)}}
-initGL();initSG();if(!g3)setGL3(false,sgErr);fzText();syncHf();analyze();build();size();capt();setOff(calibOff());loadHash();
+initGL();initSG();if(!g3)setGL3(false,sgErr);fzText();syncHf();analyze();build();size();capt();setOff(calibOff());rSync();loadHash();
 </script></body></html>

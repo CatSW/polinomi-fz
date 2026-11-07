@@ -11,6 +11,24 @@ updated: 2026-11-07
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
 
+## [1.8] - 2026-11-07
+
+### Added
+
+- «Range pdg» (ex «Finestra R», tooltip «Range Piano di Gauss»): il fondo scala può arrivare a 100. Un clic sull'etichetta, blu e in grassetto come «Attiva la spunta», alterna il fondo scala 10 ↔ 100 senza cambiare il valore né la vista.
+- Il valore è ora un input numerico modificabile (frecce e rotella con passo 0,05, valori al centesimo, fino a 100). Oltre 10 la scala estesa si attiva da sola.
+- Import da JSON e da link: R fino a 100 rispettato subito. Oltre 10 si sceglie la scala 100, fino a 10 la scala 10.
+
+### Changed
+
+- Con scala 10 attiva e R > 10 (valore digitato o importato), la scala resta estesa: il valore non viene mai troncato. Si può tornare alla scala 10 solo quando R rientra in 0,1–10.
+- All'avvio il controllo mostra il valore reale di R (1,8): prima lo slider indicava 2,0 mentre lo stato interno era 1,8.
+
+### Fixed
+
+- Readout del cursore: il separatore «·» alla fine di una riga che va a capo viene nascosto. Vale per il piano di Gauss, la vista sezione e il pannello a schermo intero.
+- Importazione di R: il valore era limitato a 10 e arrotondato a 0,1 (vedi causa sotto).
+
 ## [1.7] - 2026-11-07
 
 ### Added
