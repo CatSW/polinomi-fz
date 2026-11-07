@@ -11,6 +11,14 @@ updated: 2026-11-07
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
 
+## [1.9]
+
+### Changed
+
+- Piano di Gauss a schermo intero: il piano usa tutta l'area dello schermo, senza più il quadrato centrale con bande nere ai lati (o sopra e sotto in verticale). Il lato corto continua a mostrare l'intervallo `scale`, quello lungo mostra di più.
+- Il pannello dei dati del piano di Gauss è ancorato al bordo superiore dello schermo; sotto i 560 px di larghezza scende sotto la fila dei pulsanti d'angolo.
+- Mappatura piano↔schermo indipendente dal rapporto d'aspetto: shader WebGL2, griglia, anelli e raggi polari, sezione, radici, etichette dei livelli |f|, anteprima durante il trascinamento di una radice, puntatore, pan, zoom, pizzico e scelta punto.
+
 ## [1.8] - 2026-11-07
 
 ### Added
