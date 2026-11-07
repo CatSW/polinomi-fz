@@ -5,11 +5,29 @@ author: IK0VCK
 type: changelog
 product: polinomi-fz
 license: MIT
-updated: 2026-11-06
+updated: 2026-11-07
 ---
 # Changelog Esploratore di Polinomi
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
+
+## [1.7] - 2026-11-07
+
+### Added
+
+- Aggiunto nella vista sezione un pannello sovrapposto, visibile in full screen, con tutti i dati del cursore e la stessa formattazione del readout normale.
+- Su vista Sezione, aggiunto un pulsante per spostare il pannello della sezione in alto o in basso al centro dell'area del modulo, senza invadere il diagramma della fase e con un controllo utilizzabile anche su mobile.
+
+### Changed
+
+- Differenziato lo sfondo del diagramma della fase da quello del modulo nella vista sezione con una tenue tinta crema, adattata al tema scuro e presente anche in full screen, senza modificare i colori delle curve.
+- Spostato il pannello esistente del piano di Gauss in full screen dal basso a sinistra all'alto al centro, mantenendo entrambe le righe con dati del cursore e informazioni tecniche.
+- Uniformato lo stile dei pannelli in full screen della sezione e del piano di Gauss: cornice nera sottile, angoli arrotondati, titolo centrato sul bordo superiore e spaziatura compatta. Mantenuti sfondi opachi distinti, grigio molto chiaro per la sezione e bianco per il piano di Gauss, con testo nero in entrambi i temi e visualizzazione sopra gli elementi del grafico.
+
+### Fixed
+
+- Ripristinato il piano di sezione sull'asse reale (offset d = 0 e angolo θ = 0°) alla sostituzione completa della funzione, incluso il caricamento di un esempio, sincronizzando controlli, stato interno e rappresentazione nelle varie viste.
+- Preservata la sezione corrente durante l'aggiunta, lo spostamento o la modifica di singole radici, senza interferire con il ripristino di sezioni esplicitamente salvate in viste condivise o importate.
 
 ## [1.6] - 2026-11-06
 

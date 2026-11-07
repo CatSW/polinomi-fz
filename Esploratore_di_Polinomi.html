@@ -3,9 +3,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Esploratore di polinomi f(z)</title>
 <style>
-:root{--bg:#eef1f5;--fg:#12161c;--mut:#5a6572;--card:#fff;--bd:#cdd5df;--ac:#0b7f86;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1217;--fg:#e8ecf1;--mut:#93a0ae;--card:#161c24;--bd:#2a3340;--ac:#4cc3c9;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0e1217;--fg:#e8ecf1;--mut:#93a0ae;--card:#161c24;--bd:#2a3340;--ac:#4cc3c9;color-scheme:dark}
+:root{--bg:#eef1f5;--fg:#12161c;--mut:#5a6572;--card:#fff;--bd:#cdd5df;--ac:#0b7f86;--phbg:#fbf6e4;--fsm:14px;--fst:16px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1217;--fg:#e8ecf1;--mut:#93a0ae;--card:#161c24;--bd:#2a3340;--ac:#4cc3c9;--phbg:#1f211b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1217;--fg:#e8ecf1;--mut:#93a0ae;--card:#161c24;--bd:#2a3340;--ac:#4cc3c9;--phbg:#1f211b;color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
 main{max-width:none;margin:0 auto;padding:16px 14px 28px}
@@ -70,7 +70,22 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 #wp:fullscreen,#wp.is-fullscreen{background:var(--bg);width:100vw;height:100vh;height:100dvh;position:fixed;top:0;left:0;z-index:99999;display:flex;align-items:center;justify-content:center}
 #wp:fullscreen .stack,#wp.is-fullscreen .stack{width:min(100vw,100vh);width:min(100vw,100dvh);flex:none}
 #wp:fullscreen .ctx,#wp.is-fullscreen .ctx{display:none}
-#wp:fullscreen figcaption,#wp.is-fullscreen figcaption{margin:0;position:absolute;left:10px;bottom:6px;z-index:36;background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:2px 8px;max-width:calc(100vw - 20px);box-sizing:border-box}#wp:fullscreen .cur,#wp.is-fullscreen .cur{margin-bottom:2px}#wp:fullscreen .gpuln,#wp.is-fullscreen .gpuln{margin-top:0}
+/* 1.7: pannelli dati in schermo intero. Colori espliciti, indipendenti dal tema: piano di Gauss bianco, sezione grigio chiarissimo; testo, titolo e cornice neri. Sono solo informativi (pointer-events:none, tranne il pulsante alto/basso): pan, zoom e hover sul grafico sottostante restano attivi. */
+.fsp,.gp-t{display:none}
+.fsp-t,.gp-t{position:absolute;left:50%;top:-.5px;transform:translate(-50%,-50%);height:var(--fst);padding:0 8px;font:600 11px/var(--fst) system-ui,-apple-system,"Segoe UI",sans-serif;color:#000;white-space:nowrap;background:inherit;border-left:1px solid #000;border-right:1px solid #000;pointer-events:none;box-sizing:border-box;z-index:1}
+.fsp{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--fsm) + var(--fst)/2);z-index:29;box-sizing:border-box;width:max-content;max-width:min(470px,calc(100% - 300px));min-width:min(270px,calc(100% - 2*var(--fsm)));padding:10px 10px 9px;gap:8px;align-items:center;background:#f2f2f2;color:#000;color-scheme:light;border:1px solid #000;border-radius:8px;pointer-events:none;font-size:12px;font-variant-numeric:tabular-nums}
+.fsp.dn{top:auto;bottom:calc(100% - var(--modb,72%) + var(--fsm))}
+.fsp .stk,.fsp .it{color:#000}.fsp .stk{flex:1 1 auto;min-width:0}.fsp .cur{margin:0}
+.fsp-b{flex:none;width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;background:#fff;color:#000;border:1px solid #000;border-radius:7px;cursor:pointer;pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.fsp-b:hover{border-color:#000;background:#e6e6e6}.fsp-b:focus-visible{outline:2px solid #000;outline-offset:1px}.fsp-b svg{display:block;transition:transform .15s ease}
+@media (any-hover:hover){#wr:fullscreen .fsp,#wr.is-fullscreen .fsp{display:flex}}
+#wp:fullscreen .gp-t,#wp.is-fullscreen .gp-t{display:block}
+#wp:fullscreen figcaption,#wp.is-fullscreen figcaption{margin:0;position:absolute;left:50%;transform:translateX(-50%);top:calc((100% - min(100vw,100vh))/2 + var(--fsm) + var(--fst)/2);top:calc((100% - min(100vw,100dvh))/2 + var(--fsm) + var(--fst)/2);z-index:29;box-sizing:border-box;width:max-content;max-width:min(428px,calc(min(100vw,100vh) - 112px));max-width:min(428px,calc(min(100vw,100dvh) - 112px));padding:10px 10px 7px;background:#fff;color:#000;color-scheme:light;border:1px solid #000;border-radius:8px;pointer-events:none;font-size:12.5px}
+#wp:fullscreen figcaption .stk,#wp.is-fullscreen figcaption .stk{color:#000}
+.fsp .gh,#wp:fullscreen figcaption .gh,#wp.is-fullscreen figcaption .gh{height:0;overflow:hidden}
+@media (max-width:560px){.fsp{top:calc(52px + var(--fst)/2);max-width:calc(100% - 2*var(--fsm))}.fsp.dn{top:auto}}
+/* riquadro del piano piccolo (telefono): il pannello scende sotto la fila dei pulsanti d'angolo e usa tutta la larghezza del riquadro */
+@media (max-width:640px),(max-height:640px){#wp:fullscreen figcaption,#wp.is-fullscreen figcaption{top:calc((100% - min(100vw,100vh))/2 + 52px + var(--fst)/2);top:calc((100% - min(100vw,100dvh))/2 + 52px + var(--fst)/2);max-width:min(428px,calc(min(100vw,100vh) - 2*var(--fsm)));max-width:min(428px,calc(min(100vw,100dvh) - 2*var(--fsm)))}}#wp:fullscreen .cur,#wp.is-fullscreen .cur{margin-bottom:2px}#wp:fullscreen .gpuln,#wp.is-fullscreen .gpuln{margin-top:0}
 #w3{border:1px solid var(--bd);border-radius:10px}
 #surf{border:0;border-radius:9px;background:transparent;position:relative;z-index:2}
 #surfBG,#surfGL{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:9px}
@@ -143,7 +158,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 <label><span>Quota |f|</span><input id="pl-lv" type="range" min="0.05" max="8" step="0.01" value="2"><b><span id="pl-lvv">2.00</span></b></label>
 <div class="pbtn"><button id="pl-mv" title="Attiva la modalità per trascinare una radice sul piano">Sposta radice</button><button id="pl-pick" title="Sceglie la nuova radice cliccando sul piano di Gauss">Radice dal piano</button><button id="pl-s1">|f| = valore critico</button><button id="pl-st">Passo di Newton</button><button id="pl-rs">Riporta il punto</button><button id="pl-d1" disabled>Tuffati nel punto giallo</button><button id="pl-d0" disabled>Tuffati nell’origine</button><button id="pl-vi">Vista intera</button><button id="pl-fit">Adatta R alle radici</button></div>
 </div></div></div>
-<figcaption><div class="stk cur" id="curp"><span id="chipv"></span><span class="gh" id="curpg" aria-hidden="true"></span></div><span class="ctx">Piano. <span id="capPi"></span> Curva nera spessa: |f| = quota. Curve sottili: livelli |f| = 1, 2, 5 × 10ᵏ, etichettati; la banda sale da scuro a chiaro verso |f| crescente e il salto cade sulla linea. Cerchi: |z| = costante; raggi: arg z. Passo e livelli visibili si adattano allo zoom, i valori restano quelli indicati. Dove c’è un puntatore con hover, la riga «Cursore» sopra mostra z, |z|, arg z, Re f(z), Im f(z), |f(z)| e arg f(z); l’ultima riga riporta GPU, zoom e iterazioni.</span><div class="stk gpuln"><span id="gpuv"></span><span class="gh" aria-hidden="true">GPU WebGL2 · zoom ×1.0e+10 · anteprima 100% · 40 iter · 999 ms/frame</span></div></figcaption></figure>
+<figcaption><span class="gp-t">Piano di Gauss</span><div class="stk cur" id="curp"><span id="chipv"></span><span class="gh" id="curpg" aria-hidden="true"></span></div><span class="ctx">Piano. <span id="capPi"></span> Curva nera spessa: |f| = quota. Curve sottili: livelli |f| = 1, 2, 5 × 10ᵏ, etichettati; la banda sale da scuro a chiaro verso |f| crescente e il salto cade sulla linea. Cerchi: |z| = costante; raggi: arg z. Passo e livelli visibili si adattano allo zoom, i valori restano quelli indicati. Dove c’è un puntatore con hover, la riga «Cursore» sopra mostra z, |z|, arg z, Re f(z), Im f(z), |f(z)| e arg f(z); l’ultima riga riporta GPU, zoom e iterazioni.</span><div class="stk gpuln"><span id="gpuv"></span><span class="gh" aria-hidden="true">GPU WebGL2 · zoom ×1.0e+10 · anteprima 100% · 40 iter · 999 ms/frame</span></div></figcaption></figure>
 <figure><div id="wr"><canvas id="rl" class="c"></canvas><button class="panel-btn" id="toggle-sec" title="Configura il piano di sezione" aria-label="Configura il piano di sezione">⚙️</button>
 <div class="surf-panel" id="sec-panel"><div class="surf-panel-header"><span>Vista intersezione piano di sezione</span><button id="close-sec">✕</button></div>
 <div class="surf-panel-body" style="--cols:5.2em minmax(0,1fr) 3.8em">
@@ -152,7 +167,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 <label title="Orientamento della retta nel piano di Gauss; non è una rotazione di fase di f(z)"><span>Angolo θ</span><input id="sec-th" type="range" min="0" max="360" step="1" value="0"><b><span id="sec-thv">0°</span></b></label>
 <div class="pbtn"><button id="sec-rs">Taglio sull’asse reale (d=0, θ=0°)</button></div></div><div id="sec-B" style="display:contents"></div><label class="pk" title="Mostra o nasconde la curva Re f(z) nel grafico; il valore resta sempre nel cursore"><span>Mostra Re f(z)</span><input id="sec-re" type="checkbox" checked></label><label class="pk" title="Mostra o nasconde la curva Im f(z) nel grafico; il valore resta sempre nel cursore"><span>Mostra Im f(z)</span><input id="sec-im" type="checkbox" checked></label><div class="ed-msg" id="sec-msg" role="status"></div>
 <div class="ed-info">Il piano di sezione è ortogonale al piano di Gauss e contiene la retta z(t) = u·(t + i·d), u = e<sup>iθ</sup>. Asse t: t=0 è il punto della retta più vicino all’origine.</div></div></div>
-<div class="fbg"><button class="fb" id="rz" title="Zoom su radici e massimi/minimi relativi">Zoom radici</button><button class="fb" id="fsr" title="Schermo intero" aria-label="Schermo intero"><svg width='14' height='14' viewBox='0 0 14 14' fill='none' stroke='currentColor' stroke-width='1.6'><path d='M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9'/></svg></button></div></div><figcaption><div class="stk cur"><span id="rcur"></span><span class="gh" id="rcg" aria-hidden="true"></span></div>Vista intersezione piano di sezione (ingranaggio: Modalità «Offset e angolo» o «Due punti»). Asse t: ascissa lungo la retta di sezione, t=0 nel punto più vicino all’origine, verso crescente da P₁ a P₂ (o secondo θ); θ è l’orientamento della retta, non una fase di f. Sopra: <span class="ln r"></span>Re f(z) (tratteggio rosso), <span class="ln g"></span>Im f(z) (puntinato verde) e <span class="ln"></span>|f(z)|; Re f(z) e Im f(z) si attivano o disattivano dall’ingranaggio; pallini rossi: radici sulla retta, alla loro t. Sotto: arg f(z) in [0°,360°), con la stessa t; la curva si interrompe ai salti 360°↔0° e alle radici, dove la fase non è definita (linee rosse punteggiate). Con coefficienti composti reali compaiono massimi e minimi di Re f (nascosti insieme alla curva Re f(z)); altrimenti non sono definiti. Frecce arancioni: punti in cui si annulla solo Re f (non sono radici), con il valore di Im f. Dove c’è un puntatore con hover, la riga «Cursore» riporta z (il punto della sezione per quel t), |z|, arg z, Re f(z), Im f(z), |f(z)| e arg f(z), anche quando Re f(z) o Im f(z) non sono tracciate. Rotella: zoom verso il cursore; trascina: sposta; Vista intera ripristina. L’intervallo t si adatta automaticamente (i valori non vengono alterati).<span id="ranote"></span></figcaption></figure>
+<div class="fbg"><button class="fb" id="rz" title="Zoom su radici e massimi/minimi relativi">Zoom radici</button><button class="fb" id="fsr" title="Schermo intero" aria-label="Schermo intero"><svg width='14' height='14' viewBox='0 0 14 14' fill='none' stroke='currentColor' stroke-width='1.6'><path d='M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9'/></svg></button></div><div class="fsp" id="rfs"><span class="fsp-t">Vista intersezione piano di sezione</span><div class="stk cur"><span id="rcur2"></span><span class="gh" id="rcg2" aria-hidden="true"></span></div><button class="fsp-b" id="rfs-pos" type="button" title="Sposta il pannello dei dati in basso" aria-label="Sposta il pannello dei dati in basso"><svg width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M8 2v9M4.5 7.5L8 11l3.5-3.5M3 14h10'/></svg></button></div></div><figcaption><div class="stk cur"><span id="rcur"></span><span class="gh" id="rcg" aria-hidden="true"></span></div>Vista intersezione piano di sezione (ingranaggio: Modalità «Offset e angolo» o «Due punti»). Asse t: ascissa lungo la retta di sezione, t=0 nel punto più vicino all’origine, verso crescente da P₁ a P₂ (o secondo θ); θ è l’orientamento della retta, non una fase di f. Sopra: <span class="ln r"></span>Re f(z) (tratteggio rosso), <span class="ln g"></span>Im f(z) (puntinato verde) e <span class="ln"></span>|f(z)|; Re f(z) e Im f(z) si attivano o disattivano dall’ingranaggio; pallini rossi: radici sulla retta, alla loro t. Sotto: arg f(z) in [0°,360°), con la stessa t; la curva si interrompe ai salti 360°↔0° e alle radici, dove la fase non è definita (linee rosse punteggiate). Con coefficienti composti reali compaiono massimi e minimi di Re f (nascosti insieme alla curva Re f(z)); altrimenti non sono definiti. Frecce arancioni: punti in cui si annulla solo Re f (non sono radici), con il valore di Im f. Dove c’è un puntatore con hover, la riga «Cursore» riporta z (il punto della sezione per quel t), |z|, arg z, Re f(z), Im f(z), |f(z)| e arg f(z), anche quando Re f(z) o Im f(z) non sono tracciate. Rotella: zoom verso il cursore; trascina: sposta; Vista intera ripristina. L’intervallo t si adatta automaticamente (i valori non vengono alterati). Lo sfondo giallino distingue il diagramma della fase. In schermo intero, con un puntatore con hover, un pannello sovrapposto riporta gli stessi dati del cursore; il pulsante a freccia lo sposta in alto o in basso nell’area del modulo.<span id="ranote"></span></figcaption></figure>
 </div>
 <div class="info"><div class="box"><h2>Radici</h2><div id="roots"></div></div><div class="box"><h2>Punto scelto</h2><div id="probe"></div></div></div>
 <p class="sub" style="margin:18px 0 0;text-align:center">copyright: © 2026 Stefano Vesco (IK0VCK) - CatSW. All rights reserved.</p>
@@ -454,7 +469,7 @@ function realZerosOf(ca){let sc=0;for(const v of ca)sc=Math.max(sc,Math.abs(v));
  o.sort((a,b)=>a-b);return o.filter((x,i)=>!i||x-o[i-1]>1e-7*(1+Math.abs(x)))}
 const pmul=(a,b)=>{const c=Array(a.length+b.length-1).fill(0);a.forEach((u,i)=>b.forEach((v,j)=>{c[i+j]+=u*v}));return c},pder=a=>a.slice(1).map((v,k)=>v*(k+1));
 let RFC={fv:-1,c:null};
-/* lettura del cursore (1.5; Re f e Im f dalla 1.6), uguale nel piano di Gauss e nella sezione: z, |z|, arg z, Re f(z), Im f(z), |f(z)|, arg f(z). arg z in (−180°,180°]; arg f(z) in [0°,360°) come nel grafico della fase,
+/* lettura del cursore (1.5; Re f e Im f dalla 1.6; pannello sovrapposto a schermo intero dalla 1.7, alimentato da questa stessa funzione), uguale nel piano di Gauss e nella sezione: z, |z|, arg z, Re f(z), Im f(z), |f(z)|, arg f(z). arg z in (−180°,180°]; arg f(z) in [0°,360°) come nel grafico della fase,
    «non definita» se |f| ≤ tz. Ogni voce è non divisibile: a capo solo tra una voce e l'altra. Valori e formati numerici invariati (5 cifre significative, angoli a 2 decimali). */
 const cP=v=>v.toPrecision(5);
 function curItems(x,y,f,tz){const m=Math.hypot(f[0],f[1]);if(!isFinite(m))return null;let a='non definita';
@@ -462,11 +477,13 @@ function curItems(x,y,f,tz){const m=Math.hypot(f[0],f[1]);if(!isFinite(m))return
  return[`z = ${cP(x)} ${y<0?'−':'+'} ${cP(Math.abs(y))}i`,`|z| = ${cP(Math.hypot(x,y))}`,`arg z = ${(Math.atan2(y,x)*180/Math.PI).toFixed(2)}°`,`Re f(z) = ${cP(f[0])}`,`Im f(z) = ${cP(f[1])}`,`|f(z)| = ${cP(m)}`,`arg f(z) = ${a}`]}
 const curHTML=a=>'Cursore: '+a.map((t,i)=>`<span class="it">${t}${i<a.length-1?'&nbsp;·':''}</span>`).join(' ');
 const CUR_GH=curHTML(['z = −1.2345e-7 − 1.2345e-7i','|z| = 1.2345e-7','arg z = −179.99°','Re f(z) = −1.2345e+8','Im f(z) = −1.2345e+8','|f(z)| = 1.2345e+8','arg f(z) = non definita']);
-let RG=null,RTZ=0,RCP=null;
+let RG=null,RTZ=0,RCP=null,RMB=.75,fsDown=false,_modb='',RH2=0;
+/* 1.7: bordo inferiore dell'area del modulo (px CSS dall'alto del contenitore) per la posizione «in basso» del pannello a schermo intero */
+function fsLay(){const v=Math.round(RMB*rl.clientHeight)+'px';if(v!==_modb){_modb=v;$('wr').style.setProperty('--modb',v)}}
 function rcur(){const el=$('rcur');if(!el)return;let s='Cursore: ?';
  if(RCP&&RV&&RG){const b=rl.getBoundingClientRect(),px=(RCP.x-b.left)*rl.width/b.width,py=(RCP.y-b.top)*rl.height/b.height;
   if(px>=RG[0]&&px<=RG[0]+RG[1]&&py>=RG[2]&&py<=RG[3]){const t=RV[0]+(px-RG[0])/RG[1]*(RV[1]-RV[0]),p=secP(t),a=curItems(p[0],p[1],F(p[0],p[1]),RTZ);if(a)s=curHTML(a)}}
- el.innerHTML=s}
+ el.innerHTML=s;const e2=$('rcur2');if(e2){/* pannello a schermo intero: senza dati mantiene l'ultima altezza, così il pulsante non si sposta sotto il puntatore */const k=e2.parentNode,nd=s==='Cursore: ?';k.style.minHeight=nd&&RH2?RH2+'px':'';e2.innerHTML=s;if(!nd&&k.offsetParent!==null)RH2=k.offsetHeight}}
 /* coefficienti non tutti reali: zeri di Re f(z(t)) (radici vere se anche Im f = 0, altrimenti «incroci») ed estremi di |f(z(t))|; calcolati una volta per versione di f */
 function reFeat(){if(RFC.fv===FV&&RFC.c)return RFC.c;const Pr=K.slice(),Pi=KJ.slice(),cross=[],roots=[],ext=[];
  for(const x of realZerosOf(Pr)){const q=F(x,0);let s=0;for(let k=0;k<9;k++)s+=Math.hypot(K[k],KJ[k])*Math.abs(x)**k;if(Math.hypot(q[0],q[1])<=1e-9*s)roots.push(x);else cross.push({x,im:q[1]})}
@@ -501,7 +518,7 @@ function drawPhase(xs,ms,ys,zi,xa,xb,X,ml,pw,top,ph,u,ink,mut,bd){const Y=a=>top
 function drawReal0(){const w=rl.width,h=rl.height,u=dpr,ink=css('--fg'),mut=css('--mut'),bd=css('--bd'),N=400,xs=[],ys=[],zi=[];rg.clearRect(0,0,w,h);let xa=-R,xb=R,lo=0,hi=0,zy=null,zd=false,au=null;if(rzoom){const f=[...RT.filter(r=>r[1]===0).map(r=>[r[0],0]),...CX.filter(p=>p.t!=='flesso').map(p=>[p.x,p.y])];if(f.length){zd=true;const fx=f.map(p=>p[0]),fy=f.map(p=>p[1]),m=Math.max(.3,(Math.max(...fx)-Math.min(...fx))*.12);xa=Math.min(...fx)-m;xb=Math.max(...fx)+m;zy=[Math.min(...fy),Math.max(...f.map(p=>{const q=F(p[0],0);return Math.hypot(q[0],q[1])}))]}}
  if(!zd&&!rx&&rauto){au=autoRange(-R,R);if(au){xa=au.a;xb=au.b}}
  if(rx){xa=rx[0]-rx[1];xb=rx[0]+rx[1];zy=null}RV=[xa,xb];const ms=[];for(let k=0;k<=N;k++){const x=xa+(xb-xa)*k/N,q=F(x,0),y=q[0],m=Math.hypot(q[0],q[1]);xs.push(x);ys.push(y);ms.push(m);zi.push(q[1]);lo=Math.min(lo,y,q[1]);hi=Math.max(hi,m)}
- if(zy){lo=zy[0];hi=zy[1]}if(hi-lo<1e-9){lo-=1;hi+=1}const pd=(hi-lo)*.08;lo-=pd;hi+=pd;const ml=52*u,mb=22*u,mt=10*u,mr=10*u,GP=12*u,pw=w-ml-mr,HV=h-mt-mb-GP,ph=HV*.75,pf=HV*.25,X=x=>ml+(x-xa)/(xb-xa)*pw,Y=y=>mt+(hi-y)/(hi-lo)*ph;RG=[ml,pw,mt,h-mb];
+ if(zy){lo=zy[0];hi=zy[1]}if(hi-lo<1e-9){lo-=1;hi+=1}const pd=(hi-lo)*.08;lo-=pd;hi+=pd;const ml=52*u,mb=22*u,mt=10*u,mr=10*u,GP=12*u,pw=w-ml-mr,HV=h-mt-mb-GP,ph=HV*.75,pf=HV*.25,X=x=>ml+(x-xa)/(xb-xa)*pw,Y=y=>mt+(hi-y)/(hi-lo)*ph;RG=[ml,pw,mt,h-mb];{const y0=mt+ph+GP/2;rg.fillStyle=css('--phbg');rg.fillRect(0,y0,w,h-y0)}RMB=(mt+ph)/h;fsLay();
  rg.font=`${11*u}px system-ui`;rg.textBaseline='middle';
  for(const t of ticks(lo,hi)){rg.beginPath();rg.moveTo(ml,Y(t));rg.lineTo(ml+pw,Y(t));rg.strokeStyle=t===0?ink:bd;rg.lineWidth=u;rg.stroke();rg.fillStyle=mut;rg.textAlign='right';rg.fillText(tf(t),ml-6*u,Y(t))}
  for(const t of ticks(xa,xb)){rg.beginPath();rg.moveTo(X(t),mt);rg.lineTo(X(t),mt+ph);rg.strokeStyle=t===0?ink:bd;rg.stroke();rg.fillStyle=mut;rg.textAlign='center';}
@@ -697,7 +714,7 @@ function polyText(Kr,Ki){let s='';for(let k=8;k>=0;k--){const a=Kr[k],b=Ki[k],ra
   else t=`(${a<0?'−':''}${fnum(a)} ${b<0?'−':'+'} ${Math.abs(b)===1?'':fnum(b)}i)`+(k?'·':'')+zp;
   s+=s?(sg===null?' + ':sg?' − ':' + ')+t:(sg?'−':'')+t}return s||'0'}
 function doParse(){const D=DR,ta=$('ed-txt');D.text=ta.value;if(D.text.trim().startsWith('{'))return doParseCfg(D.text.trim());
- try{const[Kr,Ki]=parsePoly(D.text);D.txtEdit=false;if(!(Kr.every((v,k)=>v===D.K[k]&&Ki[k]===D.KJ[k]))){D.K=Kr;D.KJ=Ki;touch('coef')}D.t=effDeg(Kr,Ki);const g=effDeg(Kr,Ki);edStatus(g?`Acquisito: grado ${g}.`:'Acquisita una funzione costante.');$('ed-info').textContent='Grado effettivo (bozza): '+g+' (max 8)';return true}
+ try{const[Kr,Ki]=parsePoly(D.text);D.txtEdit=false;if(!(Kr.every((v,k)=>v===D.K[k]&&Ki[k]===D.KJ[k]))){D.K=Kr;D.KJ=Ki;touch('coef');D.repl=true}D.t=effDeg(Kr,Ki);const g=effDeg(Kr,Ki);edStatus(g?`Acquisito: grado ${g}.`:'Acquisita una funzione costante.');$('ed-info').textContent='Grado effettivo (bozza): '+g+' (max 8)';return true}
  catch(e){if(!(e instanceof ParseErr))throw e;edStatus(e.message+(e.pos==null?'':` (posizione ${e.pos+1})`),true);if(e.pos!=null){ta.focus();ta.setSelectionRange(e.pos,Math.min(e.pos+1,ta.value.length))}return false}}
 $('ed-parse').onclick=doParse;
 $('ed-txt').oninput=e=>{const D=DR;D.text=e.target.value;D.txtEdit=true;closeArm=0;edStatus('Testo modificato: premi Interpreta (o Conferma) per acquisirlo.')};
@@ -710,7 +727,7 @@ function autoView(){let m=0;for(const r of RT)m=Math.max(m,Math.hypot(r[0],r[1])
  for(let i=0;i<8&&R<10&&+$('lv').max<=cv*1.02;i++)setR(Math.min(10,Math.round(R*13)/10));   // la quota deve poter stare sopra l’ultimo valore critico
  setLv((cv+mmax)/2);full();setOff(calibOff())}
 /* ---- Salvataggio/caricamento JSON e link condivisibili (versione 1.1; superficie 3D WebGL dalla 1.2) ---- */
-const APPV='1.6';$('rdm').textContent='Readme - Ver. '+APPV;
+const APPV='1.7';$('rdm').textContent='Readme - Ver. '+APPV;
 const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},camera:{yaw,pitch,zoom},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice(),section:{mode:SM,offset:SD,angleDeg:STH,showRe:SRE,showIm:SIM,points:SP.map(p=>({root:p.k,re:p.x,im:p.y}))}});
 const JS_=(o,d=0)=>{if(o===null||typeof o!=='object'||Array.isArray(o)||d>=2)return JSON.stringify(o);const p='  '.repeat(d+1);return'{\n'+Object.entries(o).filter(([,v])=>v!==undefined).map(([k,v])=>p+JSON.stringify(k)+': '+JS_(v,d+1)).join(',\n')+'\n'+'  '.repeat(d)+'}'};
 const optOK=(id,v)=>typeof v==='string'&&[...$(id).options].some(q=>q.value===v);
@@ -762,7 +779,7 @@ function parseCfg(txt){let o;try{o=JSON.parse(txt)}catch(e){const m=/position (\
  if(!r.K&&!r.view)throw new ParseErr('JSON senza dati utilizzabili: nessuna f(z) né parametro di visualizzazione riconosciuto',null);return r}
 function doParseCfg(t){const D=DR,ta=$('ed-txt');
  try{const r=parseCfg(t);D.txtEdit=false;let g=null;
-  if(r.K){const same=r.K.every((v,k)=>v===D.K[k]&&r.KJ[k]===D.KJ[k])&&!(D.truth==='root'&&!D.cOK);if(!same){D.K=r.K;D.KJ=r.KJ;touch('coef')}if(r.pages){D.pages=clonePages(r.pages);D.rOK=true;D.p=0}g=effDeg(r.K,r.KJ);D.t=g}
+  if(r.K){const same=r.K.every((v,k)=>v===D.K[k]&&r.KJ[k]===D.KJ[k])&&!(D.truth==='root'&&!D.cOK);if(!same){D.K=r.K;D.KJ=r.KJ;touch('coef');D.repl=true}if(r.pages){D.pages=clonePages(r.pages);D.rOK=true;D.p=0}g=effDeg(r.K,r.KJ);D.t=g}
   if(r.view)D.cfgView=r.view;
   const nv=r.view?Object.keys(r.view).length:0;
   edStatus('Configurazione acquisita'+(g===null?'':g?`: grado ${g}`:': funzione costante')+(nv?`${g===null?':':','} ${nv} parametri di visualizzazione`:'')+r.note+'. Premi Conferma per applicarla.');
@@ -796,11 +813,11 @@ $('shr').onclick=shareTop;
 function loadHash(){const m=/^#v=([A-Za-z0-9_-]+)$/.exec(location.hash);if(!m)return;const msg=$('lkmsg');
  const show=(t,err)=>{msg.textContent=t;msg.className='ed-msg'+(err?' err':'');msg.hidden=false};msg.onclick=()=>{msg.hidden=true};
  try{const r=parseCfg(unb64u(m[1]));if(r.K&&isZeroF(r.K,r.KJ))throw new ParseErr('la funzione è nulla',null);
-  if(r.K){K=r.K.slice();KJ=r.KJ.slice();FV++;SEED=null;SEEDP=null;syncHf();fzText();analyze()}
+  if(r.K){K=r.K.slice();KJ=r.KJ.slice();FV++;SEED=null;SEEDP=null;syncHf();fzText();analyze();secReset()}
   if(r.view)applyView(r.view,!!r.K);else if(r.K)autoView();
   if(r.note)show('Link caricato'+r.note+'.')}
  catch(e){show('Link non valido: '+(e instanceof ParseErr?e.message:'dati non decodificabili ('+e.message+')')+'. Mostrata la vista predefinita.',true)}}
-const newDraft=()=>({mode:'coef',K:K.slice(),KJ:KJ.slice(),pages:clonePages(getFact()),t:effDeg(K,KJ),p:0,truth:'coef',cOK:true,rOK:true,solved:null,dirty:false,cfgView:null,text:'',txtEdit:false});
+const newDraft=()=>({mode:'coef',K:K.slice(),KJ:KJ.slice(),pages:clonePages(getFact()),t:effDeg(K,KJ),p:0,truth:'coef',cOK:true,rOK:true,solved:null,dirty:false,repl:false,cfgView:null,text:'',txtEdit:false});
 function openEd(){setMove(false);DR=newDraft();closeArm=0;pickMode=false;$('pickbar').hidden=true;$('coeffs-panel').classList.add('open');edRender();histUI()}
 function closeEd(){DR=null;$('coeffs-panel').classList.remove('open');histUI()}
 $('ed-mode').onchange=e=>{const D=DR,w=e.target.value,rv=()=>{e.target.value=D.mode};if(w===D.mode)return;
@@ -825,13 +842,13 @@ function addAt(z){const D=DR;if(degR(D)>=8)return'Grado massimo (8) raggiunto: n
 $('ed-conj').onclick=()=>{const a=DR.pages[DR.p].a;edRender(addAt([a[0],-a[1]]))};
 $('ed-opp').onclick=()=>{const a=DR.pages[DR.p].a;edRender(addAt([-a[0],-a[1]]))};
 PRE.forEach((x,j)=>{const b=document.createElement('button');b.textContent=x[0];b.title=TIP[j];b.onclick=()=>{const D=DR,[,v,R2,L2,rt]=x;D.K=Array(9).fill(0);D.KJ=Array(9).fill(0);v.forEach((c,i)=>D.K[4-i]=c);
- D.pages=rt.map(([a,m])=>({ap:[1,0],a:a.slice(),m}));D.solved=flatten(D.pages);D.truth='coef';D.cOK=D.rOK=true;D.dirty=true;D.cfgView=null;D.t=effDeg(D.K,D.KJ);D.p=0;closeArm=0;D.txtEdit=false;D.text=polyText(D.K,D.KJ);edRender()};$('ed-ex').appendChild(b)});
+ D.pages=rt.map(([a,m])=>({ap:[1,0],a:a.slice(),m}));D.solved=flatten(D.pages);D.truth='coef';D.cOK=D.rOK=true;D.dirty=true;D.repl=true;D.cfgView=null;D.t=effDeg(D.K,D.KJ);D.p=0;closeArm=0;D.txtEdit=false;D.text=polyText(D.K,D.KJ);edRender()};$('ed-ex').appendChild(b)});
 /* conferma: applica la bozza e aggiorna stato, cache e tutte le viste */
 function applyDraft(){const D=DR;if(!D)return;if(D.mode==='text'&&D.txtEdit&&!doParse())return;if(issue())return;if(!D.dirty&&!D.cfgView){closeEd();drawSurf();return}
  const cv=D.cfgView,fchg=D.dirty,pre=snapState();
  if(fchg){let pg;if(D.truth==='root'){if(!D.cOK){[D.K,D.KJ]=expandPages(D.pages);D.cOK=true}pg=D.pages}else pg=D.rOK?D.pages:null;
   K=D.K.slice();KJ=D.KJ.slice();FV++;SEED=null;SEEDP=pg&&clonePages(pg)}
- closeEd();if(fchg){syncHf();fzText();analyze()}
+ closeEd();if(fchg){syncHf();fzText();analyze();if(D.repl)secReset()}
  if(cv)applyView(cv,fchg);else if(fchg)autoView();else drawSurf();histPush(pre,cv)}
 $('ed-ok').onclick=applyDraft;
 /* ---- Undo/Redo a 1 livello: l’ultima conferma di f(z). Si salvano f (coefficienti e radici) e solo i parametri di vista che la conferma ha cambiato (R, quota, offset, ...), non la fotocamera.
@@ -1072,6 +1089,8 @@ function secSync(){const m=Math.max(10,Math.ceil(Math.abs(SD))),e=$('sec-d');e.m
   for(const[c,v]of[['x',p.x],['y',p.y]]){const e=$('s'+c+i),mm=Math.max(10,Math.ceil(Math.abs(v)));e.min=-mm;e.max=mm;e.value=v;e.disabled=p.k!==null;$('v'+c+i).textContent=v.toFixed(3)}});
  const D=secDer(),c=Math.cos(STH*Math.PI/180),s=Math.sin(STH*Math.PI/180);$('sec-tt').textContent=SM==='B'&&D?`t₁ = ${tf(c*SP[0].x+s*SP[0].y)}, t₂ = ${tf(c*SP[1].x+s*SP[1].y)}; d = ${tf(SD)}, θ = ${tf(STH)}°`:'';
  $('sec-msg').textContent=SBAD?'Servono due punti distinti. Mostrata e conservata l’ultima sezione valida.':SMSG;$('sec-msg').className='ed-msg'+(SBAD?' err':'')}
+/* 1.7: ritorno all'asse reale (d=0, θ=0°) alla sostituzione completa di f(z): modalità «Offset e angolo», punti liberi sull'asse reale, nessun legame con radici della funzione precedente. Non tocca Re/Im visibili. */
+function secReset(){SM='A';SD=0;STH=0;SBAD=false;SMSG='';SP=[{k:null,n:0,x:-1,y:0},{k:null,n:0,x:1,y:0}];secSync()}
 let secRaf=0;const secUp=()=>{if(secRaf)return;secRaf=requestAnimationFrame(()=>{secRaf=0;drawPlan();drawSurf();drawReal()})};
 $('sec-d').oninput=e=>{SMSG='';SD=+e.target.value;secSync();secUp()};$('sec-th').oninput=e=>{STH=+e.target.value;secSync();secUp()};$('sec-rs').onclick=()=>{SMSG='';SD=0;STH=0;secSync();secUp()};$('sec-re').onchange=e=>{SRE=e.target.checked;drawReal()};$('sec-im').onchange=e=>{SIM=e.target.checked;drawReal()};
 $('sec-mode').onchange=e=>{const m=e.target.value;if(m===SM)return;SMSG='';
@@ -1094,7 +1113,10 @@ sc.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.5,Math.min(3,z
 new ResizeObserver(()=>{if(DQ.on)return;size()}).observe($('mn'));
 const themeRefresh=()=>{for(const k in CC)delete CC[k];drawSurf();drawReal()};new MutationObserver(themeRefresh).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme','class']});
 if(window.matchMedia)window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',themeRefresh);
-$('curpg').innerHTML=CUR_GH;$('rcg').innerHTML=CUR_GH;
+$('curpg').innerHTML=CUR_GH;$('rcg').innerHTML=CUR_GH;$('rcg2').innerHTML=CUR_GH;
+/* pulsante alto/basso del pannello dati a schermo intero (1.7): due posizioni, entro l'area del modulo */
+function fsPos(){const t=fsDown?'Sposta il pannello dei dati in alto':'Sposta il pannello dei dati in basso',b=$('rfs-pos');$('rfs').classList.toggle('dn',fsDown);b.title=t;b.setAttribute('aria-label',t);b.firstElementChild.style.transform=fsDown?'rotate(180deg)':''}
+$('rfs-pos').onclick=()=>{fsDown=!fsDown;fsPos();fsLay()};fsPos();
 {const q=window.matchMedia&&matchMedia('(any-hover:hover)');if(q){const hc=()=>{if(!q.matches){hv=null;RCP=null}chip();rcur()};q.addEventListener?q.addEventListener('change',hc):q.addListener&&q.addListener(hc)}}
 initGL();initSG();if(!g3)setGL3(false,sgErr);fzText();syncHf();analyze();build();size();capt();setOff(calibOff());loadHash();
 </script></body></html>
