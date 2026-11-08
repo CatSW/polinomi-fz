@@ -1,3 +1,12 @@
+---
+title: Applicazioni dei polinomi nel mondo reale
+copyright: © 2026 Stefano Vesco (IK0VCK) - CatSW. All rights reserved.
+author: IK0VCK
+product: polinomi-fz
+type: documentazione
+version: 1.2
+updated: 2026-11-08
+---
 # Applicazioni dei polinomi nel mondo reale
 
 L'algebra dei polinomi non è un esercizio astratto, ma il linguaggio con cui descriviamo fenomeni fisici, chimici e biologici. Quando un sistema viene linearizzato, approssimato o modellato tramite serie di potenze, la struttura delle sue radici, dei suoi massimi e del suo comportamento asintotico rivela proprietà profonde del sistema reale sottostante. Questa dispensa esplora come i polinomi dal grado 2 al grado 5 governino problemi concreti, evidenziando i confini rigorosi tra leggi fisiche, funzioni normate e modelli di fit empirico.
@@ -37,8 +46,11 @@ Il moto parabolico descrive la traiettoria di un corpo lanciato in un campo grav
 *   **Intervallo valido:** $x \in [0, 40{,}77]$.
 *   **Cosa osservare nell'esploratore:** Il vertice della parabola cade a $x \approx 20{,}39\text{ m}$ con un'altezza massima di $y \approx 10{,}19\text{ m}$. Le radici reali intersecano l'asse $x$ all'origine e alla gittata.
 *   **Limiti del modello:** In aria reale la resistenza aerodinamica genera una forza proporzionale al quadrato della velocità, deformando la parabola e riducendo la gittata.
-*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1swLDBdLFsxLDBdLFstMC4wMjQ1MjUsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjo2My40LCJsZXZlbCI6MjMuMDEsImhlaWdodCI6MSwib2Zmc2V0IjowLjEzLCJkb21haW4iOiJjYXJ0ZXNpYW4iLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6LTAuMTcsInBpdGNoIjowLjA4LCJ6b29tIjoxfSwicGxhbiI6eyJjeCI6MTcuOTc2LCJjeSI6LTEuMjcxLCJzY2FsZSI6NjMuNH0sInByb2JlIjpbMjAsMTAuMTldLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOjAsImltIjowfSx7InJvb3QiOm51bGwsInJlIjo0MC43NywiaW0iOjB9XX19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a>) *(Nota: l'apertura in nuova scheda dipende dal visualizzatore)*.
+*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1swLDBdLFsxLDBdLFstMC4wMjQ1MjUsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjoyOS45LCJsZXZlbCI6MjMuMDEsImhlaWdodCI6MSwib2Zmc2V0IjowLjEzLCJkb21haW4iOiJjYXJ0ZXNpYW4iLCJoYWxmUGxhbmUiOnRydWUsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOmZhbHNlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6MC40OSwicGl0Y2giOjAuMjIsInpvb20iOjEuMjIxNH0sImNlbnRlcjNEIjp7InJlIjoyMi41NjYsImltIjowfSwicGxhbiI6eyJjeCI6MjAuMjEzLCJjeSI6MTIuOTE2LCJzY2FsZSI6NDAuMzYxfSwicHJvYmUiOlsyMCwxMC4xOV0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6MCwiaW0iOjB9LHsicm9vdCI6bnVsbCwicmUiOjQwLjc3LCJpbSI6MH1dfSwic2VjdGlvblZpZXciOnsibW9kZSI6InJvb3RzIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a>) *(Nota: l'apertura in nuova scheda dipende dal visualizzatore)*.
 *   **Fonti e storia:** Equazione derivata dai principi della balistica classica di Galileo Galilei (*Discorsi e dimostrazioni matematiche intorn'a due nuove scienze*, 1638).
+*   **Riferimenti esterni:**
+    *   [Wikipedia: Traiettoria](https://en.wikipedia.org/wiki/Trajectory)
+    *   [YouTube: introduction to projectile motion](https://www.youtube.com/watch?v=uEnUG_1TYxc)
 
 ---
 
@@ -57,8 +69,11 @@ Esprime l'equilibrio delle frequenze alleliche in una popolazione ideale soggett
 *   **Intervallo valido:** $p \in [0, 1]$.
 *   **Cosa osservare nell'esploratore:** Il massimo della funzione si osserva per $p = 0{,}5$, dove la frazione di eterozigoti raggiunge il valore di $0{,}5$ ($50\%$).
 *   **Limiti del modello:** Richiede accoppiamento casuale (panmixia), assenza di selezione naturale, mutazione, deriva genetica e migrazione.
-*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1swLDBdLFsyLDBdLFstMiwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjIsImxldmVsIjoyLCJoZWlnaHQiOjEsIm9mZnNldCI6MC4wOCwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6LTAuMTYsInBpdGNoIjowLjI0LCJ6b29tIjoxfSwicGxhbiI6eyJjeCI6MC41LCJjeSI6MC4yNSwic2NhbGUiOjEuNX0sInByb2JlIjpbMC41LDAuNV0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6MCwiaW0iOjB9LHsicm9vdCI6bnVsbCwicmUiOjEsImltIjowfV19fX0" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1swLDBdLFsyLDBdLFstMiwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjEuNCwibGV2ZWwiOjAuMjgxMjMsImhlaWdodCI6MSwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6dHJ1ZSwiYWJvdmVMZXZlbCI6ImdoIiwicGhhc2VQYWxldHRlIjoiYXR0IiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6ZmFsc2UsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOnRydWUsImxheW91dCI6IjEiLCJuZXd0b24iOnsib24iOmZhbHNlLCJpdGVyYXRpb25zIjoyMCwiYmFzaW5QYWxldHRlIjoiYXR0In0sImNhbWVyYSI6eyJ5YXciOjAuMjgsInBpdGNoIjotMC4xNiwiem9vbSI6MX0sImNlbnRlcjNEIjp7InJlIjowLjUwNTQ1LCJpbSI6MH0sInBsYW4iOnsiY3giOjAuNDQyMywiY3kiOjAuNjMxODYsInNjYWxlIjoxLjR9LCJwcm9iZSI6WzAuNSwwLjVdLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOjAsImltIjowfSx7InJvb3QiOm51bGwsInJlIjoxLCJpbSI6MH1dfSwic2VjdGlvblZpZXciOnsibW9kZSI6InJvb3RzIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
 *   **Fonti:** [Wikipedia: Hardy–Weinberg principle](https://en.wikipedia.org/wiki/Hardy%E2%80%93Weinberg_principle).
+*   **Riferimenti esterni:**
+    *   [Wikipedia: Hardy–Weinberg principle](https://en.wikipedia.org/wiki/Hardy%E2%80%93Weinberg_principle)
+    *   [L'EQUAZIONE DI HARDY-WEINBERG: Genetica di Popolazione Spiegata Semplice](https://www.youtube.com/watch?v=OF5wS0ayiL8)
 
 ---
 
@@ -77,7 +92,10 @@ Il comportamento dinamico di un sistema massa-molla-smorzatore a un grado di lib
 *   **Variabili e unità:** $s$ (variabile di Laplace complessa, $\text{s}^{-1}$), $m$ (massa), $c$ (coefficiente di smorzamento), $k$ (rigidezza).
 *   **Cosa osservare nell'esploratore:** La posizione delle radici nel piano complesso di Gauss. Se la parte reale è negativa, il sistema è asintoticamente stabile. Le radici complesse con parte reale negativa generano oscillazioni smorzate.
 *   **Limiti del modello:** Valido solo per sistemi lineari tempo-invarianti (LTI).
-*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1s0LDBdLFswLjQsMF0sWzEsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjo1LCJsZXZlbCI6MTUuMzUsImhlaWdodCI6MSwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjotMC42NiwicGl0Y2giOjAuMTYsInpvb20iOjF9LCJwbGFuIjp7ImN4IjotMC4yLCJjeSI6MCwic2NhbGUiOjR9LCJwcm9iZSI6Wy0wLjIsMS45OV0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6LTIsImltIjotMn0seyJyb290IjpudWxsLCJyZSI6MiwiaW0iOjJ9XX19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1s0LDBdLFswLjQsMF0sWzEsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjozLjYsImxldmVsIjo3LjUzLCJoZWlnaHQiOjEsIm9mZnNldCI6MC4wOCwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOnRydWUsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjoyNS42MDQsInBpdGNoIjowLjE2LCJ6b29tIjoxfSwiY2VudGVyM0QiOnsicmUiOjAsImltIjowfSwicGxhbiI6eyJjeCI6MCwiY3kiOjAsInNjYWxlIjozLjZ9LCJwcm9iZSI6Wy0wLjIsMS45OV0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6LTIsImltIjotMn0seyJyb290IjpudWxsLCJyZSI6MiwiaW0iOjJ9XX0sInNlY3Rpb25WaWV3Ijp7Im1vZGUiOiJhdXRvIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Riferimenti esterni:**
+    *   [Wikipedia: Harmonic Oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator)
+    *   [YouTube: L'oscillatore armonico (libero, smorzato, forzato)](https://www.youtube.com/watch?v=yEqS0aVCk_0)
 
 ---
 
@@ -93,8 +111,11 @@ Quando la risposta di uno strumento analitico non è lineare rispetto alla conce
 *   **Variabili e unità:** $y$ (segnale strumentale, es. assorbanza o corrente), $x$ (concentrazione dell'analito, $\text{mg/L}$).
 *   **Condizione chiave:** La sensibilità differenziale dello strumento è data da $\frac{dy}{dx} = b + 2cx$. Per garantire l'univocità della misura nel campo di lavoro, la derivata non deve annullarsi, e il vertice della parabola deve rigorosamente cadere al di fuori dell'intervallo di taratura.
 *   **Limiti del modello:** Estrapolare al di fuori dell'intervallo di calibrazione conduce a errori grossolani dovuti all'inversione della parabola.
-*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1swLjEsMF0sWzEuNSwwXSxbLTAuMDIsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjoxMDAsImxldmVsIjozOC4zOCwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMDgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjpmYWxzZSwiYWJvdmVMZXZlbCI6ImdoIiwicGhhc2VQYWxldHRlIjoiYXR0IiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6dHJ1ZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjpmYWxzZSwiYW5pbWF0ZSI6ZmFsc2UsImxheW91dCI6IjEiLCJuZXd0b24iOnsib24iOmZhbHNlLCJpdGVyYXRpb25zIjoyMCwiYmFzaW5QYWxldHRlIjoiYXR0In0sImNhbWVyYSI6eyJ5YXciOi0wLjM1LCJwaXRjaCI6MC4wOSwiem9vbSI6MX0sInBsYW4iOnsiY3giOjI4LjkyNiwiY3kiOjAuODU5MTksInNjYWxlIjoxMDB9LCJwcm9iZSI6WzUsNy4xXSwic2VjdGlvbiI6eyJtb2RlIjoiQSIsIm9mZnNldCI6MCwiYW5nbGVEZWciOjAsInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOm51bGwsInJlIjowLCJpbSI6MH0seyJyb290IjpudWxsLCJyZSI6MTAsImltIjowfV19fX0" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1swLjEsMF0sWzEuNSwwXSxbLTAuMDIsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjo2OC44LCJsZXZlbCI6MzcuNjgsImhlaWdodCI6MSwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjotMC4yNiwicGl0Y2giOjAuNTUsInpvb20iOjF9LCJjZW50ZXIzRCI6eyJyZSI6MzMuNDg5LCJpbSI6OC4zOTQ4fSwicGxhbiI6eyJjeCI6MzUuODAxLCJjeSI6Ni43NTgzLCJzY2FsZSI6NjguOH0sInByb2JlIjpbNSw3LjFdLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOjAsImltIjowfSx7InJvb3QiOm51bGwsInJlIjoxMCwiaW0iOjB9XX0sInNlY3Rpb25WaWV3Ijp7Im1vZGUiOiJyb290cyJ9fX0" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
 *   **Fonti:** Norma ISO 8466-2:2001 *(Nota: accesso alle specifiche testuali originali non verificato direttamente via web, basato su compendi metodologici)*.
+*   **Riferimenti esterni:**
+    *   [Wikipedia: Calibration Curve](https://en.wikipedia.org/wiki/Calibration_curve)
+    *   [YouTube: analisi volumetrica](https://www.youtube.com/watch?v=LD_wUk4iNl4&list=PLDvEICOpFCflsV24N9uccmNQwwNIUz3z_)
 
 ---
 
@@ -115,7 +136,10 @@ L'equazione di van der Waals corregge la legge dei gas ideali tenendo conto del 
 *   **Variabili e unità:** $p_r$ (pressione ridotta), $T_r$ (temperatura ridotta), $V_r$ (volume molare ridotto), adimensionali.
 *   **Cosa osservare nell'esploratore:** La transizione da tre radici reali distinte a una sola radice reale e due complesse coniugate al di sopra del punto critico.
 *   **Limiti del modello:** Non descrive con precisione assoluta la coesistenza di fase reale vicino alla temperatura critica senza l'applicazione della costruzione di Maxwell delle Aree Uguali.
-*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1stMywwXSxbOSwwXSxbLTcuOCwwXSxbMS44LDBdLFswLDBdLFswLDBdLFswLDBdLFswLDBdLFswLDBdXX0sInZpZXciOnsiUiI6NCwibGV2ZWwiOjguMzgsImhlaWdodCI6MSwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjotMC40NCwicGl0Y2giOjAuMjcsInpvb20iOjF9LCJwbGFuIjp7ImN4IjoxLjUsImN5IjowLCJzY2FsZSI6M30sInByb2JlIjpbMSwwXSwic2VjdGlvbiI6eyJtb2RlIjoiQSIsIm9mZnNldCI6MCwiYW5nbGVEZWciOjAsInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOm51bGwsInJlIjowLjUsImltIjowfSx7InJvb3QiOm51bGwsInJlIjozLCJpbSI6MH1dfX19" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1stMywwXSxbOSwwXSxbLTcuOCwwXSxbMS44LDBdLFswLDBdLFswLDBdLFswLDBdLFswLDBdLFswLDBdXX0sInZpZXciOnsiUiI6Mi4xLCJsZXZlbCI6Mi42OCwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMDgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjp0cnVlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6LTAuNTcsInBpdGNoIjowLjQ0LCJ6b29tIjoxLjEwNTJ9LCJjZW50ZXIzRCI6eyJyZSI6MS4yNDM5LCJpbSI6MH0sInBsYW4iOnsiY3giOjEuNDE2MSwiY3kiOjEuMDgxNiwic2NhbGUiOjIuMX0sInByb2JlIjpbMSwwXSwic2VjdGlvbiI6eyJtb2RlIjoiQSIsIm9mZnNldCI6MCwiYW5nbGVEZWciOjAsInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOm51bGwsInJlIjowLjUsImltIjowfSx7InJvb3QiOm51bGwsInJlIjozLCJpbSI6MH1dfSwic2VjdGlvblZpZXciOnsibW9kZSI6InJvb3RzIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Riferimenti esterni:**
+    *   [Wikipedia: Van der Waals Equation](https://en.wikipedia.org/wiki/Van_der_Waals_equation)
+    *   [YouTube: Forze di Van der Waals - Legami Intermolecolari](https://www.youtube.com/watch?v=r6cVG9mRn88&t=987s)
 
 ---
 
@@ -132,8 +156,11 @@ Descrive la deflessione elastica verticale di una mensola soggetta a una forza c
 *   **Radici:** Una radice doppia in $\xi = 0$ (incastro: spostamento e pendenza nulli) e una radice fittizia in $\xi = 3$ (fuori dalla campana strutturale).
 *   **Variabili e unità:** $w$ (abbassamento, $\text{m}$), $F$ (forza applicata, $\text{N}$), $L$ (lunghezza della trave, $\text{m}$), $E$ (modulo di Young, $\text{Pa}$), $I$ (momento d'inerzia, $\text{m}^4$).
 *   **Intervallo valido:** $\xi \in [0, 1]$.
-*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1swLDBdLFswLDBdLFszLDBdLFstMSwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjQuNywibGV2ZWwiOjE2LjQxLCJoZWlnaHQiOjEsIm9mZnNldCI6MC4wOCwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6LTAuNCwicGl0Y2giOjAuMjIsInpvb20iOjF9LCJwbGFuIjp7ImN4IjowLjg3NDk1LCJjeSI6LTAuMDgwNzY0LCJzY2FsZSI6NC43fSwicHJvYmUiOlsxLDJdLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOjAsImltIjowfSx7InJvb3QiOm51bGwsInJlIjoxLCJpbSI6MH1dfX19" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1swLDBdLFswLDBdLFszLDBdLFstMSwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjQsImxldmVsIjoxMS45MzUsImhlaWdodCI6MSwib2Zmc2V0IjowLjE0LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJubyIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6dHJ1ZSwiYW5pbWF0ZSI6dHJ1ZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6NDYuNTU0LCJwaXRjaCI6MC40Miwiem9vbSI6MX0sImNlbnRlcjNEIjp7InJlIjowLjk4MTM3LCJpbSI6MS4xMjU5fSwicGxhbiI6eyJjeCI6MS4yNjEzLCJjeSI6MC4yODg5Miwic2NhbGUiOjMuNDQyOH0sInByb2JlIjpbMSwyXSwic2VjdGlvbiI6eyJtb2RlIjoiQSIsIm9mZnNldCI6MCwiYW5nbGVEZWciOjAsInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOm51bGwsInJlIjowLCJpbSI6MH0seyJyb290IjpudWxsLCJyZSI6MSwiaW0iOjB9XX0sInNlY3Rpb25WaWV3Ijp7Im1vZGUiOiJyb290cyJ9fX0" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
 *   **Fonti:** [Wikipedia: Euler–Bernoulli beam theory](https://en.wikipedia.org/wiki/Euler%E2%80%93Bernoulli_beam_theory).
+*   **Riferimenti esterni:**
+    *   [Wikipedia: Euler-Bernoulli Beam Theory](https://en.wikipedia.org/wiki/Euler%E2%80%93Bernoulli_beam_theory)
+    *   [YouTube: What Is a Cantilever Beam?](https://www.youtube.com/shorts/eMETfzsgrvw)
 
 ---
 
@@ -147,8 +174,11 @@ Le curve di Bézier cubiche parametriche sono lo standard industriale per la mod
 *   **Formula originale:** $B(t) = (1-t)^3 P_0 + 3(1-t)^2 t P_1 + 3(1-t) t^2 P_2 + t^3 P_3$
 *   **Significato fisico/geometrico:** Utilizzare tratti cubici raccordati (spline) anziché un unico polinomio di grado elevato evita il fenomeno di Runge, garantendo stabilità numerica e controllo locale della forma tramite i punti di controllo $P_0, P_1, P_2, P_3$.
 *   **Variabili e unità:** $t \in [0, 1]$ (parametro normalizzato), $P_i$ (vettori coordinati dei punti di controllo).
-*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1sxLDBdLFstMywwXSxbMywwXSxbLTEsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjozLjgsImxldmVsIjo5Ljk2LCJoZWlnaHQiOjEsIm9mZnNldCI6MC4wOCwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6LTAuNCwicGl0Y2giOjAuMSwiem9vbSI6MX0sInBsYW4iOnsiY3giOjEuMDc3NCwiY3kiOjAuMDg3MDY1LCJzY2FsZSI6My44fSwicHJvYmUiOlswLDFdLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOjAsImltIjowfSx7InJvb3QiOm51bGwsInJlIjoxLCJpbSI6MH1dfX19" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1sxLDBdLFstMywwXSxbMywwXSxbLTEsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjozLjgsImxldmVsIjoxNy45NCwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMTgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjp0cnVlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0IjpmYWxzZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjpmYWxzZSwiYW5pbWF0ZSI6ZmFsc2UsImxheW91dCI6IjEiLCJuZXd0b24iOnsib24iOmZhbHNlLCJpdGVyYXRpb25zIjoyMCwiYmFzaW5QYWxldHRlIjoiYXR0In0sImNhbWVyYSI6eyJ5YXciOi0wLjU3LCJwaXRjaCI6MC4zMSwiem9vbSI6MX0sImNlbnRlcjNEIjp7InJlIjoxLjA0ODksImltIjowfSwicGxhbiI6eyJjeCI6MS4xMTc4LCJjeSI6MS4wMTUyLCJzY2FsZSI6My44fSwicHJvYmUiOlswLDFdLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOjAsImltIjowfSx7InJvb3QiOm51bGwsInJlIjoxLCJpbSI6MH1dfSwic2VjdGlvblZpZXciOnsibW9kZSI6InJvb3RzIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
 *   **Fonti:** [Wikipedia: Spline interpolation](https://en.wikipedia.org/wiki/Spline_interpolation). *(Nota: l'uso specifico nei font TrueType e PostScript Type 1 si basa su tratteggi di curve di Bézier cubiche e quadratiche verificate su standard di specifica aperti)*.
+*   **Riferimenti esterni:**
+    *   [Wikipedia: Bézier Curve](https://en.wikipedia.org/wiki/B%C3%A9zier_curve)
+    *   [YouTube: The Mathematics of Bézier Curves](https://www.youtube.com/watch?v=jvPPXbo87ds)
 
 ---
 
@@ -169,7 +199,10 @@ Modella la linea elastica di una trave soggetta al proprio peso o a un carico di
     *   $\xi_2 = 1$ (appoggio destro)
     *   $\xi_{3,4} = \frac{1 \pm \sqrt{5}}{2} \approx 1{,}618$ e $-0{,}618$ (le radici reali extra corrispondono alla **sezione aurea**, che geometricamente cade all'esterno della trave fisica).
 *   **Cosa osservare nell'esploratore:** Il massimo della deflessione si ha a metà campata ($\xi = 0{,}5$), dove il valore adimensionale vale $\frac{5}{16}$, conducendo alla nota formula ingegneristica per la freccia massima $w_{\max} = \frac{5qL^4}{384EI}$.
-*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1swLDBdLFsxLDBdLFswLDBdLFstMiwwXSxbMSwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjIuMiwibGV2ZWwiOjEuODksImhlaWdodCI6MSwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjotMC40MSwicGl0Y2giOjAuMjMsInpvb20iOjF9LCJwbGFuIjp7ImN4IjowLCJjeSI6MCwic2NhbGUiOjIuMn0sInByb2JlIjpbMC41LDAuMzEyNV0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6MCwiaW0iOjB9LHsicm9vdCI6bnVsbCwicmUiOjEsImltIjowfV19fX0" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1swLDBdLFsxLDBdLFswLDBdLFstMiwwXSxbMSwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjEuOSwibGV2ZWwiOjIuMTYsImhlaWdodCI6MSwib2Zmc2V0IjotMC4wMSwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOnRydWUsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjp0cnVlLCJpdGVyYXRpb25zIjoyMCwiYmFzaW5QYWxldHRlIjoiYXR0In0sImNhbWVyYSI6eyJ5YXciOi0wLjY5LCJwaXRjaCI6MC41MSwiem9vbSI6MS4xMDUyfSwiY2VudGVyM0QiOnsicmUiOjAuMzgwODgsImltIjowfSwicGxhbiI6eyJjeCI6MC40NTM5OSwiY3kiOjAuNjc1OTMsInNjYWxlIjoxLjl9LCJwcm9iZSI6WzAuODY4OTEsMC4zMTM1NF0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6MCwiaW0iOjB9LHsicm9vdCI6bnVsbCwicmUiOjEsImltIjowfV19LCJzZWN0aW9uVmlldyI6eyJtb2RlIjoiYXV0byJ9fX0" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Riferimenti esterni:**
+    *   [Wikipedia: Bending Moment](https://en.wikipedia.org/wiki/Bending_moment)
+    *   [YouTube: Simply Supported Beam Point Load](https://www.youtube.com/shorts/tge3boEyQHo)
 
 ---
 
@@ -187,7 +220,10 @@ Per la misura di precisione della temperatura sotto $0^\circ\text{C}$, la relazi
     valida nell'intervallo $-2 \le u \le 0$ (ovvero da $-200^\circ\text{C}$ a $0^\circ\text{C}$).
 *   **Controllo numerico:** Per $u = -1$ ($T = -100^\circ\text{C}$), si ottiene $\frac{R}{R_0} \approx 0{,}6026$ (cioè $60{,}26\,\Omega$ per una Pt100 standard).
 *   **Limiti del modello:** Al di fuori dell'intervallo di calibrazione normato, il polinomio perde validità fisica e diverge rapidamente.
-*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1sxLDBdLFswLjM5MDgzLDBdLFstMC4wMDU3NzUsMF0sWzAuMDAwNDE4MywwXSxbLTAuMDAwNDE4MywwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjEzLCJsZXZlbCI6My42NiwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMDgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjpmYWxzZSwiYWJvdmVMZXZlbCI6ImdoIiwicGhhc2VQYWxldHRlIjoiYXR0IiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6dHJ1ZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjpmYWxzZSwiYW5pbWF0ZSI6ZmFsc2UsImxheW91dCI6IjEiLCJuZXd0b24iOnsib24iOmZhbHNlLCJpdGVyYXRpb25zIjoyMCwiYmFzaW5QYWxldHRlIjoiYXR0In0sImNhbWVyYSI6eyJ5YXciOi0wLjY3LCJwaXRjaCI6MC4yNiwiem9vbSI6MX0sInBsYW4iOnsiY3giOjAsImN5IjowLCJzY2FsZSI6MTN9LCJwcm9iZSI6Wy0xLDAuNjAyNl0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6LTIsImltIjowfSx7InJvb3QiOm51bGwsInJlIjowLCJpbSI6MH1dfX19" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1sxLDBdLFswLjM5MDgzLDBdLFstMC4wMDU3NzUsMF0sWzAuMDAwNDE4MywwXSxbLTAuMDAwNDE4MywwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjEyLjksImxldmVsIjozLjM1LCJoZWlnaHQiOjEuMiwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJmdWxsIiwicGhhc2VQYWxldHRlIjoibHVtIiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6dHJ1ZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjp0cnVlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6OTguMzY2LCJwaXRjaCI6MC41Niwiem9vbSI6MC45MDQ4NH0sImNlbnRlcjNEIjp7InJlIjowLjMxMjk5LCJpbSI6LTAuMjI2NjF9LCJwbGFuIjp7ImN4IjowLCJjeSI6MCwic2NhbGUiOjEyLjl9LCJwcm9iZSI6Wy0xLDAuNjAyNl0sInNlY3Rpb24iOnsibW9kZSI6IkIiLCJvZmZzZXQiOjUuNjk2OSwiYW5nbGVEZWciOjMyNi44Mywic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6MCwicmUiOi0zLjQ5NTYsImltIjo5LjA5MTR9LHsicm9vdCI6MywicmUiOjEwLjQxMiwiaW0iOjB9XX0sInNlY3Rpb25WaWV3Ijp7Im1vZGUiOiJhdXRvIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Riferimenti esterni:**
+    *   [Wikipedia: Resistance Thermometer](https://en.wikipedia.org/wiki/Resistance_thermometer)
+    *   [YouTube: What you should know about PT100 Sensor!](https://www.youtube.com/watch?v=TmvsC3W33jU)
 
 ---
 
@@ -201,8 +237,10 @@ Utilizzati per calcolare con elevata precisione capacità termica ($C_p$), ental
 *   **Formula originale:** $\frac{C_p^\circ}{R} = a_1 + a_2 T + a_3 T^2 + a_4 T^3 + a_5 T^4$
 *   **Significato fisico:** Si tratta di un fit polinomiale ai minimi quadrati suddiviso in intervalli di temperatura (tipicamente basso e alto). 
 *   **Nota critica:** Il formato completo di Shomate include anche termini in $T^{-2}$ per l'entalpia e l'entropia, non riducendosi a un polinomio puro in tali funzioni integrate.
-*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjYiLCJmIjp7ImNvZWZmcyI6W1szLjUsMF0sWy0wLjE1LDBdLFswLjAxMjMsMF0sWy0wLjAwNDUsMF0sWzAuMDAxMiwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjEwLCJsZXZlbCI6NiwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMSwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6LTAuMTIsInBpdGNoIjowLjQzLCJ6b29tIjowLjkwNDg0fSwicGxhbiI6eyJjeCI6MCwiY3kiOjAsInNjYWxlIjoxMH0sInByb2JlIjpbMCwzLjVdLCJzZWN0aW9uIjp7Im1vZGUiOiJCIiwib2Zmc2V0Ijo1LjMyMjQsImFuZ2xlRGVnIjozNTMuOTksInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOjAsInJlIjotNC4xMDEyLCJpbSI6NS43ODM4fSx7InJvb3QiOjIsInJlIjo1Ljk3NjIsImltIjo0LjcyMjV9XX19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1szLjUsMF0sWy0wLjE1LDBdLFswLjAxMjMsMF0sWy0wLjAwNDUsMF0sWzAuMDAxMiwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjkuMSwibGV2ZWwiOjUuNDQxMywiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMSwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0IjpmYWxzZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjp0cnVlLCJhbmltYXRlIjp0cnVlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3Ijo0NS41MTYsInBpdGNoIjowLjU5LCJ6b29tIjoxfSwiY2VudGVyM0QiOnsicmUiOjAuOTg1MywiaW0iOjAuMzEzOTh9LCJwbGFuIjp7ImN4IjowLCJjeSI6MCwic2NhbGUiOjkuMX0sInByb2JlIjpbMCwzLjVdLCJzZWN0aW9uIjp7Im1vZGUiOiJCIiwib2Zmc2V0Ijo1LjMyMjQsImFuZ2xlRGVnIjozNTMuOTksInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOjAsInJlIjotNC4xMDEyLCJpbSI6NS43ODM4fSx7InJvb3QiOjIsInJlIjo1Ljk3NjIsImltIjo0LjcyMjV9XX0sInNlY3Rpb25WaWV3Ijp7Im1vZGUiOiJhdXRvIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
 *   **Fonti:** Banche dati termodinamiche NASA / Burcat *(verificato tramite documentazione di Cantera)*.
+*   **Riferimenti esterni:**
+    *   [NASA Polynomial representation of molecular specific heats](https://www.sciencedirect.com/science/article/pii/S0022407323001358)
 
 ---
 
@@ -226,7 +264,9 @@ Nella progettazione di meccanismi a camme o profili di moto per bracci robotici,
     *   $s''(\tau) = 60\tau(2\tau - 1)(\tau - 1)$
 *   **Radici:** Una radice tripla in $\tau = 0$ e una coppia di radici complesse coniugate vicine a $1{,}25 \pm 0{,}323i$.
 *   **Perché il grado 5?** Le 6 condizioni al contorno indipendenti imposte richiedono esattamente un polinomio di grado 5.
-*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1swLDBdLFswLDBdLFswLDBdLFsxMCwwXSxbLTE1LDBdLFs2LDBdLFswLDBdLFswLDBdLFswLDBdXX0sInZpZXciOnsiUiI6Mi4yLCJsZXZlbCI6Ny42OSwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMDgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjpmYWxzZSwiYWJvdmVMZXZlbCI6ImdoIiwicGhhc2VQYWxldHRlIjoiYXR0IiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6dHJ1ZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjpmYWxzZSwiYW5pbWF0ZSI6ZmFsc2UsImxheW91dCI6IjEiLCJuZXd0b24iOnsib24iOmZhbHNlLCJpdGVyYXRpb25zIjoyMCwiYmFzaW5QYWxldHRlIjoiYXR0In0sImNhbWVyYSI6eyJ5YXciOi0wLjM3LCJwaXRjaCI6MC4yNywiem9vbSI6MX0sInBsYW4iOnsiY3giOjAuNDQ1OTcsImN5IjowLjAzNDU0LCJzY2FsZSI6MS44OTM2fSwicHJvYmUiOlswLjUsMC41XSwic2VjdGlvbiI6eyJtb2RlIjoiQSIsIm9mZnNldCI6MCwiYW5nbGVEZWciOjAsInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOm51bGwsInJlIjowLCJpbSI6MH0seyJyb290IjpudWxsLCJyZSI6MSwiaW0iOjB9XX19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1swLDBdLFswLDBdLFswLDBdLFsxMCwwXSxbLTE1LDBdLFs2LDBdLFswLDBdLFswLDBdLFswLDBdXX0sInZpZXciOnsiUiI6MS4xNSwibGV2ZWwiOjAuNDM3NiwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMDgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjpmYWxzZSwiYWJvdmVMZXZlbCI6ImdoIiwicGhhc2VQYWxldHRlIjoiYXR0IiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6dHJ1ZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjpmYWxzZSwiYW5pbWF0ZSI6dHJ1ZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6dHJ1ZSwiaXRlcmF0aW9ucyI6MjYsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjotMC4xNiwicGl0Y2giOjAuNiwiem9vbSI6MS4xMDUyfSwiY2VudGVyM0QiOnsicmUiOjAuNDk1MjgsImltIjowLjAxNjAzOX0sInBsYW4iOnsiY3giOjAuNjEyMSwiY3kiOjAuMDQwMjk1LCJzY2FsZSI6MS4zMzYxfSwicHJvYmUiOlstMC40MjM2NiwtMC4xNzQyM10sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6MCwiaW0iOjB9LHsicm9vdCI6bnVsbCwicmUiOjEsImltIjowfV19LCJzZWN0aW9uVmlldyI6eyJtb2RlIjoicmFuZ2UiLCJjZW50ZXIiOjAuNDI1NDEsImhhbGZXaWR0aCI6MC44NTczfX19" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Riferimenti esterni:**
+    *   [Wikipedia: Cam Mechanism](https://en.wikipedia.org/wiki/Cam_%28mechanism%29)
 
 ---
 
@@ -253,7 +293,10 @@ Quando i modelli fisici esatti non sono disponibili, si ricorre al fit di dati s
 
 #### Esempio dimostrativo di overfitting (ES12)
 *   **Descrizione:** Un set di dati sintetici interpolato confrontando un fit di **grado 2** (adeguato), un fit di **grado 4** e un fit di **grado 8** (fortemente affetto da sovradattamento e oscillazioni spurie fuori dall'intervallo dei dati).
-*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1sxLDBdLFswLDBdLFstMiwwXSxbMCwwXSxbMS4yLDBdLFswLDBdLFstMC41LDBdLFswLDBdLFswLjEsMF1dfSwidmlldyI6eyJSIjozLCJsZXZlbCI6MzMuOTksImhlaWdodCI6MSwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjotMC4yMywicGl0Y2giOjAuNywiem9vbSI6MX0sInBsYW4iOnsiY3giOjAsImN5IjowLCJzY2FsZSI6Mi41fSwicHJvYmUiOlswLDFdLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOi0yLCJpbSI6MH0seyJyb290IjpudWxsLCJyZSI6MiwiaW0iOjB9XX19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Link:** [Apri nell'Esploratore](<a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1sxLDBdLFswLDBdLFstMiwwXSxbMCwwXSxbMS4yLDBdLFswLDBdLFstMC41LDBdLFswLDBdLFswLjEsMF1dfSwidmlldyI6eyJSIjoyLjMsImxldmVsIjoyMi45OSwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMDgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjpmYWxzZSwiYWJvdmVMZXZlbCI6Im5vIiwicGhhc2VQYWxldHRlIjoiYXR0IiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6dHJ1ZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjp0cnVlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6NTcuMjQ4LCJwaXRjaCI6MC40Nywiem9vbSI6MS4xMDUyfSwiY2VudGVyM0QiOnsicmUiOjAsImltIjowfSwicGxhbiI6eyJjeCI6MCwiY3kiOjAsInNjYWxlIjoyLjN9LCJwcm9iZSI6WzAsMV0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6LTIsImltIjowfSx7InJvb3QiOm51bGwsInJlIjoyLCJpbSI6MH1dfSwic2VjdGlvblZpZXciOnsibW9kZSI6ImF1dG8ifX19" target="_blank" rel="noopener">Apri nell'Esploratore</a>)
+*   **Riferimenti esterni:**
+    *   [Wikipedia: Overfitting](https://en.wikipedia.org/wiki/Overfitting)
+    *   [YouTube: Underfitting & Overfitting - Explained!](https://www.youtube.com/watch?v=o3DztvnfAJg)
 
 ---
 
@@ -315,18 +358,18 @@ graph TD
 
 | Codice | Segnaposto URL | Funzione espansa / Equazione | Radici attese / Particolarità | Intervallo consigliato | Vista Esploratore consigliata | Cosa mostrare |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **ES01** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1swLDBdLFsxLDBdLFstMC4wMjQ1MjUsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjo2My40LCJsZXZlbCI6MjMuMDEsImhlaWdodCI6MSwib2Zmc2V0IjowLjEzLCJkb21haW4iOiJjYXJ0ZXNpYW4iLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6LTAuMTcsInBpdGNoIjowLjA4LCJ6b29tIjoxfSwicGxhbiI6eyJjeCI6MTcuOTc2LCJjeSI6LTEuMjcxLCJzY2FsZSI6NjMuNH0sInByb2JlIjpbMjAsMTAuMTldLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOjAsImltIjowfSx7InJvb3QiOm51bGwsInJlIjo0MC43NywiaW0iOjB9XX19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $y = -0{,}024525x^2 + x$ | $0$ e $40{,}77$ | $[0, 40{,}77]$ | Piano cartesiano | Vertice e gittata massima |
-| **ES02** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1swLDBdLFsyLDBdLFstMiwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjIsImxldmVsIjoyLCJoZWlnaHQiOjEsIm9mZnNldCI6MC4wOCwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6LTAuMTYsInBpdGNoIjowLjI0LCJ6b29tIjoxfSwicGxhbiI6eyJjeCI6MC41LCJjeSI6MC4yNSwic2NhbGUiOjEuNX0sInByb2JlIjpbMC41LDAuNV0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6MCwiaW0iOjB9LHsicm9vdCI6bnVsbCwicmUiOjEsImltIjowfV19fX0" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $H(p) = -2p^2 + 2p$ | $0$ e $1$ | $[0, 1]$ | Piano cartesiano | Massimo simmetrico a $p=0{,}5$ |
-| **ES03** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1s0LDBdLFswLjQsMF0sWzEsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjo1LCJsZXZlbCI6MTUuMzUsImhlaWdodCI6MSwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjotMC42NiwicGl0Y2giOjAuMTYsInpvb20iOjF9LCJwbGFuIjp7ImN4IjotMC4yLCJjeSI6MCwic2NhbGUiOjR9LCJwcm9iZSI6Wy0wLjIsMS45OV0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6LTIsImltIjotMn0seyJyb290IjpudWxsLCJyZSI6MiwiaW0iOjJ9XX19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $s^2 + 0{,}4s + 4 = 0$ | $-0{,}2 \pm 1{,}99i$ | Piano complesso | Piano di Gauss | Posizione delle radici complesse |
-| **ES04** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1swLjEsMF0sWzEuNSwwXSxbLTAuMDIsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjoxMDAsImxldmVsIjozOC4zOCwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMDgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjpmYWxzZSwiYWJvdmVMZXZlbCI6ImdoIiwicGhhc2VQYWxldHRlIjoiYXR0IiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6dHJ1ZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjpmYWxzZSwiYW5pbWF0ZSI6ZmFsc2UsImxheW91dCI6IjEiLCJuZXd0b24iOnsib24iOmZhbHNlLCJpdGVyYXRpb25zIjoyMCwiYmFzaW5QYWxldHRlIjoiYXR0In0sImNhbWVyYSI6eyJ5YXciOi0wLjM1LCJwaXRjaCI6MC4wOSwiem9vbSI6MX0sInBsYW4iOnsiY3giOjI4LjkyNiwiY3kiOjAuODU5MTksInNjYWxlIjoxMDB9LCJwcm9iZSI6WzUsNy4xXSwic2VjdGlvbiI6eyJtb2RlIjoiQSIsIm9mZnNldCI6MCwiYW5nbGVEZWciOjAsInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOm51bGwsInJlIjowLCJpbSI6MH0seyJyb290IjpudWxsLCJyZSI6MTAsImltIjowfV19fX0" target="_blank" rel="noopener">Apri nell'Esploratore</a>  | $y = 0{,}1 + 1{,}5x - 0{,}02x^2$ | Radici fuori range operativo | $[0, 10]$ | Piano cartesiano | Monotonicità della derivata |
-| **ES05** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1stMywwXSxbOSwwXSxbLTcuOCwwXSxbMS44LDBdLFswLDBdLFswLDBdLFswLDBdLFswLDBdLFswLDBdXX0sInZpZXciOnsiUiI6NCwibGV2ZWwiOjguMzgsImhlaWdodCI6MSwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjotMC40NCwicGl0Y2giOjAuMjcsInpvb20iOjF9LCJwbGFuIjp7ImN4IjoxLjUsImN5IjowLCJzY2FsZSI6M30sInByb2JlIjpbMSwwXSwic2VjdGlvbiI6eyJtb2RlIjoiQSIsIm9mZnNldCI6MCwiYW5nbGVEZWciOjAsInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOm51bGwsInJlIjowLjUsImltIjowfSx7InJvb3QiOm51bGwsInJlIjozLCJpbSI6MH1dfX19" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $1{,}8V^3 - 7{,}8V^2 + 9V - 3 = 0$ | $0{,}613$, $1$, $2{,}721$ | $[0{,}5, 3]$ | Sezione / 3D | Tre radici reali nel ramo liquido-vapore |
-| **ES06** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1swLDBdLFswLDBdLFszLDBdLFstMSwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjQuNywibGV2ZWwiOjE2LjQxLCJoZWlnaHQiOjEsIm9mZnNldCI6MC4wOCwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6LTAuNCwicGl0Y2giOjAuMjIsInpvb20iOjF9LCJwbGFuIjp7ImN4IjowLjg3NDk1LCJjeSI6LTAuMDgwNzY0LCJzY2FsZSI6NC43fSwicHJvYmUiOlsxLDJdLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOjAsImltIjowfSx7InJvb3QiOm51bGwsInJlIjoxLCJpbSI6MH1dfX19" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $-\xi^3 + 3\xi^2 = 0$ | Doppia in $0$, radice in $3$ | $[0, 1]$ | Piano cartesiano | Comportamento all'incastro |
-| **ES07** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1sxLDBdLFstMywwXSxbMywwXSxbLTEsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjozLjgsImxldmVsIjo5Ljk2LCJoZWlnaHQiOjEsIm9mZnNldCI6MC4wOCwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6LTAuNCwicGl0Y2giOjAuMSwiem9vbSI6MX0sInBsYW4iOnsiY3giOjEuMDc3NCwiY3kiOjAuMDg3MDY1LCJzY2FsZSI6My44fSwicHJvYmUiOlswLDFdLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOjAsImltIjowfSx7InJvb3QiOm51bGwsInJlIjoxLCJpbSI6MH1dfX19" target="_blank" rel="noopener">Apri nell'Esploratore</a> | Parametrica cubica | Punti di controllo | $[0, 1]$ | Piano cartesiano | Controllo geometrico della curva |
-| **ES08** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1swLDBdLFsxLDBdLFswLDBdLFstMiwwXSxbMSwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjIuMiwibGV2ZWwiOjEuODksImhlaWdodCI6MSwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjotMC40MSwicGl0Y2giOjAuMjMsInpvb20iOjF9LCJwbGFuIjp7ImN4IjowLCJjeSI6MCwic2NhbGUiOjIuMn0sInByb2JlIjpbMC41LDAuMzEyNV0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6MCwiaW0iOjB9LHsicm9vdCI6bnVsbCwicmUiOjEsImltIjowfV19fX0" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $\xi^4 - 2\xi^3 + \xi = 0$ | $0, 1, \frac{1\pm\sqrt{5}}{2}$ | $[0, 1]$ | Piano cartesiano | Presenza della sezione aurea |
-| **ES09** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1sxLDBdLFswLjM5MDgzLDBdLFstMC4wMDU3NzUsMF0sWzAuMDAwNDE4MywwXSxbLTAuMDAwNDE4MywwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjEzLCJsZXZlbCI6My42NiwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMDgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjpmYWxzZSwiYWJvdmVMZXZlbCI6ImdoIiwicGhhc2VQYWxldHRlIjoiYXR0IiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6dHJ1ZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjpmYWxzZSwiYW5pbWF0ZSI6ZmFsc2UsImxheW91dCI6IjEiLCJuZXd0b24iOnsib24iOmZhbHNlLCJpdGVyYXRpb25zIjoyMCwiYmFzaW5QYWxldHRlIjoiYXR0In0sImNhbWVyYSI6eyJ5YXciOi0wLjY3LCJwaXRjaCI6MC4yNiwiem9vbSI6MX0sInBsYW4iOnsiY3giOjAsImN5IjowLCJzY2FsZSI6MTN9LCJwcm9iZSI6Wy0xLDAuNjAyNl0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6LTIsImltIjowfSx7InJvb3QiOm51bGwsInJlIjowLCJpbSI6MH1dfX19" target="_blank" rel="noopener">Apri nell'Esploratore</a> | Grado 4 Callendar–Van Dusen | Radici complesse esterne | $[-2, 0]$ (adimensionale) | Piano cartesiano | Accuratezza nell'intervallo negativo |
-| **ES10** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjYiLCJmIjp7ImNvZWZmcyI6W1szLjUsMF0sWy0wLjE1LDBdLFswLjAxMjMsMF0sWy0wLjAwNDUsMF0sWzAuMDAxMiwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjEwLCJsZXZlbCI6NiwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMSwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6LTAuMTIsInBpdGNoIjowLjQzLCJ6b29tIjowLjkwNDg0fSwicGxhbiI6eyJjeCI6MCwiY3kiOjAsInNjYWxlIjoxMH0sInByb2JlIjpbMCwzLjVdLCJzZWN0aW9uIjp7Im1vZGUiOiJCIiwib2Zmc2V0Ijo1LjMyMjQsImFuZ2xlRGVnIjozNTMuOTksInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOjAsInJlIjotNC4xMDEyLCJpbSI6NS43ODM4fSx7InJvb3QiOjIsInJlIjo1Ljk3NjIsImltIjo0LjcyMjV9XX19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a> | Polinomio 4° grado $C_p$ | Dipendente dal set | $[200, 1000]\text{ K}$ | Piano cartesiano | Andamento termodinamico |
-| **ES11** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1swLDBdLFswLDBdLFswLDBdLFsxMCwwXSxbLTE1LDBdLFs2LDBdLFswLDBdLFswLDBdLFswLDBdXX0sInZpZXciOnsiUiI6Mi4yLCJsZXZlbCI6Ny42OSwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMDgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjpmYWxzZSwiYWJvdmVMZXZlbCI6ImdoIiwicGhhc2VQYWxldHRlIjoiYXR0IiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6dHJ1ZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjpmYWxzZSwiYW5pbWF0ZSI6ZmFsc2UsImxheW91dCI6IjEiLCJuZXd0b24iOnsib24iOmZhbHNlLCJpdGVyYXRpb25zIjoyMCwiYmFzaW5QYWxldHRlIjoiYXR0In0sImNhbWVyYSI6eyJ5YXciOi0wLjM3LCJwaXRjaCI6MC4yNywiem9vbSI6MX0sInBsYW4iOnsiY3giOjAuNDQ1OTcsImN5IjowLjAzNDU0LCJzY2FsZSI6MS44OTM2fSwicHJvYmUiOlswLjUsMC41XSwic2VjdGlvbiI6eyJtb2RlIjoiQSIsIm9mZnNldCI6MCwiYW5nbGVEZWciOjAsInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOm51bGwsInJlIjowLCJpbSI6MH0seyJyb290IjpudWxsLCJyZSI6MSwiaW0iOjB9XX19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $10\tau^3 - 15\tau^4 + 6\tau^5$ | Tripla in $0$, complesse coniugate | $[0, 1]$ | Piano cartesiano | Raccordi a derivata nulla |
-| **ES12** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIxLjciLCJmIjp7ImNvZWZmcyI6W1sxLDBdLFswLDBdLFstMiwwXSxbMCwwXSxbMS4yLDBdLFswLDBdLFstMC41LDBdLFswLDBdLFswLjEsMF1dfSwidmlldyI6eyJSIjozLCJsZXZlbCI6MzMuOTksImhlaWdodCI6MSwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjotMC4yMywicGl0Y2giOjAuNywiem9vbSI6MX0sInBsYW4iOnsiY3giOjAsImN5IjowLCJzY2FsZSI6Mi41fSwicHJvYmUiOlswLDFdLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOi0yLCJpbSI6MH0seyJyb290IjpudWxsLCJyZSI6MiwiaW0iOjB9XX19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a> | Fit grado 2 vs grado 8 | Oscillazioni spurie | Intervallo dati | Piano cartesiano | Instabilità del sovradattamento |
+| **ES01** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1swLDBdLFsxLDBdLFstMC4wMjQ1MjUsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjoyOS45LCJsZXZlbCI6MjMuMDEsImhlaWdodCI6MSwib2Zmc2V0IjowLjEzLCJkb21haW4iOiJjYXJ0ZXNpYW4iLCJoYWxmUGxhbmUiOnRydWUsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOmZhbHNlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6MC40OSwicGl0Y2giOjAuMjIsInpvb20iOjEuMjIxNH0sImNlbnRlcjNEIjp7InJlIjoyMi41NjYsImltIjowfSwicGxhbiI6eyJjeCI6MjAuMjEzLCJjeSI6MTIuOTE2LCJzY2FsZSI6NDAuMzYxfSwicHJvYmUiOlsyMCwxMC4xOV0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6MCwiaW0iOjB9LHsicm9vdCI6bnVsbCwicmUiOjQwLjc3LCJpbSI6MH1dfSwic2VjdGlvblZpZXciOnsibW9kZSI6InJvb3RzIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $y = -0{,}024525x^2 + x$ | $0$ e $40{,}77$ | $[0, 40{,}77]$ | Piano cartesiano | Vertice e gittata massima |
+| **ES02** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1swLDBdLFsyLDBdLFstMiwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjEuNCwibGV2ZWwiOjAuMjgxMjMsImhlaWdodCI6MSwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6dHJ1ZSwiYWJvdmVMZXZlbCI6ImdoIiwicGhhc2VQYWxldHRlIjoiYXR0IiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6ZmFsc2UsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOnRydWUsImxheW91dCI6IjEiLCJuZXd0b24iOnsib24iOmZhbHNlLCJpdGVyYXRpb25zIjoyMCwiYmFzaW5QYWxldHRlIjoiYXR0In0sImNhbWVyYSI6eyJ5YXciOjAuMjgsInBpdGNoIjotMC4xNiwiem9vbSI6MX0sImNlbnRlcjNEIjp7InJlIjowLjUwNTQ1LCJpbSI6MH0sInBsYW4iOnsiY3giOjAuNDQyMywiY3kiOjAuNjMxODYsInNjYWxlIjoxLjR9LCJwcm9iZSI6WzAuNSwwLjVdLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOjAsImltIjowfSx7InJvb3QiOm51bGwsInJlIjoxLCJpbSI6MH1dfSwic2VjdGlvblZpZXciOnsibW9kZSI6InJvb3RzIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $H(p) = -2p^2 + 2p$ | $0$ e $1$ | $[0, 1]$ | Piano cartesiano | Massimo simmetrico a $p=0{,}5$ |
+| **ES03** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1s0LDBdLFswLjQsMF0sWzEsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjozLjYsImxldmVsIjo3LjUzLCJoZWlnaHQiOjEsIm9mZnNldCI6MC4wOCwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOnRydWUsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjoyNS42MDQsInBpdGNoIjowLjE2LCJ6b29tIjoxfSwiY2VudGVyM0QiOnsicmUiOjAsImltIjowfSwicGxhbiI6eyJjeCI6MCwiY3kiOjAsInNjYWxlIjozLjZ9LCJwcm9iZSI6Wy0wLjIsMS45OV0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6LTIsImltIjotMn0seyJyb290IjpudWxsLCJyZSI6MiwiaW0iOjJ9XX0sInNlY3Rpb25WaWV3Ijp7Im1vZGUiOiJhdXRvIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $s^2 + 0{,}4s + 4 = 0$ | $-0{,}2 \pm 1{,}99i$ | Piano complesso | Piano di Gauss | Posizione delle radici complesse |
+| **ES04** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1swLjEsMF0sWzEuNSwwXSxbLTAuMDIsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjo2OC44LCJsZXZlbCI6MzcuNjgsImhlaWdodCI6MSwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjotMC4yNiwicGl0Y2giOjAuNTUsInpvb20iOjF9LCJjZW50ZXIzRCI6eyJyZSI6MzMuNDg5LCJpbSI6OC4zOTQ4fSwicGxhbiI6eyJjeCI6MzUuODAxLCJjeSI6Ni43NTgzLCJzY2FsZSI6NjguOH0sInByb2JlIjpbNSw3LjFdLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOjAsImltIjowfSx7InJvb3QiOm51bGwsInJlIjoxMCwiaW0iOjB9XX0sInNlY3Rpb25WaWV3Ijp7Im1vZGUiOiJyb290cyJ9fX0" target="_blank" rel="noopener">Apri nell'Esploratore</a>  | $y = 0{,}1 + 1{,}5x - 0{,}02x^2$ | Radici fuori range operativo | $[0, 10]$ | Piano cartesiano | Monotonicità della derivata |
+| **ES05** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1stMywwXSxbOSwwXSxbLTcuOCwwXSxbMS44LDBdLFswLDBdLFswLDBdLFswLDBdLFswLDBdLFswLDBdXX0sInZpZXciOnsiUiI6Mi4xLCJsZXZlbCI6Mi42OCwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMDgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjp0cnVlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0Ijp0cnVlLCJyZWFsQ3VydmVzM0QiOnRydWUsImF1dG9Sb3RhdGUiOmZhbHNlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6LTAuNTcsInBpdGNoIjowLjQ0LCJ6b29tIjoxLjEwNTJ9LCJjZW50ZXIzRCI6eyJyZSI6MS4yNDM5LCJpbSI6MH0sInBsYW4iOnsiY3giOjEuNDE2MSwiY3kiOjEuMDgxNiwic2NhbGUiOjIuMX0sInByb2JlIjpbMSwwXSwic2VjdGlvbiI6eyJtb2RlIjoiQSIsIm9mZnNldCI6MCwiYW5nbGVEZWciOjAsInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOm51bGwsInJlIjowLjUsImltIjowfSx7InJvb3QiOm51bGwsInJlIjozLCJpbSI6MH1dfSwic2VjdGlvblZpZXciOnsibW9kZSI6InJvb3RzIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $1{,}8V^3 - 7{,}8V^2 + 9V - 3 = 0$ | $0{,}613$, $1$, $2{,}721$ | $[0{,}5, 3]$ | Sezione / 3D | Tre radici reali nel ramo liquido-vapore |
+| **ES06** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1swLDBdLFswLDBdLFszLDBdLFstMSwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjQsImxldmVsIjoxMS45MzUsImhlaWdodCI6MSwib2Zmc2V0IjowLjE0LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJubyIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6dHJ1ZSwiYW5pbWF0ZSI6dHJ1ZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6NDYuNTU0LCJwaXRjaCI6MC40Miwiem9vbSI6MX0sImNlbnRlcjNEIjp7InJlIjowLjk4MTM3LCJpbSI6MS4xMjU5fSwicGxhbiI6eyJjeCI6MS4yNjEzLCJjeSI6MC4yODg5Miwic2NhbGUiOjMuNDQyOH0sInByb2JlIjpbMSwyXSwic2VjdGlvbiI6eyJtb2RlIjoiQSIsIm9mZnNldCI6MCwiYW5nbGVEZWciOjAsInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOm51bGwsInJlIjowLCJpbSI6MH0seyJyb290IjpudWxsLCJyZSI6MSwiaW0iOjB9XX0sInNlY3Rpb25WaWV3Ijp7Im1vZGUiOiJyb290cyJ9fX0" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $-\xi^3 + 3\xi^2 = 0$ | Doppia in $0$, radice in $3$ | $[0, 1]$ | Piano cartesiano | Comportamento all'incastro |
+| **ES07** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1sxLDBdLFstMywwXSxbMywwXSxbLTEsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF0sWzAsMF1dfSwidmlldyI6eyJSIjozLjgsImxldmVsIjoxNy45NCwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMTgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjp0cnVlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0IjpmYWxzZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjpmYWxzZSwiYW5pbWF0ZSI6ZmFsc2UsImxheW91dCI6IjEiLCJuZXd0b24iOnsib24iOmZhbHNlLCJpdGVyYXRpb25zIjoyMCwiYmFzaW5QYWxldHRlIjoiYXR0In0sImNhbWVyYSI6eyJ5YXciOi0wLjU3LCJwaXRjaCI6MC4zMSwiem9vbSI6MX0sImNlbnRlcjNEIjp7InJlIjoxLjA0ODksImltIjowfSwicGxhbiI6eyJjeCI6MS4xMTc4LCJjeSI6MS4wMTUyLCJzY2FsZSI6My44fSwicHJvYmUiOlswLDFdLCJzZWN0aW9uIjp7Im1vZGUiOiJBIiwib2Zmc2V0IjowLCJhbmdsZURlZyI6MCwic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6bnVsbCwicmUiOjAsImltIjowfSx7InJvb3QiOm51bGwsInJlIjoxLCJpbSI6MH1dfSwic2VjdGlvblZpZXciOnsibW9kZSI6InJvb3RzIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a> | Parametrica cubica | Punti di controllo | $[0, 1]$ | Piano cartesiano | Controllo geometrico della curva |
+| **ES08** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1swLDBdLFsxLDBdLFswLDBdLFstMiwwXSxbMSwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjEuOSwibGV2ZWwiOjIuMTYsImhlaWdodCI6MSwib2Zmc2V0IjotMC4wMSwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOnRydWUsImFib3ZlTGV2ZWwiOiJnaCIsInBoYXNlUGFsZXR0ZSI6ImF0dCIsImJhbmRzIjp0cnVlLCJsb2dIZWlnaHQiOnRydWUsInJlYWxDdXJ2ZXMzRCI6dHJ1ZSwiYXV0b1JvdGF0ZSI6ZmFsc2UsImFuaW1hdGUiOmZhbHNlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjp0cnVlLCJpdGVyYXRpb25zIjoyMCwiYmFzaW5QYWxldHRlIjoiYXR0In0sImNhbWVyYSI6eyJ5YXciOi0wLjY5LCJwaXRjaCI6MC41MSwiem9vbSI6MS4xMDUyfSwiY2VudGVyM0QiOnsicmUiOjAuMzgwODgsImltIjowfSwicGxhbiI6eyJjeCI6MC40NTM5OSwiY3kiOjAuNjc1OTMsInNjYWxlIjoxLjl9LCJwcm9iZSI6WzAuODY4OTEsMC4zMTM1NF0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6MCwiaW0iOjB9LHsicm9vdCI6bnVsbCwicmUiOjEsImltIjowfV19LCJzZWN0aW9uVmlldyI6eyJtb2RlIjoiYXV0byJ9fX0" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $\xi^4 - 2\xi^3 + \xi = 0$ | $0, 1, \frac{1\pm\sqrt{5}}{2}$ | $[0, 1]$ | Piano cartesiano | Presenza della sezione aurea |
+| **ES09** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1sxLDBdLFswLjM5MDgzLDBdLFstMC4wMDU3NzUsMF0sWzAuMDAwNDE4MywwXSxbLTAuMDAwNDE4MywwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjEyLjksImxldmVsIjozLjM1LCJoZWlnaHQiOjEuMiwib2Zmc2V0IjowLjA4LCJkb21haW4iOiJwb2xhciIsImhhbGZQbGFuZSI6ZmFsc2UsImFib3ZlTGV2ZWwiOiJmdWxsIiwicGhhc2VQYWxldHRlIjoibHVtIiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6dHJ1ZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjp0cnVlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6OTguMzY2LCJwaXRjaCI6MC41Niwiem9vbSI6MC45MDQ4NH0sImNlbnRlcjNEIjp7InJlIjowLjMxMjk5LCJpbSI6LTAuMjI2NjF9LCJwbGFuIjp7ImN4IjowLCJjeSI6MCwic2NhbGUiOjEyLjl9LCJwcm9iZSI6Wy0xLDAuNjAyNl0sInNlY3Rpb24iOnsibW9kZSI6IkIiLCJvZmZzZXQiOjUuNjk2OSwiYW5nbGVEZWciOjMyNi44Mywic2hvd1JlIjp0cnVlLCJzaG93SW0iOnRydWUsInBvaW50cyI6W3sicm9vdCI6MCwicmUiOi0zLjQ5NTYsImltIjo5LjA5MTR9LHsicm9vdCI6MywicmUiOjEwLjQxMiwiaW0iOjB9XX0sInNlY3Rpb25WaWV3Ijp7Im1vZGUiOiJhdXRvIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a> | Grado 4 Callendar–Van Dusen | Radici complesse esterne | $[-2, 0]$ (adimensionale) | Piano cartesiano | Accuratezza nell'intervallo negativo |
+| **ES10** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1szLjUsMF0sWy0wLjE1LDBdLFswLjAxMjMsMF0sWy0wLjAwNDUsMF0sWzAuMDAxMiwwXSxbMCwwXSxbMCwwXSxbMCwwXSxbMCwwXV19LCJ2aWV3Ijp7IlIiOjkuMSwibGV2ZWwiOjUuNDQxMywiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMSwiZG9tYWluIjoicG9sYXIiLCJoYWxmUGxhbmUiOmZhbHNlLCJhYm92ZUxldmVsIjoiZ2giLCJwaGFzZVBhbGV0dGUiOiJhdHQiLCJiYW5kcyI6dHJ1ZSwibG9nSGVpZ2h0IjpmYWxzZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjp0cnVlLCJhbmltYXRlIjp0cnVlLCJsYXlvdXQiOiIxIiwibmV3dG9uIjp7Im9uIjpmYWxzZSwiaXRlcmF0aW9ucyI6MjAsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3Ijo0NS41MTYsInBpdGNoIjowLjU5LCJ6b29tIjoxfSwiY2VudGVyM0QiOnsicmUiOjAuOTg1MywiaW0iOjAuMzEzOTh9LCJwbGFuIjp7ImN4IjowLCJjeSI6MCwic2NhbGUiOjkuMX0sInByb2JlIjpbMCwzLjVdLCJzZWN0aW9uIjp7Im1vZGUiOiJCIiwib2Zmc2V0Ijo1LjMyMjQsImFuZ2xlRGVnIjozNTMuOTksInNob3dSZSI6dHJ1ZSwic2hvd0ltIjp0cnVlLCJwb2ludHMiOlt7InJvb3QiOjAsInJlIjotNC4xMDEyLCJpbSI6NS43ODM4fSx7InJvb3QiOjIsInJlIjo1Ljk3NjIsImltIjo0LjcyMjV9XX0sInNlY3Rpb25WaWV3Ijp7Im1vZGUiOiJhdXRvIn19fQ" target="_blank" rel="noopener">Apri nell'Esploratore</a> | Polinomio 4° grado $C_p$ | Dipendente dal set | $[200, 1000]\text{ K}$ | Piano cartesiano | Andamento termodinamico |
+| **ES11** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1swLDBdLFswLDBdLFswLDBdLFsxMCwwXSxbLTE1LDBdLFs2LDBdLFswLDBdLFswLDBdLFswLDBdXX0sInZpZXciOnsiUiI6MS4xNSwibGV2ZWwiOjAuNDM3NiwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMDgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjpmYWxzZSwiYWJvdmVMZXZlbCI6ImdoIiwicGhhc2VQYWxldHRlIjoiYXR0IiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6dHJ1ZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjpmYWxzZSwiYW5pbWF0ZSI6dHJ1ZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6dHJ1ZSwiaXRlcmF0aW9ucyI6MjYsImJhc2luUGFsZXR0ZSI6ImF0dCJ9LCJjYW1lcmEiOnsieWF3IjotMC4xNiwicGl0Y2giOjAuNiwiem9vbSI6MS4xMDUyfSwiY2VudGVyM0QiOnsicmUiOjAuNDk1MjgsImltIjowLjAxNjAzOX0sInBsYW4iOnsiY3giOjAuNjEyMSwiY3kiOjAuMDQwMjk1LCJzY2FsZSI6MS4zMzYxfSwicHJvYmUiOlstMC40MjM2NiwtMC4xNzQyM10sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6MCwiaW0iOjB9LHsicm9vdCI6bnVsbCwicmUiOjEsImltIjowfV19LCJzZWN0aW9uVmlldyI6eyJtb2RlIjoicmFuZ2UiLCJjZW50ZXIiOjAuNDI1NDEsImhhbGZXaWR0aCI6MC44NTczfX19" target="_blank" rel="noopener">Apri nell'Esploratore</a> | $10\tau^3 - 15\tau^4 + 6\tau^5$ | Tripla in $0$, complesse coniugate | $[0, 1]$ | Piano cartesiano | Raccordi a derivata nulla |
+| **ES12** | <a href="https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIsInZlcnNpb24iOiIyLjAiLCJmIjp7ImNvZWZmcyI6W1sxLDBdLFswLDBdLFstMiwwXSxbMCwwXSxbMS4yLDBdLFswLDBdLFstMC41LDBdLFswLDBdLFswLjEsMF1dfSwidmlldyI6eyJSIjoyLjMsImxldmVsIjoyMi45OSwiaGVpZ2h0IjoxLCJvZmZzZXQiOjAuMDgsImRvbWFpbiI6InBvbGFyIiwiaGFsZlBsYW5lIjpmYWxzZSwiYWJvdmVMZXZlbCI6Im5vIiwicGhhc2VQYWxldHRlIjoiYXR0IiwiYmFuZHMiOnRydWUsImxvZ0hlaWdodCI6dHJ1ZSwicmVhbEN1cnZlczNEIjp0cnVlLCJhdXRvUm90YXRlIjp0cnVlLCJhbmltYXRlIjpmYWxzZSwibGF5b3V0IjoiMSIsIm5ld3RvbiI6eyJvbiI6ZmFsc2UsIml0ZXJhdGlvbnMiOjIwLCJiYXNpblBhbGV0dGUiOiJhdHQifSwiY2FtZXJhIjp7InlhdyI6NTcuMjQ4LCJwaXRjaCI6MC40Nywiem9vbSI6MS4xMDUyfSwiY2VudGVyM0QiOnsicmUiOjAsImltIjowfSwicGxhbiI6eyJjeCI6MCwiY3kiOjAsInNjYWxlIjoyLjN9LCJwcm9iZSI6WzAsMV0sInNlY3Rpb24iOnsibW9kZSI6IkEiLCJvZmZzZXQiOjAsImFuZ2xlRGVnIjowLCJzaG93UmUiOnRydWUsInNob3dJbSI6dHJ1ZSwicG9pbnRzIjpbeyJyb290IjpudWxsLCJyZSI6LTIsImltIjowfSx7InJvb3QiOm51bGwsInJlIjoyLCJpbSI6MH1dfSwic2VjdGlvblZpZXciOnsibW9kZSI6ImF1dG8ifX19" target="_blank" rel="noopener">Apri nell'Esploratore</a> | Fit grado 2 vs grado 8 | Oscillazioni spurie | Intervallo dati | Piano cartesiano | Instabilità del sovradattamento |
 
 ---
 
@@ -356,32 +399,34 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.7",
+  "version": "2.0",
   "f": {
     "formula": "−0.024525·z2 + z",
     "coeffs": [[0,0],[1,0],[-0.024525,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
     "roots": [{"a":[0,0],"ap":[-0.024525,0],"m":1},{"a":[40.77471967380224,0],"ap":[1,0],"m":1}]
   },
   "view": {
-    "R": 63.4,
+    "R": 29.9,
     "level": 23.01,
     "height": 1,
     "offset": 0.13,
     "domain": "cartesian",
-    "halfPlane": false,
+    "halfPlane": true,
     "aboveLevel": "gh",
     "phasePalette": "att",
     "bands": true,
-    "logHeight": true,
+    "logHeight": false,
     "realCurves3D": true,
     "autoRotate": false,
     "animate": false,
     "layout": "1",
     "newton": {"on":false,"iterations":20,"basinPalette":"att"},
-    "camera": {"yaw":-0.1699999999999996,"pitch":0.0799999999999998,"zoom":1},
-    "plan": {"cx":17.97607679054884,"cy":-1.2710357326650705,"scale":63.4},
+    "camera": {"yaw":0.4900000000000002,"pitch":0.2199999999999997,"zoom":1.22140275816017},
+    "center3D": {"re":22.566453378602684,"im":0},
+    "plan": {"cx":20.213289566334566,"cy":12.916035670502692,"scale":40.36077834652249},
     "probe": [20,10.19],
-    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":40.77,"im":0}]}
+    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":40.77,"im":0}]},
+    "sectionView": {"mode":"roots"}
   }
 }
 ```
@@ -392,32 +437,34 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.7",
+  "version": "2.0",
   "f": {
     "formula": "−2·z2 + 2·z",
     "coeffs": [[0,0],[2,0],[-2,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
     "roots": [{"a":[0,0],"ap":[-2,0],"m":1},{"a":[1,0],"ap":[1,0],"m":1}]
   },
   "view": {
-    "R": 2,
-    "level": 2,
+    "R": 1.4,
+    "level": 1.2866891325799181,
     "height": 1,
     "offset": 0.08,
     "domain": "polar",
-    "halfPlane": false,
+    "halfPlane": true,
     "aboveLevel": "gh",
     "phasePalette": "att",
     "bands": true,
-    "logHeight": true,
+    "logHeight": false,
     "realCurves3D": true,
     "autoRotate": false,
-    "animate": false,
+    "animate": true,
     "layout": "1",
     "newton": {"on":false,"iterations":20,"basinPalette":"att"},
-    "camera": {"yaw":-0.15999999999999956,"pitch":0.23999999999999977,"zoom":1},
-    "plan": {"cx":0.5,"cy":0.25,"scale":1.5},
+    "camera": {"yaw":0.28000000000000014,"pitch":-0.16000000000000017,"zoom":1},
+    "center3D": {"re":0.5054528750737074,"im":0},
+    "plan": {"cx":0.4423039429199594,"cy":0.6318627755999418,"scale":1.4},
     "probe": [0.5,0.5],
-    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":1,"im":0}]}
+    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":1,"im":0}]},
+    "sectionView": {"mode":"roots"}
   }
 }
 ```
@@ -428,15 +475,15 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.7",
+  "version": "2.0",
   "f": {
     "formula": "z2 + 0.4·z + 4",
     "coeffs": [[4,0],[0.4,0],[1,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
     "roots": [{"a":[-0.2,1.98997487421324],"ap":[1,0],"m":1},{"a":[-0.2,-1.98997487421324],"ap":[1,0],"m":1}]
   },
   "view": {
-    "R": 5,
-    "level": 15.35,
+    "R": 3.6,
+    "level": 7.53,
     "height": 1,
     "offset": 0.08,
     "domain": "polar",
@@ -446,14 +493,16 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
     "bands": true,
     "logHeight": true,
     "realCurves3D": true,
-    "autoRotate": false,
+    "autoRotate": true,
     "animate": false,
     "layout": "1",
     "newton": {"on":false,"iterations":20,"basinPalette":"att"},
-    "camera": {"yaw":-0.6600000000000001,"pitch":0.1599999999999999,"zoom":1},
-    "plan": {"cx":-0.2,"cy":0,"scale":4},
+    "camera": {"yaw":20.003999999998687,"pitch":0.1599999999999999,"zoom":1},
+    "center3D": {"re":0,"im":0},
+    "plan": {"cx":0,"cy":0,"scale":3.6},
     "probe": [-0.2,1.99],
-    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":-2,"im":-2},{"root":null,"re":2,"im":2}]}
+    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":-2,"im":-2},{"root":null,"re":2,"im":2}]},
+    "sectionView": {"mode":"auto"}
   }
 }
 ```
@@ -464,15 +513,15 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.7",
+  "version": "2.0",
   "f": {
     "formula": "−0.02·z2 + 1.5·z + 0.1",
     "coeffs": [[0.1,0],[1.5,0],[-0.02,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
     "roots": [{"a":[-0.06660751252367211,0],"ap":[-0.02,0],"m":1},{"a":[75.06660751252367,0],"ap":[1,0],"m":1}]
   },
   "view": {
-    "R": 100,
-    "level": 38.38,
+    "R": 68.8,
+    "level": 37.68,
     "height": 1,
     "offset": 0.08,
     "domain": "polar",
@@ -486,10 +535,12 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
     "animate": false,
     "layout": "1",
     "newton": {"on":false,"iterations":20,"basinPalette":"att"},
-    "camera": {"yaw":-0.3499999999999995,"pitch":0.08999999999999972,"zoom":1},
-    "plan": {"cx":28.926230058398403,"cy":0.8591949522296556,"scale":100},
+    "camera": {"yaw":-0.2599999999999994,"pitch":0.5499999999999997,"zoom":1},
+    "center3D": {"re":33.48944775380515,"im":8.394821472881116},
+    "plan": {"cx":35.80060149752141,"cy":6.758276813307614,"scale":68.8},
     "probe": [5,7.1],
-    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":10,"im":0}]}
+    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":10,"im":0}]},
+    "sectionView": {"mode":"roots"}
   }
 }
 ```
@@ -500,19 +551,19 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.7",
+  "version": "2.0",
   "f": {
     "formula": "1.8·z3 − 7.8·z2 + 9·z − 3",
     "coeffs": [[-3,0],[9,0],[-7.8,0],[1.8,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
     "roots": [{"a":[0.6125741132772075,0],"ap":[1.8,0],"m":1},{"a":[0.9999999999999992,0],"ap":[1,0],"m":1},{"a":[2.7207592200561264,0],"ap":[1,0],"m":1}]
   },
   "view": {
-    "R": 4,
-    "level": 8.38,
+    "R": 2.1,
+    "level": 2.68,
     "height": 1,
     "offset": 0.08,
     "domain": "polar",
-    "halfPlane": false,
+    "halfPlane": true,
     "aboveLevel": "gh",
     "phasePalette": "att",
     "bands": true,
@@ -522,10 +573,12 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
     "animate": false,
     "layout": "1",
     "newton": {"on":false,"iterations":20,"basinPalette":"att"},
-    "camera": {"yaw":-0.44000000000000006,"pitch":0.2699999999999999,"zoom":1},
-    "plan": {"cx":1.5,"cy":0,"scale":3},
+    "camera": {"yaw":-0.5700000000000001,"pitch":0.4399999999999994,"zoom":1.1051709180756477},
+    "center3D": {"re":1.2439454101744762,"im":0},
+    "plan": {"cx":1.4161159853151655,"cy":1.0816003982328417,"scale":2.1},
     "probe": [1,0],
-    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0.5,"im":0},{"root":null,"re":3,"im":0}]}
+    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0.5,"im":0},{"root":null,"re":3,"im":0}]},
+    "sectionView": {"mode":"roots"}
   }
 }
 ```
@@ -536,32 +589,34 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.7",
+  "version": "2.0",
   "f": {
     "formula": "−z3 + 3·z2",
     "coeffs": [[0,0],[0,0],[3,0],[-1,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
     "roots": [{"a":[-5.263554428146502e-15,0],"ap":[-1,0],"m":2},{"a":[3,0],"ap":[1,0],"m":1}]
   },
   "view": {
-    "R": 4.7,
-    "level": 16.41,
+    "R": 4,
+    "level": 1.5814188546880923,
     "height": 1,
-    "offset": 0.08,
+    "offset": 0.14,
     "domain": "polar",
     "halfPlane": false,
-    "aboveLevel": "gh",
+    "aboveLevel": "no",
     "phasePalette": "att",
     "bands": true,
     "logHeight": true,
     "realCurves3D": true,
-    "autoRotate": false,
-    "animate": false,
+    "autoRotate": true,
+    "animate": true,
     "layout": "1",
     "newton": {"on":false,"iterations":20,"basinPalette":"att"},
-    "camera": {"yaw":-0.3999999999999997,"pitch":0.2199999999999998,"zoom":1},
-    "plan": {"cx":0.8749468596871985,"cy":-0.08076432550958765,"scale":4.7},
+    "camera": {"yaw":41.85800000000066,"pitch":0.4199999999999996,"zoom":1},
+    "center3D": {"re":0.9813672332394753,"im":1.1259465595610343},
+    "plan": {"cx":1.2613114427984735,"cy":0.28891722587166724,"scale":3.4428319057002312},
     "probe": [1,2],
-    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":1,"im":0}]}
+    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":1,"im":0}]},
+    "sectionView": {"mode":"roots"}
   }
 }
 ```
@@ -572,7 +627,7 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.7",
+  "version": "2.0",
   "f": {
     "formula": "−z3 + 3·z2 − 3·z + 1",
     "coeffs": [[1,0],[-3,0],[3,0],[-1,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
@@ -580,24 +635,26 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
   },
   "view": {
     "R": 3.8,
-    "level": 9.96,
+    "level": 17.94,
     "height": 1,
-    "offset": 0.08,
+    "offset": 0.18,
     "domain": "polar",
-    "halfPlane": false,
+    "halfPlane": true,
     "aboveLevel": "gh",
     "phasePalette": "att",
     "bands": true,
-    "logHeight": true,
+    "logHeight": false,
     "realCurves3D": true,
     "autoRotate": false,
     "animate": false,
     "layout": "1",
     "newton": {"on":false,"iterations":20,"basinPalette":"att"},
-    "camera": {"yaw":-0.3999999999999996,"pitch":0.09999999999999971,"zoom":1},
-    "plan": {"cx":1.0774304700959885,"cy":0.0870650884926051,"scale":3.8},
+    "camera": {"yaw":-0.5699999999999996,"pitch":0.30999999999999955,"zoom":1},
+    "center3D": {"re":1.04888543142169,"im":0},
+    "plan": {"cx":1.1177847313948082,"cy":1.015213098365462,"scale":3.8},
     "probe": [0,1],
-    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":1,"im":0}]}
+    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":1,"im":0}]},
+    "sectionView": {"mode":"roots"}
   }
 }
 ```
@@ -608,19 +665,19 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.7",
+  "version": "2.0",
   "f": {
     "formula": "z4 − 2·z3 + z",
     "coeffs": [[0,0],[1,0],[0,0],[-2,0],[1,0],[0,0],[0,0],[0,0],[0,0]],
     "roots": [{"a":[-0.6180339887498949,0],"ap":[1,0],"m":1},{"a":[0,0],"ap":[1,0],"m":1},{"a":[1,0],"ap":[1,0],"m":1},{"a":[1.618033988749895,0],"ap":[1,0],"m":1}]
   },
   "view": {
-    "R": 2.2,
-    "level": 1.89,
+    "R": 1.9,
+    "level": 2.16,
     "height": 1,
-    "offset": 0.08,
+    "offset": -0.01,
     "domain": "polar",
-    "halfPlane": false,
+    "halfPlane": true,
     "aboveLevel": "gh",
     "phasePalette": "att",
     "bands": true,
@@ -629,11 +686,13 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
     "autoRotate": false,
     "animate": false,
     "layout": "1",
-    "newton": {"on":false,"iterations":20,"basinPalette":"att"},
-    "camera": {"yaw":-0.4099999999999994,"pitch":0.2299999999999999,"zoom":1},
-    "plan": {"cx":0,"cy":0,"scale":2.2},
-    "probe": [0.5,0.3125],
-    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":1,"im":0}]}
+    "newton": {"on":true,"iterations":20,"basinPalette":"att"},
+    "camera": {"yaw":-0.6899999999999997,"pitch":0.5099999999999998,"zoom":1.1051709180756477},
+    "center3D": {"re":0.3808780256756465,"im":0},
+    "plan": {"cx":0.45398543961172294,"cy":0.6759338767552321,"scale":1.9},
+    "probe": [0.8689133351925986,0.313536707182724],
+    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":1,"im":0}]},
+    "sectionView": {"mode":"auto"}
   }
 }
 ```
@@ -644,32 +703,34 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.7",
+  "version": "2.0",
   "f": {
     "formula": "−0.0004183·z4 + 0.0004183·z3 − 0.005775·z2 + 0.39083·z + 1",
     "coeffs": [[1,0],[0.39083,0],[-0.005775,0],[0.0004183,0],[-0.0004183,0],[0,0],[0,0],[0,0],[0,0]],
     "roots": [{"a":[-3.495648642813317,9.091420488068874],"ap":[-0.0004183,0],"m":1},{"a":[-3.495648642813317,-9.091420488068874],"ap":[1,0],"m":1},{"a":[-2.4202127984407733,0],"ap":[1,0],"m":1},{"a":[10.411510084067407,0],"ap":[1,0],"m":1}]
   },
   "view": {
-    "R": 13,
-    "level": 3.66,
-    "height": 1,
+    "R": 12.9,
+    "level": 3.35,
+    "height": 1.2,
     "offset": 0.08,
     "domain": "polar",
     "halfPlane": false,
-    "aboveLevel": "gh",
-    "phasePalette": "att",
+    "aboveLevel": "full",
+    "phasePalette": "lum",
     "bands": true,
     "logHeight": true,
     "realCurves3D": true,
-    "autoRotate": false,
+    "autoRotate": true,
     "animate": false,
     "layout": "1",
     "newton": {"on":false,"iterations":20,"basinPalette":"att"},
-    "camera": {"yaw":-0.6699999999999999,"pitch":0.25999999999999956,"zoom":1},
-    "plan": {"cx":0,"cy":0,"scale":13},
+    "camera": {"yaw":93.78999999999151,"pitch":0.5599999999999999,"zoom":0.9048374180359595},
+    "center3D": {"re":0.3129855656474181,"im":-0.22660627690157417},
+    "plan": {"cx":0,"cy":0,"scale":12.9},
     "probe": [-1,0.6026],
-    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":-2,"im":0},{"root":null,"re":0,"im":0}]}
+    "section": {"mode":"B","offset":5.696936450486227,"angleDeg":326.8264576947023,"showRe":true,"showIm":true,"points":[{"root":0,"re":-3.495648642813317,"im":9.091420488068874},{"root":3,"re":10.411510084067407,"im":0}]},
+    "sectionView": {"mode":"auto"}
   }
 }
 ```
@@ -680,15 +741,15 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.6",
+  "version": "2.0",
   "f": {
     "formula": "0.0012·z4 − 0.0045·z3 + 0.0123·z2 − 0.15·z + 3.5",
     "coeffs": [[3.5,0],[-0.15,0],[0.0123,0],[-0.0045,0],[0.0012,0],[0,0],[0,0],[0,0],[0,0]],
     "roots": [{"a":[-4.1012310311358755,5.783818401939789],"ap":[0.0012,0],"m":1},{"a":[-4.1012310311358755,-5.783818401939789],"ap":[1,0],"m":1},{"a":[5.976231031135876,4.7224599523601976],"ap":[1,0],"m":1},{"a":[5.976231031135876,-4.7224599523601976],"ap":[1,0],"m":1}]
   },
   "view": {
-    "R": 10,
-    "level": 6,
+    "R": 9.1,
+    "level": 2.5255237246413507,
     "height": 1,
     "offset": 0.1,
     "domain": "polar",
@@ -696,16 +757,18 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
     "aboveLevel": "gh",
     "phasePalette": "att",
     "bands": true,
-    "logHeight": true,
+    "logHeight": false,
     "realCurves3D": true,
-    "autoRotate": false,
-    "animate": false,
+    "autoRotate": true,
+    "animate": true,
     "layout": "1",
     "newton": {"on":false,"iterations":20,"basinPalette":"att"},
-    "camera": {"yaw":-0.12,"pitch":0.43,"zoom":0.90484},
-    "plan": {"cx":0,"cy":0,"scale":10},
+    "camera": {"yaw":41.11600000000041,"pitch":0.59,"zoom":1.000002853511569},
+    "center3D": {"re":0.9852965564291492,"im":0.31398384548703906},
+    "plan": {"cx":0,"cy":0,"scale":9.1},
     "probe": [0,3.5],
-    "section": {"mode":"B","offset":5.322439038648826,"angleDeg":353.9877721235618,"showRe":true,"showIm":true,"points":[{"root":0,"re":-4.1012310311358755,"im":5.783818401939789},{"root":2,"re":5.976231031135876,"im":4.7224599523601976}]}
+    "section": {"mode":"B","offset":5.322439038648826,"angleDeg":353.9877721235618,"showRe":true,"showIm":true,"points":[{"root":0,"re":-4.1012310311358755,"im":5.783818401939789},{"root":2,"re":5.976231031135876,"im":4.7224599523601976}]},
+    "sectionView": {"mode":"auto"}
   }
 }
 ```
@@ -716,15 +779,15 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.7",
+  "version": "2.0",
   "f": {
     "formula": "6·z5 − 15·z4 + 10·z3",
     "coeffs": [[0,0],[0,0],[0,0],[10,0],[-15,0],[6,0],[0,0],[0,0],[0,0]],
     "roots": [{"a":[-6.2987124218280366e-15,0],"ap":[6,0],"m":3},{"a":[1.25,0.3227486121839514],"ap":[1,0],"m":1},{"a":[1.25,-0.32274861218395157],"ap":[1,0],"m":1}]
   },
   "view": {
-    "R": 2.2,
-    "level": 7.69,
+    "R": 1.15,
+    "level": 0.2873248555081326,
     "height": 1,
     "offset": 0.08,
     "domain": "polar",
@@ -735,13 +798,15 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
     "logHeight": true,
     "realCurves3D": true,
     "autoRotate": false,
-    "animate": false,
+    "animate": true,
     "layout": "1",
-    "newton": {"on":false,"iterations":20,"basinPalette":"att"},
-    "camera": {"yaw":-0.36999999999999966,"pitch":0.2699999999999998,"zoom":1},
-    "plan": {"cx":0.4459735967508922,"cy":0.03454036486123871,"scale":1.8935575481351272},
-    "probe": [0.5,0.5],
-    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":1,"im":0}]}
+    "newton": {"on":true,"iterations":26,"basinPalette":"att"},
+    "camera": {"yaw":-0.15999999999999942,"pitch":0.5999999999999999,"zoom":1.1051709180756477},
+    "center3D": {"re":0.4952779833173409,"im":0.01603916310826642},
+    "plan": {"cx":0.6121021278951656,"cy":0.04029454079667169,"scale":1.3361093791375254},
+    "probe": [-0.4236576888609998,-0.17422898405976917],
+    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":0,"im":0},{"root":null,"re":1,"im":0}]},
+    "sectionView": {"mode":"range","center":0.42541201111411525,"halfWidth":0.8572953354189488}
   }
 }
 ```
@@ -752,32 +817,34 @@ Sono necessarie solo per rigenerare più comodamente il link url in nuove versio
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.7",
+  "version": "2.0",
   "f": {
     "formula": "0.1·z8 − 0.5·z6 + 1.2·z4 − 2·z2 + 1",
     "coeffs": [[1,0],[0,0],[-2,0],[0,0],[1.2,0],[0,0],[-0.5,0],[0,0],[0.1,0]],
     "roots": [{"a":[-1.676952754943368,0],"ap":[0.1,0],"m":1},{"a":[-1.2053968848117937,0.8553462664022164],"ap":[1,0],"m":1},{"a":[-1.2053968848117937,-0.8553462664022163],"ap":[1,0],"m":1},{"a":[-0.8631921157866984,0],"ap":[1,0],"m":1},{"a":[0.8631921157866984,0],"ap":[1,0],"m":1},{"a":[1.2053968848117937,0.8553462664022163],"ap":[1,0],"m":1},{"a":[1.2053968848117937,-0.8553462664022163],"ap":[1,0],"m":1},{"a":[1.6769527549433678,0],"ap":[1,0],"m":1}]
   },
   "view": {
-    "R": 3,
-    "level": 33.99,
+    "R": 2.3,
+    "level": 22.99,
     "height": 1,
     "offset": 0.08,
     "domain": "polar",
     "halfPlane": false,
-    "aboveLevel": "gh",
+    "aboveLevel": "no",
     "phasePalette": "att",
     "bands": true,
     "logHeight": true,
     "realCurves3D": true,
-    "autoRotate": false,
+    "autoRotate": true,
     "animate": false,
     "layout": "1",
     "newton": {"on":false,"iterations":20,"basinPalette":"att"},
-    "camera": {"yaw":-0.22999999999999965,"pitch":0.6999999999999996,"zoom":1},
-    "plan": {"cx":0,"cy":0,"scale":2.5},
+    "camera": {"yaw":50.872000000003666,"pitch":0.4699999999999995,"zoom":1.1051709180756477},
+    "center3D": {"re":0,"im":0},
+    "plan": {"cx":0,"cy":0,"scale":2.3},
     "probe": [0,1],
-    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":-2,"im":0},{"root":null,"re":2,"im":0}]}
+    "section": {"mode":"A","offset":0,"angleDeg":0,"showRe":true,"showIm":true,"points":[{"root":null,"re":-2,"im":0},{"root":null,"re":2,"im":0}]},
+    "sectionView": {"mode":"auto"}
   }
 }
 ```

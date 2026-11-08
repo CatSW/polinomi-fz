@@ -11,6 +11,38 @@ updated: 2026-11-07
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
 
+## [2.0] - 2026-11-08
+
+### Added
+
+- Pan della vista 3D: tasto destro e trascina (cellulare: pressione lunga e trascina) o Maiusc + trascina spostano il centro della finestra nel piano complesso. Il punto afferrato resta sotto il cursore e la superficie viene ricampionata attorno al nuovo centro, quindi si può esplorare qualsiasi zona del piano e non solo l'intorno dell'origine.
+- Campo «Centro» (Re, Im) nel pannello «Controlli Vista 3D», con pulsante «0» per tornare all'origine.
+- Etichetta «Centro …» in basso a destra nella vista 3D quando il centro non è l'origine.
+- Il centro 3D (`view.center3D`: `re`, `im`) viene salvato in JSON e nei link condivisibili, e ripristinato da Annulla/Ripristina.
+
+### Changed
+
+- Con i Bacini di Newton attivi, il tasto destro senza trascinare (cellulare: pressione lunga) continua a posizionare il punto giallo; trascinando si sposta la vista. Sul cellulare, dopo la pressione lunga il punto giallo viene posizionato subito e il trascinamento successivo sposta la vista.
+- Con «Metà Im z ≥ 0» il centro resta sull'asse reale (il pan verticale è disattivato e il campo Im è bloccato).
+- Assi Re/Im, cerchi di riferimento, radici, punto giallo e percorso di Newton, piano di sezione e curve reali nel 3D sono ora riferiti al piano complesso reale, non al centro della finestra. Gli assi compaiono solo se rientrano nella finestra.
+- Con «Metà Im z ≥ 0» la metà inferiore del piano di Gauss è ora molto più distinta: velo del colore di sfondo (82%) con tratteggio diagonale e linea continua sull'asse reale, al posto del grigio al 50%.
+- I cerchi di riferimento della scala restano centrati sull'origine del piano complesso e seguono il pan. Con il centro spostato i raggi sono multipli del passo di scala (al massimo 6) che attraversano la finestra, tratteggiati solo dentro la finestra; l'etichetta sta nel punto visibile più vicino all'asse reale positivo.
+- «Adatta R alle radici» calcola R rispetto al centro corrente.
+- Conferma di una nuova f(z): il centro torna nell'origine prima del calcolo della finestra.
+- Versione del formato JSON portata a 2.0. I file e i link delle versioni 1.x si aprono ancora; i file con versione maggiore di 2.x vengono rifiutati.
+
+### Fixed
+
+- Zoom del piano di Gauss: il limite massimo di zoom-out era fisso (8 unità del piano), quindi con R grande non si tornava a ridurre sotto R/8 (con R = 46 non si scendeva sotto 5,8×; con R = 100 si saltava subito a 8). Ora il limite scala con R e il minimo resta 0,2× (≈ 0,225×) come con R = 1,8.
+- JSON e link condivisibili non salvavano il range del grafico di sezione (asse reale): né «Zoom radici» né un range impostato a mano con rotella o trascinamento. Ora vengono salvati in `view.sectionView` (`mode`: `auto`, `roots` o `range`, con `center` e `halfWidth`) e ripristinati all'apertura; anche Annulla/Ripristina li considerano. I file senza questo campo (versioni precedenti) lasciano il grafico com'è.
+- Formula mostrata nell'interfaccia: i coefficienti erano arrotondati a 2 decimali (−0.024525z² + z appariva come −0.02z² + z, con seconda radice apparente in 50 invece di 40.775). Ora usano 6 cifre significative senza zeri finali superflui, e notazione scientifica (es. 3.2·10⁻⁵) sotto 1e-4 e da 1e7, così un coefficiente non nullo non appare più come 0. Cambia solo il testo mostrato: coefficienti, calcoli, JSON ed export (formula con 9 cifre) restano identici.
+
+### Notes
+
+- Il grafico dell'asse reale e il piano di Gauss hanno finestre proprie e non seguono il centro 3D.
+- La scala verticale |f| è normalizzata sul massimo nella finestra, quindi spostando il centro l'altezza del grafico può variare.
+
+
 ## [1.9]
 
 ### Changed
