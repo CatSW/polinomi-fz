@@ -5,13 +5,13 @@ author: IK0VCK
 type: changelog
 product: polinomi-fz
 license: MIT
-updated: 2026-11-07
+updated: 2026-11-09
 ---
 # Changelog Esploratore di Polinomi
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
 
-## [2.0] - 2026-11-08
+## [2.0] - 2026-11-09
 
 ### Added
 
@@ -34,6 +34,7 @@ Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com
 ### Fixed
 
 - Zoom del piano di Gauss: il limite massimo di zoom-out era fisso (8 unità del piano), quindi con R grande non si tornava a ridurre sotto R/8 (con R = 46 non si scendeva sotto 5,8×; con R = 100 si saltava subito a 8). Ora il limite scala con R e il minimo resta 0,2× (≈ 0,225×) come con R = 1,8.
+- Zoom del piano di Gauss: scrive il livello di zoom in notazione fissa (prima sopra i 999 scriveva tipo 2.0e+3)
 - JSON e link condivisibili non salvavano il range del grafico di sezione (asse reale): né «Zoom radici» né un range impostato a mano con rotella o trascinamento. Ora vengono salvati in `view.sectionView` (`mode`: `auto`, `roots` o `range`, con `center` e `halfWidth`) e ripristinati all'apertura; anche Annulla/Ripristina li considerano. I file senza questo campo (versioni precedenti) lasciano il grafico com'è.
 - Formula mostrata nell'interfaccia: i coefficienti erano arrotondati a 2 decimali (−0.024525z² + z appariva come −0.02z² + z, con seconda radice apparente in 50 invece di 40.775). Ora usano 6 cifre significative senza zeri finali superflui, e notazione scientifica (es. 3.2·10⁻⁵) sotto 1e-4 e da 1e7, così un coefficiente non nullo non appare più come 0. Cambia solo il testo mostrato: coefficienti, calcoli, JSON ed export (formula con 9 cifre) restano identici.
 
