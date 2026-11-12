@@ -98,8 +98,16 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 .nogl3d #surf{background:var(--card);border:1px solid var(--bd);border-radius:10px}.nogl3d #surfBG,.nogl3d #surfGL{display:none}
 #w3:fullscreen,#w3.is-fullscreen{border:0;border-radius:0}
 #w3:fullscreen #surf,#w3.is-fullscreen #surf,#w3:fullscreen #surfBG,#w3.is-fullscreen #surfBG,#w3:fullscreen #surfGL,#w3.is-fullscreen #surfGL{border-radius:0}
+.fzo{font:inherit;font-weight:700;padding:0 .45em;margin-right:.1em;border:1.5px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--ac);cursor:pointer;line-height:1.3}.fzo:hover{border-color:var(--ac)}
+.shl{display:inline;margin-left:5px}
+.cur.on{display:grid}
+.surf-panel-body>[data-pg]{display:flex;flex-direction:column;gap:8px}.surf-panel-body>[data-pg][hidden]{display:none}
+.capc{display:flex;gap:6px;align-items:flex-start}.capc .cx{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;overflow:hidden;min-width:0;flex:1}.capc.open .cx{display:block;overflow:visible}
+.cib{flex:none;width:20px;height:20px;padding:0;border:1px solid var(--bd);border-radius:50%;background:var(--bg);color:var(--ac);font:italic 700 12px/1 Georgia,serif;cursor:pointer}
+#wp:fullscreen .capc,#wp.is-fullscreen .capc{display:none}
+@media (any-hover:hover) and (min-width:561px){#wp:fullscreen figcaption,#wp.is-fullscreen figcaption{top:auto;bottom:calc(var(--fsm) + var(--fst)/2)}}
 </style></head><body><main id="mn">
-<div class="hd"><h1>Esploratore di polinomi f(z)</h1><button class="lnkbtn" id="shr" title="Condividi questa vista" aria-label="Condividi questa vista" style="display:inline-flex;align-items:center;padding:4px 7px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg></button><a id="rdm" class="lnkbtn" href="https://github.com/CatSW/polinomi-fz/blob/master/Readme.md" target="_blank" rel="noopener noreferrer" title="Apre il README su GitHub (manuale, note storiche, changelog) in una nuova scheda">Readme</a></div>
+<div class="hd"><h1>Esploratore di polinomi f(z)</h1><button class="lnkbtn" id="shr" title="Condividi questa vista" aria-label="Condividi questa vista" style="display:inline-flex;align-items:center;padding:4px 7px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg><span class="shl">Condividi</span></button><a id="rdm" class="lnkbtn" href="https://github.com/CatSW/polinomi-fz/blob/master/Readme.md" target="_blank" rel="noopener noreferrer" title="Apre la Guida (Readme su GitHub: manuale, note storiche, changelog) in una nuova scheda">Guida</a></div>
 <p class="sub">Polinomio fino al grado 8 con coefficienti complessi su tutti i termini; si definisce dal pulsante f(z) in basso a sinistra nella vista 3D (forma normale o a radici, con conferma finale).</p>
 <div id="lkmsg" class="ed-msg" title="Clic per chiudere" hidden></div>
 <div class="box" id="fz" style="margin-bottom:10px;font:600 19px/1.5 Georgia,serif;overflow-wrap:anywhere"></div>
@@ -130,18 +138,24 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 <div class="surf-panel" id="surf-panel">
 <div class="surf-panel-header"><span>Controlli Vista 3D</span><button id="close-panel">✕</button></div>
 <div class="surf-panel-body">
+<div class="mseg" id="p-seg" role="radiogroup" aria-label="Pagina dei controlli della vista 3D"><button type="button" role="radio" data-pgb="1" aria-checked="true">Vista</button><button type="button" role="radio" data-pgb="2" aria-checked="false">Dettaglio</button></div>
+<div data-pg="1">
 <label class="rp"><span id="p-rl" class="rl" role="button" tabindex="0" title="Range Piano di Gauss">Range pdg</span><input id="p-r" type="range" min="0.1" max="10" step="0.1" value="2"><input id="p-rn" type="number" min="0.1" max="100" step="0.05" value="2" inputmode="decimal" aria-label="Range Piano di Gauss"></label>
-<div class="cen" title="Centro della finestra 3D nel piano complesso. Si sposta anche con tasto destro e trascina, o Maiusc + trascina (cellulare: pressione lunga e trascina) sulla vista 3D"><span>Centro</span><input id="p-cx" type="number" step="any" inputmode="decimal" placeholder="Re" aria-label="Centro della vista 3D, parte reale"><input id="p-cy" type="number" step="any" inputmode="decimal" placeholder="Im" aria-label="Centro della vista 3D, parte immaginaria"><button id="p-c0" title="Riporta il centro nell’origine" aria-label="Riporta il centro nell’origine" disabled>0</button></div>
 <label><span>Quota |f|</span><input id="p-lv" type="range" min="0.05" max="8" step="0.01" value="2"><b><span id="p-lvv">2.00</span></b></label>
+<div class="cen" title="Centro della finestra 3D nel piano complesso. Si sposta anche con tasto destro e trascina, o Maiusc + trascina (cellulare: pressione lunga e trascina) sulla vista 3D"><span>Centro</span><input id="p-cx" type="number" step="any" inputmode="decimal" placeholder="Re" aria-label="Centro della vista 3D, parte reale"><input id="p-cy" type="number" step="any" inputmode="decimal" placeholder="Im" aria-label="Centro della vista 3D, parte immaginaria"><button id="p-c0" title="Riporta il centro nell’origine" aria-label="Riporta il centro nell’origine" disabled>0</button></div>
 <label><span>Altezza</span><input id="p-h" type="range" min="0.2" max="2" step="0.05" value="1"><b><span id="p-hv">1.00</span></b></label>
 <label><span title="Sposta il grafico in su (+) o in giù (−); doppio clic = ricalibra">Offset |f|</span><input id="p-off" type="range" min="-0.5" max="0.5" step="0.01" value="0"><b><span id="p-offv">0.00</span></b></label>
-<label><span>Dominio</span><select id="p-dm"><option value="0">Cartesiano</option><option value="1" selected>Radiale</option></select></label>
 <label class="pk"><span>Metà Im z ≥ 0</span><input id="p-hf" type="checkbox"></label>
-<label><span>Sopra la quota</span><select id="p-up"><option value="full">piena</option><option value="gh" selected>trasparente</option><option value="no">nascosta</option></select></label>
 <label class="pk"><span>Altezza logaritmica</span><input id="p-l" type="checkbox" checked></label>
-<label class="pk"><span>Curve reali nel 3D</span><input id="p-rc" type="checkbox" checked></label>
 <label class="pk"><span>Rotazione</span><input id="p-a" type="checkbox"></label>
 <label class="pk"><span>Anima |f|</span><input id="p-an" type="checkbox"></label>
+</div>
+<div data-pg="2" hidden>
+<label><span>Sopra la quota</span><select id="p-up"><option value="full">piena</option><option value="gh" selected>trasparente</option><option value="no">nascosta</option></select></label>
+<label><span>Dominio</span><select id="p-dm"><option value="0">Cartesiano</option><option value="1" selected>Radiale</option></select></label>
+<label class="pk"><span>Curve reali nel 3D</span><input id="p-rc" type="checkbox" checked></label>
+<label><span>Palette fase</span><select id="p-pp"><option value="att">Attuale</option><option value="iso">OKLCH isoluminante</option><option value="lum">OKLCH luminanza variabile</option></select></label>
+</div>
 </div></div>
 
 <div class="surf-panel" id="coeffs-panel">
@@ -183,7 +197,7 @@ var DQ={on:false,scale:.5,iter:10,ms:0,ema:0,n:0};function ITeff(){return DQ.on?
 const $=id=>document.getElementById(id),TAU=Math.PI*2,RED='#ff1a1a',CRED='#d62728',CBLUE='#2f6fd6',CGRN='#2ca02c',ZM=1.26;
 let K=[-1,0,0,1,0,0,0,0,0],KJ=[0,0,0,0,0,0,0,0,0],FV=0,AV=-1,SEED=null,SEEDP=null,FACT=null,R=1.8,hs=1,mode='dom',cont=true,lg=true,auto=false,anim=false,upm='gh',lv=2,IT=20,polar=true,half=false,showR=true,pph='att',pbs='att';
 const CLIM=1e6;
-let yaw=-.7,pitch=.85,zoom=1,cx3=0,cy3=0,panDirty=false,pan3=null,rcSeen=false,probe=[.55,.85],path=[],dpr=1,yoff=0,vcx=0,vcy=0,vs=1.8,tw=null,drag=null,CW=1,CH=1,cyw=1,syw=0,cpt=1,spt=0,SS=1;
+let yaw=-.7,pitch=.85,zoom=1,cx3=0,cy3=0,panDirty=false,pan3=null,rcSeen=false,probe=[.55,.85],pdot=false,path=[],dpr=1,yoff=0,vcx=0,vcy=0,vs=1.8,tw=null,drag=null,CW=1,CH=1,cyw=1,syw=0,cpt=1,spt=0,SS=1;
 let RT=[],CX=[],CV=[],XN,YN,MV,CL,Q4,QD=[],HT=[],BD=[],PX,PY,PD,mmax=1,ci=0;
 const pc=$('plan'),glc=$('planGL'),sc=$('surf'),rl=$('rl'),pg=pc.getContext('2d'),sf=sc.getContext('2d'),sb=$('surfBG'),bg=sb.getContext('2d'),sgl=$('surfGL'),rg=rl.getContext('2d');let sg=sf;
 const CC={},css=v=>CC[v]||(CC[v]=getComputedStyle(document.documentElement).getPropertyValue(v).trim()||'#777');
@@ -241,9 +255,9 @@ function glDraw(){const r=new Float32Array(16);RT.slice(0,8).forEach((z,k)=>{r[2
 function renderPlan(){if(gl)glDraw();drawPlan();chip()}
 /* 1.9: il piano non è più necessariamente quadrato (schermo intero): vs = semi-estensione del lato corto; px per unità = lato corto/(2·vs) */
 const pxu=r=>Math.min(r.width,r.height)/(2*vs),p2z=(cx,cy)=>{const r=pc.getBoundingClientRect(),k=pxu(r);return[vcx+(cx-r.left-r.width/2)/k,vcy-(cy-r.top-r.height/2)/k]};
-let hv=null;const hz=e=>p2z(e.clientX,e.clientY);
+let hv=null;const hz=e=>p2z(e.clientX,e.clientY);const hasMouse=()=>!!(window.matchMedia&&matchMedia('(any-hover:hover)').matches);
 function chip(){const z=R/vs;$('gpuv').textContent=(gl?'GPU WebGL2':glErr)+` · zoom ×${z.toFixed(z<100?1:0)} · ${itLabel()}`;
- let s='Cursore: ?';if(hv){const a=curItems(hv[0],hv[1],F(hv[0],hv[1]),0);if(a)s=curHTML(a)}$('chipv').innerHTML=s;eolFix($('chipv'))}
+ let s='Cursore: ?';const q=hv||(pdot&&!hasMouse()?probe:null);$('curp').classList.toggle('on',!!q&&!hv);if(q){const a=curItems(q[0],q[1],F(q[0],q[1]),0);if(a)s=curHTML(a)}$('chipv').innerHTML=s;eolFix($('chipv'))}
 let SN;
 function snap(nu,nv,W){const n=XN.length,X0=XN.slice(),Y0=YN.slice(),DX=new Float64Array(n),DY=new Float64Array(n),done=[];SN=new Uint8Array(n);
  for(const r of RT){const rx=(r[0]-cx3)/R,ry=(r[1]-cy3)/R;if(Math.max(Math.abs(rx),Math.abs(ry))>.9||(polar&&Math.hypot(rx,ry)>.9)||(half&&ry<-1e-9)||done.some(q=>Math.hypot(q[0]-rx,q[1]-ry)<.02))continue;done.push([rx,ry]);
@@ -323,8 +337,8 @@ function drawSurf2D(ph){secPre();sg=ph==='bg'?bg:sf;const xOff = setCam();const 
   sg.beginPath();sg.moveTo(a[0],a[1]);sg.lineTo(a[0]-ux*hd-uy*hd*.5,a[1]-uy*hd+ux*hd*.5);sg.lineTo(a[0]-ux*hd+uy*hd*.5,a[1]-uy*hd-ux*hd*.5);sg.closePath();sg.fillStyle=ink;sg.fill();
   sg.textAlign='center';const mx=(a[0]+2*t[0])/3,my=(a[1]+t[1])/2-9*u;sg.fillStyle=ink;sg.fillText(lb,mx,my)}
  
- if(mode==='new'){
-  sg.strokeStyle='#fff';sg.lineWidth=2*u;sg.beginPath();path.forEach((p,i)=>{const s=proj((p[0]-cx3)/R,(p[1]-cy3)/R,hm(mod(p[0],p[1])),xOff);i?sg.lineTo(s[0],s[1]):sg.moveTo(s[0],s[1])});sg.stroke();
+ if(mode==='new'||pdot){
+  if(mode==='new'){sg.strokeStyle='#fff';sg.lineWidth=2*u;sg.beginPath();path.forEach((p,i)=>{const s=proj((p[0]-cx3)/R,(p[1]-cy3)/R,hm(mod(p[0],p[1])),xOff);i?sg.lineTo(s[0],s[1]):sg.moveTo(s[0],s[1])});sg.stroke()}
   const pn=[(probe[0]-cx3)/R,(probe[1]-cy3)/R],b=proj(pn[0],pn[1],0,xOff),t=proj(pn[0],pn[1],hm(mod(probe[0],probe[1])),xOff);sg.strokeStyle='#ffd400';sg.lineWidth=1.5*u;sg.beginPath();sg.moveTo(b[0],b[1]);sg.lineTo(t[0],t[1]);sg.stroke();
   sg.fillStyle='#ffd400';sg.strokeStyle='#111';sg.beginPath();sg.arc(t[0],t[1],6*u,0,TAU);sg.fill();sg.stroke();
  }
@@ -487,16 +501,22 @@ const pmul=(a,b)=>{const c=Array(a.length+b.length-1).fill(0);a.forEach((u,i)=>b
 let RFC={fv:-1,c:null};
 /* lettura del cursore (1.5; Re f e Im f dalla 1.6; pannello sovrapposto a schermo intero dalla 1.7, alimentato da questa stessa funzione), uguale nel piano di Gauss e nella sezione: z, |z|, arg z, Re f(z), Im f(z), |f(z)|, arg f(z). arg z in (−180°,180°]; arg f(z) in [0°,360°) come nel grafico della fase,
    «non definita» se |f| ≤ tz. Ogni voce è non divisibile: a capo solo tra una voce e l'altra. Valori e formati numerici invariati (5 cifre significative, angoli a 2 decimali). */
-const cP=v=>v.toPrecision(5);
+const TINY=1e-4;
+/* 2.1: solo visualizzazione. Max 5 cifre (zeri inclusi, segno e punto esclusi), punto decimale, nessun separatore; 0<|v|<1e-4 → «≈0», zero esatto → «0»; ≥ 1e5 → notazione scientifica a 3 cifre significative (1.53e32). Il calcolo resta in doppia precisione. */
+function cP(v){if(v===0)return'0';const a=Math.abs(v),sg=v<0?'-':'';if(a<TINY)return'≈0';
+ const sci=()=>sg+a.toExponential(2).replace('e+','e');if(a>=1e5)return sci();
+ let d=a<1?4:5-(Math.floor(Math.log10(a))+1),t=a.toFixed(d);const il=t.split('.')[0].length;if(il+(d>0?d:0)>5){d=Math.max(0,5-il);t=a.toFixed(d)}
+ return +t>=1e5?sci():sg+t}
+const ang1=d=>{const t=d.toFixed(1);return +t===0?'0.0':t};
 function curItems(x,y,f,tz){const m=Math.hypot(f[0],f[1]);if(!isFinite(m))return null;let a='non definita';
- if(m>tz){let d=Math.atan2(f[1],f[0])*180/Math.PI;if(d<0)d+=360;a=d.toFixed(2);if(+a>=360)a='0.00';a+='°'}
- return[`z = ${cP(x)} ${y<0?'−':'+'} ${cP(Math.abs(y))}i`,`|z| = ${cP(Math.hypot(x,y))}`,`arg z = ${(Math.atan2(y,x)*180/Math.PI).toFixed(2)}°`,`Re f(z) = ${cP(f[0])}`,`Im f(z) = ${cP(f[1])}`,`|f(z)| = ${cP(m)}`,`arg f(z) = ${a}`]}
+ if(m>tz){let d=Math.atan2(f[1],f[0])*180/Math.PI;if(d<0)d+=360;a=ang1(d);if(+a>=360)a='0.0';a+='°'}
+ return[`z = ${cP(x)} ${y<0&&Math.abs(y)>=TINY?'−':'+'} ${cP(Math.abs(y))}i`,`|z| = ${cP(Math.hypot(x,y))}`,`arg z = ${ang1(Math.atan2(y,x)*180/Math.PI)}°`,`Re f(z) = ${cP(f[0])}`,`Im f(z) = ${cP(f[1])}`,`|f(z)| = ${cP(m)}`,`arg f(z) = ${a}`]}
 const curHTML=a=>'Cursore: '+a.map((t,i)=>`<span class="it">${t}${i<a.length-1?'<span class="sp">&nbsp;·</span>':''}</span>`).join(' ');
 /* 1.8: il «·» finale di una riga che va a capo viene nascosto (visibility: la larghezza resta, quindi l'a capo non cambia); vale per tutte le presentazioni del readout */
 function eolFix(el){if(!el||el.offsetParent===null)return;const it=el.querySelectorAll('.it');for(let i=0;i<it.length-1;i++){const sp=it[i].querySelector('.sp');if(sp)sp.style.visibility=it[i+1].offsetTop>it[i].offsetTop+2?'hidden':''}}
 const eolAll=()=>{eolFix($('chipv'));eolFix($('rcur'));eolFix($('rcur2'))};
-const CUR_GH=curHTML(['z = −1.2345e-7 − 1.2345e-7i','|z| = 1.2345e-7','arg z = −179.99°','Re f(z) = −1.2345e+8','Im f(z) = −1.2345e+8','|f(z)| = 1.2345e+8','arg f(z) = non definita']);
-let RG=null,RTZ=0,RCP=null,RMB=.75,fsDown=false,_modb='',RH2=0;
+const CUR_GH=curHTML(['z = -1.53e32 − 1.53e32i','|z| = 1.53e32','arg z = -179.9°','Re f(z) = -1.53e32','Im f(z) = -1.53e32','|f(z)| = 1.53e32','arg f(z) = non definita']);
+let RG=null,RTZ=0,RCP=null,RMB=.75,fsDown=!!(window.matchMedia&&matchMedia('(any-hover:hover)').matches),_modb='',RH2=0;
 /* 1.7: bordo inferiore dell'area del modulo (px CSS dall'alto del contenitore) per la posizione «in basso» del pannello a schermo intero */
 function fsLay(){const v=Math.round(RMB*rl.clientHeight)+'px';if(v!==_modb){_modb=v;$('wr').style.setProperty('--modb',v)}}
 function rcur(){const el=$('rcur');if(!el)return;let s='Cursore: ?';
@@ -583,9 +603,9 @@ function drawPlan(){secPre();const w=pc.width,h=pc.height,u=dpr,pp=Math.min(w,h)
  if(half){const y0=Y(0),yc=Math.max(0,y0);if(yc<h){pg.save();pg.beginPath();pg.rect(0,yc,w,h-yc);pg.clip();pg.globalAlpha=.82;pg.fillStyle=css('--bg');pg.fillRect(0,yc,w,h-yc);pg.globalAlpha=.4;pg.strokeStyle=css('--mut');pg.lineWidth=u;pg.beginPath();for(let x=-h;x<w;x+=12*u){pg.moveTo(x,h);pg.lineTo(x+h,0)}pg.stroke();if(y0>=0&&y0<=h){pg.globalAlpha=.85;pg.strokeStyle=css('--fg');pg.lineWidth=1.5*u;pg.beginPath();pg.moveTo(0,y0);pg.lineTo(w,y0);pg.stroke()}pg.restore()}}
  secDrawPlan(X,Y,u);planLabels(w,h,u,X,Y);
  
- if(mode==='new'){
-  pg.strokeStyle='#fff';pg.lineWidth=2*u;pg.lineJoin='round';pg.beginPath();path.forEach((p,i)=>i?pg.lineTo(X(p[0]),Y(p[1])):pg.moveTo(X(p[0]),Y(p[1])));pg.stroke();
-  path.slice(1).forEach(p=>{pg.fillStyle='#fff';pg.beginPath();pg.arc(X(p[0]),Y(p[1]),2.5*u,0,TAU);pg.fill()});
+ if(mode==='new'||pdot){
+  if(mode==='new'){pg.strokeStyle='#fff';pg.lineWidth=2*u;pg.lineJoin='round';pg.beginPath();path.forEach((p,i)=>i?pg.lineTo(X(p[0]),Y(p[1])):pg.moveTo(X(p[0]),Y(p[1])));pg.stroke();
+  path.slice(1).forEach(p=>{pg.fillStyle='#fff';pg.beginPath();pg.arc(X(p[0]),Y(p[1]),2.5*u,0,TAU);pg.fill()})}
   pg.fillStyle='#ffd400';pg.strokeStyle='#111';pg.lineWidth=1.5*u;pg.beginPath();pg.arc(X(probe[0]),Y(probe[1]),6*u,0,TAU);pg.fill();pg.stroke();
  }
 
@@ -652,7 +672,7 @@ function fzText(){let s='';
   else if(!ra){sg=b<0;t=im+'i'+dot+zp}
   else t=`(${a<0?'−':''}${ca} ${b<0?'−':'+'} ${im}i)`+dot+zp;
   s+=s?(sg===null?' + ':sg?' − ':' + ')+t:(sg?'−':'')+t}
- $('fz').innerHTML='f(z) = '+(s||'0')}
+ $('fz').innerHTML='<button type="button" class="fzo" id="fzo" title="Definisci f(z)" aria-label="Definisci f(z)">f(z)</button> = '+(s||'0')}
 
 /* ---- Editor: bozza DR = {mode, K,KJ (coefficienti), pages, truth: rappresentazione sorgente, cOK/rOK: coerenza di ciascuna con la sorgente, solved: radici del solver per i coefficienti della bozza} ---- */
 let DR=null,closeArm=0,pickMode=false;
@@ -749,7 +769,7 @@ function autoView(){cx3=cy3=0;cenSync();let m=0;for(const r of RT)m=Math.max(m,M
  for(let i=0;i<8&&R<10&&+$('lv').max<=cv*1.02;i++)setR(Math.min(10,Math.round(R*13)/10));   // la quota deve poter stare sopra l’ultimo valore critico
  setLv((cv+mmax)/2);full();setOff(calibOff())}
 /* ---- Salvataggio/caricamento JSON e link condivisibili (versione 1.1; superficie 3D WebGL dalla 1.2) ---- */
-const APPV='2.0';$('rdm').textContent='Readme - Ver. '+APPV;
+const APPV='2.1';$('rdm').textContent='Guida - Ver. '+APPV;
 const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},camera:{yaw,pitch,zoom},center3D:{re:cx3,im:cy3},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice(),section:{mode:SM,offset:SD,angleDeg:STH,showRe:SRE,showIm:SIM,points:SP.map(p=>({root:p.k,re:p.x,im:p.y}))},sectionView:rzoom?{mode:'roots'}:rx?{mode:'range',center:rx[0],halfWidth:rx[1]}:{mode:'auto'}});
 const JS_=(o,d=0)=>{if(o===null||typeof o!=='object'||Array.isArray(o)||d>=2)return JSON.stringify(o);const p='  '.repeat(d+1);return'{\n'+Object.entries(o).filter(([,v])=>v!==undefined).map(([k,v])=>p+JSON.stringify(k)+': '+JS_(v,d+1)).join(',\n')+'\n'+'  '.repeat(d)+'}'};
 const optOK=(id,v)=>typeof v==='string'&&[...$(id).options].some(q=>q.value===v);
@@ -1076,6 +1096,7 @@ rl.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;RCP={x:e
 rl.onpointermove=e=>{if(rd===null||!RV)return;const b=rl.getBoundingClientRect(),w=RV[1]-RV[0],dx=(e.clientX-rd)*rl.width/b.width/(rl.width-62*dpr)*w;rd=e.clientX;rset((RV[0]+RV[1])/2-dx,w/2)};
 
 const setP=e=>{if(mode!=='new')return;probe=p2z(e.clientX,e.clientY);probeUpdate()};
+const setPT=e=>{probe=p2z(e.clientX,e.clientY);pdot=true;probeUpdate();chip()};
 let pan=null,probing=false,lastTouch=0;pc.oncontextmenu=e=>e.preventDefault();sc.oncontextmenu=e=>{e.preventDefault();if(Date.now()-lastTouch<1500)return;if(rcSeen){rcSeen=false;return}pick(e)};
 const LPMS=450,LPPX=10;
 const zoomAt=(cx,cy,f)=>{const[px,py]=p2z(cx,cy),nv=Math.min(Math.max(8,R/.225),Math.max(2e-4,vs*f));vcx=px-(px-vcx)*nv/vs;vcy=py-(py-vcy)*nv/vs;vs=nv;tw=null};
@@ -1084,16 +1105,16 @@ const panBy=(dx,dy)=>{const k=pxu(pc.getBoundingClientRect());vcx-=dx/k;vcy+=dy/
 const TP=new Map();let tLP=null,tProbe=false,tMid=null;
 const tMD=()=>{const[a,b]=[...TP.values()];return[(a.x+b.x)/2,(a.y+b.y)/2,Math.hypot(a.x-b.x,a.y-b.y)||1]};
 function tpDown(e){lastTouch=Date.now();TP.set(e.pointerId,{x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,moved:false});clearTimeout(tLP);tProbe=false;hv=null;
- if(TP.size===1){if(mode==='new')tLP=setTimeout(()=>{const p=TP.size===1&&[...TP.values()][0];if(p&&!p.moved){tProbe=true;if(navigator.vibrate)navigator.vibrate(12);setP({clientX:p.x,clientY:p.y})}},LPMS)}
+ if(TP.size===1){tLP=setTimeout(()=>{const p=TP.size===1&&[...TP.values()][0];if(p&&!p.moved){tProbe=true;if(navigator.vibrate)navigator.vibrate(12);setPT({clientX:p.x,clientY:p.y})}},LPMS)}
  else if(TP.size===2){tProbe=false;tMid=tMD()}}
 function tpMove(e){const p=TP.get(e.pointerId);if(!p)return;const ox=p.x,oy=p.y;p.x=e.clientX;p.y=e.clientY;
  if(TP.size>=2){const m=tMD();panBy(m[0]-tMid[0],m[1]-tMid[1]);zoomAt(m[0],m[1],tMid[2]/m[2]);tMid=m;renderPlan();return}
- if(tProbe){setP(e);return}
+ if(tProbe){setPT(e);return}
  let dx,dy;if(!p.moved){if(Math.hypot(p.x-p.x0,p.y-p.y0)<LPPX)return;p.moved=true;clearTimeout(tLP);dx=p.x-p.x0;dy=p.y-p.y0}else{dx=p.x-ox;dy=p.y-oy}
  panBy(dx,dy);renderPlan()}
 function tpUp(e){TP.delete(e.pointerId);clearTimeout(tLP);if(TP.size===0)tProbe=false;else if(TP.size===1){const p=[...TP.values()][0];p.x0=p.x;p.y0=p.y;p.moved=true}}
-pc.onpointerdown=e=>{try{pc.setPointerCapture(e.pointerId)}catch(_){}if(e.pointerType==='touch'){tpDown(e);return}if(RD.mouseDown(e))return;if(e.button===0&&!e.shiftKey && mode==='new'){probing=true;setP(e)}else pan=[e.clientX,e.clientY]};
-pc.onpointerleave=()=>{hv=null;chip()};pc.onpointermove=e=>{if(e.pointerType==='touch'){tpMove(e);return}if(RD.mouseMove(e))return;hv=pan?null:hz(e);chip();if(probing && mode==='new')setP(e);else if(pan){panBy(e.clientX-pan[0],e.clientY-pan[1]);pan=[e.clientX,e.clientY];renderPlan()}};
+pc.onpointerdown=e=>{try{pc.setPointerCapture(e.pointerId)}catch(_){}if(e.pointerType==='touch'){tpDown(e);return}if(RD.mouseDown(e))return;if(e.button===0&&!e.shiftKey){probing=true;setPT(e)}else pan=[e.clientX,e.clientY]};
+pc.onpointerleave=()=>{hv=null;chip()};pc.onpointermove=e=>{if(e.pointerType==='touch'){tpMove(e);return}if(RD.mouseMove(e))return;hv=pan?null:hz(e);chip();if(probing)setPT(e);else if(pan){panBy(e.clientX-pan[0],e.clientY-pan[1]);pan=[e.clientX,e.clientY];renderPlan()}};
 pc.onpointerup=pc.onpointercancel=e=>{if(e.pointerType==='touch'){tpUp(e);return}if(RD.mouseUp(e))return;probing=false;pan=null};
 pc.addEventListener('wheel',e=>{e.preventDefault();zoomAt(e.clientX,e.clientY,Math.exp(e.deltaY*.0015));renderPlan()},{passive:false});
 /* tocco sul 3D: un dito ruota, due dita fanno pizzico (zoom), pressione lunga = punto giallo (solo con Bacini di Newton) */
@@ -1125,7 +1146,7 @@ sc.onpointermove=e=>{
  if(!drag)return;yaw+=(e.clientX-drag[0])*.01;pitch=Math.max(-1.5,Math.min(1.5,pitch+(e.clientY-drag[1])*.01));drag=[e.clientX,e.clientY];surfDirty=true};
 /* pannello del piano: copie speculari dei controlli (le originali restano la fonte di verità) */
 const plp=$('plan-panel'),PLM=[['bn'],['it','itv'],['pb'],['pp'],['c'],['lv','lvv']],PLB=['s1','st','rs','d1','d0','vi','fit'];
-function syncPl(){for(const[k,b]of PLM){const o=$(k),p=$('pl-'+k);if(o.type==='range'&&p.max!==o.max)p.max=o.max;
+function syncPl(){{const q=$('p-pp'),o=$('pp');if(q.value!==o.value)q.value=o.value;q.disabled=o.disabled}for(const[k,b]of PLM){const o=$(k),p=$('pl-'+k);if(o.type==='range'&&p.max!==o.max)p.max=o.max;
  if(o.type==='checkbox'){if(p.checked!==o.checked)p.checked=o.checked}else if(p.value!==o.value)p.value=o.value;
  if(p.disabled!==o.disabled)p.disabled=o.disabled;if(b&&$('pl-'+b).textContent!==$(b).textContent)$('pl-'+b).textContent=$(b).textContent}
  for(const k of PLB){const o=$(k),p=$('pl-'+k);if(p.disabled!==o.disabled)p.disabled=o.disabled}}
@@ -1155,7 +1176,7 @@ $('it').oninput=e=>{IT=+e.target.value;$('itv').textContent=IT;renderPlan()};
 /* didascalie: dipendono dalla modalità Bacini di Newton */
 function capt(){const n=mode==='new';
  $('cap3p').innerHTML=n?'<b>Clic destro senza trascinare</b> (cellulare: pressione lunga): sceglie il punto giallo sulla superficie.':'Il punto giallo con il percorso di Newton si attiva con «Bacini di Newton».';
- $('capPi').innerHTML=n?'Rotella o pizzico: zoom verso il cursore. Tasto destro o Maiusc + trascina (cellulare: un dito): sposta. Click sinistro (cellulare: pressione lunga): punto giallo con percorso di Newton.':'Rotella o pizzico: zoom verso il cursore. Trascina o tasto destro: sposta. Il punto giallo con il percorso di Newton si attiva con «Bacini di Newton».'}
+ $('capPi').innerHTML=n?'Rotella o pizzico: zoom verso il cursore. Tasto destro e trascina, o Maiusc + trascina (cellulare: un dito): sposta. Click sinistro (cellulare: pressione lunga): punto giallo con percorso di Newton.':'Rotella o pizzico: zoom verso il cursore. Tasto destro e trascina, o Maiusc + trascina (cellulare: un dito): sposta. Click sinistro (cellulare: pressione lunga): punto giallo, stima iniziale di Newton; il percorso si attiva con «Bacini di Newton».'}
 $('bn').addEventListener('change',capt);
 /* ---- Centro della vista 3D (2.0): finestra |z − c| ≤ R (o quadrato), c = cx3 + i·cy3. Con «Metà Im z ≥ 0» il centro resta sull'asse reale. ---- */
 function tfc(x,y){const f=v=>String(+v.toFixed(3)).replace('-','−');return f(x)+' '+(y<0?'−':'+')+' '+f(Math.abs(y))+'i'}
@@ -1179,4 +1200,14 @@ $('rfs-pos').onclick=()=>{fsDown=!fsDown;fsPos();fsLay()};fsPos();
 window.addEventListener('resize',()=>setTimeout(eolAll,120));window.addEventListener('orientationchange',()=>setTimeout(eolAll,300));document.addEventListener('fullscreenchange',()=>setTimeout(eolAll,200));
 {const q=window.matchMedia&&matchMedia('(any-hover:hover)');if(q){const hc=()=>{if(!q.matches){hv=null;RCP=null}chip();rcur()};q.addEventListener?q.addEventListener('change',hc):q.addListener&&q.addListener(hc)}}
 initGL();initSG();if(!g3)setGL3(false,sgErr);fzText();syncHf();analyze();build();size();capt();setOff(calibOff());rSync();loadHash();
+
+/* ---- 2.1: f(z) cliccabile, pagine del pannello 3D, palette condivisa, Ctrl+R, didascalie compatte ---- */
+$('fz').addEventListener('click',e=>{if(e.target.closest('#fzo')&&!$('coeffs-panel').classList.contains('open'))$('toggle-coeffs').click()});
+document.querySelectorAll('#p-seg button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#p-seg button').forEach(x=>x.setAttribute('aria-checked',x===b));document.querySelectorAll('#surf-panel [data-pg]').forEach(d=>d.hidden=d.dataset.pg!==b.dataset.pgb)});
+$('p-pp').onchange=e=>{const o=$('pp');o.value=e.target.value;o.dispatchEvent(new Event('change',{bubbles:true}));syncPl()};
+syncPl();
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.shiftKey&&e.key.toLowerCase()==='r'){e.preventDefault();const c=$('p-a');c.checked=!c.checked;c.dispatchEvent(new Event('change',{bubbles:true}))}});
+document.querySelectorAll('figcaption').forEach(el=>{const k=[...el.childNodes].filter(n=>!(n.nodeType===1&&n.matches('.stk,.gp-t')));if(!k.some(n=>n.textContent.trim()))return;
+ const w=document.createElement('div'),x=document.createElement('span'),b=document.createElement('button');w.className='capc';x.className='cx';b.type='button';b.className='cib';b.textContent='i';b.title='Mostra tutto il testo';b.setAttribute('aria-label','Mostra tutto il testo');b.setAttribute('aria-expanded','false');
+ k[0].before(w);w.append(b,x);k.forEach(n=>x.appendChild(n));b.onclick=()=>{const o=w.classList.toggle('open');b.setAttribute('aria-expanded',o);b.title=o?'Riduci':'Mostra tutto il testo';b.setAttribute('aria-label',b.title)}});
 </script></body></html>

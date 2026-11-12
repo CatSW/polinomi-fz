@@ -5,11 +5,30 @@ author: IK0VCK
 type: changelog
 product: polinomi-fz
 license: MIT
-updated: 2026-11-09
+updated: 2026-11-12
 ---
 # Changelog Esploratore di Polinomi
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
+
+## [2.1] - 2026-11-12
+
+### Added
+
+- Formula f(z) cliccabile anche in cima alla pagina per aprire la modifica del polinomio.
+- Aggiunto il selettore «Palette fase» ai controlli della vista 3D.
+- Selezione di un punto sul piano di Gauss tramite pressione prolungata su mobile, evidenziato con un pallino giallo. Su mobile quando setti il pallino valorizza anche i dati cursore alla posizione del pallino. In presenza di un mouse invece, nel pannello cursore vengono visulizzati i dati del cursore in hover sulla vista.
+
+### Changed
+
+- Controlli della vista 3D suddivisi in due pagine, «Vista» e «Dettaglio», spostando in «Dettaglio» quota, dominio e curve reali in 3D.
+- Didascalie richiudibili per ridurre l'ingombro delle spiegazioni.
+- Etichette più esplicite: «Guida» al posto di «Readme» e testo accanto all'icona di condivisione.
+- Spostate in basso le informazioni del cursore, delle viste piano di Gauss e della vista di sezione su PC.
+
+### Fixed
+
+- Corretta la formattazione del numero di cifre visualizzate nei valori del cursore.
 
 ## [2.0] - 2026-11-09
 
