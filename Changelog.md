@@ -5,11 +5,25 @@ author: IK0VCK
 type: changelog
 product: polinomi-fz
 license: MIT
-updated: 2026-11-12
+updated: 2026-11-13
 ---
 # Changelog Esploratore di Polinomi
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
+
+
+## [2.2] - 2026-11-13
+
+### Changed
+
+- Formattazione dei valori nel pannello radici allineata a quella del cursore: massimo quattro decimali per componenti reali e immaginarie, modulo e angolo espresso come multiplo di π; massimo un decimale per gli angoli in gradi. Eliminati gli zeri decimali finali superflui, senza modificare la precisione interna dei calcoli.
+- Pulsanti del piano di Gauss più riconoscibili: manina accanto a «Sposta radici» e simbolo più accanto a «Radici dal piano».
+- Inserimento con «Radici dal piano» interamente nella vista del piano di Gauss: clic o tap seleziona una radice candidata, trascinabile prima della conferma, con coordinate aggiornate nel box inferiore e comandi «Conferma» e «Annulla».
+- Radice candidata evidenziata con una croce rossa con contorno nero e cerchio tratteggiato bianco. Semplificate le istruzioni iniziali di inserimento.
+
+### Fixed
+
+- Eliminata l’apertura automatica del pannello f(z) nella vista 3D durante l’inserimento di radici dal piano, anche quando si annulla l’operazione.
 
 ## [2.1] - 2026-11-12
 
