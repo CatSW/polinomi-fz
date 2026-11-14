@@ -5,12 +5,24 @@ author: IK0VCK
 type: changelog
 product: polinomi-fz
 license: MIT
-updated: 2026-11-13
+updated: 2026-11-14
 ---
 # Changelog Esploratore di Polinomi
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
 
+## [2.3] - 2026-11-14
+
+### Changed
+
+- Pagina «Dettaglio» dei controlli 3D: quattro controlli **indipendenti** (nessuno cambia gli altri): **Superficie liscia**, **Materiale** Opaco/Lucido, **Luce superiore**, **Luce inferiore**. Tutto spento = resa identica alla 2.2 (verificato pixel per pixel su piano e vista 3D).
+- **Superficie liscia**: colore, marcatori e normali per pixel da f(z) e f′(z); non cambia la mesh. Indipendente da materiale e luci.
+- **Luci** ancorate alla scena (non alla camera): ruotano con superficie e assi. Superiore: sopra la quota visualizzata, azimut 120°, orientata a 50° verso la conca. Inferiore: laterale a livello del piano di Gauss, azimut 210°, inclinata di 45° verso l'alto, verso il centro.
+- **Lucido** e **luci** funzionano anche sulla superficie sfaccettata (normale piatta per cella); 
+- **Illuminazione bilaterale**: la normale si orienta verso l'osservatore, quindi il retro è illuminato come retro; ambiente emisferico minimo per non annerire le zone non raggiunte dalle luci.
+- **Ambiente di studio** (legato alla camera) separato in gradiente e softbox: i softbox riflettono solo con incidenza radente (Fresnel); il gradiente pesa meno.
+- **Retro, scelta stilizzata**: con la camera sotto il piano, le pareti ripide vedute dal retro riflettono un fondale chiaro (riflessi bianchi sui coni).
+- Stato JSON/URL: `graphics = {smooth, upperLight, lowerLight, material}`; default tutto spento. 
 
 ## [2.2] - 2026-11-13
 
