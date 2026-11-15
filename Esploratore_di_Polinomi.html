@@ -195,7 +195,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 </div></div>
 
 </div><figcaption>Superficie |f|, colore = fase. Trascina: ruota. Tasto destro e trascina, o Maiusc + trascina (cellulare: pressione lunga e trascina): sposta il centro della vista. Rotella o pizzico: zoom. Cerchi tratteggiati: |z| = valore indicato sull’asse reale (riferimento di scala centrato sull’origine del piano).<span id="cap3p"></span><span id="cap3g" style="color:#d62728"></span> <span class="ln r"></span>f(x) con segno, <span class="ln"></span>|f|.</figcaption></figure>
-<figure id="wp"><div class="stack"><canvas id="planGL"></canvas><canvas id="plan"></canvas><button class="fb" id="fsp" title="Schermo intero"><svg width='14' height='14' viewBox='0 0 14 14' fill='none' stroke='currentColor' stroke-width='1.6'><path d='M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9'/></svg></button><div class="pickbar" id="movebar" hidden><span>Sposta radice: sul PC clicca una radice e trascina; sul telefono tieni premuto su una radice e trascina.</span><button id="movex">Fine</button></div><div class="pickbar" id="pickbar" hidden><span id="pickmsg">Tocca o clicca sul piano per scegliere la radice</span><span class="pkbt"><button id="pickok" hidden>Conferma</button><button id="pickx">Annulla</button></span></div>
+<figure id="wp"><div class="stack"><canvas id="planGL"></canvas><canvas id="plan"></canvas><button class="fb" id="fsp" title="Schermo intero"><svg width='14' height='14' viewBox='0 0 14 14' fill='none' stroke='currentColor' stroke-width='1.6'><path d='M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9'/></svg></button><div class="pickbar" id="movebar" hidden><span>Sposta radice: sul PC clicca una radice e trascina; sul telefono tieni premuto su una radice e trascina.</span><span class="pkbt"><button id="moveok" hidden>Conferma</button><button id="movex">Annulla</button></span></div><div class="pickbar" id="pickbar" hidden><span id="pickmsg">Tocca o clicca sul piano per scegliere la radice</span><span class="pkbt"><button id="pickok" hidden>Conferma</button><button id="pickx">Annulla</button></span></div>
 <div class="pickbar" id="delbar" hidden><span style="display:flex;align-items:center;gap:6px;min-width:0"><svg class="bi" width="16" height="16" viewBox="0 0 13 13" aria-hidden="true" style="margin:0"><path d="M2.6 2.6l7.8 7.8M10.4 2.6l-7.8 7.8" stroke="#000" stroke-width="4.4" stroke-linecap="butt" fill="none"/><path d="M2.6 2.6l7.8 7.8M10.4 2.6l-7.8 7.8" stroke="#1f6bff" stroke-width="2.4" stroke-linecap="butt" fill="none"/></svg><span id="delmsg">Seleziona una radice da cancellare</span></span><span class="pkbt"><button id="delok" disabled>Conferma</button><button id="delx">Annulla</button></span></div>
 <button class="panel-btn" id="toggle-plan" title="Controlli del piano">⚙️</button>
 <div class="surf-panel" id="plan-panel">
@@ -1088,7 +1088,7 @@ function autoView(){cx3=cy3=0;cenSync();let m=0;for(const r of RT)m=Math.max(m,M
  for(let i=0;i<8&&R<10&&+$('lv').max<=cv*1.02;i++)setR(Math.min(10,Math.round(R*13)/10));   // la quota deve poter stare sopra l’ultimo valore critico
  setLv((cv+mmax)/2);full();setOff(calibOff())}
 /* ---- Salvataggio/caricamento JSON e link condivisibili (versione 1.1; superficie 3D WebGL dalla 1.2) ---- */
-const APPV='2.6';$('rdm').textContent='Guida - Ver. '+APPV;
+const APPV='2.7';$('rdm').textContent='Guida - Ver. '+APPV;
 const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},sectionVisible:SECV,graphics:{smooth:SMO,upperLight:LU,lowerLight:LD,softboxUpper:SXU,softboxLower:SXD,intensity:{spotUpper:IU,softboxUpper:IBU,spotLower:ID,softboxLower:IBD},lightMarkers:LMK,material:['matte','gloss','wireframe'][MAT]},camera:{yaw,pitch,zoom},center3D:{re:cx3,im:cy3},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice(),section:{mode:SM,offset:SD,angleDeg:STH,showRe:SRE,showIm:SIM,points:SP.map(p=>({root:p.k,re:p.x,im:p.y}))},sectionView:rzoom?{mode:'roots'}:rx?{mode:'range',center:rx[0],halfWidth:rx[1]}:{mode:'auto'}});
 const JS_=(o,d=0)=>{if(o===null||typeof o!=='object'||Array.isArray(o)||d>=2)return JSON.stringify(o);const p='  '.repeat(d+1);return'{\n'+Object.entries(o).filter(([,v])=>v!==undefined).map(([k,v])=>p+JSON.stringify(k)+': '+JS_(v,d+1)).join(',\n')+'\n'+'  '.repeat(d)+'}'};
 const optOK=(id,v)=>typeof v==='string'&&[...$(id).options].some(q=>q.value===v);
@@ -1190,7 +1190,7 @@ function loadHash(){const m=/^#v=([A-Za-z0-9_-]+)$/.exec(location.hash);if(!m)re
   if(r.note)show('Link caricato'+r.note+'.')}
  catch(e){show('Link non valido: '+(e instanceof ParseErr?e.message:'dati non decodificabili ('+e.message+')')+'. Mostrata la vista predefinita.',true)}}
 const newDraft=()=>({mode:'coef',tf:'n',A:FA.slice(),K:K.slice(),KJ:KJ.slice(),pages:clonePages(getFact()),t:effDeg(K,KJ),p:0,truth:'coef',cOK:true,rOK:true,solved:null,dirty:false,repl:false,cfgView:null,text:'',txtEdit:false});
-function openEd(){delClose();setMove(false);DR=newDraft();closeArm=0;pickMode=false;$('pickbar').hidden=true;$('coeffs-panel').classList.add('open');edRender();histUI()}
+function openEd(){delClose();moveCancel();DR=newDraft();closeArm=0;pickMode=false;$('pickbar').hidden=true;$('coeffs-panel').classList.add('open');edRender();histUI()}
 function closeEd(){DR=null;$('coeffs-panel').classList.remove('open');histUI()}
 $('ed-mode').onchange=e=>{const D=DR,w=e.target.value,rv=()=>{e.target.value=D.mode};if(w===D.mode)return;
  if(D.mode==='text'&&D.txtEdit&&!doParse()){rv();return}
@@ -1236,7 +1236,7 @@ $('ed-ok').onclick=applyDraft;
 let HU=null,HR=null;
 const snapState=()=>({K:K.slice(),KJ:KJ.slice(),A:FA.slice(),pages:FACT?clonePages(FACT):null,view:JSON.parse(JSON.stringify(viewState()))});
 const sameF=(a,b)=>a.K.every((v,k)=>v===b.K[k]&&a.KJ[k]===b.KJ[k])&&JSON.stringify(a.pages)===JSON.stringify(b.pages);
-function histUI(){const bu=$('fz-undo'),br=$('fz-redo'),off=!!DR||pickMode||delMode;bu.hidden=!HU;br.hidden=!HR;bu.disabled=br.disabled=off}
+function histUI(){const bu=$('fz-undo'),br=$('fz-redo'),off=!!DR||pickMode||delMode||moveMode;bu.hidden=!HU;br.hidden=!HR;bu.disabled=br.disabled=off}
 function histPush(pre,cv){const post=snapState(),keys=Object.keys(post.view).filter(k=>JSON.stringify(post.view[k])!==JSON.stringify(pre.view[k])&&(k!=='camera'||(cv&&cv.camera)));
  if(sameF(pre,post)&&!keys.length)return;pre.keys=keys;HU=pre;HR=null;histUI()}
 function histRestore(st){const cur=snapState(),fch=!sameF(cur,st),o=normView(Object.fromEntries(st.keys.map(k=>[k,st.view[k]]))),ao=fch&&scalarMult(cur.K,cur.KJ,st.K,st.KJ);
@@ -1244,7 +1244,7 @@ function histRestore(st){const cur=snapState(),fch=!sameF(cur,st),o=normView(Obj
  /* 2.5: per le modifiche del solo K la vista non salta e non torna a un'inquadratura precedente */
  if(ao){try{HOLDV=true;build()}finally{HOLDV=false;AHOLD=false}}
  applyView(o,fch&&!ao);cur.keys=st.keys;return cur}
-function histStep(dir){if(DR||pickMode||delMode||RD.on)return false;const st=dir<0?HU:HR;if(!st)return false;const cur=histRestore(st);if(dir<0){HU=null;HR=cur}else{HR=null;HU=cur}histUI();return true}
+function histStep(dir){if(DR||pickMode||delMode||moveMode||RD.on)return false;const st=dir<0?HU:HR;if(!st)return false;const cur=histRestore(st);if(dir<0){HU=null;HR=cur}else{HR=null;HU=cur}histUI();return true}
 $('fz-undo').onclick=()=>histStep(-1);$('fz-redo').onclick=()=>histStep(1);
 document.addEventListener('keydown',e=>{if(!(e.ctrlKey||e.metaKey)||e.altKey)return;const k=e.key.toLowerCase(),dir=k==='z'?(e.shiftKey?1:-1):k==='y'&&!e.shiftKey?1:0;if(!dir)return;
  const t=e.target,tg=t&&t.tagName;if(tg==='TEXTAREA'||tg==='SELECT'||(t&&t.isContentEditable)||(tg==='INPUT'&&!['range','checkbox','radio','button'].includes(t.type)))return;
@@ -1311,19 +1311,25 @@ $('probe').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&(e.
 /* ===== Sposta radice (piano di Gauss): trascinamento diretto di una radice con anteprima adattiva ===== */
 /* Parametri sperimentali dell'anteprima: servono misure su PC e cellulare per tararli. */
 const RDQ={iter:10,scale0:.5,minScale:.25,maxScale:.75,slow:26,fast:19,minInt3:90,maxInt3:900};
-let moveMode=false;
+let moveMode=false,moveSnap=null,moveDirty=false;
 const RD={on:false,p:-1,id:null,off:[0,0],tgt:[0,0],raf:0,pend:null,timer:0,lvSaved:2,t3:0,int3:RDQ.minInt3,lastTs:0,frames:0,sumDt:0,n3:0,sum3:0};
 const setGLScale=sc=>{const k=Math.max(sc,96/Math.min(pc.width,pc.height)),w=Math.round(pc.width*k),h=Math.round(pc.height*k);if(glc.width!==w||glc.height!==h){glc.width=w;glc.height=h;if(gl)glDraw()}};
 function rootScreen(k){const r=pc.getBoundingClientRect(),z=RT[k],q=pxu(r);return[r.left+r.width/2+(z[0]-vcx)*q,r.top+r.height/2-(z[1]-vcy)*q]}
 function rootAt(e,rad){let b=-1,bd=rad;for(let k=0;k<RT.length;k++){const s=rootScreen(k),d=Math.hypot(e.clientX-s[0],e.clientY-s[1]);if(d<=bd){bd=d;b=k}}return b}
 const pageOf=k=>{let s=0;for(let i=0;i<FACT.length;i++){s+=FACT[i].m;if(k<s)return i}return -1};
-function setMove(on){const was=moveMode;moveMode=!!on&&RT.length>0;$('movebar').hidden=!moveMode;if(!moveMode){if(RD.on)endDrag();RD.pend=null;clearTimeout(RD.timer);pc.style.cursor=''}if(was!==moveMode)drawPlan()}
+function rootsOutside3D(){for(const r of RT){const dx=r[0]-cx3,dy=r[1]-cy3;if(half&&dy<-1e-12)return true;if(polar){if(Math.hypot(dx,dy)>R+1e-9)return true}else if(Math.abs(dx)>R+1e-9||Math.abs(dy)>R+1e-9)return true}return false}
+function restoreMoveSnap(st){if(!st)return;K=st.K.slice();KJ=st.KJ.slice();FA=st.A.slice();FACT=st.pages?clonePages(st.pages):null;FV++;SEED=null;SEEDP=FACT?clonePages(FACT):null;SEEDA=FA.slice();syncHf();fzText();analyze();full()}
+function exitMove(){if(RD.on)endDrag();RD.pend=null;clearTimeout(RD.timer);pc.style.cursor='';moveMode=false;moveSnap=null;moveDirty=false;$('movebar').hidden=true;$('moveok').hidden=true;histUI();drawPlan()}
+function setMove(on){if(on){if(!RT.length)return;delClose();if(RD.on)endDrag();moveSnap=snapState();moveDirty=false;moveMode=true;$('movebar').hidden=false;$('moveok').hidden=true;$('movex').hidden=false;pc.style.cursor='';histUI();drawPlan();return}
+ if(!moveMode)return;exitMove()}
+function moveCancel(){if(!moveMode)return;if(RD.on)endDrag();const snap=moveSnap;exitMove();if(snap)restoreMoveSnap(snap)}
+function moveConfirm(){if(!moveMode)return;if(RD.on)endDrag();const pre=moveSnap;const needAR=rootsOutside3D();exitMove();if(needAR)autoView();if(pre)histPush(pre,needAR?{camera:false}:null)}
 function startDrag(e,k){const p=pageOf(k);if(p<0)return false;const z=hz(e),a=FACT[p].a;
  Object.assign(RD,{on:true,p,id:e.pointerId,off:[a[0]-z[0],a[1]-z[1]],tgt:a.slice(),lvSaved:lv,t3:0,int3:RDQ.minInt3,lastTs:0,frames:0,sumDt:0,n3:0,sum3:0,scale0:RDQ.scale0});
  DQ.on=true;DQ.scale=RDQ.scale0;DQ.ms=0;DQ.ema=0;DQ.n=0;setGLScale(DQ.scale);pc.style.cursor='grabbing';schedule();return true}
 const schedule=()=>{if(!RD.raf)RD.raf=requestAnimationFrame(dragFrame)};
 /* aggiorna la radice trascinata e, di conseguenza, coefficienti e analisi: i coefficienti si ottengono per espansione del prodotto (nessun solver per le radici) */
-function applyTarget(){if(HR){HR=null;histUI()}const a=FACT[RD.p].a;a[0]=RD.tgt[0];a[1]=RD.tgt[1];const[Kr,Ki]=expandPages(FACT,FA);K=Kr;KJ=Ki;FV++;SEED=null;SEEDP=clonePages(FACT);SEEDA=FA.slice();syncHf();analyze();fzText()}
+function applyTarget(){const a=FACT[RD.p].a;if(a[0]!==RD.tgt[0]||a[1]!==RD.tgt[1]){moveDirty=true;const ok=$('moveok');if(ok)ok.hidden=false}a[0]=RD.tgt[0];a[1]=RD.tgt[1];const[Kr,Ki]=expandPages(FACT,FA);K=Kr;KJ=Ki;FV++;SEED=null;SEEDP=clonePages(FACT);SEEDA=FA.slice();syncHf();analyze();fzText()}
 function dragFrame(ts){RD.raf=0;if(!RD.on)return;const t0=performance.now(),hf=half;applyTarget();calc();texts();renderPlan();drawReal();
  let did3=false;if(half!==hf||t0-RD.t3>=RD.int3){const b0=performance.now();build();drawSurf();const c=performance.now()-b0;RD.int3=Math.min(RDQ.maxInt3,Math.max(RDQ.minInt3,c*4));RD.t3=performance.now();RD.n3++;RD.sum3+=c;did3=true}
  const dt=RD.lastTs?ts-RD.lastTs:0;RD.lastTs=ts;
@@ -1357,9 +1363,9 @@ const pickState=()=>{if(pickMode)return'Scelta della radice già in corso';let S
 {const sp=syncPl;syncPl=function(){sp();$('pl-mv').disabled=!RT.length;
  const why=pickState(),b=$('pl-pick');b.disabled=!!why;
  b.title=why||(DR&&DR.mode==='root'?'Sceglie la nuova radice cliccando sul piano di Gauss':'Apre l’editor f(z) in «Forma a radici» e sceglie la nuova radice cliccando sul piano di Gauss')}}
-$('pl-pick').onclick=()=>{if(pickState())return;delClose();setMove(false);$('plan-panel').classList.remove('open');startPick(!DR)};
+$('pl-pick').onclick=()=>{if(pickState())return;delClose();moveCancel();$('plan-panel').classList.remove('open');startPick(!DR)};
 $('pl-mv').onclick=()=>{delClose();$('plan-panel').classList.remove('open');setMove(true)};
-$('movex').onclick=()=>setMove(false);
+$('movex').onclick=()=>moveCancel();$('moveok').onclick=()=>moveConfirm();
 /* ===== 2.4: Modalità cancellazione radice (piano di Gauss) =====
    Si seleziona una radice (tocco/clic), compare una X blu con contorno nero, «Conferma» cancella. Una radice di molteplicità m>1 perde un'unità (come il cestino dell'editor); il coefficiente direttivo si conserva.
    Non si cancella l'ultima radice: il piano non resta vuoto. Il percorso di applicazione è quello di «Radice dal piano» (bozza temporanea + applyDraft): undo/redo e aggiornamento di tutte le viste invariati. */
@@ -1372,7 +1378,7 @@ const DEL={sel:null,tap:null,
  tUp(e){if(!delMode)return;const t=DEL.tap;DEL.tap=null;if(t&&t.id===e.pointerId&&e.type==='pointerup'&&TP.size===1)DEL.select(rootAt(e,28))}};
 const delWhy=()=>DR?'Chiudi prima l’editor f(z): ha una bozza aperta':RT.length<2?'Resta una sola radice: non si può cancellare. Puoi spostarla, oppure aggiungerne una nuova e poi cancellare quella che non serve più':pickMode?'Scelta di una radice in corso':'';
 function delUI(){const s=DEL.sel;$('delmsg').textContent=s?'Confermi la cancellazione della radice in '+cplx(s.z[0],s.z[1])+'?':'Seleziona una radice da cancellare';$('delok').disabled=!s}
-function delStart(){if(delWhy())return;setMove(false);DEL.sel=null;DEL.tap=null;delMode=true;delUI();$('delbar').hidden=false;$('plan-panel').classList.remove('open');$('plan').scrollIntoView({block:'center',behavior:'smooth'});histUI();drawPlan()}
+function delStart(){if(delWhy())return;moveCancel();DEL.sel=null;DEL.tap=null;delMode=true;delUI();$('delbar').hidden=false;$('plan-panel').classList.remove('open');$('plan').scrollIntoView({block:'center',behavior:'smooth'});histUI();drawPlan()}
 function delClose(){const was=delMode;delMode=false;DEL.sel=null;DEL.tap=null;$('delbar').hidden=true;if(was){pc.style.cursor='';histUI();drawPlan()}}
 function delOk(){const s=DEL.sel;if(!delMode||!s)return;const F=getFact(),q0=F&&F[s.p];
  if(DR||RT.length<2||!q0||q0.a[0]!==s.z[0]||q0.a[1]!==s.z[1]){delClose();return}
@@ -1385,7 +1391,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&delMode)delClose()}
 {const dp=drawPlan;drawPlan=function(){dp();const s=DEL.sel;if(!delMode||!s)return;const w=pc.width,h=pc.height,u=dpr,pp=Math.min(w,h)/(2*vs),x=w/2+(s.z[0]-vcx)*pp,y=h/2-(s.z[1]-vcy)*pp,L=11*u,W=3*u;
  pg.save();pg.lineCap='butt';pg.strokeStyle='#000';pg.lineWidth=W+2.4*u;pg.beginPath();pg.moveTo(x-L-u,y-L-u);pg.lineTo(x+L+u,y+L+u);pg.moveTo(x+L+u,y-L-u);pg.lineTo(x-L-u,y+L+u);pg.stroke();
  pg.strokeStyle='#1f6bff';pg.lineWidth=W;pg.beginPath();pg.moveTo(x-L,y-L);pg.lineTo(x+L,y+L);pg.moveTo(x+L,y-L);pg.lineTo(x-L,y+L);pg.stroke();pg.restore()}}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&moveMode&&!pickMode)setMove(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&moveMode&&!pickMode)moveCancel()});
 $('fsp').onclick=()=>toggleFS($('wp'));
 
 /* Sincronizzazione controlli pannello 3D */

@@ -11,6 +11,16 @@ updated: 2026-11-15
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
 
+## [2.7] - 2026-11-15
+
+### Changed
+
+- Modalità «Sposta radice»: al posto di «Fine», gestione Annulla / Conferma. All’ingresso è visibile solo Annulla; Conferma compare solo dopo almeno uno spostamento effettivo di una radice.
+- L’intera sessione di spostamento (anche su più radici e più trascinamenti) è registrata come una sola operazione nella cronologia Undo/Redo; i singoli trascinamenti non creano livelli intermedi.
+- Annulla ripristina f(z) allo stato precedente all’ingresso in modalità e non modifica la cronologia Undo/Redo.
+- Alla Conferma, autorange (routine esistente) solo se almeno una radice finale è fuori dal dominio 3D corrente; nessun autorange durante i trascinamenti né su Annulla.
+- Zoom e pan del piano di Gauss restano indipendenti dalla vista 3D; invariati conferma del pannello f(z) e comportamento del solo coefficiente globale K.
+
 ## [2.6] - 2026-11-15
 
 ### Added
