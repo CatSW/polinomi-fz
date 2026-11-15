@@ -30,6 +30,12 @@ h1{font:600 26px/1.2 Georgia,serif;margin:0 0 2px}.hd{display:flex;flex-wrap:wra
 .cen{display:grid;grid-template-columns:5.4em minmax(0,1fr) minmax(0,1fr) auto;align-items:center;gap:6px;font-size:12.5px;font-weight:600}.cen button{font-size:12px;padding:2px 8px;text-shadow:none}
 .surf-panel-body label.rp{grid-template-columns:8.2em minmax(0,1fr) 4.0em}
 .rl{color:#3b82f6;font-weight:bold;cursor:pointer;user-select:none;-webkit-user-select:none}
+/* 2.6: pagina Rendering (gruppi di luci con casella e slider) e tre pulsanti di pagina nel pannello 3D */
+.surf-panel-body .lg{font:700 12px Georgia,serif;color:var(--mut);margin-top:2px}
+.surf-panel-body .lr{display:grid;grid-template-columns:10.8em minmax(0,1fr);align-items:center;gap:6px;font-size:12.5px;font-weight:600}
+.surf-panel-body .lr label{display:flex;align-items:center;gap:6px;min-width:0;white-space:nowrap}
+.surf-panel-body .lr input[type=range]{width:100%;min-width:0;margin:0}
+#p-seg button{padding-left:4px;padding-right:4px;font-size:13px;white-space:nowrap}#p-seg button[aria-checked=true]::before{content:none}
 .surf-panel-body label>b{text-align:right;font-variant-numeric:tabular-nums}
 .surf-panel-body label>span{white-space:nowrap}
 .surf-panel-body label>select{grid-column:2/4;width:100%;min-width:0}
@@ -66,7 +72,13 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 @media (hover:none) and (pointer:coarse){#ob{display:none}}
 [hidden]{display:none!important}
 .fzf{cursor:pointer;text-decoration:underline dotted;text-decoration-color:var(--bd);text-underline-offset:5px}.fzf:hover{text-decoration-color:var(--ac)}
-.ed-glob{border:1px solid var(--bd);border-radius:8px;padding:6px 8px;background:color-mix(in srgb,var(--ac) 7%,transparent)}
+.ed-glob{border:1px solid var(--bd);border-radius:8px;padding:6px 8px;background:color-mix(in srgb,#1a9850 12%,var(--card));display:flex;flex-direction:column;gap:6px}
+.ed-glob-hd{display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:12px;font-variant-numeric:tabular-nums;cursor:pointer;user-select:none}
+.ed-glob-hd .sp{opacity:.55;margin:0 2px}
+.ed-glob-tog{flex:none;width:24px;height:24px;margin-left:auto;padding:0;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--fg);cursor:pointer;font-size:12px;line-height:1}
+.ed-glob-body{display:none;flex-direction:column;gap:8px}
+.ed-glob.open .ed-glob-body{display:flex}
+.ed-glob.open .ed-glob-tog{transform:rotate(180deg)}
 .ed-rad{display:flex;gap:14px;flex-wrap:wrap}.surf-panel-body .ed-rad label{display:flex;grid-template-columns:none;gap:5px;font-size:12.5px;cursor:pointer}
 #ed-txt{width:100%;box-sizing:border-box;font:12px/1.4 ui-monospace,Menlo,Consolas,monospace;background:var(--card);color:var(--fg);border:1px solid var(--bd);border-radius:6px;padding:6px;resize:vertical}
 .ed-nav{display:flex;gap:6px;align-items:center}.ed-nav select{flex:1;min-width:0}.ed-sec{display:flex;flex-direction:column;gap:8px}
@@ -142,7 +154,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 <div class="surf-panel" id="surf-panel">
 <div class="surf-panel-header"><span>Controlli Vista 3D</span><button id="close-panel">✕</button></div>
 <div class="surf-panel-body">
-<div class="mseg" id="p-seg" role="radiogroup" aria-label="Pagina dei controlli della vista 3D"><button type="button" role="radio" data-pgb="1" aria-checked="true">Vista</button><button type="button" role="radio" data-pgb="2" aria-checked="false">Dettaglio</button></div>
+<div class="mseg" id="p-seg" role="radiogroup" aria-label="Pagina dei controlli della vista 3D"><button type="button" role="radio" data-pgb="1" aria-checked="true">Vista</button><button type="button" role="radio" data-pgb="2" aria-checked="false">Dettaglio</button><button type="button" role="radio" data-pgb="3" aria-checked="false">Rendering</button></div>
 <div data-pg="1">
 <label class="rp"><span id="p-rl" class="rl" role="button" tabindex="0" title="Range Piano di Gauss">Range pdg</span><input id="p-r" type="range" min="0.1" max="10" step="0.1" value="2"><input id="p-rn" type="number" min="0.1" max="100" step="0.05" value="2" inputmode="decimal" aria-label="Range Piano di Gauss"></label>
 <label><span>Quota |f|</span><input id="p-lv" type="range" min="0.05" max="8" step="0.01" value="2"><b><span id="p-lvv">2.00</span></b></label>
@@ -158,12 +170,21 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 <label><span>Sopra la quota</span><select id="p-up"><option value="full">piena</option><option value="gh" selected>trasparente</option><option value="no">nascosta</option></select></label>
 <label><span>Dominio</span><select id="p-dm"><option value="0">Cartesiano</option><option value="1" selected>Radiale</option></select></label>
 <label class="pk"><span>Curve reali nel 3D</span><input id="p-rc" type="checkbox" checked></label>
+<label class="pk" title="Mostra o nasconde la sezione viola: nel 3D e sul piano di Gauss (stessa impostazione nei due pannelli)."><span>Sezione di intersezione</span><input id="p-sc" type="checkbox" checked></label>
 <label><span>Palette fase</span><select id="p-pp"><option value="att">Attuale</option><option value="iso">OKLCH isoluminante</option><option value="lum">OKLCH luminanza variabile</option><option value="rb">Rosso/blu (segno della fase)</option><option value="gy">Grigi + giallo ogni 30°</option><option value="go">Grigi + arancione ogni 45°</option></select></label>
+
+</div>
+<div data-pg="3" hidden>
 <label class="pk" title="Resa liscia anziché sfaccettata: colore e normali calcolati per pixel da f(z). Indipendente da materiale e luci. Richiede WebGL2."><span>Superficie liscia</span><input id="p-sm" type="checkbox"></label>
-<label title="Opaco / Lucido. Il lucido riflette un ambiente da studio legato alla camera (anche a luci spente). Indipendente da modalità e luci."><span>Materiale</span><select id="p-mt"><option value="matte">Opaco</option><option value="gloss">Lucido</option></select></label>
-<label class="pk" title="Faretto fisso nella scena (ruota con la superficie), sopra la figura e leggermente decentrato (azimut 120°), orientato a 50° verso l’interno della conca."><span>Luce superiore</span><input id="p-lu" type="checkbox"></label>
-<label class="pk" title="Faretto fisso nella scena (ruota con la superficie), laterale a livello del piano di Gauss (azimut 210° da Re(z)), inclinato di 45° verso l’alto, verso il centro: illumina il lato inferiore."><span>Luce inferiore</span><input id="p-ld" type="checkbox"></label>
-<div class="ed-info">Le quattro opzioni sono indipendenti; tutto spento = resa standard. Non cambiano i calcoli, solo il disegno.</div>
+<label title="Opaco / Lucido / Wireframe: tre modalità alternative. Il lucido riflette un ambiente da studio legato alla camera (anche a luci spente). Il wireframe mostra solo il reticolo triangolare della mesh, senza superficie; in questa modalità luci e materiale non hanno effetto visibile."><span>Materiale</span><select id="p-mt"><option value="matte">Opaco</option><option value="gloss">Lucido</option><option value="wireframe">Wireframe adattivo</option><option value="wireframe2">Wireframe denso</option></select></label>
+<b class="lg">Sopra</b>
+<div class="lr" title="Faretto fisso nella scena (ruota con la superficie), sopra la figura e leggermente decentrato (azimut 120°), orientato a 50° verso l’interno della conca."><label><input id="p-lu" type="checkbox"><span>Spot superiore</span></label><input id="p-lu-i" type="range" min="0" max="100" step="1" value="81" aria-label="Intensità dello spot superiore (dimmer logaritmico)"></div>
+<div class="lr" title="Softbox: sorgente larga e morbida sopra la figura (azimut 300°, elevazione 62°), emissione dall’alto verso l’origine."><label><input id="p-bu" type="checkbox"><span>Softbox superiore</span></label><input id="p-bu-i" type="range" min="0" max="100" step="1" value="81" aria-label="Intensità del softbox superiore (dimmer logaritmico)"></div>
+<b class="lg">Sotto</b>
+<div class="lr" title="Faretto fisso nella scena (ruota con la superficie), laterale a livello del piano di Gauss (azimut 210° da Re(z)), inclinato di 45° verso l’alto, verso il centro."><label><input id="p-ld" type="checkbox"><span>Spot inferiore</span></label><input id="p-ld-i" type="range" min="0" max="100" step="1" value="81" aria-label="Intensità dello spot inferiore (dimmer logaritmico)"></div>
+<div class="lr" title="Softbox: sorgente larga e morbida sotto il piano di Gauss (azimut 30°, elevazione −40°), emissione dal basso verso l’origine."><label><input id="p-bd" type="checkbox"><span>Softbox inferiore</span></label><input id="p-bd-i" type="range" min="0" max="100" step="1" value="81" aria-label="Intensità del softbox inferiore (dimmer logaritmico)"></div>
+<label class="pk" title="Ausilio di debug: piccoli coni (spot) e piramidi tronche (softbox) nella posizione e con la direzione di emissione reali. Indipendente dall’accensione delle luci: le sorgenti spente appaiono attenuate."><span>Mostra indicatori delle luci</span><input id="p-lm" type="checkbox"></label>
+<div class="ed-info">Le quattro sorgenti sono indipendenti (anche tutte accese o tutte spente); lo slider è un dimmer logaritmico. Non cambiano i calcoli, solo il disegno.</div>
 </div>
 </div></div>
 
@@ -186,6 +207,8 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 <div class="ed-info" id="pl-delnote" hidden></div>
 <label><span>Palette fase</span><select id="pl-pp"><option value="att">Attuale</option><option value="iso">OKLCH isoluminante</option><option value="lum">OKLCH luminanza variabile</option><option value="rb">Rosso/blu (segno della fase)</option><option value="gy">Grigi + giallo ogni 30°</option><option value="go">Grigi + arancione ogni 45°</option></select></label>
 <label class="pk"><span>Bande di |f|</span><input id="pl-c" type="checkbox" checked></label>
+<label class="pk" title="Mostra o nasconde la sezione viola: nel 3D e sul piano di Gauss (stessa impostazione nei due pannelli)."><span>Sezione di intersezione</span><input id="pl-sc" type="checkbox" checked></label>
+<label class="rp"><span id="pl-rl" class="rl" role="button" tabindex="0" title="Range Piano di Gauss">Range pdg</span><input id="pl-r" type="range" min="0.1" max="10" step="0.1" value="2"><input id="pl-rn" type="number" min="0.1" max="100" step="0.05" value="2" inputmode="decimal" aria-label="Range Piano di Gauss"></label>
 <label><span>Quota |f|</span><input id="pl-lv" type="range" min="0.05" max="8" step="0.01" value="2"><b><span id="pl-lvv">2.00</span></b></label>
 <div class="pbtn"><button id="pl-s1">|f| = valore critico</button><button id="pl-fit">Adatta R alle radici</button><button id="pl-vi">Vista intera</button></div>
 </div>
@@ -213,7 +236,8 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 <script>
 var DQ={on:false,scale:.5,iter:10,ms:0,ema:0,n:0};function ITeff(){return DQ.on?Math.min(IT,DQ.iter):IT}function itLabel(){return DQ.on?`anteprima ${Math.round(DQ.scale*100)}% · ${ITeff()} iter · ${DQ.ms.toFixed(0)} ms/frame`:`${IT} iterazioni`}
 const $=id=>document.getElementById(id),TAU=Math.PI*2,RED='#ff1a1a',CRED='#d62728',CBLUE='#2f6fd6',CGRN='#2ca02c',ZM=1.26;
-let K=[-1,0,0,1,0,0,0,0,0],KJ=[0,0,0,0,0,0,0,0,0],FV=0,AV=-1,SEED=null,SEEDP=null,SEEDA=null,FACT=null,FA=[1,0],START=[.55,.85],HOLDV=false,AHOLD=false,RYH=null,RYL=null,FZF=false,R=1.8,hs=1,mode='dom',cont=true,lg=true,auto=false,anim=false,upm='gh',lv=2,IT=20,polar=true,half=false,showR=true,pph='att',pbs='att',SMO=false,LU=false,LD=false,MAT=0;
+const LS0=81;/* 2.6: posizione iniziale (0–100) degli slider di intensità: corrisponde all'intensità fissa della 2.5 */
+let K=[-1,0,0,1,0,0,0,0,0],KJ=[0,0,0,0,0,0,0,0,0],FV=0,AV=-1,SEED=null,SEEDP=null,SEEDA=null,FACT=null,FA=[1,0],START=[.55,.85],HOLDV=false,AHOLD=false,RYH=null,RYL=null,FZF=false,R=1.8,hs=1,mode='dom',cont=true,lg=true,auto=false,anim=false,upm='gh',lv=2,IT=20,polar=true,half=false,showR=true,pph='att',pbs='att',SMO=false,LU=false,LD=false,SXU=false,SXD=false,IU=LS0,ID=LS0,IBU=LS0,IBD=LS0,LMK=false,MAT=0,SECV=true;
 const CLIM=1e6;
 let yaw=-.7,pitch=.85,zoom=1,cx3=0,cy3=0,panDirty=false,pan3=null,rcSeen=false,probe=[.55,.85],pdot=false,path=[],dpr=1,yoff=0,vcx=0,vcy=0,vs=1.8,tw=null,drag=null,CW=1,CH=1,cyw=1,syw=0,cpt=1,spt=0,SS=1;
 let RT=[],CX=[],CV=[],XN,YN,MV,CL,PV=[],Q4,QD=[],HT=[],BD=[],PX,PY,PD,mmax=1,ci=0;
@@ -247,12 +271,14 @@ PH.rb=A33(rbc);PH.gy=A33(gyc);PH.go=PH.gy;
 const MK={gy:{n:12,c:[1,.8,0]},go:{n:8,c:[1,.45,0]}},PMK=()=>mode==='dom'&&MK[pph]||null;
 /* 2.3: nuovo shading (superficie liscia e/o luci e/o lucido), solo WebGL2. Quattro controlli indipendenti: Superficie liscia, Materiale, Luce superiore, Luce inferiore. Tutto spento: resa e mesh identiche alla 2.2 */
 const /* fp32 in GPU: niente percorso liscio se f(z) o la posizione del piano uscirebbero dalla precisione/dal range di un float */
- pixOK=()=>{let s=0;const a=Math.hypot(cx3,cy3)+1.5*R;for(let k=0;k<9;k++)s+=Math.hypot(K[k],KJ[k])*a**k;return isFinite(s)&&s<1e30&&R>1e-4*(Math.hypot(cx3,cy3)+R)},
+ pixOK=()=>{let s=0;const a=Math.hypot(cx3,cy3)+1.5*R;for(let k=0;k<9;k++)s+=Math.hypot(K[k],KJ[k])*a**k;return isFinite(s)&&s<1e30},
  /* Luci nel riferimento della geometria (X=(Re z−cx)/R, Y=(Im z−cy)/R, Z=altezza, Re(z) = X, Im(z) = Y; azimut antiorario da Re(z)+): ruotano con la superficie, non con la camera.
     Inferiore: faretto laterale a livello del piano di Gauss (Z=0), azimut 210°, raggio Rl=max(1,6; .9·quota superiore); punta al centro in pianta, a quota Z=Rl, cioè 45° verso l’alto (un bersaglio sul piano non darebbe 45°).
     Superiore: sopra la quota superiore visualizzata (quota+max(.5; .35·quota)), azimut 120°, orientato a 50° verso il centro della conca (X=Y=0, metà quota del piano |f|=quota); la distanza orizzontale ne segue (≈.84·dislivello). */
- lights=()=>{const zt=hm(mmax),zc=Math.max(.05,.5*hm(lv)),rad=a=>a*Math.PI/180,Rl=Math.max(1.6,.9*zt),Zs=zt+Math.max(.5,.35*zt),off=(Zs-zc)/Math.tan(rad(50));
-  return{sp:[off*Math.cos(rad(120)),off*Math.sin(rad(120)),Zs],st:[0,0,zc],dp:[Rl*Math.cos(rad(210)),Rl*Math.sin(rad(210)),0],dt:[0,0,Rl]}};
+ lights=()=>{const zt=hm(mmax),zc=Math.max(.05,.5*hm(lv)),rad=a=>a*Math.PI/180,Rl=Math.max(1.6,.9*zt),Zs=zt+Math.max(.5,.35*zt),off=(Zs-zc)/Math.tan(rad(50)),sph=(r,az,el)=>[r*Math.cos(rad(el))*Math.cos(rad(az)),r*Math.cos(rad(el))*Math.sin(rad(az)),r*Math.sin(rad(el))],Du=Math.max(2.2,1.1*zt+.9),Dl=Math.max(2,zt+.8);
+  return{sp:[off*Math.cos(rad(120)),off*Math.sin(rad(120)),Zs],st:[0,0,zc],dp:[Rl*Math.cos(rad(210)),Rl*Math.sin(rad(210)),0],dt:[0,0,Rl],bp:sph(Du,300,62),bt:[0,0,0],ep:sph(Dl,30,-40),et:[0,0,0]}},
+ dim=p=>(Math.pow(30,p/100)-1)/(Math.pow(30,81/100)-1);
+
 const PALTIP='Angolo → colore (arg f). Attuale: giallo 0°, verde +90°, blu 180°, viola −90°. Rosso/blu: rosso arg>0, blu arg<0; bianco a 0°, viola-magenta a ±180°. Grigi: bianco 0°, grigio ±90°, nero ±180°; marcatori gialli ogni 30° o arancioni ogni 45° (solo con WebGL2).';
 for(const id of['pp','p-pp','pl-pp'])$(id).title=PALTIP;
 /* continuità 0°/360° e assenza di salti nelle tre nuove palette (diagnostica in console, nessun effetto sui calcoli) */
@@ -322,7 +348,7 @@ function build(){const nu=polar?28:84,nv=polar?(half?48:96):(half?42:84),NU=nu*L
  for(const r of RT){const rx=(r[0]-cx3)/R,ry=(r[1]-cy3)/R;if(Math.max(Math.abs(rx),Math.abs(ry))>.9||(polar&&Math.hypot(rx,ry)>.9)||(half&&ry<-1e-9)||done.some(q=>Math.hypot(q[0]-rx,q[1]-ry)<.02))continue;done.push([rx,ry]);
   let bi=0,bj=0,bd=1e9;for(let i=0;i<=nu;i++)for(let j=0;j<=nv;j++){const p=pos(i*LV,j*LV),d=(p[0]-rx)**2+(p[1]-ry)**2;if(d<bd){bd=d;bi=i;bj=j}}
   if(polar&&bi===0)continue;const p0=pos(bi*LV,bj*LV),nb=[];if(bj>0)nb.push([bi,bj-1]);if(bj<nv)nb.push([bi,bj+1]);if(bi>0)nb.push([bi-1,bj]);if(bi<nu)nb.push([bi+1,bj]);
-  const h=Math.max(...nb.map(([i,j])=>{const q=pos(i*LV,j*LV);return Math.hypot(q[0]-p0[0],q[1]-p0[1])}));SR.push({x0:p0[0],y0:p0[1],dx:rx-p0[0],dy:ry-p0[1],p:2.5*h})}
+  const h=Math.max(...nb.map(([i,j])=>{const q=pos(i*LV,j*LV);return Math.hypot(q[0]-p0[0],q[1]-p0[1])}));SR.push({x0:p0[0],y0:p0[1],dx:rx-p0[0],dy:ry-p0[1],p:2.2*h})}
  const warp=(U,V)=>{const p=pos(U,V);if(fix(U,V))return p;let dx=0,dy=0;for(const s of SR){const e=Math.hypot(p[0]-s.x0,p[1]-s.y0);if(e<s.p){const w=Math.cos(Math.PI/2*e/s.p)**2;dx+=s.dx*w;dy+=s.dy*w}}return[p[0]+dx,p[1]+(ax(U,V)?0:dy)]};
  const VM=new Map(),SN=[];XN=[];YN=[];MV=[];CL=[];PV=[];
  const vid=(U,V)=>{const kk=key(U,V);let id=VM.get(kk);if(id===undefined){id=XN.length;VM.set(kk,id);const p=warp(U,V),o=pos(U,V);const sn=SR.some(s=>Math.hypot(o[0]-s.x0,o[1]-s.y0)<1e-9);XN.push(p[0]);YN.push(p[1]);MV.push(mod(cx3+p[0]*R,cy3+p[1]*R));CL.push(null);SN.push(sn);
@@ -330,8 +356,17 @@ function build(){const nu=polar?28:84,nv=polar?(half?48:96):(half?42:84),NU=nu*L
  const col=id=>CL[id]||(CL[id]=colorAt(cx3+XN[id]*R+(SN[id]?1e-4*R:0),cy3+YN[id]*R)),mk=(U,V,s)=>({U,V,s,a:vid(U,V),b:vid(U+s,V),c:vid(U+s,V+s),d:vid(U,V+s)});
  let L=[];for(let i=0;i<nu;i++)for(let j=0;j<nv;j++)L.push(mk(i*LV,j*LV,LV));
  if(!HOLDV)mmax=mxA(MV);const tol=.5/Math.max(200,Math.min(sc.width,sc.height)*.36),hh=(U,V)=>{const p=warp(U,V);return hm(mod(cx3+p[0]*R,cy3+p[1]*R))};
- const bad=c=>{const{U,V,s}=c,H=[c.a,c.b,c.c,c.d].map(k=>hm(MV[k])),h=s/2,e=Math.max(Math.abs(hh(U+h,V+h)-(H[0]+H[1]+H[2]+H[3])/4),Math.abs(hh(U+h,V)-(H[0]+H[1])/2),Math.abs(hh(U+s,V+h)-(H[1]+H[2])/2),Math.abs(hh(U+h,V+s)-(H[2]+H[3])/2),Math.abs(hh(U,V+h)-(H[3]+H[0])/2));
-  if(e>tol)return true;const C=[c.a,c.b,c.c,c.d].map(col);let m=0;for(let t=0;t<4;t++)for(let u=t+1;u<4;u++)m=Math.max(m,Math.abs(C[t][0]-C[u][0])+Math.abs(C[t][1]-C[u][1])+Math.abs(C[t][2]-C[u][2]));return m>.3};
+ const bad=c=>{const{U,V,s}=c;
+  const H=[c.a,c.b,c.c,c.d].map(k=>hm(MV[k])),hRange=Math.max(...H)-Math.min(...H),spike=hRange>0.12;
+  /* densità: sugli spilli (grande Δaltezza) raffina fino a ~1% dominio; zone piatte restano grosse */
+  {const p0=warp(U,V),p1=warp(U+s,V),p2=warp(U,V+s),p3=warp(U+s,V+s);
+   const d=Math.max(Math.hypot(p1[0]-p0[0],p1[1]-p0[1]),Math.hypot(p2[0]-p0[0],p2[1]-p0[1]),Math.hypot(p3[0]-p0[0],p3[1]-p0[1]));
+   const cx=(p0[0]+p1[0]+p2[0]+p3[0])/4,cy=(p0[1]+p1[1]+p2[1]+p3[1])/4;
+   let near=false;for(const sr of SR){if(Math.hypot(cx-(sr.x0+sr.dx),cy-(sr.y0+sr.dy))<0.16){near=true;break}}
+   const minD=spike?0.009:(near?0.014:0.042);
+   if(d<minD)return false}
+  const h=s/2,e=Math.max(Math.abs(hh(U+h,V+h)-(H[0]+H[1]+H[2]+H[3])/4),Math.abs(hh(U+h,V)-(H[0]+H[1])/2),Math.abs(hh(U+s,V+h)-(H[1]+H[2])/2),Math.abs(hh(U+h,V+s)-(H[2]+H[3])/2),Math.abs(hh(U,V+h)-(H[3]+H[0])/2));
+  if(e>(spike?tol*0.55:tol))return true;const C=[c.a,c.b,c.c,c.d].map(col);let m=0;for(let t=0;t<4;t++)for(let u=t+1;u<4;u++)m=Math.max(m,Math.abs(C[t][0]-C[u][0])+Math.abs(C[t][1]-C[u][1])+Math.abs(C[t][2]-C[u][2]));return m>.3};
  for(let d=0;d<(DQ.on?1:3);d++){const N=[];let ex=0;for(const c of L){if(c.s>1&&L.length+ex<CAP&&bad(c)){const s=c.s/2;N.push(mk(c.U,c.V,s),mk(c.U+s,c.V,s),mk(c.U+s,c.V+s,s),mk(c.U,c.V+s,s));ex+=3}else N.push(c)}L=N}
  for(let k=0;k<XN.length;k++)col(k);
  const g=(U,V)=>VM.get(key(U,V)),poly=c=>{const{U,V,s}=c,P=[];for(let t=0;t<s;t++){const i=g(U+t,V);if(i!==undefined)P.push(i)}for(let t=0;t<s;t++){const i=g(U+s,V+t);if(i!==undefined)P.push(i)}for(let t=0;t<s;t++){const i=g(U+s-t,V+s);if(i!==undefined)P.push(i)}for(let t=0;t<s;t++){const i=g(U,V+s-t);if(i!==undefined)P.push(i)}return P};
@@ -420,14 +455,14 @@ const VSM=`#version 300 es
 precision highp float;
 layout(location=0) in vec3 aP;layout(location=1) in float aM;layout(location=2) in vec4 aC;layout(location=3) in vec2 aF;layout(location=4) in vec4 aN;
 ${SCAM}
-out float vM;out vec4 vC;out vec2 vF;out vec4 vN;out vec3 vP;
-void main(){gl_Position=cp(aP);vM=aM;vC=aC;vF=aF;vN=aN;vP=aP;}`;
+out float vM;out vec4 vC;out vec2 vF;out vec4 vN;out vec3 vP;out vec3 vB;
+void main(){gl_Position=cp(aP);vM=aM;vC=aC;vF=aF;vN=aN;vP=aP;int k=gl_VertexID%3;vB=vec3(k==0?1.:0.,k==1?1.:0.,k==2?1.:0.);}`;
 const FSM=`#version 300 es
 precision highp float;
-in float vM;in vec4 vC;in vec2 vF;in vec4 vN;in vec3 vP;
-uniform float uLv,uA;uniform int uPass,uSm,uBase,uLU,uLD,uMat;uniform vec4 uCol;
+in float vM;in vec4 vC;in vec2 vF;in vec4 vN;in vec3 vP;in vec3 vB;
+uniform float uLv,uA,uWw;uniform int uPass,uSm,uBase,uLU,uLD,uBU,uBD,uMat,uWire;uniform vec4 uCol;uniform vec4 uIn;
 /* 2.3: f(z) e f′(z) per pixel (superficie liscia: colore, marcatori e normali esatti, indipendenti dalla mesh); luci in coordinate di scena */
-uniform vec2 uC3;uniform float uR3,uHs,uMm,uLg,uK[9],uKJ[9];uniform vec3 uP[33],uVw,uRt,uUp,uSP,uST,uDP,uDT;
+uniform vec2 uC3;uniform float uR3,uHs,uMm,uLg,uK[9],uKJ[9];uniform vec3 uP[33],uVw,uRt,uUp,uSP,uST,uDP,uDT,uBP,uBT,uEP,uET;
 ${MKA}
 out vec4 o;
 vec2 cm(vec2 a,vec2 b){return vec2(a.x*b.x-a.y*b.y,a.x*b.y+a.y*b.x);}
@@ -444,15 +479,27 @@ vec3 lamp(vec3 S,vec3 T,float ci,float co,float I,vec3 col,vec3 n,vec3 V,bool gs
  float sf=smoothstep(co,ci,dot(-Li,normalize(T-S))),at=1./(1.+r*r/6.25),nl=dot(n,Li),d=clamp((nl+.10)/1.10,0.,1.);
  sp=vec3(0.);if(gs&&nl>0.){vec3 h=normalize(Li+V);float s=max(dot(n,h),0.);sp=col*(.95*pow(s,160.)+.07*pow(s,22.))*sf*at*I;}
  return col*I*d*sqrt(d)*sf*at;}
+vec3 soft(vec3 S,vec3 T,float I,vec3 col,vec3 n,vec3 V,bool gs,out vec3 sp){
+ vec3 Lv=S-vP;float r=length(Lv);vec3 Li=Lv/max(r,1e-4);
+ float sf=smoothstep(.20,.80,dot(-Li,normalize(T-S))),at=1./(1.+r*r/30.),nl=dot(n,Li),d=clamp((nl+.45)/1.45,0.,1.);
+ sp=vec3(0.);if(gs&&nl>0.){vec3 h=normalize(Li+V);float s=max(dot(n,h),0.);sp=col*(.30*pow(s,36.)+.10*pow(s,7.))*sf*at*I;}
+ return col*I*d*sf*at;}
 void main(){
- bool lit=(uLU+uLD)>0||uMat==1,sm=uSm==1&&uPass!=3,nw=(sm||lit)&&uPass!=3;
+ bool lit=(uLU+uLD+uBU+uBD)>0||uMat==1,sm=uSm==1&&uPass!=3,nw=(sm||lit)&&uPass!=3;
  vec2 f0=vec2(0.),d0=vec2(0.);float tp;
  if(sm){fd(uC3+vP.xy*uR3,f0,d0);tp=atan(f0.y,f0.x)/6.2831853;}else tp=atan(vF.y,vF.x)/6.2831853;
  float ma=(uMk>.5&&uPass!=3)?mka(tp):0.;
  if(uPass==0&&vM>uLv)discard;if(uPass==1&&vM<uLv)discard;
  vec4 c=uPass==3?uCol:vec4(vC.rgb,vC.a*uA);
+ /* wireframe: solo spigoli, colore di fase del quad, alone scuro; attivo solo se uWire==1 */
+ if(uWire==1&&uPass!=3){
+  vec3 dvB=fwidth(vB);vec3 dp=vB/max(dvB,vec3(1e-6));float d=min(min(dp.x,dp.y),dp.z);
+  float eo=1.-smoothstep(uWw,uWw+1.2,d),ei=1.-smoothstep(.4*uWw,.4*uWw+1.,d);
+  if(eo<.02)discard;
+  vec3 wc=mix(vec3(.04,.05,.07),vC.rgb,ei);
+  o=vec4(wc*eo,eo);return;}
  if(nw){
-  float sh=max(vN.w,.05);bool anyL=(uLU+uLD)>0;vec3 n;
+  float sh=max(vN.w,.05);bool anyL=(uLU+uLD+uBU+uBD)>0;vec3 n;
   if(sm){float m=max(length(f0),1e-30),dh=uLg>.5?.9*uHs/(log(1.+uMm)*(1.+m)):.9*uHs/uMm;vec2 gm=vec2(dot(d0,f0),d0.x*f0.y-d0.y*f0.x)/m*dh*uR3;
    n=normalize(vec3(-gm*2.2,1.));if(any(isnan(n)))n=vec3(0.,0.,1.);}
   else{float ln=length(vN.xyz);n=ln>1e-3?vN.xyz/ln:vec3(0.,0.,1.);n=normalize(vec3(n.xy*2.2,n.z));}
@@ -462,8 +509,10 @@ void main(){
   if(!anyL&&!sm){lin=pow(mix(vC.rgb,uMc*sh,ma),vec3(2.2));}  /* sfaccettato senza luci: ombra di faccia originale */
   else{vec3 b0=(sm&&uBase==0)?pc(tp):min(vC.rgb/sh,vec3(1.));b0=mix(b0,uMc,ma);lin=pow(b0,vec3(2.2));
    if(anyL){L=vec3(.28+.14*(n.z*.5+.5));vec3 s1;
-    if(uLU==1){L+=lamp(uSP,uST,.766,.17,1.25,vec3(1.,.96,.88),n,V,uMat==1,s1);sp+=s1;}
-    if(uLD==1){L+=lamp(uDP,uDT,.866,.34,1.35,vec3(.80,.90,1.),n,V,uMat==1,s1);sp+=s1;}}
+    if(uLU==1){L+=lamp(uSP,uST,.766,.17,1.25*uIn.x,vec3(1.,.96,.88),n,V,uMat==1,s1);sp+=s1;}
+    if(uLD==1){L+=lamp(uDP,uDT,.866,.34,1.35*uIn.y,vec3(.80,.90,1.),n,V,uMat==1,s1);sp+=s1;}
+    if(uBU==1){L+=soft(uBP,uBT,1.15*uIn.z,vec3(1.,.97,.92),n,V,uMat==1,s1);sp+=s1;}
+    if(uBD==1){L+=soft(uEP,uET,1.15*uIn.w,vec3(.88,.94,1.),n,V,uMat==1,s1);sp+=s1;}}
    else L=vec3(.70+.30*abs(n.z));}
   vec3 lt=lin*L;
   if(uMat==1){vec3 R=reflect(-V,n),rr=vec3(dot(R,uRt),dot(R,uUp),dot(R,V));float w=pow(1.-nv,5.),fr=.06+.94*w;
@@ -483,18 +532,30 @@ gl_Position=vec4(c.xy+off/sz*c.w,c.z,c.w);}`;
 const FSL=`#version 300 es
 precision highp float;
 uniform vec4 uCol;out vec4 o;void main(){o=vec4(uCol.rgb*uCol.a,uCol.a);}`;
-const setGL3=(on,why)=>{$('w3').classList.toggle('nogl3d',!on);$('cap3g').textContent=on?'':` Vista 3D su Canvas 2D (${why}): funziona, ma è più lenta; superficie liscia, luci, materiale lucido e marcatori di fase non sono disponibili.`;for(const id of['p-sm','p-mt','p-lu','p-ld'])$(id).disabled=!on};
+/* wireframe a linee (stile Three.js MeshBasic wireframe): spigoli colorati, niente fwidth */
+const VSW=`#version 300 es
+precision highp float;
+layout(location=0) in vec3 aP;layout(location=1) in vec3 aC;
+${SCAM}
+out vec3 vC;
+void main(){gl_Position=cp(aP);vC=aC;}`;
+const FSW=`#version 300 es
+precision highp float;
+in vec3 vC;out vec4 o;void main(){o=vec4(vC,1.);}`;
+const setGL3=(on,why)=>{$('w3').classList.toggle('nogl3d',!on);$('cap3g').textContent=on?'':` Vista 3D su Canvas 2D (${why}): funziona, ma è più lenta; superficie liscia, luci, materiale lucido e marcatori di fase non sono disponibili.`;for(const id of['p-sm','p-mt','p-lu','p-ld','p-bu','p-bd','p-lu-i','p-ld-i','p-bu-i','p-bd-i','p-lm'])$(id).disabled=!on;if(on&&typeof syncWireUI==='function')syncWireUI()};
 function initSG(){sgErr='';try{
  const g=sgl.getContext('webgl2',{antialias:true,alpha:true,depth:true,premultipliedAlpha:true,failIfMajorPerformanceCaveat:true});
  if(!g){sgErr='WebGL2 non disponibile o solo software';return false}
  const sh=(t,s)=>{const x=g.createShader(t);g.shaderSource(x,s);g.compileShader(x);if(!g.getShaderParameter(x,g.COMPILE_STATUS))throw new Error(g.getShaderInfoLog(x));return x},
   pr=(v,f,us)=>{const p=g.createProgram();g.attachShader(p,sh(g.VERTEX_SHADER,v));g.attachShader(p,sh(g.FRAGMENT_SHADER,f));g.linkProgram(p);if(!g.getProgramParameter(p,g.LINK_STATUS))throw new Error(g.getProgramInfoLog(p));const o={p};for(const k of us)o[k]=g.getUniformLocation(p,k);return o},
   vao=(st,at)=>{const b=g.createBuffer(),v=g.createVertexArray();g.bindVertexArray(v);g.bindBuffer(g.ARRAY_BUFFER,b);at.forEach(([i,n,t,nm,o])=>{g.enableVertexAttribArray(i);g.vertexAttribPointer(i,n,t,nm,st,o)});return[b,v]};
- P3.m=pr(VSM,FSM,[...CU,'uLv','uA','uPass','uCol','uMk','uMc','uMw','uSm','uBase','uLU','uLD','uMat','uC3','uR3','uHs','uMm','uLg','uK','uKJ','uP','uVw','uRt','uUp','uSP','uST','uDP','uDT']);P3.l=pr(VSL,FSL,[...CU,'uHw','uCol']);
+ P3.m=pr(VSM,FSM,[...CU,'uLv','uA','uPass','uCol','uMk','uMc','uMw','uSm','uBase','uLU','uLD','uBU','uBD','uMat','uC3','uR3','uHs','uMm','uLg','uK','uKJ','uP','uVw','uRt','uUp','uSP','uST','uDP','uDT','uBP','uBT','uEP','uET','uIn','uWire','uWw']);P3.l=pr(VSL,FSL,[...CU,'uHw','uCol']);P3.w=pr(VSW,FSW,[...CU]);
  const mA=[[0,3,g.FLOAT,false,0],[1,1,g.FLOAT,false,12],[2,4,g.UNSIGNED_BYTE,true,16]],mB=[...mA,[3,2,g.SHORT,true,20],[4,4,g.SHORT,true,24]];
  [B3.m,B3.vm]=vao(32,mB);[B3.p,B3.vp]=vao(20,mA);[B3.c,B3.vc]=vao(32,[[0,3,g.FLOAT,false,0],[1,3,g.FLOAT,false,12],[2,2,g.FLOAT,false,24]]);
- g.bindVertexArray(null);g3=g;M3.dirty=true;M3.cs=null;return true}
+ [B3.w,B3.vw]=vao(24,[[0,3,g.FLOAT,false,0],[1,3,g.FLOAT,false,12]]);[B3.wd,B3.vwd]=vao(24,[[0,3,g.FLOAT,false,0],[1,3,g.FLOAT,false,12]]);
+ g.bindVertexArray(null);g3=g;M3.dirty=true;M3.cs=null;M3.nw=0;M3.nwd=0;M3.densKey='';return true}
  catch(e){console.error(e);sgErr='shader 3D non compilato';g3=null;return false}}
+
 sgl.addEventListener('webglcontextlost',e=>{e.preventDefault();g3=null;setGL3(false,'contesto WebGL perso');if(XN){heights();size()}});
 sgl.addEventListener('webglcontextrestored',()=>{if(initSG()){setGL3(true);if(XN){heights();size()}}});
 /* poligono P (anche concavo: vicino alle radici la mesh è deformata) -> triangoli. Ventaglio da P[0] se tutti i triangoli hanno lo stesso verso, altrimenti ear clipping nel piano (X,Y). */
@@ -530,25 +591,92 @@ function glMesh(){M3.dirty=false;const n=QD.length,TN=8,T2=TN*TN,tri=M3.tra||(M3
  for(let i=0;i<n;i++){const t=qt[i],e=ti+qn[i]*3;k=QD[i].k;shq=q15(QD[i].sh);nq=QD[i].n.map(q15);o=pw[t];for(;ti<e;ti++)put(tri[ti]);pw[t]=o}
  g3.bindBuffer(g3.ARRAY_BUFFER,B3.m);g3.bufferData(g3.ARRAY_BUFFER,u.subarray(0,need),g3.DYNAMIC_DRAW);M3.n=nv;
  const pf=new Float32Array(BD.length*5);BD.forEach((p,i)=>{pf[i*5]=p[0];pf[i*5+1]=p[1]});
- g3.bindBuffer(g3.ARRAY_BUFFER,B3.p);g3.bufferData(g3.ARRAY_BUFFER,pf,g3.STATIC_DRAW);M3.np=BD.length}
+ g3.bindBuffer(g3.ARRAY_BUFFER,B3.p);g3.bufferData(g3.ARRAY_BUFFER,pf,g3.STATIC_DRAW);M3.np=BD.length;
+ /* spigoli unici per wireframe a linee (stile Three.js MeshBasic wireframe) */
+ {const seen=new Set(),edges=[],minL2=0.0025*0.0025;
+  for(let t=0;t<nt;t++){const a=tri[t*3],b=tri[t*3+1],cc=tri[t*3+2];
+   for(const[i,j]of[[a,b],[b,cc],[cc,a]]){const k=i<j?i+','+j:j+','+i;if(seen.has(k))continue;seen.add(k);
+    const dx=XN[i]-XN[j],dy=YN[i]-YN[j],dz=HT[i]-HT[j];if(dx*dx+dy*dy+dz*dz*0.25<minL2)continue;edges.push(i,j)}}
+  const ne=edges.length,need=ne*6;if(!M3.wb||M3.wb.length<need)M3.wb=new Float32Array(Math.ceil(need*1.25)+24);
+  const w=M3.wb,P=PH[pph];let o=0;
+  for(let e=0;e<ne;e++){const id=edges[e];
+   w[o++]=XN[id];w[o++]=YN[id];w[o++]=HT[id];
+   const px=PV[2*id],py=PV[2*id+1],ph=((Math.atan2(py,px)/TAU)+1)%1,x=ph*32,i0=Math.min(32,x|0),i1=Math.min(32,i0+1),f=x-i0,c0=P[i0],c1=P[i1];
+   w[o++]=c0[0]+(c1[0]-c0[0])*f;w[o++]=c0[1]+(c1[1]-c0[1])*f;w[o++]=c0[2]+(c1[2]-c0[2])*f}
+  g3.bindBuffer(g3.ARRAY_BUFFER,B3.w);g3.bufferData(g3.ARRAY_BUFFER,w.subarray(0,need),g3.DYNAMIC_DRAW);M3.nw=ne}
+}
 /* curva di livello |f| = quota: segmenti allargati nel vertex shader (6 vertici per segmento); ricaricata solo se cambia contour() */
 function glCont(cs){M3.cs=cs;const n=cs.length>>1,need=n*48;if(!M3.cf||M3.cf.length<need)M3.cf=new Float32Array(Math.ceil(need*1.25)+48);
  const f=M3.cf,SD=[[-1,0],[1,0],[-1,1],[1,0],[1,1],[-1,1]];let o=0;
  for(let i=0;i<n;i++){const A=cs[2*i],B=cs[2*i+1];for(const s of SD){f[o++]=A[0];f[o++]=A[1];f[o++]=0;f[o++]=B[0];f[o++]=B[1];f[o++]=0;f[o++]=s[0];f[o++]=s[1]}}
  g3.bindBuffer(g3.ARRAY_BUFFER,B3.c);g3.bufferData(g3.ARRAY_BUFFER,f.subarray(0,need),g3.DYNAMIC_DRAW);M3.nc=n*6}
+
+/* Wireframe denso (stile POC): griglia polare triangolata + raggi/anelli passanti per ogni radice */
+function densWire(){
+ const g=g3,NR0=80,NA0=160;
+ /* angoli e raggi obbligatori: radici nel dominio (rispetto al centro della vista) */
+ const angs=new Set(),rads=new Set([0,1]);
+ for(let k=0;k<=NA0;k++)angs.add(k/NA0);
+ for(let k=0;k<=NR0;k++)rads.add(k/NR0);
+ if(typeof RT!=='undefined'&&RT)for(const r of RT){
+  const dx=r[0]-cx3,dy=r[1]-cy3,rr=Math.hypot(dx,dy)/R;
+  if(!(rr>=0)||!isFinite(rr))continue;
+  if(rr<=1.001){rads.add(Math.min(1,Math.max(0,rr)));angs.add(((Math.atan2(dy,dx)/TAU)+1)%1)}
+ }
+ const A=[...angs].sort((a,b)=>a-b),Rd=[...rads].sort((a,b)=>a-b);
+ /* chiudi l'anello angolare */
+ if(A.length<2||A[0]>1e-12)A.unshift(0);if(A[A.length-1]<1-1e-12)A.push(1);
+ const NA=A.length-1,NR=Rd.length-1,stride=NA+1,nV=(NR+1)*stride;
+ const pos=new Float32Array(nV*3),col=new Float32Array(nV*3),P=PH[pph];
+ for(let i=0;i<=NR;i++){
+  const s=Rd[i];
+  for(let a=0;a<=NA;a++){
+   const th=A[a]*TAU,rr=s*R,x=cx3+rr*Math.cos(th),y=cy3+rr*Math.sin(th);
+   const f=F(x,y),mag=Math.hypot(f[0],f[1]),h=hm(mag);
+   const b=(i*stride+a)*3;
+   pos[b]=(x-cx3)/R;pos[b+1]=half?Math.max(0,(y-cy3)/R):(y-cy3)/R;pos[b+2]=h;
+   const ph=((Math.atan2(f[1],f[0])/TAU)+1)%1,xx=ph*32,i0=Math.min(32,xx|0),i1=Math.min(32,i0+1),fr=xx-i0,c0=P[i0],c1=P[i1];
+   let rc=c0[0]+(c1[0]-c0[0])*fr,gc=c0[1]+(c1[1]-c0[1])*fr,bc=c0[2]+(c1[2]-c0[2])*fr;
+   rc=Math.min(1,rc*1.12+.04);gc=Math.min(1,gc*1.12+.04);bc=Math.min(1,bc*1.12+.04);
+   col[b]=rc;col[b+1]=gc;col[b+2]=bc;
+  }
+ }
+ /* 3 spigoli per cella triangolata: radiale, angolare, diagonale (come wireframe Three.js su due triangoli) */
+ const need=NR*NA*3*12+NA*12;if(!M3.db||M3.db.length<need)M3.db=new Float32Array(Math.ceil(need*1.25)+64);
+ const w=M3.db;let o=0;
+ const push=(i,j)=>{const bi=i*3,bj=j*3;
+  w[o++]=pos[bi];w[o++]=pos[bi+1];w[o++]=pos[bi+2];w[o++]=col[bi];w[o++]=col[bi+1];w[o++]=col[bi+2];
+  w[o++]=pos[bj];w[o++]=pos[bj+1];w[o++]=pos[bj+2];w[o++]=col[bj];w[o++]=col[bj+1];w[o++]=col[bj+2]};
+ for(let i=0;i<NR;i++)for(let a=0;a<NA;a++){
+  const v00=i*stride+a,v10=(i+1)*stride+a,v01=i*stride+(a+1),v11=(i+1)*stride+(a+1);
+  push(v00,v10);push(v00,v01);push(v00,v11); /* diagonale → aspetto a triangoli del POC */
+ }
+ for(let a=0;a<NA;a++)push(NR*stride+a,NR*stride+(a+1));
+ g.bindBuffer(g.ARRAY_BUFFER,B3.wd);g.bufferData(g.ARRAY_BUFFER,w.subarray(0,o),g.DYNAMIC_DRAW);M3.nwd=o/6;
+ M3.densKey=FV+'|'+R+'|'+cx3+'|'+cy3+'|'+pph+'|'+hs+'|'+lg+'|'+mmax+'|'+half+'|'+(RT?RT.length:0);
+}
+
 function glSurf(xOff){const g=g3;if(M3.dirty)glMesh();const cs=contour();if(cs!==M3.cs)glCont(cs);
  const zc=hm(lv),cam=P=>{g.uniform4f(P.uCam,cyw,syw,cpt,spt);g.uniform4f(P.uScr,CW,CH,SS,xOff);g.uniform1f(P.uYo,yoff)};
- g.viewport(0,0,sgl.width,sgl.height);g.depthMask(true);g.clearColor(0,0,0,0);g.clear(g.COLOR_BUFFER_BIT|g.DEPTH_BUFFER_BIT);
+ g.viewport(0,0,sgl.width,sgl.height);g.depthMask(true);if(MAT===2||MAT===3){g.clearColor(0.04,0.05,0.08,1);}else{g.clearColor(0,0,0,0);}g.clear(g.COLOR_BUFFER_BIT|g.DEPTH_BUFFER_BIT);
  g.enable(g.DEPTH_TEST);g.depthFunc(g.LEQUAL);g.disable(g.BLEND);g.depthMask(true);
  let m=P3.m;g.useProgram(m.p);cam(m);g.uniform1f(m.uLv,lv);g.uniform1f(m.uA,1);g.uniform1f(m.uDz,0);g.uniform1f(m.uBias,0);
  {const mk=PMK();g.uniform1f(m.uMk,mk?mk.n:0);g.uniform1f(m.uMw,dpr);g.uniform3fv(m.uMc,mk?mk.c:[0,0,0]);
-  const sm=SMO&&pixOK(),lit=LU||LD||MAT===1;g.uniform1i(m.uSm,sm?1:0);g.uniform1i(m.uLU,LU?1:0);g.uniform1i(m.uLD,LD?1:0);g.uniform1i(m.uMat,MAT);
+  const wf=MAT===2||MAT===3,sm=!wf&&SMO&&pixOK(),eU=!wf&&!!LU,eD=!wf&&!!LD,eBU=!wf&&!!SXU,eBD=!wf&&!!SXD,lit=!wf&&(eU||eD||eBU||eBD||MAT===1);
+  g.uniform1i(m.uWire,wf?1:0);g.uniform1f(m.uWw,1.25*dpr);
+  g.uniform1i(m.uSm,sm?1:0);g.uniform1i(m.uLU,eU?1:0);g.uniform1i(m.uLD,eD?1:0);g.uniform1i(m.uBU,eBU?1:0);g.uniform1i(m.uBD,eBD?1:0);g.uniform1i(m.uMat,MAT===1?1:0);
+  g.uniform4f(m.uIn,dim(IU),dim(ID),dim(IBU),dim(IBD));
   if(sm||lit){g.uniform1i(m.uBase,mode==='dom'?0:1);g.uniform2f(m.uC3,cx3,cy3);g.uniform1f(m.uR3,R);g.uniform1f(m.uHs,hs);g.uniform1f(m.uMm,mmax);g.uniform1f(m.uLg,lg?1:0);
    g.uniform1fv(m.uK,new Float32Array(K));g.uniform1fv(m.uKJ,new Float32Array(KJ));g.uniform3fv(m.uP,new Float32Array(PH[pph].flat()));
    g.uniform3f(m.uVw,-syw*cpt,-cyw*cpt,spt);g.uniform3f(m.uRt,cyw,-syw,0);g.uniform3f(m.uUp,spt*syw,spt*cyw,cpt);
-   if(LU||LD){const l=lights();g.uniform3fv(m.uSP,l.sp);g.uniform3fv(m.uST,l.st);g.uniform3fv(m.uDP,l.dp);g.uniform3fv(m.uDT,l.dt)}}}
- /* 1) parte opaca con profondità: sotto quota (o tutta la superficie se «piena») */
- g.bindVertexArray(B3.vm);g.uniform1i(m.uPass,upm==='full'?2:0);g.drawArrays(g.TRIANGLES,0,M3.n);
+   if(eU||eD||eBU||eBD){const l=lights();g.uniform3fv(m.uSP,l.sp);g.uniform3fv(m.uST,l.st);g.uniform3fv(m.uDP,l.dp);g.uniform3fv(m.uDT,l.dt);g.uniform3fv(m.uBP,l.bp);g.uniform3fv(m.uBT,l.bt);g.uniform3fv(m.uEP,l.ep);g.uniform3fv(m.uET,l.et)}}}
+ /* 1) opaca / wireframe linee */
+ if(MAT===2||MAT===3){
+  if(MAT===3){const key=FV+'|'+R+'|'+cx3+'|'+cy3+'|'+pph+'|'+hs+'|'+lg+'|'+mmax+'|'+half+'|'+(RT?RT.length:0);if(M3.densKey!==key||!M3.nwd)densWire();
+   m=P3.w;g.useProgram(m.p);cam(m);g.bindVertexArray(B3.vwd);g.drawArrays(g.LINES,0,M3.nwd)}
+  else{m=P3.w;g.useProgram(m.p);cam(m);g.bindVertexArray(B3.vw);g.drawArrays(g.LINES,0,M3.nw)}
+  m=P3.m;g.useProgram(m.p);cam(m)}
+ else{g.bindVertexArray(B3.vm);g.uniform1i(m.uPass,upm==='full'?2:0);g.drawArrays(g.TRIANGLES,0,M3.n)}
  /* 2) piano a quota |f| (grigio .26) e suo contorno, senza scrivere la profondità */
  g.enable(g.BLEND);g.blendFunc(g.ONE,g.ONE_MINUS_SRC_ALPHA);g.depthMask(false);
  g.bindVertexArray(B3.vp);g.uniform1i(m.uPass,3);g.uniform1f(m.uDz,zc);g.uniform4f(m.uCol,.5,.5,.5,.26);g.drawArrays(g.TRIANGLE_FAN,0,M3.np);
@@ -557,12 +685,26 @@ function glSurf(xOff){const g=g3;if(M3.dirty)glMesh();const cs=contour();if(cs!=
  if(M3.nc){m=P3.l;g.useProgram(m.p);cam(m);g.uniform1f(m.uDz,zc);g.uniform1f(m.uBias,.004);g.bindVertexArray(B3.vc);
   for(const[w,c]of[[4.5,1],[2.4,.067]]){g.uniform1f(m.uHw,w*dpr/2);g.uniform4f(m.uCol,c,c,c,1);g.drawArrays(g.TRIANGLES,0,M3.nc)}}
  /* 4) sopra quota trasparente (alpha .3): tessere ordinate da lontano a vicino, test di profondità contro la parte opaca */
- if(upm==='gh'){m=P3.m;g.useProgram(m.p);g.uniform1i(m.uPass,1);g.uniform1f(m.uA,.3);g.uniform1f(m.uDz,0);g.bindVertexArray(B3.vm);
+ if(upm==='gh'&&MAT!==2&&MAT!==3){m=P3.m;g.useProgram(m.p);g.uniform1i(m.uPass,1);g.uniform1f(m.uA,.3);g.uniform1f(m.uDz,0);g.bindVertexArray(B3.vm);
   const T=M3.tl;for(const t of T){const y1=t.x*syw+t.y*cyw;t.d=y1*cpt-(t.z-.5)*spt}T.sort((a,b)=>b.d-a.d);for(const t of T)g.drawArrays(g.TRIANGLES,t.f,t.c)}
  g.bindVertexArray(null)}
-function drawSurf(){surfDirty=false;if(!g3){drawSurf2D();return}const xOff=setCam();drawSurf2D('bg');glSurf(xOff);drawSurf2D('fg');if(LU||LD)lightMark(xOff)}
-/* puntini delle sorgenti attive (solo indicazione sovrapposta: non sono occlusi dalla superficie) */
-function lightMark(xOff){const L=lights(),u=dpr;sf.save();for(const[on,p,c]of[[LU,L.sp,'#ffe08a'],[LD,L.dp,'#8ec8ff']]){if(!on)continue;const a=proj(p[0],p[1],p[2],xOff);sf.fillStyle=c;sf.strokeStyle='#fff';sf.lineWidth=2*u;sf.beginPath();sf.arc(a[0],a[1],5*u,0,TAU);sf.stroke();sf.fill()}sf.restore()}
+function drawSurf(){surfDirty=false;if(!g3){drawSurf2D();return}const xOff=setCam();drawSurf2D('bg');glSurf(xOff);drawSurf2D('fg');if(LMK)lightMark(xOff)}
+function lightMark(xOff){const L=lights(),u=dpr,Vw=[-syw*cpt,-cyw*cpt,spt],dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],add=(a,b,k=1)=>[a[0]+k*b[0],a[1]+k*b[1],a[2]+k*b[2]],nrm=a=>{const l=Math.hypot(a[0],a[1],a[2])||1;return[a[0]/l,a[1]/l,a[2]/l]},crs=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],
+ rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),
+ items=[[0,L.sp,L.st,LU&&IU>0,'#ffe08a'],[1,L.bp,L.bt,SXU&&IBU>0,'#ffe08a'],[0,L.dp,L.dt,LD&&ID>0,'#8ec8ff'],[1,L.ep,L.et,SXD&&IBD>0,'#8ec8ff']].map(it=>({it,z:proj(it[1][0],it[1][1],it[1][2],xOff)[2]})).sort((a,b)=>b.z-a.z);
+ sf.save();sf.lineJoin='round';
+ for(const{it:[kind,S,T,on,col],z}of items){const d=nrm(add(T,S,-1)),ref=Math.abs(d[2])>.9?[1,0,0]:[0,0,1],e1=nrm(crs(d,ref)),e2=crs(d,e1),k=u/(SS*9/(9+z)),c=rgb(col);
+  const faces=[];/* {pts, n, base?} */
+  if(kind===0){const Lc=15*k,r=6.5*k,N=14,A=add(S,d,-Lc/2),C=add(S,d,Lc/2),B=[];for(let i=0;i<N;i++){const t=2*Math.PI*i/N;B.push(add(add(C,e1,r*Math.cos(t)),e2,r*Math.sin(t)))}
+   for(let i=0;i<N;i++){const tm=2*Math.PI*(i+.5)/N,rad=add([0,0,0],e1,Math.cos(tm));faces.push({p:[A,B[i],B[(i+1)%N]],n:nrm(add(add([0,0,0],add(rad,e2,Math.sin(tm)),Lc),d,-r))})}
+   faces.push({p:B,n:d,w:1})}
+  else{const D=12*k,hf=8*k,hb=4*k,Cf=add(S,d,D/2),Cb=add(S,d,-D/2),sg=[[-1,-1],[1,-1],[1,1],[-1,1]],F=sg.map(([a,b])=>add(add(Cf,e1,a*hf),e2,b*hf)),Kb=sg.map(([a,b])=>add(add(Cb,e1,a*hb),e2,b*hb));
+   for(let i=0;i<4;i++){const j=(i+1)%4,o=add(add([0,0,0],e1,(sg[i][0]+sg[j][0])/2),e2,(sg[i][1]+sg[j][1])/2);faces.push({p:[Kb[i],Kb[j],F[j],F[i]],n:nrm(add(add([0,0,0],o,D),d,-(hf-hb)))})}
+   faces.push({p:F,n:d,w:1});faces.push({p:Kb,n:add([0,0,0],d,-1),b:1})}
+  sf.globalAlpha=on?1:.4;
+  for(const f of faces){if(dot(f.n,Vw)<=0)continue;const sh=.55+.45*Math.max(0,dot(f.n,Vw)),fc=f.w?[255,255,255]:c.map(v=>Math.round(v*(f.b?.6:1)*sh));
+   sf.beginPath();f.p.forEach((q,i)=>{const a=proj(q[0],q[1],q[2],xOff);i?sf.lineTo(a[0],a[1]):sf.moveTo(a[0],a[1])});sf.closePath();sf.fillStyle=`rgb(${fc[0]},${fc[1]},${fc[2]})`;sf.fill();sf.strokeStyle='rgba(0,0,0,.6)';sf.lineWidth=u;sf.stroke()}}
+ sf.restore()}
 /* proiezione CPU di tutti i vertici: serve solo a pick() (tasto destro / pressione lunga) */
 function projAll(){const xOff=setCam();for(let k=0;k<XN.length;k++){const X=XN[k],Y=YN[k],x1=X*cyw-Y*syw,y1=X*syw+Y*cyw,z=HT[k]-.5,v=z*cpt+y1*spt,d=y1*cpt-z*spt,p=9/(9+d);PX[k]=CW/2+xOff+(x1*p+.1)*SS;PY[k]=CH*.54-yoff*CH-v*p*SS;PD[k]=d}}
 
@@ -582,11 +724,11 @@ function secClip(x0,x1,y0,y1){const[c,s]=secCS();let a=-1e9,b=1e9;for(const[o,d,
 function secRoots(){const[c,s]=secCS(),o=[];for(const r of RT){const n=-r[0]*s+r[1]*c-SD;if(Math.abs(n)<=1e-9*(1+Math.hypot(r[0],r[1])))o.push(r[0]*c+r[1]*s)}return o}
 function secCoef(){const[c,s]=secCS(),wx=-SD*s,wy=SD*c,A=K.slice(),B=KJ.slice();for(let i=0;i<8;i++)for(let k=7;k>=i;k--){A[k]+=wx*A[k+1]-wy*B[k+1];B[k]+=wx*B[k+1]+wy*A[k+1]}
  let pr=1,pi=0;for(let k=0;k<9;k++){const a=A[k],b=B[k];A[k]=a*pr-b*pi;B[k]=a*pi+b*pr;const q=pr*c-pi*s;pi=pr*s+pi*c;pr=q}return[A,B]}
-function secDrawPlan(X,Y,u){secBad(pg,u,8*u,8*u);const pp=Math.min(pc.width,pc.height)/(2*vs),hx=pc.width/2/pp,hy=pc.height/2/pp,P=secClip(vcx-hx,vcx+hx,vcy-hy,vcy+hy);if(!P)return;const a=secP(P[0]),b=secP(P[1]),[c,s]=secCS();pg.save();pg.lineCap='round';
+function secDrawPlan(X,Y,u){if(!SECV)return;secBad(pg,u,8*u,8*u);const pp=Math.min(pc.width,pc.height)/(2*vs),hx=pc.width/2/pp,hy=pc.height/2/pp,P=secClip(vcx-hx,vcx+hx,vcy-hy,vcy+hy);if(!P)return;const a=secP(P[0]),b=secP(P[1]),[c,s]=secCS();pg.save();pg.lineCap='round';
  for(const[w,col,d]of[[4.5,'rgba(0,0,0,.55)',[]],[2.4,SECC,[9*u,5*u]]]){pg.setLineDash(d);pg.lineWidth=w*u;pg.strokeStyle=col;pg.beginPath();pg.moveTo(X(a[0]),Y(a[1]));pg.lineTo(X(b[0]),Y(b[1]));pg.stroke()}
  pg.setLineDash([]);const zx=-SD*s,zy=SD*c,tl=9*u/pp;if(zx>=vcx-hx&&zx<=vcx+hx&&zy>=vcy-hy&&zy<=vcy+hy){pg.beginPath();pg.moveTo(X(zx+s*tl),Y(zy-c*tl));pg.lineTo(X(zx-s*tl),Y(zy+c*tl));pg.lineWidth=3.2*u;pg.strokeStyle=SECC;pg.stroke();
   pg.font=`600 ${11*u}px system-ui`;pg.textAlign='center';pg.textBaseline='middle';const lx=X(zx-s*tl*2.6),ly=Y(zy+c*tl*2.6);pg.lineWidth=3.2*u;pg.strokeStyle='rgba(0,0,0,.7)';pg.strokeText('t=0',lx,ly);pg.fillStyle='#fff';pg.fillText('t=0',lx,ly)}pg.restore()}
-function secDraw3(ln,tx,zc,u){secBad(sg,u,8*u,8*u);const P=secClip(cx3-R,cx3+R,cy3-R,cy3+R);if(!P)return;const nz=p=>[(p[0]-cx3)/R,(p[1]-cy3)/R],A=nz(secP(P[0])),B=nz(secP(P[1])),D=[4*u,4*u];
+function secDraw3(ln,tx,zc,u){if(!SECV)return;secBad(sg,u,8*u,8*u);const P=secClip(cx3-R,cx3+R,cy3-R,cy3+R);if(!P)return;const nz=p=>[(p[0]-cx3)/R,(p[1]-cy3)/R],A=nz(secP(P[0])),B=nz(secP(P[1])),D=[4*u,4*u];
  ln([A[0],A[1],0],[B[0],B[1],0],'rgba(255,255,255,.85)',4);ln([A[0],A[1],0],[B[0],B[1],0],SECC,2.2);
  ln([A[0],A[1],zc],[B[0],B[1],zc],SECC,1.2,D);ln([A[0],A[1],0],[A[0],A[1],zc],SECC,1.2,D);ln([B[0],B[1],0],[B[0],B[1],zc],SECC,1.2,D);
  const[c,s]=secCS(),zx=(-SD*s-cx3)/R,zy=(SD*c-cy3)/R;if(Math.abs(zx)<=1&&Math.abs(zy)<=1){ln([zx+s*.035,zy-c*.035,0],[zx-s*.035,zy+c*.035,0],SECC,3.2);tx([zx-s*.09,zy+c*.09,0],'t=0',SECC)}}
@@ -781,7 +923,7 @@ function rtsC(co){const n=co.length-1;if(n<1)return[];const real=co.every(c=>c[1
   let qr=1,qi=0;for(let j=0;j<n;j++)if(j!==i){const dx=z[i][0]-z[j][0],dy=z[i][1]-z[j][1],t=qr*dx-qi*dy;qi=qr*dy+qi*dx;qr=t}
   const dd=qr*qr+qi*qi||1e-30,sx=(pr*qr+pi*qi)/dd,sy=(pi*qr-pr*qi)/dd;z[i][0]-=sx;z[i][1]-=sy;md=Math.max(md,Math.hypot(sx,sy))}if(md<1e-13)break}
  return sortR(z.map(([x,y])=>real&&Math.abs(y)<1e-6?[x,0]:[x,y]))}
-/* 2.5: pagine radice {a:radice, m} + coefficiente globale a′ unico (A) -> coefficienti: f = A·∏(z−aᵢ)^mᵢ; il coefficiente direttivo è A */
+/* 2.5: pagine radice {a:radice, m} + coefficiente globale K unico (A) -> coefficienti: f = A·∏(z−aᵢ)^mᵢ; il coefficiente direttivo è A */
 function expandPages(pages,A){let c=[[1,0]],M=A?A.slice():[1,0];for(const q of pages){for(let j=0;j<q.m;j++){const n=Array.from({length:c.length+1},()=>[0,0]);c.forEach((v,k)=>{n[k+1][0]+=v[0];n[k+1][1]+=v[1];const t=cmul(q.a,v);n[k][0]-=t[0];n[k][1]-=t[1]});c=n}}
  c=c.map(v=>cmul(v,M));const Kr=Array(9).fill(0),Ki=Array(9).fill(0);c.forEach((v,k)=>{Kr[k]=v[0];Ki[k]=v[1]});
  const sc=Math.max(...Kr.map((v,k)=>Math.hypot(v,Ki[k])));for(let k=0;k<9;k++)if(Math.abs(Ki[k])<=1e-13*sc)Ki[k]=0;return[Kr,Ki]}
@@ -792,7 +934,7 @@ function scalarMult(Ar,Ai,Br,Bi){const n=effDeg(Ar,Ai);if(n!==effDeg(Br,Bi))retu
  const l=[(p[0]*o[0]+p[1]*o[1])/d,(p[1]*o[0]-p[0]*o[1])/d];let sc=0,e=0;for(let k=0;k<9;k++){sc=Math.max(sc,Math.hypot(Br[k],Bi[k]));const t=cmul(l,[Ar[k],Ai[k]]);e=Math.max(e,Math.hypot(t[0]-Br[k],t[1]-Bi[k]))}
  return e<=1e-9*sc&&!(Math.abs(l[0]-1)<1e-12&&Math.abs(l[1])<1e-12)}
 const flatten=p=>p.flatMap(q=>Array.from({length:q.m},()=>q.a.slice()));
-/* radici (con ripetizioni) -> pagine {a,m}; il coefficiente globale a′ = cₙ (coefficiente direttivo). Due radici vicine si fondono solo se il polinomio ricostruito con la radice unica si discosta dall’originale non più del doppio dello scarto già presente nelle radici non fuse (+1e-12 relativo): compatibilità numerica, non prova di molteplicità esatta; nei casi dubbi restano pagine separate */
+/* radici (con ripetizioni) -> pagine {a,m}; il coefficiente globale K = cₙ (coefficiente direttivo). Due radici vicine si fondono solo se il polinomio ricostruito con la radice unica si discosta dall’originale non più del doppio dello scarto già presente nelle radici non fuse (+1e-12 relativo): compatibilità numerica, non prova di molteplicità esatta; nei casi dubbi restano pagine separate */
 function groupRoots(R0,Kr,Ki){const n=R0.length;if(!n)return[];const lead=[Kr[n],Ki[n]],pg=L=>L.map(([a,m])=>({a,m})),
  res=L=>{const[A,B]=expandPages(pg(L),lead);let d=0,s=0;for(let k=0;k<9;k++){d=Math.max(d,Math.hypot(A[k]-Kr[k],B[k]-Ki[k]));s=Math.max(s,Math.hypot(Kr[k],Ki[k]))}return d/s};
  let L=R0.map(r=>[r.slice(),1]);const lim=2*res(L)+1e-12;
@@ -832,17 +974,27 @@ const TIP=['Quattro radici simmetriche: ±1 e ±i','Tre radici reali: −1, 0 e 
 const PRE=[['z⁴ − 1',[1,0,0,0,-1],0,1.4,[[[1,0],1],[[-1,0],1],[[0,1],1],[[0,-1],1]]],['z³ − z',[0,1,0,-1,0],0,.6,[[[0,0],1],[[1,0],1],[[-1,0],1]]],['z⁴ − 5z² + 4',[1,0,-5,0,4],0,7,[[[1,0],1],[[-1,0],1],[[2,0],1],[[-2,0],1]]],['(z−1)²(z+1)',[0,1,-1,-1,1],2,1.85,[[[1,0],2],[[-1,0],1]]]];
 const degR=D=>D.pages.reduce((x,q)=>x+q.m,0),zeroA=A=>!A[0]&&!A[1];
 const isZeroF=(Kr,Ki)=>effDeg(Kr,Ki)<1&&!nzc(Kr[0],Ki[0]);
-const issue=()=>{const D=DR;if(D.mode==='text'&&D.txtEdit)return'';if(D.truth==='coef'&&isZeroF(D.K,D.KJ))return'La funzione non può essere nulla (modulo 0 ovunque, fase indefinita): imposta almeno un coefficiente diverso da zero.';if(D.truth==='root'&&zeroA(D.A))return'Il coefficiente a′ deve essere diverso da zero.';return''};
+const issue=()=>{const D=DR;if(D.mode==='text'&&D.txtEdit)return'';if(D.truth==='coef'&&isZeroF(D.K,D.KJ))return'La funzione non può essere nulla (modulo 0 ovunque, fase indefinita): imposta almeno un coefficiente diverso da zero.';if(D.truth==='root'&&zeroA(D.A))return'Il coefficiente K deve essere diverso da zero.';return''};
 function edStatus(note,force){const D=DR,m=issue(),e=$('ed-msg');e.textContent=force&&note?note:(m||note||(D.dirty?'Modifiche non confermate.':''));e.className='ed-msg'+(m||(force&&note)?' err':'');$('ed-ok').disabled=!!m}
 function touch(src){const D=DR;D.dirty=true;closeArm=0;if(src==='coef'){D.truth='coef';D.cOK=true;D.rOK=false;D.solved=null}else{D.truth='root';D.rOK=true;D.cOK=false}}
 const EB=$('coeffs-body');
 EB.innerHTML=`<div class="ed-nav"><select id="ed-mode" hidden aria-hidden="true" tabindex="-1"><option value="coef">Forma normale</option><option value="root">Forma a radici</option><option value="text">Testo</option></select><div class="mseg" id="ed-seg" role="radiogroup" aria-label="Forma di inserimento di f(z)"><button type="button" role="radio" data-m="coef" title="Forma normale" aria-label="Forma normale">zⁿ</button><button type="button" role="radio" data-m="root" title="Forma a radici" aria-label="Forma a radici">(z−a)</button><button type="button" role="radio" data-m="text" title="Testo" aria-label="Testo">TXT</button></div></div>
-<div class="ed-sec ed-glob" id="ed-glob" hidden><div class="ed-info" title="Un solo coefficiente complesso per tutto il polinomio: f(z) = a′·(z−r₁)·…·(z−rₙ). Cambiarlo non sposta le radici.">Coefficiente globale a′ (moltiplica tutto il polinomio)</div></div>
+<div class="ed-sec ed-glob" id="ed-glob" hidden>
+<div class="ed-glob-hd" id="ed-glob-hd" title="Coefficiente globale K: moltiplica l’intera funzione per K">
+<span id="ed-glob-sum">K = 1</span>
+<button type="button" class="ed-glob-tog" id="ed-glob-tog" title="Espandi o richiudi il coefficiente K" aria-expanded="false" aria-controls="ed-glob-body">▾</button>
+</div>
+<div class="ed-glob-body" id="ed-glob-body">
+<div class="ed-info">Coefficiente globale K: moltiplica tutto il polinomio</div>
+<div id="ed-glob-sliders"></div>
+<div class="ed-info">|K| scala l’altezza della superficie di |f(z)|; arg(K) sposta la fase del polinomio. Non sposta le radici.</div>
+</div>
+</div>
 <div class="ed-nav" id="ed-navrow"><button id="ed-prev" title="Precedente">◀</button><select id="ed-sel"></select><button id="ed-next" title="Successivo">▶</button></div>
 <div class="ed-info" id="ed-info"></div>
 <div class="ed-sec" id="ed-coef"></div>
 <div class="ed-sec" id="ed-root"></div>
-<div class="ed-sec" id="ed-text"><div class="ed-rad" role="radiogroup" aria-label="Forma del testo"><label><input type="radio" name="ed-tf" value="n" checked> Forma normale</label><label><input type="radio" name="ed-tf" value="f"> Forma fattorizzata</label></div><textarea id="ed-txt" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="z3 + (0.5 + 3.4i)·z2 − 1.73i"></textarea><div class="pbtn"><button id="ed-parse" title="Acquisisce il polinomio (o il JSON) nella bozza">Interpreta</button></div><div class="ed-info">Accetta z8, z^8 o z⁸; coefficienti complessi come (0.5 + 3.4i) o 2i; ·, * o accostamento; anche forme fattorizzate come (z−1)^2(z+1). Con «Forma fattorizzata» il testo mostra A·(z−r₁)·…·(z−rₙ), molteplicità come esponenti; Interpreta accetta entrambe le forme. Decimali con punto o virgola. Grado massimo 8. Incollando un JSON esportato con «Esporta JSON» si ripristinano f(z) e vista. «Condividi questa vista» (icona accanto a Readme) copia un link che riapre la stessa f(z) e la stessa vista; il JSON resta il formato di riferimento.</div></div>
+<div class="ed-sec" id="ed-text"><div class="ed-rad" role="radiogroup" aria-label="Forma del testo"><label><input type="radio" name="ed-tf" value="n" checked> Forma normale</label><label><input type="radio" name="ed-tf" value="f"> Forma fattorizzata</label></div><textarea id="ed-txt" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="z3 + (0.5 + 3.4i)·z2 − 1.73i"></textarea><div class="pbtn"><button id="ed-parse" title="Acquisisce il polinomio (o il JSON) nella bozza">Interpreta</button></div><div class="ed-info">Accetta z8, z^8 o z⁸; coefficienti complessi come (0.5 + 3.4i) o 2i; ·, * o accostamento; anche forme fattorizzate come (z−1)^2(z+1). Con «Forma fattorizzata» il testo mostra K·(z−r₁)·…·(z−rₙ), molteplicità come esponenti; Interpreta accetta entrambe le forme. Decimali con punto o virgola. Grado massimo 8. Incollando un JSON esportato con «Esporta JSON» si ripristinano f(z) e vista. «Condividi questa vista» (icona accanto a Readme) copia un link che riapre la stessa f(z) e la stessa vista; il JSON resta il formato di riferimento.</div></div>
 <div class="pbtn" id="ed-act"><button id="ed-exp" title="Copia negli appunti il JSON con f(z) e i parametri di visualizzazione">Esporta JSON</button></div>
 <div class="ed-msg" id="ed-msg"></div>
 <div class="ed-info">Esempi:</div><div class="pbtn" id="ed-ex"></div>`;
@@ -854,18 +1006,24 @@ const ec=$('ed-coef'),er=$('ed-root'),et=$('ed-text'),eg=$('ed-glob');
 const cUp=()=>{touch('coef');navCoef();edStatus()},rUp=()=>{touch('root');navRoot();edStatus()};
 const cR=mkSl(ec,'Re c',v=>{DR.K[DR.t]=v;cUp()}),cI=mkSl(ec,'Im c',v=>{DR.KJ[DR.t]=v;cUp()});
 ec.insertAdjacentHTML('beforeend','<div class="pbtn"><button id="ed-zero" title="Azzera parte reale e immaginaria del termine corrente">Azzera termine</button></div>');
-const aR=mkSl(eg,'Re a′',v=>{DR.A[0]=v;rUp()}),aI=mkSl(eg,'Im a′',v=>{DR.A[1]=v;rUp()}),rR=mkSl(er,'Re a',v=>{DR.pages[DR.p].a[0]=v;rUp()}),rI=mkSl(er,'Im a',v=>{DR.pages[DR.p].a[1]=v;rUp()});
-er.insertAdjacentHTML('beforeend',`<label><span>m</span><select id="ed-m"></select></label>
-<div class="pbtn"><button id="ed-add" title="Nuova radice (m = 1)">+ Radice</button><button id="ed-del" title="Riduce m di uno; se m = 1 elimina la pagina">🗑</button><button id="ed-conj" title="Aggiunge il coniugato della radice corrente">Coniugata</button><button id="ed-opp" title="Aggiunge −a: simmetrica della radice corrente rispetto all’origine">Opposta</button><button id="ed-pick" title="Sceglie la nuova radice cliccando sul piano di Gauss"><svg class="bi" width="13" height="13" viewBox="0 0 13 13" aria-hidden="true"><path d="M6.5 1.5v10M1.5 6.5h10" stroke="#e5252a" stroke-width="3.2" stroke-linecap="butt" fill="none"/></svg>Radice dal piano</button></div>`);
+const aR=mkSl($('ed-glob-sliders'),'Re(K)',v=>{DR.A[0]=v;kHead();rUp()}),aI=mkSl($('ed-glob-sliders'),'Im(K)',v=>{DR.A[1]=v;kHead();rUp()}),rR=mkSl(er,'Re a',v=>{DR.pages[DR.p].a[0]=v;rUp()}),rI=mkSl(er,'Im a',v=>{DR.pages[DR.p].a[1]=v;rUp()});
+function kFmt(v){const s=cP(v);if(!s.includes('.'))return s;const t=s.replace(/(\.[0-9]*?)0+$/,'$1');return /\.$/.test(t)?t+'0':t}
+function kHead(){const A=DR&&DR.A?DR.A:FA,re=A[0],im=A[1],mod=Math.hypot(re,im),arg=((Math.atan2(im,re)*180/Math.PI)%360+360)%360;
+ const cart=Math.abs(im)<1e-12?(Math.abs(re)<1e-12?'0':kFmt(re)):(Math.abs(re)<1e-12?(im<0?'−':'')+kFmt(Math.abs(im))+'i':`${kFmt(re)} ${im<0?'−':'+'} ${kFmt(Math.abs(im))}i`);
+ const el=$('ed-glob-sum');if(el)el.innerHTML=`<span class="it">K = ${cart}<span class="sp">&nbsp;·</span></span><span class="it">|K| = ${kFmt(mod)}<span class="sp">&nbsp;·</span></span><span class="it">arg(K) = ${arg.toFixed(1)}°</span>`}
+$('ed-glob-hd').onclick=e=>{if(e.target.closest('#ed-glob-tog')||e.target.id==='ed-glob-tog')return;const b=$('ed-glob');b.classList.toggle('open');$('ed-glob-tog').setAttribute('aria-expanded',b.classList.contains('open'))};
+$('ed-glob-tog').onclick=e=>{e.stopPropagation();const b=$('ed-glob');b.classList.toggle('open');$('ed-glob-tog').setAttribute('aria-expanded',b.classList.contains('open'))};
+er.insertAdjacentHTML('beforeend',`<label><span>molt</span><select id="ed-m" title="Livello molteplicità radice" aria-label="Livello molteplicità radice"></select></label>
+<div class="pbtn"><button id="ed-add" title="Nuova radice (molt = 1)">+ Radice</button><button id="ed-del" title="Riduce molt di uno; se molt = 1 elimina la pagina">🗑</button><button id="ed-conj" title="Aggiunge il coniugato della radice corrente">Coniugata</button><button id="ed-opp" title="Aggiunge −a: simmetrica della radice corrente rispetto all’origine">Opposta</button><button id="ed-pick" title="Sceglie la nuova radice cliccando sul piano di Gauss"><svg class="bi" width="13" height="13" viewBox="0 0 13 13" aria-hidden="true"><path d="M6.5 1.5v10M1.5 6.5h10" stroke="#e5252a" stroke-width="3.2" stroke-linecap="butt" fill="none"/></svg>Radice dal piano</button></div>`);
 function navCoef(){const D=DR,s=$('ed-sel');s.innerHTML='';for(let k=8;k>=0;k--){const o=document.createElement('option');o.value=k;o.textContent=tl(k)+(nzc(D.K[k],D.KJ[k])?' •':'');s.appendChild(o)}s.value=D.t;$('ed-prev').disabled=D.t>=8;$('ed-next').disabled=D.t<=0;$('ed-info').textContent='Grado effettivo: '+effDeg(D.K,D.KJ)+' (max 8)'}
 function navRoot(){const D=DR,s=$('ed-sel'),S=degR(D),q=D.pages[D.p],mx=8-(S-q.m);
- let z0=0;s.innerHTML=D.pages.map((q,i)=>{const a=z0;z0+=q.m;return`<option value="${i}">${q.m>1?`z${a}–z${a+q.m-1}`:`z${a}`} = ${fmt(q.a)}${q.m>1?` (m = ${q.m})`:''}</option>`}).join('');s.value=D.p;
+ let z0=0;s.innerHTML=D.pages.map((q,i)=>{const a=z0;z0+=q.m;return`<option value="${i}">${q.m>1?`z${a}–z${a+q.m-1}`:`z${a}`} = ${fmt(q.a)}${q.m>1?` (molt = ${q.m})`:''}</option>`}).join('');s.value=D.p;
  const ms=$('ed-m');ms.innerHTML=Array.from({length:mx},(_,i)=>`<option>${i+1}</option>`).join('');ms.value=q.m;
  $('ed-prev').disabled=D.p<=0;$('ed-next').disabled=D.p>=D.pages.length-1;for(const i of['ed-add','ed-conj','ed-opp','ed-pick'])$(i).disabled=S>=8;$('ed-del').disabled=D.pages.length===1&&q.m===1;
  $('ed-info').textContent=`Pagina ${D.p+1}/${D.pages.length} · grado ${S}/8 · residuo ${8-S}`}
 function edRender(note,force){const D=DR,r=D.mode==='root',tx=D.mode==='text';$('ed-mode').value=D.mode;document.querySelectorAll('#ed-seg button').forEach(b=>b.setAttribute('aria-checked',b.dataset.m===D.mode));ec.hidden=D.mode!=='coef';er.hidden=!r;eg.hidden=!r;et.hidden=!tx;$('ed-navrow').hidden=tx;
  if(tx){document.querySelectorAll('input[name="ed-tf"]').forEach(x=>x.checked=x.value===D.tf);$('ed-txt').value=D.text;$('ed-info').textContent='Grado effettivo (bozza): '+effDeg(D.K,D.KJ)+' (max 8)'}
- else if(r){D.p=Math.max(0,Math.min(D.p,D.pages.length-1));const q=D.pages[D.p];aR.set(D.A[0]);aI.set(D.A[1]);rR.set(q.a[0]);rI.set(q.a[1]);navRoot()}
+ else if(r){D.p=Math.max(0,Math.min(D.p,D.pages.length-1));const q=D.pages[D.p];aR.set(D.A[0]);aI.set(D.A[1]);kHead();rR.set(q.a[0]);rI.set(q.a[1]);navRoot()}
  else{const t=D.t;cR.lab.textContent='Re c'+SUBD[t];cI.lab.textContent='Im c'+SUBD[t];cR.set(D.K[t]);cI.set(D.KJ[t]);navCoef()}
  edStatus(note,force)}
 
@@ -908,7 +1066,7 @@ function parsePoly(src){const m0=/^\s*f\s*\(\s*z\s*\)\s*=/i.exec(src),N=src.leng
  if(effDeg(Kr,Ki)>=1&&!rtsC(coList(Kr,Ki)).every(q=>isFinite(q[0])&&isFinite(q[1])))throw new ParseErr('Coefficienti troppo grandi: il calcolo delle radici andrebbe in overflow',null);
  return[Kr,Ki]}
 const fnum=v=>String(+Math.abs(v).toPrecision(9));
-/* 2.5: radici e a′ della bozza, calcolati dai coefficienti se non ancora coerenti; testo nella forma scelta (D.tf: 'n' normale, 'f' fattorizzata) */
+/* 2.5: radici e K della bozza, calcolati dai coefficienti se non ancora coerenti; testo nella forma scelta (D.tf: 'n' normale, 'f' fattorizzata) */
 function ensureRoots(D){if(D.rOK)return;D.solved=rtsC(coList(D.K,D.KJ));D.pages=groupRoots(D.solved,D.K,D.KJ);D.A=leadOf(D.K,D.KJ);D.rOK=true;D.p=0}
 function txtOf(D){if(D.tf!=='f')return polyText(D.K,D.KJ);ensureRoots(D);return D.pages.length?factStr(D.A,D.pages,false):polyText(D.K,D.KJ)}
 function polyText(Kr,Ki){let s='';for(let k=8;k>=0;k--){const a=Kr[k],b=Ki[k],ra=Math.abs(a)>=1e-12,rb=Math.abs(b)>=1e-12;if(!ra&&!rb)continue;const zp=k===0?'':k===1?'z':'z'+k;let sg=null,t;
@@ -930,19 +1088,20 @@ function autoView(){cx3=cy3=0;cenSync();let m=0;for(const r of RT)m=Math.max(m,M
  for(let i=0;i<8&&R<10&&+$('lv').max<=cv*1.02;i++)setR(Math.min(10,Math.round(R*13)/10));   // la quota deve poter stare sopra l’ultimo valore critico
  setLv((cv+mmax)/2);full();setOff(calibOff())}
 /* ---- Salvataggio/caricamento JSON e link condivisibili (versione 1.1; superficie 3D WebGL dalla 1.2) ---- */
-const APPV='2.5';$('rdm').textContent='Guida - Ver. '+APPV;
-const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},graphics:{smooth:SMO,upperLight:LU,lowerLight:LD,material:MAT?'gloss':'matte'},camera:{yaw,pitch,zoom},center3D:{re:cx3,im:cy3},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice(),section:{mode:SM,offset:SD,angleDeg:STH,showRe:SRE,showIm:SIM,points:SP.map(p=>({root:p.k,re:p.x,im:p.y}))},sectionView:rzoom?{mode:'roots'}:rx?{mode:'range',center:rx[0],halfWidth:rx[1]}:{mode:'auto'}});
+const APPV='2.6';$('rdm').textContent='Guida - Ver. '+APPV;
+const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},sectionVisible:SECV,graphics:{smooth:SMO,upperLight:LU,lowerLight:LD,softboxUpper:SXU,softboxLower:SXD,intensity:{spotUpper:IU,softboxUpper:IBU,spotLower:ID,softboxLower:IBD},lightMarkers:LMK,material:['matte','gloss','wireframe'][MAT]},camera:{yaw,pitch,zoom},center3D:{re:cx3,im:cy3},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice(),section:{mode:SM,offset:SD,angleDeg:STH,showRe:SRE,showIm:SIM,points:SP.map(p=>({root:p.k,re:p.x,im:p.y}))},sectionView:rzoom?{mode:'roots'}:rx?{mode:'range',center:rx[0],halfWidth:rx[1]}:{mode:'auto'}});
 const JS_=(o,d=0)=>{if(o===null||typeof o!=='object'||Array.isArray(o)||d>=2)return JSON.stringify(o);const p='  '.repeat(d+1);return'{\n'+Object.entries(o).filter(([,v])=>v!==undefined).map(([k,v])=>p+JSON.stringify(k)+': '+JS_(v,d+1)).join(',\n')+'\n'+'  '.repeat(d)+'}'};
 const optOK=(id,v)=>typeof v==='string'&&[...$(id).options].some(q=>q.value===v);
 function normView(v){const o={},cur=viewState(),fin=x=>typeof x==='number'&&isFinite(x),num=(x,a,b)=>fin(x)?Math.max(a,Math.min(b,x)):undefined,bool=x=>typeof x==='boolean'?x:undefined,set=(k,x)=>{if(x!==undefined)o[k]=x};
  if(!v||typeof v!=='object')return o;
  set('R',num(v.R,.1,100));set('level',num(v.level,.05,1e9));set('height',num(v.height,.2,2));set('offset',num(v.offset,-.5,.5));if(v.domain==='polar'||v.domain==='cartesian')o.domain=v.domain;set('halfPlane',bool(v.halfPlane));
  for(const[k,id]of[['aboveLevel','up'],['phasePalette','pp'],['layout','gl']])if(optOK(id,v[k]))o[k]=v[k];
- for(const k of['bands','logHeight','realCurves3D','autoRotate','animate'])set(k,bool(v[k]));
+ for(const k of['bands','logHeight','realCurves3D','autoRotate','animate','sectionVisible'])set(k,bool(v[k]));
  const n=v.newton;if(n&&typeof n==='object'){const r=Object.assign({},cur.newton);let c=0;if(bool(n.on)!==undefined){r.on=n.on;c=1}if(fin(n.iterations)){r.iterations=Math.round(Math.max(4,Math.min(40,n.iterations)));c=1}if(optOK('pb',n.basinPalette)){r.basinPalette=n.basinPalette;c=1}if(c)o.newton=r}
- const gr=v.graphics;if(gr&&typeof gr==='object'){const q={};for(const k of['smooth','upperLight','lowerLight'])if(bool(gr[k])!==undefined)q[k]=gr[k];
+ const gr=v.graphics;if(gr&&typeof gr==='object'){const q={};for(const k of['smooth','upperLight','lowerLight','softboxUpper','softboxLower','lightMarkers'])if(bool(gr[k])!==undefined)q[k]=gr[k];
+  {const iq=gr.intensity;if(iq&&typeof iq==='object'){const t={};for(const k of['spotUpper','softboxUpper','spotLower','softboxLower'])if(fin(iq[k]))t[k]=Math.max(0,Math.min(100,iq[k]));if(Object.keys(t).length)q.intensity=t}}
   /* vecchi stati 2.3 sperimentale: «superSaiyan» → solo superficie liscia; luci (esterna/interna), patchPx, meshDensity, antialias e lighting sono ignorati: nessuna accensione automatica */
-  if(q.smooth===undefined&&bool(gr.superSaiyan)!==undefined)q.smooth=gr.superSaiyan;if(gr.material==='matte'||gr.material==='gloss')q.material=gr.material;if(Object.keys(q).length)o.graphics=q}
+  if(q.smooth===undefined&&bool(gr.superSaiyan)!==undefined)q.smooth=gr.superSaiyan;if(['matte','gloss','wireframe'].includes(gr.material))q.material=gr.material;if(Object.keys(q).length)o.graphics=q}
  const cm=v.camera;if(cm&&typeof cm==='object'&&(fin(cm.yaw)||fin(cm.pitch)||fin(cm.zoom)))o.camera={yaw:fin(cm.yaw)?cm.yaw:cur.camera.yaw,pitch:fin(cm.pitch)?cm.pitch:cur.camera.pitch,zoom:fin(cm.zoom)?Math.max(.5,Math.min(3,cm.zoom)):cur.camera.zoom};
  const c3=v.center3D;if(c3&&typeof c3==='object'&&fin(c3.re)&&fin(c3.im))o.center3D={re:Math.max(-CLIM,Math.min(CLIM,c3.re)),im:Math.max(-CLIM,Math.min(CLIM,c3.im))};
  const pl=v.plan;if(pl&&typeof pl==='object'&&fin(pl.scale)&&pl.scale>0&&fin(pl.cx)&&fin(pl.cy))o.plan={cx:pl.cx,cy:pl.cy,scale:pl.scale};
@@ -961,7 +1120,8 @@ function applyView(o,needRebuild){const ev=(id,t)=>$(id).dispatchEvent(new Event
  sel('up',o.aboveLevel);sel('pp',o.phasePalette);ck('c',o.bands);ck('l',o.logHeight);ck('rc',o.realCurves3D);ck('a',o.autoRotate);ck('an',o.animate);sel('gl',o.layout);
  if(o.height!==undefined){sl('h',o.height);ev('h','change')}
  if(o.newton){const n=o.newton;sl('it',n.iterations);sel('pb',n.basinPalette);ck('bn',n.on)}
- if(o.graphics){const q=o.graphics;ck('p-sm',q.smooth);ck('p-lu',q.upperLight);ck('p-ld',q.lowerLight);if(q.material)sel('p-mt',q.material)}
+ if(o.graphics){const q=o.graphics;ck('p-sm',q.smooth);ck('p-lu',q.upperLight);ck('p-ld',q.lowerLight);ck('p-bu',q.softboxUpper);ck('p-bd',q.softboxLower);ck('p-lm',q.lightMarkers);if(q.intensity)for(const[k,id]of[['spotUpper','p-lu-i'],['softboxUpper','p-bu-i'],['spotLower','p-ld-i'],['softboxLower','p-bd-i']])if(q.intensity[k]!==undefined)sl(id,q.intensity[k]);if(q.material)sel('p-mt',q.material)}
+ if(o.sectionVisible!==undefined)ck('p-sc',o.sectionVisible);
  if(o.level!==undefined)setLv(o.level);
  if(o.offset!==undefined){yoff=o.offset;$('p-off').value=yoff;$('p-offv').textContent=yoff.toFixed(2)}
  if(o.camera){yaw=o.camera.yaw;pitch=o.camera.pitch;zoom=o.camera.zoom}
@@ -983,7 +1143,7 @@ function parseCfg(txt){let o;try{o=JSON.parse(txt)}catch(e){const m=/position (\
   else throw new ParseErr('"f" deve contenere "coeffs" o "formula"',null);
   r.K=Kr;r.KJ=Ki;const g=effDeg(Kr,Ki);
   if(Array.isArray(f.roots)&&g>=1){const fn=v=>typeof v==='number'&&isFinite(v),pg=f.roots.map(q=>q&&Array.isArray(q.a)&&q.a.length===2&&q.a.every(fn)&&Number.isInteger(q.m)&&q.m>=1?{a:q.a.slice(),m:q.m,ap:Array.isArray(q.ap)&&q.ap.length===2&&q.ap.every(fn)?q.ap.slice():null}:null);
-   /* a′ globale: campo f.ap; nei file 2.4 e precedenti ogni radice aveva il proprio a′ e il globale è il loro prodotto */
+   /* K globale: campo f.ap; nei file 2.4 e precedenti ogni radice aveva il proprio fattore di scala e il globale è il loro prodotto */
    let good=pg.length&&pg.every(Boolean)&&pg.reduce((x,q)=>x+q.m,0)===g,A=null;if(good){if(Array.isArray(f.ap)&&f.ap.length===2&&f.ap.every(fn))A=f.ap.slice();else if(pg.every(q=>q.ap))A=pg.reduce((M,q)=>cmul(M,q.ap),[1,0]);else A=leadOf(Kr,Ki);good=!zeroA(A)}
    if(good){const pp=pg.map(q=>({a:q.a,m:q.m})),[A1,B1]=expandPages(pp,A);let d=0,sc=0;for(let k=0;k<9;k++){d=Math.max(d,Math.hypot(A1[k]-Kr[k],B1[k]-Ki[k]));sc=Math.max(sc,Math.hypot(Kr[k],Ki[k]))}good=d<=1e-6*sc;if(good){r.pages=pp;r.A=A}}
    if(!good)r.note+=' (radici del file ignorate: non coerenti con i coefficienti)'}}
@@ -999,7 +1159,7 @@ function doParseCfg(t){const D=DR,ta=$('ed-txt');
  catch(e){if(!(e instanceof ParseErr))throw e;edStatus(e.message+(e.pos==null?'':` (posizione ${e.pos+1})`),true);if(e.pos!=null){ta.focus();ta.setSelectionRange(e.pos,Math.min(e.pos+1,ta.value.length))}return false}}
 /* controlli comuni a Esporta JSON e Condividi: acquisisce il testo in bozza, porta in forma normale, rifiuta la funzione nulla */
 function draftCfg(what){const D=DR;if(D.mode==='text'&&D.txtEdit&&!doParse())return null;
- if(D.truth==='root'&&!D.cOK){if(zeroA(D.A)){edStatus(what+' non disponibile: il coefficiente a′ deve essere diverso da zero.',true);return null}[D.K,D.KJ]=expandPages(D.pages,D.A);D.cOK=true}
+ if(D.truth==='root'&&!D.cOK){if(zeroA(D.A)){edStatus(what+' non disponibile: il coefficiente K deve essere diverso da zero.',true);return null}[D.K,D.KJ]=expandPages(D.pages,D.A);D.cOK=true}
  if(isZeroF(D.K,D.KJ)){edStatus(what+' non disponibile: la funzione è nulla.',true);return null}
  return D}
 async function exportCfg(){const D=draftCfg('Esporta');if(!D)return;
@@ -1036,7 +1196,7 @@ $('ed-mode').onchange=e=>{const D=DR,w=e.target.value,rv=()=>{e.target.value=D.m
  if(D.mode==='text'&&D.txtEdit&&!doParse()){rv();return}
  if(w==='root'){if(D.truth==='coef'&&effDeg(D.K,D.KJ)<1){rv();edStatus('Forma a radici non disponibile per una funzione costante o nulla: non ha radici da elencare.',true);return}
   if(!D.rOK){const raw=rtsC(coList(D.K,D.KJ));D.solved=raw;D.pages=groupRoots(raw,D.K,D.KJ);D.A=leadOf(D.K,D.KJ);D.rOK=true;D.p=0}}
- else if(!D.cOK){if(zeroA(D.A)){rv();edStatus('Forma normale non disponibile: il coefficiente a′ deve essere diverso da zero.',true);return}
+ else if(!D.cOK){if(zeroA(D.A)){rv();edStatus('Forma normale non disponibile: il coefficiente K deve essere diverso da zero.',true);return}
   [D.K,D.KJ]=expandPages(D.pages,D.A);D.cOK=true}
  D.mode=w;if(w==='text'){D.text=txtOf(D);D.txtEdit=false}edRender()};
 /* 2.5: scheda TXT, radio forma normale (predefinita) / fattorizzata completa */
@@ -1063,7 +1223,7 @@ function applyDraft(){const D=DR;if(!D)return;if(D.mode==='text'&&D.txtEdit&&!do
  const cv=D.cfgView,fchg=D.dirty,pre=snapState();let ao=false;
  if(fchg){let pg;if(D.truth==='root'){if(!D.cOK){[D.K,D.KJ]=expandPages(D.pages,D.A);D.cOK=true}pg=D.pages}else pg=D.rOK?D.pages:null;
   K=D.K.slice();KJ=D.KJ.slice();FV++;SEED=null;SEEDP=pg&&clonePages(pg);SEEDA=pg?D.A.slice():null;
-  /* 2.5: cambia solo a′ (K = λ·K precedente): la vista resta ferma, niente auto-range né auto-scala */
+  /* 2.5: cambia solo K (K = λ·K precedente): la vista resta ferma, niente auto-range né auto-scala */
   ao=!cv&&scalarMult(pre.K,pre.KJ,K,KJ);if(ao){RYH=RYL?Object.assign({},RYL):null;AHOLD=true}}
  closeEd();if(fchg){syncHf();fzText();analyze();if(D.repl&&!ao)secReset()}
  if(cv)applyView(cv,fchg);else if(ao)applyHold();else if(fchg)autoView();else drawSurf();histPush(pre,cv)}
@@ -1081,7 +1241,7 @@ function histPush(pre,cv){const post=snapState(),keys=Object.keys(post.view).fil
  if(sameF(pre,post)&&!keys.length)return;pre.keys=keys;HU=pre;HR=null;histUI()}
 function histRestore(st){const cur=snapState(),fch=!sameF(cur,st),o=normView(Object.fromEntries(st.keys.map(k=>[k,st.view[k]]))),ao=fch&&scalarMult(cur.K,cur.KJ,st.K,st.KJ);
  if(fch){if(ao){RYH=RYL?Object.assign({},RYL):null;AHOLD=true}K=st.K.slice();KJ=st.KJ.slice();FV++;SEED=null;SEEDP=st.pages&&clonePages(st.pages);SEEDA=st.pages&&st.A?st.A.slice():null;syncHf();fzText();analyze()}
- /* 2.5: per le modifiche del solo a′ la vista non salta e non torna a un'inquadratura precedente */
+ /* 2.5: per le modifiche del solo K la vista non salta e non torna a un'inquadratura precedente */
  if(ao){try{HOLDV=true;build()}finally{HOLDV=false;AHOLD=false}}
  applyView(o,fch&&!ao);cur.keys=st.keys;return cur}
 function histStep(dir){if(DR||pickMode||delMode||RD.on)return false;const st=dir<0?HU:HR;if(!st)return false;const cur=histRestore(st);if(dir<0){HU=null;HR=cur}else{HR=null;HU=cur}histUI();return true}
@@ -1234,17 +1394,17 @@ $('fsp').onclick=()=>toggleFS($('wp'));
    Scala 100 anche per valori importati o digitati > 10; la scala ridotta non tronca mai un valore > 10 (resta estesa finché R non rientra). ---- */
 let RSC=10;
 const rFmt=v=>String(+v.toFixed(2));
-function rScale(m){RSC=m;$('r').max=m;$('p-r').max=m}
-function rSync(src){$('r').value=R;$('p-r').value=R;if(src!=='n')$('p-rn').value=rFmt(R);$('rv').textContent=rFmt(R)}
+function rScale(m){RSC=m;$('r').max=m;$('p-r').max=m;$('pl-r').max=m}
+function rSync(src){$('r').value=R;$('p-r').value=R;$('pl-r').value=R;for(const n of[$('p-rn'),$('pl-rn')])if(src!=='n'||document.activeElement!==n)n.value=rFmt(R);$('rv').textContent=rFmt(R)}
 function setRv(v,src){v=Math.round(Math.max(.1,Math.min(100,v))*100)/100;if(v>10&&RSC<100)rScale(100);R=v;rSync(src);resetView();rebuild()}
 const rTog=()=>{if(RSC===10)rScale(100);else if(R<=10)rScale(10);rSync()};
-$('p-rl').onclick=e=>{e.preventDefault();rTog()};
-$('p-rl').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();rTog()}};
-{const rn=$('p-rn'),cl=v=>Math.round(Math.max(.1,Math.min(100,v))*100)/100;
+for(const id of['p-rl','pl-rl']){$(id).onclick=e=>{e.preventDefault();rTog()};$(id).onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();rTog()}}}
+{const cl=v=>Math.round(Math.max(.1,Math.min(100,v))*100)/100;for(const rn of[$('p-rn'),$('pl-rn')]){
  rn.oninput=()=>{const v=parseFloat(rn.value);if(!isFinite(v)||v<.1||v>100)return;if(cl(v)!==R)setRv(v,'n')};
  rn.onchange=()=>{const v=parseFloat(rn.value);if(!isFinite(v)){rSync();return}if(cl(v)!==R)setRv(v);else rSync()};
- rn.addEventListener('wheel',e=>{if(document.activeElement!==rn)return;e.preventDefault();setRv(R+(e.deltaY<0?.05:-.05))},{passive:false})}
+ rn.addEventListener('wheel',e=>{if(document.activeElement!==rn)return;e.preventDefault();setRv(R+(e.deltaY<0?.05:-.05))},{passive:false})}}
 $('p-r').oninput=e=>setRv(+e.target.value,'s');
+$('pl-r').oninput=e=>setRv(+e.target.value,'s');
 $('r').oninput=e=>setRv(+e.target.value,'s');
 $('p-lv').oninput=e=>{setLv(+e.target.value);fullLv()};
 $('lv').oninput=e=>{setLv(+e.target.value);fullLv()};
@@ -1442,10 +1602,24 @@ $('fz').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.targ
 document.querySelectorAll('#p-seg button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#p-seg button').forEach(x=>x.setAttribute('aria-checked',x===b));document.querySelectorAll('#surf-panel [data-pg]').forEach(d=>d.hidden=d.dataset.pg!==b.dataset.pgb)});
 $('p-pp').onchange=e=>{const o=$('pp');o.value=e.target.value;o.dispatchEvent(new Event('change',{bubbles:true}));syncPl()};
 /* ---- 2.3: qualità grafica 3D (facoltativa, spenta di default; nessun effetto sui calcoli) ---- */
+
+function syncWireUI(){
+ const wf=MAT===2||MAT===3,ids=['p-sm','p-lu','p-ld','p-bu','p-bd','p-lu-i','p-ld-i','p-bu-i','p-bd-i','p-lm'];
+ for(const id of ids){const el=$(id);if(!el)continue;el.disabled=wf||!g3}
+ if(wf){if(LMK){LMK=false;const e=$('p-lm');if(e)e.checked=false}}
+}
+
 $('p-sm').onchange=e=>{SMO=e.target.checked;drawSurf()};
-$('p-mt').onchange=e=>{MAT=e.target.value==='gloss'?1:0;drawSurf()};
+$('p-mt').onchange=e=>{const v=e.target.value;MAT=v==='wireframe2'?3:v==='wireframe'?2:v==='gloss'?1:0;if(MAT===3)M3.densKey='';syncWireUI();drawSurf()};
 $('p-lu').onchange=e=>{LU=e.target.checked;drawSurf()};
 $('p-ld').onchange=e=>{LD=e.target.checked;drawSurf()};
+$('p-bu').onchange=e=>{SXU=e.target.checked;drawSurf()};
+$('p-bd').onchange=e=>{SXD=e.target.checked;drawSurf()};
+for(const[id,f]of[['p-lu-i',v=>IU=v],['p-ld-i',v=>ID=v],['p-bu-i',v=>IBU=v],['p-bd-i',v=>IBD=v]])$(id).oninput=e=>{f(+e.target.value);drawSurf()};
+$('p-lm').onchange=e=>{LMK=e.target.checked;drawSurf()};
+/* 2.6: un solo stato SECV per la sezione viola, due caselle sincronizzate (pagina Dettaglio del 3D e pannello del piano di Gauss) */
+function setSecV(v){SECV=v;$('p-sc').checked=v;$('pl-sc').checked=v;drawSurf();drawPlan()}
+$('p-sc').onchange=e=>setSecV(e.target.checked);$('pl-sc').onchange=e=>setSecV(e.target.checked);
 syncPl();
 document.addEventListener('keydown',e=>{if(e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.shiftKey&&e.key.toLowerCase()==='r'){e.preventDefault();const c=$('p-a');c.checked=!c.checked;c.dispatchEvent(new Event('change',{bubbles:true}))}});
 document.querySelectorAll('figcaption').forEach(el=>{const k=[...el.childNodes].filter(n=>!(n.nodeType===1&&n.matches('.stk,.gp-t')));if(!k.some(n=>n.textContent.trim()))return;

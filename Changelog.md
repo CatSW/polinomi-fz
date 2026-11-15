@@ -11,6 +11,24 @@ updated: 2026-11-15
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
 
+## [2.6] - 2026-11-15
+
+### Added
+
+- Modalità Wireframe adattivo e Wireframe denso per visualizzare la struttura della superficie.
+- Quattro luci indipendenti, con regolazione dell’intensità e indicatori 3D.
+- Riquadro richiudibile del coefficiente globale K, con controlli della parte reale e immaginaria e indicazione di modulo e fase.
+- Controllo Range PDG disponibile anche nei controlli del piano di Gauss.
+
+### Changed
+
+- Pannello 3D organizzato nelle tre pagine Vista, Dettaglio e Rendering.
+- Checkbox della sezione viola sincronizzate tra vista 3D e piano di Gauss.
+- Selezione unificata dei materiali Opaco, Lucido, Wireframe adattivo e Wireframe denso, con controlli non applicabili disabilitati nelle modalità wireframe.
+- Coefficiente globale rinominato da a′ a K, mantenendo la compatibilità con i file esistenti.
+- Etichetta della molteplicità rinominata da «m» a «molt», con aggiornamento dei riferimenti e dei tooltip dei comandi radice.
+- Densità della mesh adattiva regolata in base alla variazione di altezza della superficie.
+
 ## [2.5] - 2026-11-15
 
 ### Added
