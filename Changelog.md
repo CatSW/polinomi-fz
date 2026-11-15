@@ -11,6 +11,23 @@ updated: 2026-11-15
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
 
+## [2.8] - 2026-11-15
+
+### Changed
+- Rendering lucido/opaco e superficie liscia rivisti sul modello del POC (stile MeshStandard: metalness ≈ 0.40, roughness ≈ 0.22).
+- Normali della superficie liscia: gradiente analitico da f′(z) ridotto (×1.05 invece di ×2.2), con smorzamento in scala logaritmica e pendenza limitata a 2.8; fallback verticale se la normale non è finita.
+- Luce diffusa: N·L ristretto a max(N·L, 0), senza bleed sul lato opposto; falloff quadratico per i softbox.
+- Luci inferiori (spot e softbox): contribuiscono solo se illuminano il lato geometrico inferiore della superficie, con transizione graduale.
+- Specular lucido: potenze più basse (spot 48 e 10, softbox 28 e 6).
+- Ambiente lucido: Fresnel e riflessi dei softbox attenuati.
+
+### Fixed
+- Buco scuro e alone bianco sulle radici: la normale analitica esplodeva per |f| → 0, aggravata da uno specular a potenza troppo alta.
+- Macchie scure viste dall'alto: gradienti esagerati e riflessi d'ambiente troppo aggressivi sulle creste.
+- Spot e softbox inferiori che illuminavano l'interno della conca: N·L con bias positivo e normale forzata verso la camera.
+- Linea di confine netta (scuro/chiaro) con le luci inferiori accese: il test «luce sotto / sopra la normale» era uno step() duro, ora è uno smoothstep.
+- Seconda linea netta, residua, nello stesso punto (cono della radice di sinistra con softbox inferiore al massimo, materiale lucido): il termine speculare si accendeva di colpo per N·L > 0.02. Ora sfuma con smoothstep(0, 0.25, N·L), in spot e softbox.
+
 ## [2.7] - 2026-11-15
 
 ### Changed

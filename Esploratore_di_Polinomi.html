@@ -473,16 +473,18 @@ vec3 envg(vec3 r){float u=smoothstep(-.6,.9,r.y);return mix(vec3(.03,.035,.05),v
 vec3 envb(vec3 r){return vec3(.95,.97,1.)*smoothstep(-.1,-.85,r.z);}
 vec3 envs(vec3 r){vec3 c=vec3(1.,.98,.95)*1.25*smoothstep(.80,.96,dot(r,normalize(vec3(-.55,.62,.56))));
  c+=vec3(.9,.95,1.)*.70*smoothstep(.90,.985,dot(r,normalize(vec3(.85,.20,.48))));return c;}
-/* faretto fisso nella scena: posizione S, asse verso T, cono morbido; diffusa sul lato visibile (n rivolta all’osservatore) + speculare se lucido */
+/* 2.8: faretti e softbox — N·L stretto (niente bleed sul lato opposto), specular meno estremo (stile MeshStandard POC) */
 vec3 lamp(vec3 S,vec3 T,float ci,float co,float I,vec3 col,vec3 n,vec3 V,bool gs,out vec3 sp){
  vec3 Lv=S-vP;float r=length(Lv);vec3 Li=Lv/max(r,1e-4);
- float sf=smoothstep(co,ci,dot(-Li,normalize(T-S))),at=1./(1.+r*r/6.25),nl=dot(n,Li),d=clamp((nl+.10)/1.10,0.,1.);
- sp=vec3(0.);if(gs&&nl>0.){vec3 h=normalize(Li+V);float s=max(dot(n,h),0.);sp=col*(.95*pow(s,160.)+.07*pow(s,22.))*sf*at*I;}
- return col*I*d*sqrt(d)*sf*at;}
+ float sf=smoothstep(co,ci,dot(-Li,normalize(T-S))),at=1./(1.+r*r/6.25),nl=max(dot(n,Li),0.);
+ float d=nl; /* solo lato illuminato: evita riflessi interni dallo spot inferiore */
+ sp=vec3(0.);if(gs&&nl>0.){vec3 h=normalize(Li+V);float s=max(dot(n,h),0.);sp=col*(.70*pow(s,48.)+.22*pow(s,10.))*sf*at*I*smoothstep(0.,.25,nl);}
+ return col*I*d*sf*at;}
 vec3 soft(vec3 S,vec3 T,float I,vec3 col,vec3 n,vec3 V,bool gs,out vec3 sp){
  vec3 Lv=S-vP;float r=length(Lv);vec3 Li=Lv/max(r,1e-4);
- float sf=smoothstep(.20,.80,dot(-Li,normalize(T-S))),at=1./(1.+r*r/30.),nl=dot(n,Li),d=clamp((nl+.45)/1.45,0.,1.);
- sp=vec3(0.);if(gs&&nl>0.){vec3 h=normalize(Li+V);float s=max(dot(n,h),0.);sp=col*(.30*pow(s,36.)+.10*pow(s,7.))*sf*at*I;}
+ float sf=smoothstep(.15,.75,dot(-Li,normalize(T-S))),at=1./(1.+r*r/28.),nl=max(dot(n,Li),0.);
+ float d=nl*nl; /* softbox: falloff quadratico, niente backface */
+ sp=vec3(0.);if(gs&&nl>0.){vec3 h=normalize(Li+V);float s=max(dot(n,h),0.);sp=col*(.22*pow(s,28.)+.12*pow(s,6.))*sf*at*I*smoothstep(0.,.25,nl);}
  return col*I*d*sf*at;}
 void main(){
  bool lit=(uLU+uLD+uBU+uBD)>0||uMat==1,sm=uSm==1&&uPass!=3,nw=(sm||lit)&&uPass!=3;
@@ -500,25 +502,40 @@ void main(){
   o=vec4(wc*eo,eo);return;}
  if(nw){
   float sh=max(vN.w,.05);bool anyL=(uLU+uLD+uBU+uBD)>0;vec3 n;
+  /* 2.8b: tame più ampio vicino agli zeri + metallo stile MeshStandard (metalness≈0.4, roughness≈0.22) */
   if(sm){float m=max(length(f0),1e-30),dh=uLg>.5?.9*uHs/(log(1.+uMm)*(1.+m)):.9*uHs/uMm;vec2 gm=vec2(dot(d0,f0),d0.x*f0.y-d0.y*f0.x)/m*dh*uR3;
-   n=normalize(vec3(-gm*2.2,1.));if(any(isnan(n)))n=vec3(0.,0.,1.);}
-  else{float ln=length(vN.xyz);n=ln>1e-3?vN.xyz/ln:vec3(0.,0.,1.);n=normalize(vec3(n.xy*2.2,n.z));}
-  /* lato visibile: la normale (calcolata sul lato superiore) si gira verso l’osservatore, così il retro è illuminato come retro */
-  vec3 V=uVw;float bk=smoothstep(.12,-.12,dot(n,V))*smoothstep(.10,-.30,V.z);/* 1 = si vede il retro con la camera sotto il piano (la scelta stilizzata sul retro agisce solo da sotto) */if(dot(n,V)<0.)n=-n;float nv=max(dot(n,V),0.);
+   /* clamp della pendenza: evita singularità agli zeri senza raddrizzare le punte (che altrimenti beccano tutto lo spot alto) */
+   vec2 gh=gm*1.05;float ghl=length(gh);if(ghl>2.8)gh*=2.8/ghl;
+   vec3 na=normalize(vec3(-gh,1.));if(any(isnan(na))||any(isinf(na)))na=vec3(0.,0.,1.);
+   n=na;}
+  else{float ln=length(vN.xyz);n=ln>1e-3?vN.xyz/ln:vec3(0.,0.,1.);n=normalize(vec3(n.xy*1.05,n.z));}
+  vec3 V=uVw;float facing=dot(n,V);float bk=smoothstep(.12,-.12,facing)*smoothstep(.10,-.30,V.z);
+  /* lato superiore geometrico; se si guarda il retro (sotto), le luci “sopra” non devono accendere le punte */
+  vec3 nTop=n;float seeTop=smoothstep(-0.08,0.12,facing)*smoothstep(-0.12,0.05,V.z);if(facing<0.)n=-n;float nv=max(dot(n,V),0.);
   vec3 lin,L=vec3(1.),sp=vec3(0.);
-  if(!anyL&&!sm){lin=pow(mix(vC.rgb,uMc*sh,ma),vec3(2.2));}  /* sfaccettato senza luci: ombra di faccia originale */
+  if(!anyL&&!sm){lin=pow(mix(vC.rgb,uMc*sh,ma),vec3(2.2));}
   else{vec3 b0=(sm&&uBase==0)?pc(tp):min(vC.rgb/sh,vec3(1.));b0=mix(b0,uMc,ma);lin=pow(b0,vec3(2.2));
-   if(anyL){L=vec3(.28+.14*(n.z*.5+.5));vec3 s1;
-    if(uLU==1){L+=lamp(uSP,uST,.766,.17,1.25*uIn.x,vec3(1.,.96,.88),n,V,uMat==1,s1);sp+=s1;}
-    if(uLD==1){L+=lamp(uDP,uDT,.866,.34,1.35*uIn.y,vec3(.80,.90,1.),n,V,uMat==1,s1);sp+=s1;}
-    if(uBU==1){L+=soft(uBP,uBT,1.15*uIn.z,vec3(1.,.97,.92),n,V,uMat==1,s1);sp+=s1;}
-    if(uBD==1){L+=soft(uEP,uET,1.15*uIn.w,vec3(.88,.94,1.),n,V,uMat==1,s1);sp+=s1;}}
-   else L=vec3(.70+.30*abs(n.z));}
-  vec3 lt=lin*L;
-  if(uMat==1){vec3 R=reflect(-V,n),rr=vec3(dot(R,uRt),dot(R,uUp),dot(R,V));float w=pow(1.-nv,5.),fr=.06+.94*w;
-   /* gradiente: velo leggero; softbox: solo di taglio (Fresnel pieno), come riflessi veri e non chiazze; fondale chiaro: riflesso bianco sulle pareti ripide del RETRO (scelta stilizzata dichiarata, dal lato superiore non agisce) */
-   vec3 se=envg(rr)*(.05+.40*fr)+envs(rr)*(.62*w)+envb(rr)*(bk*1.2*pow(1.-nv,2.5));lt=1.-(1.-lt)*(1.-clamp(se,0.,1.));lt+=sp;}
-  lt=clamp(lt,0.,1.);vec3 q=pow(lt,vec3(1./2.2));q=mix(q,q*q*(3.-2.*q),.28);c.rgb=q;
+   if(anyL){L=vec3(.38+.18*(n.z*.5+.5));vec3 s1;
+    if(uLU==1){L+=seeTop*lamp(uSP,uST,.766,.17,1.20*uIn.x,vec3(1.,.96,.88),n,V,uMat==1,s1);sp+=seeTop*s1;}
+    if(uLD==1){vec3 Lv=uDP-vP;float under=smoothstep(-0.1,0.18,-dot(nTop,normalize(Lv)));
+     L+=under*lamp(uDP,uDT,.866,.34,1.25*uIn.y,vec3(.80,.90,1.),n,V,uMat==1,s1);sp+=under*s1;}
+    if(uBU==1){L+=seeTop*soft(uBP,uBT,1.10*uIn.z,vec3(1.,.97,.92),n,V,uMat==1,s1);sp+=seeTop*s1;}
+    if(uBD==1){vec3 Lv=uEP-vP;float under=smoothstep(-0.1,0.18,-dot(nTop,normalize(Lv)));
+     L+=under*soft(uEP,uET,1.10*uIn.w,vec3(.88,.94,1.),n,V,uMat==1,s1);sp+=under*s1;}}
+   else L=vec3(.75+.25*abs(n.z));}
+  /* metallo: riduce la diffusa e tinge specular/env con l'albedo (metalness 0.40) */
+  float metal=uMat==1?0.40:0.0;
+  vec3 diff=lin*(1.-metal);
+  vec3 lt=diff*L;
+  if(uMat==1){vec3 R=reflect(-V,n),rr=vec3(dot(R,uRt),dot(R,uUp),dot(R,V));float w=pow(1.-nv,3.5),fr=.04+.96*w;
+   vec3 se=envg(rr)*(.10+.42*fr)+envs(rr)*(.70*w)+envb(rr)*(bk*.40*pow(1.-nv,2.0));
+   /* riflesso metallico colorato dall'albedo + specular delle luci */
+   vec3 F0=mix(vec3(.04),lin,metal);
+   lt+=se*F0*(0.55+0.45*metal);
+   lt+=sp*(0.65+1.1*metal)*mix(vec3(1.),lin,metal*0.85);}
+  /* riempimento minimo anti-macchia nelle valli */
+  lt=max(lt,lin*0.12);
+  lt=clamp(lt,0.,1.);vec3 q=pow(lt,vec3(1./2.2));q=mix(q,q*q*(3.-2.*q),.12);c.rgb=q;
  } else if(uPass!=3&&ma>0.){c.rgb=mix(vC.rgb,uMc*max(vN.w,.05),ma);}
  o=vec4(c.rgb*c.a,c.a);}`;
 const VSL=`#version 300 es
@@ -1088,7 +1105,7 @@ function autoView(){cx3=cy3=0;cenSync();let m=0;for(const r of RT)m=Math.max(m,M
  for(let i=0;i<8&&R<10&&+$('lv').max<=cv*1.02;i++)setR(Math.min(10,Math.round(R*13)/10));   // la quota deve poter stare sopra l’ultimo valore critico
  setLv((cv+mmax)/2);full();setOff(calibOff())}
 /* ---- Salvataggio/caricamento JSON e link condivisibili (versione 1.1; superficie 3D WebGL dalla 1.2) ---- */
-const APPV='2.7';$('rdm').textContent='Guida - Ver. '+APPV;
+const APPV='2.8';$('rdm').textContent='Guida - Ver. '+APPV;
 const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},sectionVisible:SECV,graphics:{smooth:SMO,upperLight:LU,lowerLight:LD,softboxUpper:SXU,softboxLower:SXD,intensity:{spotUpper:IU,softboxUpper:IBU,spotLower:ID,softboxLower:IBD},lightMarkers:LMK,material:['matte','gloss','wireframe'][MAT]},camera:{yaw,pitch,zoom},center3D:{re:cx3,im:cy3},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice(),section:{mode:SM,offset:SD,angleDeg:STH,showRe:SRE,showIm:SIM,points:SP.map(p=>({root:p.k,re:p.x,im:p.y}))},sectionView:rzoom?{mode:'roots'}:rx?{mode:'range',center:rx[0],halfWidth:rx[1]}:{mode:'auto'}});
 const JS_=(o,d=0)=>{if(o===null||typeof o!=='object'||Array.isArray(o)||d>=2)return JSON.stringify(o);const p='  '.repeat(d+1);return'{\n'+Object.entries(o).filter(([,v])=>v!==undefined).map(([k,v])=>p+JSON.stringify(k)+': '+JS_(v,d+1)).join(',\n')+'\n'+'  '.repeat(d)+'}'};
 const optOK=(id,v)=>typeof v==='string'&&[...$(id).options].some(q=>q.value===v);
