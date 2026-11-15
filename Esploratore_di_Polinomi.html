@@ -65,6 +65,9 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 .ln{display:inline-block;width:22px;border-top:2.5px solid #2f6fd6;vertical-align:3px;margin-right:4px}.ln.r{border-top:2.5px dashed #d62728}.ln.g{border-top:2.5px dotted #2ca02c}
 @media (hover:none) and (pointer:coarse){#ob{display:none}}
 [hidden]{display:none!important}
+.fzf{cursor:pointer;text-decoration:underline dotted;text-decoration-color:var(--bd);text-underline-offset:5px}.fzf:hover{text-decoration-color:var(--ac)}
+.ed-glob{border:1px solid var(--bd);border-radius:8px;padding:6px 8px;background:color-mix(in srgb,var(--ac) 7%,transparent)}
+.ed-rad{display:flex;gap:14px;flex-wrap:wrap}.surf-panel-body .ed-rad label{display:flex;grid-template-columns:none;gap:5px;font-size:12.5px;cursor:pointer}
 #ed-txt{width:100%;box-sizing:border-box;font:12px/1.4 ui-monospace,Menlo,Consolas,monospace;background:var(--card);color:var(--fg);border:1px solid var(--bd);border-radius:6px;padding:6px;resize:vertical}
 .ed-nav{display:flex;gap:6px;align-items:center}.ed-nav select{flex:1;min-width:0}.ed-sec{display:flex;flex-direction:column;gap:8px}
 .ed-info{font-size:12px;color:var(--mut)}.ed-msg{font-size:12px;min-height:1.3em;color:var(--mut)}.ed-msg.err{color:#d62728;font-weight:600}
@@ -109,7 +112,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 @media (any-hover:hover) and (min-width:561px){#wp:fullscreen figcaption,#wp.is-fullscreen figcaption{top:auto;bottom:calc(var(--fsm) + var(--fst)/2)}}
 </style></head><body><main id="mn">
 <div class="hd"><h1>Esploratore di polinomi f(z)</h1><button class="lnkbtn" id="shr" title="Condividi questa vista" aria-label="Condividi questa vista" style="display:inline-flex;align-items:center;padding:4px 7px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg><span class="shl">Condividi</span></button><a id="rdm" class="lnkbtn" href="https://github.com/CatSW/polinomi-fz/blob/master/Readme.md" target="_blank" rel="noopener noreferrer" title="Apre la Guida (Readme su GitHub: manuale, note storiche, changelog) in una nuova scheda">Guida</a></div>
-<p class="sub">Polinomio fino al grado 8 con coefficienti complessi su tutti i termini; si definisce dal pulsante f(z) in basso a sinistra nella vista 3D (forma normale o a radici, con conferma finale).</p>
+<p class="sub">Polinomio fino al grado 8 con coefficienti complessi su tutti i termini; si definisce dal pulsante f(z) in basso a sinistra nella vista 3D o dall’etichetta f(z) qui sotto (forma normale o a radici, con conferma finale). Un clic sulla formula alterna forma normale e forma fattorizzata.</p>
 <div id="lkmsg" class="ed-msg" title="Clic per chiudere" hidden></div>
 <div class="box" id="fz" style="margin-bottom:10px;font:600 19px/1.5 Georgia,serif;overflow-wrap:anywhere"></div>
 <div class="bar" id="ob"><label>Disposizione <select id="gl"><option value="1" selected>G. 1 riga</option><option value="2">G. 2 righe</option><option value="3">G. 3 righe</option></select></label><button id="fs">Tutto schermo</button></div>
@@ -128,7 +131,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 <div><label><input id="bn" type="checkbox"> <b style="min-width:0">Bacini di Newton</b></label>
 <label title="Passi massimi del metodo di Newton per ogni pixel del piano: i pixel che non convergono entro il limite restano neri.">Iterazioni <input id="it" type="range" min="4" max="40" step="1" value="20" disabled><b id="itv">20</b></label>
 <label>Palette bacini <select id="pb" disabled><option value="att">Attuale</option><option value="iso">OKLCH uniforme</option><option value="oi">Okabe–Ito (daltonici)</option></select></label>
-<button id="st" disabled>Passo di Newton</button><button id="rs" disabled>Riporta il punto</button><button id="d1" disabled>Tuffati nel punto giallo</button><button id="d0" disabled>Tuffati nell’origine</button><button id="vi">Vista intera</button></div></div>
+<button id="st" disabled>Passo di Newton</button><button id="rs" disabled title="Riporta il punto giallo all’ultimo punto di partenza scelto sul piano">Riporta il punto</button><button id="d1" disabled>Tuffati nel punto giallo</button><button id="vi">Vista intera</button></div></div>
 <p class="sub" id="reg" style="min-height:2.6em"></p>
 <div class="grid" id="gr">
 <figure><div id="w3">
@@ -190,7 +193,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 <label class="pk"><span>Bacini di Newton</span><input id="pl-bn" type="checkbox"></label>
 <label><span>Iterazioni</span><input id="pl-it" type="range" min="4" max="40" step="1" value="20" disabled><b><span id="pl-itv">20</span></b></label>
 <label><span>Palette bacini</span><select id="pl-pb" disabled><option value="att">Attuale</option><option value="iso">OKLCH uniforme</option><option value="oi">Okabe–Ito (daltonici)</option></select></label>
-<div class="pbtn"><button id="pl-st" disabled>Passo di Newton</button><button id="pl-rs" disabled>Riporta il punto</button><button id="pl-d1" disabled>Tuffati nel punto giallo</button><button id="pl-d0" disabled>Tuffati nell’origine</button><button id="pl-vi2">Vista intera</button></div>
+<div class="pbtn"><button id="pl-st" disabled>Passo di Newton</button><button id="pl-rs" disabled title="Riporta il punto giallo all’ultimo punto di partenza scelto sul piano">Riporta il punto</button><button id="pl-d1" disabled>Tuffati nel punto giallo</button><button id="pl-vi2">Vista intera</button></div>
 </div>
 </div></div></div>
 <figcaption><span class="gp-t">Piano di Gauss</span><div class="stk cur" id="curp"><span id="chipv"></span><span class="gh" id="curpg" aria-hidden="true"></span></div><span class="ctx">Piano. <span id="capPi"></span> Curva nera spessa: |f| = quota. Curve sottili: livelli |f| = 1, 2, 5 × 10ᵏ, etichettati; la banda sale da scuro a chiaro verso |f| crescente e il salto cade sulla linea. Cerchi: |z| = costante; raggi: arg z. Passo e livelli visibili si adattano allo zoom, i valori restano quelli indicati. Dove c’è un puntatore con hover, la riga «Cursore» sopra mostra z, |z|, arg z, Re f(z), Im f(z), |f(z)| e arg f(z); l’ultima riga riporta GPU, zoom e iterazioni.</span><div class="stk gpuln"><span id="gpuv"></span><span class="gh" aria-hidden="true">GPU WebGL2 · zoom ×9000 · anteprima 100% · 40 iter · 999 ms/frame</span></div></figcaption></figure>
@@ -210,7 +213,7 @@ figcaption{color:var(--mut);font-size:12.5px;margin-top:5px}figure{margin:0}.stk
 <script>
 var DQ={on:false,scale:.5,iter:10,ms:0,ema:0,n:0};function ITeff(){return DQ.on?Math.min(IT,DQ.iter):IT}function itLabel(){return DQ.on?`anteprima ${Math.round(DQ.scale*100)}% · ${ITeff()} iter · ${DQ.ms.toFixed(0)} ms/frame`:`${IT} iterazioni`}
 const $=id=>document.getElementById(id),TAU=Math.PI*2,RED='#ff1a1a',CRED='#d62728',CBLUE='#2f6fd6',CGRN='#2ca02c',ZM=1.26;
-let K=[-1,0,0,1,0,0,0,0,0],KJ=[0,0,0,0,0,0,0,0,0],FV=0,AV=-1,SEED=null,SEEDP=null,FACT=null,R=1.8,hs=1,mode='dom',cont=true,lg=true,auto=false,anim=false,upm='gh',lv=2,IT=20,polar=true,half=false,showR=true,pph='att',pbs='att',SMO=false,LU=false,LD=false,MAT=0;
+let K=[-1,0,0,1,0,0,0,0,0],KJ=[0,0,0,0,0,0,0,0,0],FV=0,AV=-1,SEED=null,SEEDP=null,SEEDA=null,FACT=null,FA=[1,0],START=[.55,.85],HOLDV=false,AHOLD=false,RYH=null,RYL=null,FZF=false,R=1.8,hs=1,mode='dom',cont=true,lg=true,auto=false,anim=false,upm='gh',lv=2,IT=20,polar=true,half=false,showR=true,pph='att',pbs='att',SMO=false,LU=false,LD=false,MAT=0;
 const CLIM=1e6;
 let yaw=-.7,pitch=.85,zoom=1,cx3=0,cy3=0,panDirty=false,pan3=null,rcSeen=false,probe=[.55,.85],pdot=false,path=[],dpr=1,yoff=0,vcx=0,vcy=0,vs=1.8,tw=null,drag=null,CW=1,CH=1,cyw=1,syw=0,cpt=1,spt=0,SS=1;
 let RT=[],CX=[],CV=[],XN,YN,MV,CL,PV=[],Q4,QD=[],HT=[],BD=[],PX,PY,PD,mmax=1,ci=0;
@@ -326,7 +329,7 @@ function build(){const nu=polar?28:84,nv=polar?(half?48:96):(half?42:84),NU=nu*L
   {const f=F(cx3+p[0]*R+(sn?1e-4*R:0),cy3+p[1]*R),m=Math.hypot(f[0],f[1])||1;PV.push(f[0]/m,f[1]/m)}}return id};
  const col=id=>CL[id]||(CL[id]=colorAt(cx3+XN[id]*R+(SN[id]?1e-4*R:0),cy3+YN[id]*R)),mk=(U,V,s)=>({U,V,s,a:vid(U,V),b:vid(U+s,V),c:vid(U+s,V+s),d:vid(U,V+s)});
  let L=[];for(let i=0;i<nu;i++)for(let j=0;j<nv;j++)L.push(mk(i*LV,j*LV,LV));
- mmax=mxA(MV);const tol=.5/Math.max(200,Math.min(sc.width,sc.height)*.36),hh=(U,V)=>{const p=warp(U,V);return hm(mod(cx3+p[0]*R,cy3+p[1]*R))};
+ if(!HOLDV)mmax=mxA(MV);const tol=.5/Math.max(200,Math.min(sc.width,sc.height)*.36),hh=(U,V)=>{const p=warp(U,V);return hm(mod(cx3+p[0]*R,cy3+p[1]*R))};
  const bad=c=>{const{U,V,s}=c,H=[c.a,c.b,c.c,c.d].map(k=>hm(MV[k])),h=s/2,e=Math.max(Math.abs(hh(U+h,V+h)-(H[0]+H[1]+H[2]+H[3])/4),Math.abs(hh(U+h,V)-(H[0]+H[1])/2),Math.abs(hh(U+s,V+h)-(H[1]+H[2])/2),Math.abs(hh(U+h,V+s)-(H[2]+H[3])/2),Math.abs(hh(U,V+h)-(H[3]+H[0])/2));
   if(e>tol)return true;const C=[c.a,c.b,c.c,c.d].map(col);let m=0;for(let t=0;t<4;t++)for(let u=t+1;u<4;u++)m=Math.max(m,Math.abs(C[t][0]-C[u][0])+Math.abs(C[t][1]-C[u][1])+Math.abs(C[t][2]-C[u][2]));return m>.3};
  for(let d=0;d<(DQ.on?1:3);d++){const N=[];let ex=0;for(const c of L){if(c.s>1&&L.length+ex<CAP&&bad(c)){const s=c.s/2;N.push(mk(c.U,c.V,s),mk(c.U+s,c.V,s),mk(c.U+s,c.V+s,s),mk(c.U,c.V+s,s));ex+=3}else N.push(c)}L=N}
@@ -335,7 +338,7 @@ function build(){const nu=polar?28:84,nv=polar?(half?48:96):(half?42:84),NU=nu*L
  LF=L.map(c=>({a:c.a,b:c.b,c:c.c,d:c.d,P:poly(c)}));PX=new Float32Array(XN.length);PY=new Float32Array(XN.length);PD=new Float32Array(XN.length);
  BD=polar?Array.from({length:97},(_,k)=>{const t=(half?Math.PI:TAU)*k/96;return[Math.cos(t),Math.sin(t)]}):(half?[[-1,0],[1,0],[1,1],[-1,1]]:[[-1,-1],[1,-1],[1,1],[-1,1]]);heights()}
 const hm=m=>lg?.9*hs*Math.log1p(m)/Math.log1p(mmax):.9*hs*m/mmax;
-function heights(){mmax=mxA(MV);const lm=Math.max(.1,+(.8*mmax).toPrecision(3));$('lv').max=lm;$('p-lv').max=lm;if(lv>lm)setLv(lm);HT=Array.from(MV,hm);QD=[];const L=[-.42,-.5,.76],Ln=Math.hypot(...L);
+function heights(){const tm=mxA(MV);if(!HOLDV)mmax=tm;let lm=Math.max(.1,+(.8*tm).toPrecision(3));if(HOLDV)lm=Math.max(lm,lv);$('lv').max=lm;$('p-lv').max=lm;if(lv>lm)setLv(lm);HT=Array.from(MV,hm);QD=[];const L=[-.42,-.5,.76],Ln=Math.hypot(...L);
  for(const{a,b,c:c2,d,P}of LF){
   const d1=[XN[c2]-XN[a],YN[c2]-YN[a],HT[c2]-HT[a]],d2=[XN[d]-XN[b],YN[d]-YN[b],HT[d]-HT[b]];let nx=d1[1]*d2[2]-d1[2]*d2[1],ny=d1[2]*d2[0]-d1[0]*d2[2],nz=d1[0]*d2[1]-d1[1]*d2[0];const nn=Math.hypot(nx,ny,nz)||1;if(nz<0){nx=-nx;ny=-ny;nz=-nz}
   const sh=.62+.38*Math.max(0,(nx*L[0]+ny*L[1]+nz*L[2])/(nn*Ln)),k=[0,1,2].map(t=>Math.round((CL[a][t]+CL[b][t]+CL[c2][t]+CL[d][t])/4*255*sh));
@@ -567,7 +570,7 @@ function pick(e){if(mode!=='new')return;if(g3)projAll();const r=sc.getBoundingCl
  for(const q of QD)for(let t=1;t<q.P.length-1;t++){const i=q.P[0],j=q.P[t],k=q.P[t+1],x1=PX[i],y1=PY[i],x2=PX[j],y2=PY[j],x3=PX[k],y3=PY[k],den=(y2-y3)*(x1-x3)+(x3-x2)*(y1-y3);if(!den)continue;
   const l1=((y2-y3)*(mx-x3)+(x3-x2)*(my-y3))/den,l2=((y3-y1)*(mx-x3)+(x1-x3)*(my-y3))/den,l3=1-l1-l2;if(l1<-1e-9||l2<-1e-9||l3<-1e-9)continue;
   const d=l1*PD[i]+l2*PD[j]+l3*PD[k];if(d<best){best=d;hit=[cx3+(l1*XN[i]+l2*XN[j]+l3*XN[k])*R,cy3+(l1*YN[i]+l2*YN[j]+l3*YN[k])*R]}}
- if(hit){probe=hit;probeUpdate()}}
+ if(hit){probe=hit;START=hit.slice();probeUpdate()}}
 const ticks=(a,b)=>{const r=(b-a)/5,m=Math.pow(10,Math.floor(Math.log10(r))),s=(r/m<2?1:r/m<5?2:5)*m,o=[];for(let v=Math.ceil(a/s)*s;v<=b+s*1e-9;v+=s)o.push(Math.abs(v)<s*1e-9?0:v);return o};
 const tf=v=>String(+v.toPrecision(3)).replace('-','−');
 
@@ -658,7 +661,7 @@ function drawPhase(xs,ms,ys,zi,xa,xb,X,ml,pw,top,ph,u,ink,mut,bd){const Y=a=>top
 function drawReal0(){const w=rl.width,h=rl.height,u=dpr,ink=css('--fg'),mut=css('--mut'),bd=css('--bd'),N=400,xs=[],ys=[],zi=[];rg.clearRect(0,0,w,h);let xa=-R,xb=R,lo=0,hi=0,zy=null,zd=false,au=null;if(rzoom){const f=[...RT.filter(r=>r[1]===0).map(r=>[r[0],0]),...CX.filter(p=>p.t!=='flesso').map(p=>[p.x,p.y])];if(f.length){zd=true;const fx=f.map(p=>p[0]),fy=f.map(p=>p[1]),m=Math.max(.3,(Math.max(...fx)-Math.min(...fx))*.12);xa=Math.min(...fx)-m;xb=Math.max(...fx)+m;zy=[Math.min(...fy),Math.max(...f.map(p=>{const q=F(p[0],0);return Math.hypot(q[0],q[1])}))]}}
  if(!zd&&!rx&&rauto){au=autoRange(-R,R);if(au){xa=au.a;xb=au.b}}
  if(rx){xa=rx[0]-rx[1];xb=rx[0]+rx[1];zy=null}RV=[xa,xb];const ms=[];for(let k=0;k<=N;k++){const x=xa+(xb-xa)*k/N,q=F(x,0),y=q[0],m=Math.hypot(q[0],q[1]);xs.push(x);ys.push(y);ms.push(m);zi.push(q[1]);lo=Math.min(lo,y,q[1]);hi=Math.max(hi,m)}
- if(zy){lo=zy[0];hi=zy[1]}if(hi-lo<1e-9){lo-=1;hi+=1}const pd=(hi-lo)*.08;lo-=pd;hi+=pd;const ml=52*u,mb=22*u,mt=10*u,mr=10*u,GP=12*u,pw=w-ml-mr,HV=h-mt-mb-GP,ph=HV*.75,pf=HV*.25,X=x=>ml+(x-xa)/(xb-xa)*pw,Y=y=>mt+(hi-y)/(hi-lo)*ph;RG=[ml,pw,mt,h-mb];{const y0=mt+ph+GP/2;rg.fillStyle=css('--phbg');rg.fillRect(0,y0,w,h-y0)}RMB=(mt+ph)/h;fsLay();
+ if(zy){lo=zy[0];hi=zy[1]}{const key=[xa,xb,SM,SD,STH].join();if(RYH){if(RYH.key===key){lo=RYH.lo;hi=RYH.hi}else RYH=null}RYL={key,lo,hi}}if(hi-lo<1e-9){lo-=1;hi+=1}const pd=(hi-lo)*.08;lo-=pd;hi+=pd;const ml=52*u,mb=22*u,mt=10*u,mr=10*u,GP=12*u,pw=w-ml-mr,HV=h-mt-mb-GP,ph=HV*.75,pf=HV*.25,X=x=>ml+(x-xa)/(xb-xa)*pw,Y=y=>mt+(hi-y)/(hi-lo)*ph;RG=[ml,pw,mt,h-mb];{const y0=mt+ph+GP/2;rg.fillStyle=css('--phbg');rg.fillRect(0,y0,w,h-y0)}RMB=(mt+ph)/h;fsLay();
  rg.font=`${11*u}px system-ui`;rg.textBaseline='middle';
  for(const t of ticks(lo,hi)){rg.beginPath();rg.moveTo(ml,Y(t));rg.lineTo(ml+pw,Y(t));rg.strokeStyle=t===0?ink:bd;rg.lineWidth=u;rg.stroke();rg.fillStyle=mut;rg.textAlign='right';rg.fillText(tf(t),ml-6*u,Y(t))}
  for(const t of ticks(xa,xb)){rg.beginPath();rg.moveTo(X(t),mt);rg.lineTo(X(t),mt+ph);rg.strokeStyle=t===0?ink:bd;rg.stroke();rg.fillStyle=mut;rg.textAlign='center';}
@@ -778,53 +781,68 @@ function rtsC(co){const n=co.length-1;if(n<1)return[];const real=co.every(c=>c[1
   let qr=1,qi=0;for(let j=0;j<n;j++)if(j!==i){const dx=z[i][0]-z[j][0],dy=z[i][1]-z[j][1],t=qr*dx-qi*dy;qi=qr*dy+qi*dx;qr=t}
   const dd=qr*qr+qi*qi||1e-30,sx=(pr*qr+pi*qi)/dd,sy=(pi*qr-pr*qi)/dd;z[i][0]-=sx;z[i][1]-=sy;md=Math.max(md,Math.hypot(sx,sy))}if(md<1e-13)break}
  return sortR(z.map(([x,y])=>real&&Math.abs(y)<1e-6?[x,0]:[x,y]))}
-/* pagine radice {ap:a′, a:radice, m} -> coefficienti: f = ∏ a′ᵢ·(z−aᵢ)^mᵢ (a′ fuori dalla potenza, coefficiente direttivo = ∏a′ᵢ) */
-function expandPages(pages){let c=[[1,0]],M=[1,0];for(const q of pages){M=cmul(M,q.ap);for(let j=0;j<q.m;j++){const n=Array.from({length:c.length+1},()=>[0,0]);c.forEach((v,k)=>{n[k+1][0]+=v[0];n[k+1][1]+=v[1];const t=cmul(q.a,v);n[k][0]-=t[0];n[k][1]-=t[1]});c=n}}
+/* 2.5: pagine radice {a:radice, m} + coefficiente globale a′ unico (A) -> coefficienti: f = A·∏(z−aᵢ)^mᵢ; il coefficiente direttivo è A */
+function expandPages(pages,A){let c=[[1,0]],M=A?A.slice():[1,0];for(const q of pages){for(let j=0;j<q.m;j++){const n=Array.from({length:c.length+1},()=>[0,0]);c.forEach((v,k)=>{n[k+1][0]+=v[0];n[k+1][1]+=v[1];const t=cmul(q.a,v);n[k][0]-=t[0];n[k][1]-=t[1]});c=n}}
  c=c.map(v=>cmul(v,M));const Kr=Array(9).fill(0),Ki=Array(9).fill(0);c.forEach((v,k)=>{Kr[k]=v[0];Ki[k]=v[1]});
  const sc=Math.max(...Kr.map((v,k)=>Math.hypot(v,Ki[k])));for(let k=0;k<9;k++)if(Math.abs(Ki[k])<=1e-13*sc)Ki[k]=0;return[Kr,Ki]}
-const clonePages=p=>p.map(q=>({ap:q.ap.slice(),a:q.a.slice(),m:q.m}));
+const clonePages=p=>p.map(q=>({a:q.a.slice(),m:q.m}));
+const leadOf=(Kr,Ki)=>{const n=effDeg(Kr,Ki);return[Kr[n],Ki[n]]};
+/* 2.5: vero se B = λ·A con λ complesso ≠ 1 (stesse radici, cambia solo il coefficiente globale) */
+function scalarMult(Ar,Ai,Br,Bi){const n=effDeg(Ar,Ai);if(n!==effDeg(Br,Bi))return false;const o=[Ar[n],Ai[n]],p=[Br[n],Bi[n]],d=o[0]*o[0]+o[1]*o[1];if(!d)return false;
+ const l=[(p[0]*o[0]+p[1]*o[1])/d,(p[1]*o[0]-p[0]*o[1])/d];let sc=0,e=0;for(let k=0;k<9;k++){sc=Math.max(sc,Math.hypot(Br[k],Bi[k]));const t=cmul(l,[Ar[k],Ai[k]]);e=Math.max(e,Math.hypot(t[0]-Br[k],t[1]-Bi[k]))}
+ return e<=1e-9*sc&&!(Math.abs(l[0]-1)<1e-12&&Math.abs(l[1])<1e-12)}
 const flatten=p=>p.flatMap(q=>Array.from({length:q.m},()=>q.a.slice()));
-/* radici (con ripetizioni) -> pagine; a′₁ = cₙ, gli altri a′ = 1. Due radici vicine si fondono solo se il polinomio ricostruito con la radice unica si discosta dall’originale non più del doppio dello scarto già presente nelle radici non fuse (+1e-12 relativo): compatibilità numerica, non prova di molteplicità esatta; nei casi dubbi restano pagine separate */
-function groupRoots(R0,Kr,Ki){const n=R0.length;if(!n)return[];const lead=[Kr[n],Ki[n]],pg=L=>L.map(([a,m],i)=>({ap:i?[1,0]:lead.slice(),a,m})),
- res=L=>{const[A,B]=expandPages(pg(L));let d=0,s=0;for(let k=0;k<9;k++){d=Math.max(d,Math.hypot(A[k]-Kr[k],B[k]-Ki[k]));s=Math.max(s,Math.hypot(Kr[k],Ki[k]))}return d/s};
+/* radici (con ripetizioni) -> pagine {a,m}; il coefficiente globale a′ = cₙ (coefficiente direttivo). Due radici vicine si fondono solo se il polinomio ricostruito con la radice unica si discosta dall’originale non più del doppio dello scarto già presente nelle radici non fuse (+1e-12 relativo): compatibilità numerica, non prova di molteplicità esatta; nei casi dubbi restano pagine separate */
+function groupRoots(R0,Kr,Ki){const n=R0.length;if(!n)return[];const lead=[Kr[n],Ki[n]],pg=L=>L.map(([a,m])=>({a,m})),
+ res=L=>{const[A,B]=expandPages(pg(L),lead);let d=0,s=0;for(let k=0;k<9;k++){d=Math.max(d,Math.hypot(A[k]-Kr[k],B[k]-Ki[k]));s=Math.max(s,Math.hypot(Kr[k],Ki[k]))}return d/s};
  let L=R0.map(r=>[r.slice(),1]);const lim=2*res(L)+1e-12;
  for(let i=0;i<L.length;i++){for(let j=i+1;j<L.length;){const a=L[i],b=L[j];
   if(Math.hypot(a[0][0]-b[0][0],a[0][1]-b[0][1])<1e-3*(1+Math.hypot(a[0][0],a[0][1]))){const m=a[1]+b[1],T=L.slice();T[i]=[[(a[0][0]*a[1]+b[0][0]*b[1])/m,(a[0][1]*a[1]+b[0][1]*b[1])/m],m];T.splice(j,1);if(res(T)<=lim){L=T;continue}}j++}}
  return pg(L)}
 const getFact=()=>FACT;
-function analyze(){if(AV===FV)return;AV=FV;const co=coList(K,KJ),n=co.length-1;
- FACT=SEEDP||groupRoots(SEED||rtsC(co),K,KJ);SEED=null;SEEDP=null;RT=flatten(FACT);
+function analyze(){if(AV===FV)return;AV=FV;if(!AHOLD)RYH=null;const co=coList(K,KJ),n=co.length-1;
+ FACT=SEEDP||groupRoots(SEED||rtsC(co),K,KJ);FA=SEEDP&&SEEDA?SEEDA.slice():[K[n],KJ[n]];SEED=null;SEEDP=null;SEEDA=null;RT=flatten(FACT);
  const cr=n>1?rtsC(co.slice(0,-1).map((c,k)=>[c[0]*(n-k),c[1]*(n-k)])):[];
  CX=hasIm()?[]:cr.filter(r=>r[1]===0).map(r=>{const x=r[0],h=1e-3,s=F(x-h,0)[0]+F(x+h,0)[0]-2*F(x,0)[0];return{x,y:F(x,0)[0],t:s<-1e-9?'max':s>1e-9?'min':'flesso'}});
  CV=[...new Set(cr.map(r=>mod(r[0],r[1]).toFixed(4)))].map(Number).filter(v=>v>1e-6).sort((p,q)=>p-q)}
 /* Coefficienti mostrati nella formula (solo testo: K/KJ non vengono modificati): 6 cifre significative, zeri finali eliminati, separatore decimale solo se serve; notazione scientifica sotto 1e-4 e da 1e7, così un coefficiente non nullo non appare mai come 0. L'export JSON e il testo dell'editor (polyText) hanno la loro precisione (9 cifre) per restare identici a prima. */
 function fmtCoef(x,d=6){const v=Math.abs(x);if(v===0||!isFinite(v))return String(v);const r=+v.toPrecision(d);if(r<1e-4||r>=1e7){const[m,e]=r.toExponential().split('e'),n=+e;return m+'·10<sup>'+(n<0?'−':'')+Math.abs(n)+'</sup>'}return String(r)}
-function fzText(){let s='';
+function normHTML(){let s='';
  for(let k=8;k>=0;k--){const a=K[k],b=KJ[k],ra=Math.abs(a)>=1e-12,rb=Math.abs(b)>=1e-12;if(!ra&&!rb)continue;
   const ca=fmtCoef(a),cb=fmtCoef(b),zp=k===0?'':k===1?'z':`z<sup>${k}</sup>`,im=cb==='1'?'':cb,dot=k?'·':'';let sg=null,t;
   if(!rb){sg=a<0;t=(k>0&&ca==='1'?'':ca+(k&&ca.includes('<sup>')?'·':''))+zp}
   else if(!ra){sg=b<0;t=im+'i'+dot+zp}
   else t=`(${a<0?'−':''}${ca} ${b<0?'−':'+'} ${im}i)`+dot+zp;
   s+=s?(sg===null?' + ':sg?' − ':' + ')+t:(sg?'−':'')+t}
- $('fz').innerHTML='<button type="button" class="fzo" id="fzo" title="Definisci f(z)" aria-label="Definisci f(z)">f(z)</button> = '+(s||'0')}
+ return s}
+/* 2.5: forma fattorizzata A·(z−r₁)^m₁·…; H=true: HTML per l'intestazione, H=false: testo analizzabile (TXT). Parti prossime a zero (1e-7 relativo al modulo della radice) mostrate come zero */
+function factStr(A,pg,H){const nf=H?v=>fmtCoef(v):fnum,one=t=>t==='1'?'':t,ra=Math.abs(A[0])>=1e-12,rb=Math.abs(A[1])>=1e-12,cz=(x,m)=>Math.abs(x)<1e-7*Math.max(1,m)?0:x;let c;
+ if(!ra&&!rb)c='0·';else if(!rb)c=Math.abs(A[0]-1)<1e-12?'':Math.abs(A[0]+1)<1e-12?'−':(A[0]<0?'−':'')+nf(A[0])+'·';
+ else if(!ra)c=(A[1]<0?'−':'')+one(nf(A[1]))+'i·';else c=`(${A[0]<0?'−':''}${nf(A[0])} ${A[1]<0?'−':'+'} ${one(nf(A[1]))}i)·`;
+ const rs=r=>{const m=Math.hypot(r[0],r[1]),x=cz(r[0],m),y=cz(r[1],m);if(!x&&!y)return'z';if(!y)return`(z ${x<0?'+':'−'} ${nf(x)})`;if(!x)return`(z ${y<0?'+':'−'} ${one(nf(y))}i)`;return`(z − (${x<0?'−':''}${nf(x)} ${y<0?'−':'+'} ${one(nf(y))}i))`};
+ return c+pg.map(q=>rs(q.a)+(q.m>1?(H?`<sup>${q.m}</sup>`:'^'+q.m):'')).join('·')}
+function fzText(){if(FZF)analyze();const fz=FZF&&FACT&&FACT.length,s=fz?factStr(FA,FACT,true):normHTML();
+ $('fz').innerHTML='<button type="button" class="fzo" id="fzo" title="Apri o chiudi il pannello f(z)" aria-label="Apri o chiudi il pannello f(z)">f(z)</button> = <span class="fzf" id="fzf" role="button" tabindex="0" title="'+(fz?'Clic: forma normale (sviluppata)':'Clic: forma fattorizzata')+'">'+(s||'0')+'</span>'}
+const toggleFZF=()=>{FZF=!FZF;fzText()};
 
 /* ---- Editor: bozza DR = {mode, K,KJ (coefficienti), pages, truth: rappresentazione sorgente, cOK/rOK: coerenza di ciascuna con la sorgente, solved: radici del solver per i coefficienti della bozza} ---- */
 let DR=null,closeArm=0,pickMode=false,delMode=false;
 const SUPD='⁰¹²³⁴⁵⁶⁷⁸',SUBD='₀₁₂₃₄₅₆₇₈',tl=k=>`c${SUBD[k]} · ${k===0?'1':k===1?'z':'z'+SUPD[k]}`,nzc=(r,i)=>Math.hypot(r,i)>=1e-12;
 const TIP=['Quattro radici simmetriche: ±1 e ±i','Tre radici reali: −1, 0 e 1','Quattro radici reali: ±1 e ±2','Radice doppia in 1 e semplice in −1: la fase gira due volte attorno a 1, Newton converge lentamente'];
 const PRE=[['z⁴ − 1',[1,0,0,0,-1],0,1.4,[[[1,0],1],[[-1,0],1],[[0,1],1],[[0,-1],1]]],['z³ − z',[0,1,0,-1,0],0,.6,[[[0,0],1],[[1,0],1],[[-1,0],1]]],['z⁴ − 5z² + 4',[1,0,-5,0,4],0,7,[[[1,0],1],[[-1,0],1],[[2,0],1],[[-2,0],1]]],['(z−1)²(z+1)',[0,1,-1,-1,1],2,1.85,[[[1,0],2],[[-1,0],1]]]];
-const degR=D=>D.pages.reduce((x,q)=>x+q.m,0),zeroAp=q=>!q.ap[0]&&!q.ap[1];
+const degR=D=>D.pages.reduce((x,q)=>x+q.m,0),zeroA=A=>!A[0]&&!A[1];
 const isZeroF=(Kr,Ki)=>effDeg(Kr,Ki)<1&&!nzc(Kr[0],Ki[0]);
-const issue=()=>{const D=DR;if(D.mode==='text'&&D.txtEdit)return'';if(D.truth==='coef'&&isZeroF(D.K,D.KJ))return'La funzione non può essere nulla (modulo 0 ovunque, fase indefinita): imposta almeno un coefficiente diverso da zero.';if(D.truth==='root'&&D.pages.some(zeroAp))return'Il coefficiente a′ deve essere diverso da zero.';return''};
+const issue=()=>{const D=DR;if(D.mode==='text'&&D.txtEdit)return'';if(D.truth==='coef'&&isZeroF(D.K,D.KJ))return'La funzione non può essere nulla (modulo 0 ovunque, fase indefinita): imposta almeno un coefficiente diverso da zero.';if(D.truth==='root'&&zeroA(D.A))return'Il coefficiente a′ deve essere diverso da zero.';return''};
 function edStatus(note,force){const D=DR,m=issue(),e=$('ed-msg');e.textContent=force&&note?note:(m||note||(D.dirty?'Modifiche non confermate.':''));e.className='ed-msg'+(m||(force&&note)?' err':'');$('ed-ok').disabled=!!m}
 function touch(src){const D=DR;D.dirty=true;closeArm=0;if(src==='coef'){D.truth='coef';D.cOK=true;D.rOK=false;D.solved=null}else{D.truth='root';D.rOK=true;D.cOK=false}}
 const EB=$('coeffs-body');
 EB.innerHTML=`<div class="ed-nav"><select id="ed-mode" hidden aria-hidden="true" tabindex="-1"><option value="coef">Forma normale</option><option value="root">Forma a radici</option><option value="text">Testo</option></select><div class="mseg" id="ed-seg" role="radiogroup" aria-label="Forma di inserimento di f(z)"><button type="button" role="radio" data-m="coef" title="Forma normale" aria-label="Forma normale">zⁿ</button><button type="button" role="radio" data-m="root" title="Forma a radici" aria-label="Forma a radici">(z−a)</button><button type="button" role="radio" data-m="text" title="Testo" aria-label="Testo">TXT</button></div></div>
+<div class="ed-sec ed-glob" id="ed-glob" hidden><div class="ed-info" title="Un solo coefficiente complesso per tutto il polinomio: f(z) = a′·(z−r₁)·…·(z−rₙ). Cambiarlo non sposta le radici.">Coefficiente globale a′ (moltiplica tutto il polinomio)</div></div>
 <div class="ed-nav" id="ed-navrow"><button id="ed-prev" title="Precedente">◀</button><select id="ed-sel"></select><button id="ed-next" title="Successivo">▶</button></div>
 <div class="ed-info" id="ed-info"></div>
 <div class="ed-sec" id="ed-coef"></div>
 <div class="ed-sec" id="ed-root"></div>
-<div class="ed-sec" id="ed-text"><textarea id="ed-txt" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="z3 + (0.5 + 3.4i)·z2 − 1.73i"></textarea><div class="pbtn"><button id="ed-parse" title="Acquisisce il polinomio (o il JSON) nella bozza">Interpreta</button></div><div class="ed-info">Accetta z8, z^8 o z⁸; coefficienti complessi come (0.5 + 3.4i) o 2i; ·, * o accostamento; anche forme fattorizzate come (z−1)^2(z+1). Decimali con punto o virgola. Grado massimo 8. Incollando un JSON esportato con «Esporta JSON» si ripristinano f(z) e vista. «Condividi questa vista» (icona accanto a Readme) copia un link che riapre la stessa f(z) e la stessa vista; il JSON resta il formato di riferimento.</div></div>
+<div class="ed-sec" id="ed-text"><div class="ed-rad" role="radiogroup" aria-label="Forma del testo"><label><input type="radio" name="ed-tf" value="n" checked> Forma normale</label><label><input type="radio" name="ed-tf" value="f"> Forma fattorizzata</label></div><textarea id="ed-txt" rows="6" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="z3 + (0.5 + 3.4i)·z2 − 1.73i"></textarea><div class="pbtn"><button id="ed-parse" title="Acquisisce il polinomio (o il JSON) nella bozza">Interpreta</button></div><div class="ed-info">Accetta z8, z^8 o z⁸; coefficienti complessi come (0.5 + 3.4i) o 2i; ·, * o accostamento; anche forme fattorizzate come (z−1)^2(z+1). Con «Forma fattorizzata» il testo mostra A·(z−r₁)·…·(z−rₙ), molteplicità come esponenti; Interpreta accetta entrambe le forme. Decimali con punto o virgola. Grado massimo 8. Incollando un JSON esportato con «Esporta JSON» si ripristinano f(z) e vista. «Condividi questa vista» (icona accanto a Readme) copia un link che riapre la stessa f(z) e la stessa vista; il JSON resta il formato di riferimento.</div></div>
 <div class="pbtn" id="ed-act"><button id="ed-exp" title="Copia negli appunti il JSON con f(z) e i parametri di visualizzazione">Esporta JSON</button></div>
 <div class="ed-msg" id="ed-msg"></div>
 <div class="ed-info">Esempi:</div><div class="pbtn" id="ed-ex"></div>`;
@@ -832,22 +850,22 @@ function mkSl(host,label,onv){const l=document.createElement('label');l.innerHTM
  sl.oninput=()=>{nb.value=+(+sl.value).toFixed(4);sl.classList.remove('ov');onv(+sl.value)};
  nb.oninput=()=>{const v=parseFloat(nb.value);if(isNaN(v))return;sl.value=v;sl.classList.toggle('ov',Math.abs(v)>4);onv(v)};
  return{lab:l.firstChild,set:v=>{sl.value=v;nb.value=+v.toFixed(4);sl.classList.toggle('ov',Math.abs(v)>4)}}}
-const ec=$('ed-coef'),er=$('ed-root'),et=$('ed-text');
+const ec=$('ed-coef'),er=$('ed-root'),et=$('ed-text'),eg=$('ed-glob');
 const cUp=()=>{touch('coef');navCoef();edStatus()},rUp=()=>{touch('root');navRoot();edStatus()};
 const cR=mkSl(ec,'Re c',v=>{DR.K[DR.t]=v;cUp()}),cI=mkSl(ec,'Im c',v=>{DR.KJ[DR.t]=v;cUp()});
 ec.insertAdjacentHTML('beforeend','<div class="pbtn"><button id="ed-zero" title="Azzera parte reale e immaginaria del termine corrente">Azzera termine</button></div>');
-const aR=mkSl(er,'Re a′',v=>{DR.pages[DR.p].ap[0]=v;rUp()}),aI=mkSl(er,'Im a′',v=>{DR.pages[DR.p].ap[1]=v;rUp()}),rR=mkSl(er,'Re a',v=>{DR.pages[DR.p].a[0]=v;rUp()}),rI=mkSl(er,'Im a',v=>{DR.pages[DR.p].a[1]=v;rUp()});
+const aR=mkSl(eg,'Re a′',v=>{DR.A[0]=v;rUp()}),aI=mkSl(eg,'Im a′',v=>{DR.A[1]=v;rUp()}),rR=mkSl(er,'Re a',v=>{DR.pages[DR.p].a[0]=v;rUp()}),rI=mkSl(er,'Im a',v=>{DR.pages[DR.p].a[1]=v;rUp()});
 er.insertAdjacentHTML('beforeend',`<label><span>m</span><select id="ed-m"></select></label>
-<div class="pbtn"><button id="ed-add" title="Nuova radice (m = 1, a′ = 1)">+ Radice</button><button id="ed-del" title="Riduce m di uno; se m = 1 elimina la pagina">🗑</button><button id="ed-conj" title="Aggiunge il coniugato della radice corrente">Coniugata</button><button id="ed-opp" title="Aggiunge −a: simmetrica della radice corrente rispetto all’origine">Opposta</button><button id="ed-pick" title="Sceglie la nuova radice cliccando sul piano di Gauss"><svg class="bi" width="13" height="13" viewBox="0 0 13 13" aria-hidden="true"><path d="M6.5 1.5v10M1.5 6.5h10" stroke="#e5252a" stroke-width="3.2" stroke-linecap="butt" fill="none"/></svg>Radice dal piano</button></div>`);
+<div class="pbtn"><button id="ed-add" title="Nuova radice (m = 1)">+ Radice</button><button id="ed-del" title="Riduce m di uno; se m = 1 elimina la pagina">🗑</button><button id="ed-conj" title="Aggiunge il coniugato della radice corrente">Coniugata</button><button id="ed-opp" title="Aggiunge −a: simmetrica della radice corrente rispetto all’origine">Opposta</button><button id="ed-pick" title="Sceglie la nuova radice cliccando sul piano di Gauss"><svg class="bi" width="13" height="13" viewBox="0 0 13 13" aria-hidden="true"><path d="M6.5 1.5v10M1.5 6.5h10" stroke="#e5252a" stroke-width="3.2" stroke-linecap="butt" fill="none"/></svg>Radice dal piano</button></div>`);
 function navCoef(){const D=DR,s=$('ed-sel');s.innerHTML='';for(let k=8;k>=0;k--){const o=document.createElement('option');o.value=k;o.textContent=tl(k)+(nzc(D.K[k],D.KJ[k])?' •':'');s.appendChild(o)}s.value=D.t;$('ed-prev').disabled=D.t>=8;$('ed-next').disabled=D.t<=0;$('ed-info').textContent='Grado effettivo: '+effDeg(D.K,D.KJ)+' (max 8)'}
 function navRoot(){const D=DR,s=$('ed-sel'),S=degR(D),q=D.pages[D.p],mx=8-(S-q.m);
  let z0=0;s.innerHTML=D.pages.map((q,i)=>{const a=z0;z0+=q.m;return`<option value="${i}">${q.m>1?`z${a}–z${a+q.m-1}`:`z${a}`} = ${fmt(q.a)}${q.m>1?` (m = ${q.m})`:''}</option>`}).join('');s.value=D.p;
  const ms=$('ed-m');ms.innerHTML=Array.from({length:mx},(_,i)=>`<option>${i+1}</option>`).join('');ms.value=q.m;
  $('ed-prev').disabled=D.p<=0;$('ed-next').disabled=D.p>=D.pages.length-1;for(const i of['ed-add','ed-conj','ed-opp','ed-pick'])$(i).disabled=S>=8;$('ed-del').disabled=D.pages.length===1&&q.m===1;
  $('ed-info').textContent=`Pagina ${D.p+1}/${D.pages.length} · grado ${S}/8 · residuo ${8-S}`}
-function edRender(note,force){const D=DR,r=D.mode==='root',tx=D.mode==='text';$('ed-mode').value=D.mode;document.querySelectorAll('#ed-seg button').forEach(b=>b.setAttribute('aria-checked',b.dataset.m===D.mode));ec.hidden=D.mode!=='coef';er.hidden=!r;et.hidden=!tx;$('ed-navrow').hidden=tx;
- if(tx){$('ed-txt').value=D.text;$('ed-info').textContent='Grado effettivo (bozza): '+effDeg(D.K,D.KJ)+' (max 8)'}
- else if(r){D.p=Math.max(0,Math.min(D.p,D.pages.length-1));const q=D.pages[D.p];aR.set(q.ap[0]);aI.set(q.ap[1]);rR.set(q.a[0]);rI.set(q.a[1]);navRoot()}
+function edRender(note,force){const D=DR,r=D.mode==='root',tx=D.mode==='text';$('ed-mode').value=D.mode;document.querySelectorAll('#ed-seg button').forEach(b=>b.setAttribute('aria-checked',b.dataset.m===D.mode));ec.hidden=D.mode!=='coef';er.hidden=!r;eg.hidden=!r;et.hidden=!tx;$('ed-navrow').hidden=tx;
+ if(tx){document.querySelectorAll('input[name="ed-tf"]').forEach(x=>x.checked=x.value===D.tf);$('ed-txt').value=D.text;$('ed-info').textContent='Grado effettivo (bozza): '+effDeg(D.K,D.KJ)+' (max 8)'}
+ else if(r){D.p=Math.max(0,Math.min(D.p,D.pages.length-1));const q=D.pages[D.p];aR.set(D.A[0]);aI.set(D.A[1]);rR.set(q.a[0]);rI.set(q.a[1]);navRoot()}
  else{const t=D.t;cR.lab.textContent='Re c'+SUBD[t];cI.lab.textContent='Im c'+SUBD[t];cR.set(D.K[t]);cI.set(D.KJ[t]);navCoef()}
  edStatus(note,force)}
 
@@ -890,12 +908,15 @@ function parsePoly(src){const m0=/^\s*f\s*\(\s*z\s*\)\s*=/i.exec(src),N=src.leng
  if(effDeg(Kr,Ki)>=1&&!rtsC(coList(Kr,Ki)).every(q=>isFinite(q[0])&&isFinite(q[1])))throw new ParseErr('Coefficienti troppo grandi: il calcolo delle radici andrebbe in overflow',null);
  return[Kr,Ki]}
 const fnum=v=>String(+Math.abs(v).toPrecision(9));
+/* 2.5: radici e a′ della bozza, calcolati dai coefficienti se non ancora coerenti; testo nella forma scelta (D.tf: 'n' normale, 'f' fattorizzata) */
+function ensureRoots(D){if(D.rOK)return;D.solved=rtsC(coList(D.K,D.KJ));D.pages=groupRoots(D.solved,D.K,D.KJ);D.A=leadOf(D.K,D.KJ);D.rOK=true;D.p=0}
+function txtOf(D){if(D.tf!=='f')return polyText(D.K,D.KJ);ensureRoots(D);return D.pages.length?factStr(D.A,D.pages,false):polyText(D.K,D.KJ)}
 function polyText(Kr,Ki){let s='';for(let k=8;k>=0;k--){const a=Kr[k],b=Ki[k],ra=Math.abs(a)>=1e-12,rb=Math.abs(b)>=1e-12;if(!ra&&!rb)continue;const zp=k===0?'':k===1?'z':'z'+k;let sg=null,t;
   if(!rb){sg=a<0;t=(k>0&&Math.abs(a)===1?'':fnum(a)+(k?'·':''))+zp}
   else if(!ra){sg=b<0;t=(Math.abs(b)===1?'':fnum(b))+'i'+(k?'·':'')+zp}
   else t=`(${a<0?'−':''}${fnum(a)} ${b<0?'−':'+'} ${Math.abs(b)===1?'':fnum(b)}i)`+(k?'·':'')+zp;
   s+=s?(sg===null?' + ':sg?' − ':' + ')+t:(sg?'−':'')+t}return s||'0'}
-function doParse(){const D=DR,ta=$('ed-txt');D.text=ta.value;if(D.text.trim().startsWith('{'))return doParseCfg(D.text.trim());
+function doParse(){const D=DR,ta=$('ed-txt');D.text=ta.value;if(!D.txtEdit&&D.mode==='text'&&D.text===txtOf(D)){edStatus('Testo non modificato: nessuna variazione.');return true}if(D.text.trim().startsWith('{'))return doParseCfg(D.text.trim());
  try{const[Kr,Ki]=parsePoly(D.text);D.txtEdit=false;if(!(Kr.every((v,k)=>v===D.K[k]&&Ki[k]===D.KJ[k]))){D.K=Kr;D.KJ=Ki;touch('coef');D.repl=true}D.t=effDeg(Kr,Ki);const g=effDeg(Kr,Ki);edStatus(g?`Acquisito: grado ${g}.`:'Acquisita una funzione costante.');$('ed-info').textContent='Grado effettivo (bozza): '+g+' (max 8)';return true}
  catch(e){if(!(e instanceof ParseErr))throw e;edStatus(e.message+(e.pos==null?'':` (posizione ${e.pos+1})`),true);if(e.pos!=null){ta.focus();ta.setSelectionRange(e.pos,Math.min(e.pos+1,ta.value.length))}return false}}
 $('ed-parse').onclick=doParse;
@@ -909,7 +930,7 @@ function autoView(){cx3=cy3=0;cenSync();let m=0;for(const r of RT)m=Math.max(m,M
  for(let i=0;i<8&&R<10&&+$('lv').max<=cv*1.02;i++)setR(Math.min(10,Math.round(R*13)/10));   // la quota deve poter stare sopra l’ultimo valore critico
  setLv((cv+mmax)/2);full();setOff(calibOff())}
 /* ---- Salvataggio/caricamento JSON e link condivisibili (versione 1.1; superficie 3D WebGL dalla 1.2) ---- */
-const APPV='2.4';$('rdm').textContent='Guida - Ver. '+APPV;
+const APPV='2.5';$('rdm').textContent='Guida - Ver. '+APPV;
 const viewState=()=>({R,level:lv,height:hs,offset:yoff,domain:polar?'polar':'cartesian',halfPlane:half,aboveLevel:upm,phasePalette:pph,bands:cont,logHeight:lg,realCurves3D:showR,autoRotate:auto,animate:anim,layout:$('gl').value,newton:{on:mode==='new',iterations:IT,basinPalette:pbs},graphics:{smooth:SMO,upperLight:LU,lowerLight:LD,material:MAT?'gloss':'matte'},camera:{yaw,pitch,zoom},center3D:{re:cx3,im:cy3},plan:{cx:vcx,cy:vcy,scale:vs},probe:probe.slice(),section:{mode:SM,offset:SD,angleDeg:STH,showRe:SRE,showIm:SIM,points:SP.map(p=>({root:p.k,re:p.x,im:p.y}))},sectionView:rzoom?{mode:'roots'}:rx?{mode:'range',center:rx[0],halfWidth:rx[1]}:{mode:'auto'}});
 const JS_=(o,d=0)=>{if(o===null||typeof o!=='object'||Array.isArray(o)||d>=2)return JSON.stringify(o);const p='  '.repeat(d+1);return'{\n'+Object.entries(o).filter(([,v])=>v!==undefined).map(([k,v])=>p+JSON.stringify(k)+': '+JS_(v,d+1)).join(',\n')+'\n'+'  '.repeat(d)+'}'};
 const optOK=(id,v)=>typeof v==='string'&&[...$(id).options].some(q=>q.value===v);
@@ -946,7 +967,7 @@ function applyView(o,needRebuild){const ev=(id,t)=>$(id).dispatchEvent(new Event
  if(o.camera){yaw=o.camera.yaw;pitch=o.camera.pitch;zoom=o.camera.zoom}
  if(o.plan){vcx=o.plan.cx;vcy=o.plan.cy;vs=o.plan.scale;tw=null;rx=null}
  if(o.sectionView){const q=o.sectionView;rzoom=q.mode==='roots';rx=q.mode==='range'?[q.center,q.halfWidth]:null;$('rz').style.borderColor=rzoom?'var(--ac)':''}
- if(o.probe){probe=o.probe.slice();path=[]}
+ if(o.probe){probe=o.probe.slice();START=probe.slice();path=[]}
  if(o.section){const q=o.section;SM=q.mode;SD=q.offset;STH=q.angleDeg;SRE=q.showRe!==false;SIM=q.showIm!==false;$('sec-re').checked=SRE;$('sec-im').checked=SIM;SBAD=false;SMSG='';if(q.points)SP=q.points.map(p=>({k:p.root!==null&&p.root<RT.length?p.root:null,n:RT.length,x:p.re,y:p.im}));secPre();secSync()}
  syncPl();full()}
 function parseCfg(txt){let o;try{o=JSON.parse(txt)}catch(e){const m=/position (\d+)/.exec(e.message);throw new ParseErr('JSON non valido: '+e.message,m?+m[1]:null)}
@@ -961,15 +982,16 @@ function parseCfg(txt){let o;try{o=JSON.parse(txt)}catch(e){const m=/position (\
   else if(typeof f.formula==='string'){try{[Kr,Ki]=parsePoly(f.formula)}catch(e){if(!(e instanceof ParseErr))throw e;throw new ParseErr('Formula nel JSON: '+e.message,null)}}
   else throw new ParseErr('"f" deve contenere "coeffs" o "formula"',null);
   r.K=Kr;r.KJ=Ki;const g=effDeg(Kr,Ki);
-  if(Array.isArray(f.roots)&&g>=1){const pg=f.roots.map(q=>q&&Array.isArray(q.a)&&Array.isArray(q.ap)&&q.a.length===2&&q.ap.length===2&&[...q.a,...q.ap].every(v=>typeof v==='number'&&isFinite(v))&&Number.isInteger(q.m)&&q.m>=1?{a:q.a.slice(),ap:q.ap.slice(),m:q.m}:null);
-   let good=pg.length&&pg.every(Boolean)&&pg.reduce((x,q)=>x+q.m,0)===g&&!pg.some(zeroAp);
-   if(good){const[A,B]=expandPages(pg);let d=0,sc=0;for(let k=0;k<9;k++){d=Math.max(d,Math.hypot(A[k]-Kr[k],B[k]-Ki[k]));sc=Math.max(sc,Math.hypot(Kr[k],Ki[k]))}good=d<=1e-6*sc}
-   if(good)r.pages=pg;else r.note+=' (radici del file ignorate: non coerenti con i coefficienti)'}}
+  if(Array.isArray(f.roots)&&g>=1){const fn=v=>typeof v==='number'&&isFinite(v),pg=f.roots.map(q=>q&&Array.isArray(q.a)&&q.a.length===2&&q.a.every(fn)&&Number.isInteger(q.m)&&q.m>=1?{a:q.a.slice(),m:q.m,ap:Array.isArray(q.ap)&&q.ap.length===2&&q.ap.every(fn)?q.ap.slice():null}:null);
+   /* a′ globale: campo f.ap; nei file 2.4 e precedenti ogni radice aveva il proprio a′ e il globale è il loro prodotto */
+   let good=pg.length&&pg.every(Boolean)&&pg.reduce((x,q)=>x+q.m,0)===g,A=null;if(good){if(Array.isArray(f.ap)&&f.ap.length===2&&f.ap.every(fn))A=f.ap.slice();else if(pg.every(q=>q.ap))A=pg.reduce((M,q)=>cmul(M,q.ap),[1,0]);else A=leadOf(Kr,Ki);good=!zeroA(A)}
+   if(good){const pp=pg.map(q=>({a:q.a,m:q.m})),[A1,B1]=expandPages(pp,A);let d=0,sc=0;for(let k=0;k<9;k++){d=Math.max(d,Math.hypot(A1[k]-Kr[k],B1[k]-Ki[k]));sc=Math.max(sc,Math.hypot(Kr[k],Ki[k]))}good=d<=1e-6*sc;if(good){r.pages=pp;r.A=A}}
+   if(!good)r.note+=' (radici del file ignorate: non coerenti con i coefficienti)'}}
  if(o.view!==undefined){const v=normView(o.view);if(!v.section)v.section={mode:'A',offset:0,angleDeg:0};if(Object.keys(v).length)r.view=v}
  if(!r.K&&!r.view)throw new ParseErr('JSON senza dati utilizzabili: nessuna f(z) né parametro di visualizzazione riconosciuto',null);return r}
 function doParseCfg(t){const D=DR,ta=$('ed-txt');
  try{const r=parseCfg(t);D.txtEdit=false;let g=null;
-  if(r.K){const same=r.K.every((v,k)=>v===D.K[k]&&r.KJ[k]===D.KJ[k])&&!(D.truth==='root'&&!D.cOK);if(!same){D.K=r.K;D.KJ=r.KJ;touch('coef');D.repl=true}if(r.pages){D.pages=clonePages(r.pages);D.rOK=true;D.p=0}g=effDeg(r.K,r.KJ);D.t=g}
+  if(r.K){const same=r.K.every((v,k)=>v===D.K[k]&&r.KJ[k]===D.KJ[k])&&!(D.truth==='root'&&!D.cOK);if(!same){D.K=r.K;D.KJ=r.KJ;touch('coef');D.repl=true}if(r.pages){D.pages=clonePages(r.pages);D.A=r.A.slice();D.rOK=true;D.p=0}g=effDeg(r.K,r.KJ);D.t=g}
   if(r.view)D.cfgView=r.view;
   const nv=r.view?Object.keys(r.view).length:0;
   edStatus('Configurazione acquisita'+(g===null?'':g?`: grado ${g}`:': funzione costante')+(nv?`${g===null?':':','} ${nv} parametri di visualizzazione`:'')+r.note+'. Premi Conferma per applicarla.');
@@ -977,11 +999,11 @@ function doParseCfg(t){const D=DR,ta=$('ed-txt');
  catch(e){if(!(e instanceof ParseErr))throw e;edStatus(e.message+(e.pos==null?'':` (posizione ${e.pos+1})`),true);if(e.pos!=null){ta.focus();ta.setSelectionRange(e.pos,Math.min(e.pos+1,ta.value.length))}return false}}
 /* controlli comuni a Esporta JSON e Condividi: acquisisce il testo in bozza, porta in forma normale, rifiuta la funzione nulla */
 function draftCfg(what){const D=DR;if(D.mode==='text'&&D.txtEdit&&!doParse())return null;
- if(D.truth==='root'&&!D.cOK){if(D.pages.some(zeroAp)){edStatus(what+' non disponibile: il coefficiente a′ deve essere diverso da zero.',true);return null}[D.K,D.KJ]=expandPages(D.pages);D.cOK=true}
+ if(D.truth==='root'&&!D.cOK){if(zeroA(D.A)){edStatus(what+' non disponibile: il coefficiente a′ deve essere diverso da zero.',true);return null}[D.K,D.KJ]=expandPages(D.pages,D.A);D.cOK=true}
  if(isZeroF(D.K,D.KJ)){edStatus(what+' non disponibile: la funzione è nulla.',true);return null}
  return D}
 async function exportCfg(){const D=draftCfg('Esporta');if(!D)return;
- const f={formula:polyText(D.K,D.KJ),coeffs:D.K.map((v,k)=>[v,D.KJ[k]])};if(D.rOK&&D.pages.length&&effDeg(D.K,D.KJ)>=1)f.roots=D.pages.map(q=>({a:q.a,ap:q.ap,m:q.m}));
+ const f={formula:polyText(D.K,D.KJ),coeffs:D.K.map((v,k)=>[v,D.KJ[k]])};if(D.rOK&&D.pages.length&&effDeg(D.K,D.KJ)>=1){f.ap=D.A.slice();f.roots=D.pages.map(q=>({a:q.a,m:q.m}))};
  const txt=JS_({app:'polinomi-fz',version:APPV,f,view:Object.assign(viewState(),D.cfgView||{})});
  try{await navigator.clipboard.writeText(txt);edStatus(`JSON copiato negli appunti (${txt.length} caratteri): incollalo in Testo per ripristinare f(z) e vista.`)}
  catch(e){const ta=$('ed-txt');ta.value=txt;D.text=txt;D.txtEdit=false;ta.focus();ta.select();edStatus('Appunti non disponibili: il JSON è nella casella e selezionato, copialo con Ctrl+C.')}}
@@ -1003,20 +1025,23 @@ $('shr').onclick=shareTop;
 function loadHash(){const m=/^#v=([A-Za-z0-9_-]+)$/.exec(location.hash);if(!m)return;const msg=$('lkmsg');
  const show=(t,err)=>{msg.textContent=t;msg.className='ed-msg'+(err?' err':'');msg.hidden=false};msg.onclick=()=>{msg.hidden=true};
  try{const r=parseCfg(unb64u(m[1]));if(r.K&&isZeroF(r.K,r.KJ))throw new ParseErr('la funzione è nulla',null);
-  if(r.K){K=r.K.slice();KJ=r.KJ.slice();FV++;SEED=null;SEEDP=null;syncHf();fzText();analyze();secReset()}
+  if(r.K){K=r.K.slice();KJ=r.KJ.slice();FV++;SEED=null;SEEDP=null;SEEDA=null;syncHf();fzText();analyze();secReset()}
   if(r.view)applyView(r.view,!!r.K);else if(r.K)autoView();
   if(r.note)show('Link caricato'+r.note+'.')}
  catch(e){show('Link non valido: '+(e instanceof ParseErr?e.message:'dati non decodificabili ('+e.message+')')+'. Mostrata la vista predefinita.',true)}}
-const newDraft=()=>({mode:'coef',K:K.slice(),KJ:KJ.slice(),pages:clonePages(getFact()),t:effDeg(K,KJ),p:0,truth:'coef',cOK:true,rOK:true,solved:null,dirty:false,repl:false,cfgView:null,text:'',txtEdit:false});
+const newDraft=()=>({mode:'coef',tf:'n',A:FA.slice(),K:K.slice(),KJ:KJ.slice(),pages:clonePages(getFact()),t:effDeg(K,KJ),p:0,truth:'coef',cOK:true,rOK:true,solved:null,dirty:false,repl:false,cfgView:null,text:'',txtEdit:false});
 function openEd(){delClose();setMove(false);DR=newDraft();closeArm=0;pickMode=false;$('pickbar').hidden=true;$('coeffs-panel').classList.add('open');edRender();histUI()}
 function closeEd(){DR=null;$('coeffs-panel').classList.remove('open');histUI()}
 $('ed-mode').onchange=e=>{const D=DR,w=e.target.value,rv=()=>{e.target.value=D.mode};if(w===D.mode)return;
  if(D.mode==='text'&&D.txtEdit&&!doParse()){rv();return}
  if(w==='root'){if(D.truth==='coef'&&effDeg(D.K,D.KJ)<1){rv();edStatus('Forma a radici non disponibile per una funzione costante o nulla: non ha radici da elencare.',true);return}
-  if(!D.rOK){const raw=rtsC(coList(D.K,D.KJ));D.solved=raw;D.pages=groupRoots(raw,D.K,D.KJ);D.rOK=true;D.p=0}}
- else if(!D.cOK){if(D.pages.some(zeroAp)){rv();edStatus('Forma normale non disponibile: il coefficiente a′ deve essere diverso da zero.',true);return}
-  [D.K,D.KJ]=expandPages(D.pages);D.cOK=true}
- D.mode=w;if(w==='text'){D.text=polyText(D.K,D.KJ);D.txtEdit=false}edRender()};
+  if(!D.rOK){const raw=rtsC(coList(D.K,D.KJ));D.solved=raw;D.pages=groupRoots(raw,D.K,D.KJ);D.A=leadOf(D.K,D.KJ);D.rOK=true;D.p=0}}
+ else if(!D.cOK){if(zeroA(D.A)){rv();edStatus('Forma normale non disponibile: il coefficiente a′ deve essere diverso da zero.',true);return}
+  [D.K,D.KJ]=expandPages(D.pages,D.A);D.cOK=true}
+ D.mode=w;if(w==='text'){D.text=txtOf(D);D.txtEdit=false}edRender()};
+/* 2.5: scheda TXT, radio forma normale (predefinita) / fattorizzata completa */
+document.querySelectorAll('input[name="ed-tf"]').forEach(r=>r.onchange=()=>{const D=DR;if(!D||!r.checked)return;const back=()=>document.querySelectorAll('input[name="ed-tf"]').forEach(x=>x.checked=x.value===D.tf);
+ if(D.txtEdit&&!doParse()){back();return}D.tf=r.value;D.text=txtOf(D);D.txtEdit=false;edRender()});
 document.querySelectorAll('#ed-seg button').forEach(b=>b.onclick=()=>{const m=$('ed-mode');m.value=b.dataset.m;m.onchange({target:m});if(DR)edRender()});
 $('ed-sel').onchange=e=>{const D=DR;if(D.mode==='root')D.p=+e.target.value;else D.t=+e.target.value;edRender()};
 const go=d=>{const D=DR;if(D.mode==='root')D.p=Math.max(0,Math.min(D.pages.length-1,D.p+d));else D.t=Math.max(0,Math.min(8,D.t-d));edRender()};
@@ -1025,34 +1050,40 @@ $('ed-zero').onclick=()=>{const D=DR;D.K[D.t]=0;D.KJ[D.t]=0;touch('coef');edRend
 $('ed-m').onchange=e=>{DR.pages[DR.p].m=+e.target.value;rUp()};
 $('ed-del').onclick=()=>{const D=DR,q=D.pages[D.p];if(q.m>1)q.m--;else if(D.pages.length>1){D.pages.splice(D.p,1);D.p=Math.min(D.p,D.pages.length-1)}else return;touch('root');edRender()};
 const FR=[[0,0],[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,2],[0,-2],[3,0],[-3,0]];
-$('ed-add').onclick=()=>{const D=DR;if(degR(D)>=8)return;const c=FR.find(c=>!D.pages.some(q=>q.a[0]===c[0]&&q.a[1]===c[1]))||[0,0];D.pages.push({ap:[1,0],a:c.slice(),m:1});D.p=D.pages.length-1;touch('root');edRender()};
+$('ed-add').onclick=()=>{const D=DR;if(degR(D)>=8)return;const c=FR.find(c=>!D.pages.some(q=>q.a[0]===c[0]&&q.a[1]===c[1]))||[0,0];D.pages.push({a:c.slice(),m:1});D.p=D.pages.length-1;touch('root');edRender()};
 /* aggiunge la radice z: se esiste già una pagina con la stessa radice ne aumenta la molteplicità; rispetta il grado residuo */
 function addAt(z){const D=DR;if(degR(D)>=8)return'Grado massimo (8) raggiunto: nessuna radice aggiunta.';const j=D.pages.findIndex(q=>q.a[0]===z[0]&&q.a[1]===z[1]);let n='';
- if(j>=0){D.pages[j].m++;D.p=j;n=`Radice già presente: molteplicità portata a ${D.pages[j].m}.`}else{D.pages.push({ap:[1,0],a:z.slice(),m:1});D.p=D.pages.length-1}touch('root');return n}
+ if(j>=0){D.pages[j].m++;D.p=j;n=`Radice già presente: molteplicità portata a ${D.pages[j].m}.`}else{D.pages.push({a:z.slice(),m:1});D.p=D.pages.length-1}touch('root');return n}
 $('ed-conj').onclick=()=>{const a=DR.pages[DR.p].a;edRender(addAt([a[0],-a[1]]))};
 $('ed-opp').onclick=()=>{const a=DR.pages[DR.p].a;edRender(addAt([-a[0],-a[1]]))};
 PRE.forEach((x,j)=>{const b=document.createElement('button');b.textContent=x[0];b.title=TIP[j];b.onclick=()=>{const D=DR,[,v,R2,L2,rt]=x;D.K=Array(9).fill(0);D.KJ=Array(9).fill(0);v.forEach((c,i)=>D.K[4-i]=c);
- D.pages=rt.map(([a,m])=>({ap:[1,0],a:a.slice(),m}));D.solved=flatten(D.pages);D.truth='coef';D.cOK=D.rOK=true;D.dirty=true;D.repl=true;D.cfgView=null;D.t=effDeg(D.K,D.KJ);D.p=0;closeArm=0;D.txtEdit=false;D.text=polyText(D.K,D.KJ);edRender()};$('ed-ex').appendChild(b)});
+ D.pages=rt.map(([a,m])=>({a:a.slice(),m}));D.A=[1,0];D.solved=flatten(D.pages);D.truth='coef';D.cOK=D.rOK=true;D.dirty=true;D.repl=true;D.cfgView=null;D.t=effDeg(D.K,D.KJ);D.p=0;closeArm=0;D.txtEdit=false;D.text=txtOf(D);edRender()};$('ed-ex').appendChild(b)});
 /* conferma: applica la bozza e aggiorna stato, cache e tutte le viste */
 function applyDraft(){const D=DR;if(!D)return;if(D.mode==='text'&&D.txtEdit&&!doParse())return;if(issue())return;if(!D.dirty&&!D.cfgView){closeEd();drawSurf();return}
- const cv=D.cfgView,fchg=D.dirty,pre=snapState();
- if(fchg){let pg;if(D.truth==='root'){if(!D.cOK){[D.K,D.KJ]=expandPages(D.pages);D.cOK=true}pg=D.pages}else pg=D.rOK?D.pages:null;
-  K=D.K.slice();KJ=D.KJ.slice();FV++;SEED=null;SEEDP=pg&&clonePages(pg)}
- closeEd();if(fchg){syncHf();fzText();analyze();if(D.repl)secReset()}
- if(cv)applyView(cv,fchg);else if(fchg)autoView();else drawSurf();histPush(pre,cv)}
+ const cv=D.cfgView,fchg=D.dirty,pre=snapState();let ao=false;
+ if(fchg){let pg;if(D.truth==='root'){if(!D.cOK){[D.K,D.KJ]=expandPages(D.pages,D.A);D.cOK=true}pg=D.pages}else pg=D.rOK?D.pages:null;
+  K=D.K.slice();KJ=D.KJ.slice();FV++;SEED=null;SEEDP=pg&&clonePages(pg);SEEDA=pg?D.A.slice():null;
+  /* 2.5: cambia solo a′ (K = λ·K precedente): la vista resta ferma, niente auto-range né auto-scala */
+  ao=!cv&&scalarMult(pre.K,pre.KJ,K,KJ);if(ao){RYH=RYL?Object.assign({},RYL):null;AHOLD=true}}
+ closeEd();if(fchg){syncHf();fzText();analyze();if(D.repl&&!ao)secReset()}
+ if(cv)applyView(cv,fchg);else if(ao)applyHold();else if(fchg)autoView();else drawSurf();histPush(pre,cv)}
+/* 2.5: ricostruisce mesh e grafici con la nuova f(z) senza toccare finestra, centro, zoom, quota, offset; la scala verticale (mmax) e quella del grafico di sezione restano quelle di prima, così la variazione di pendenza è visibile. Alla prossima ricostruzione per altri motivi (R, dominio, centro…) la scala torna a seguire i dati. */
+function applyHold(){try{HOLDV=true;try{build()}finally{HOLDV=false}full()}finally{AHOLD=false}}
 $('ed-ok').onclick=applyDraft;
 /* ---- Undo/Redo a 1 livello: l’ultima conferma di f(z). Si salvano f (coefficienti e radici) e solo i parametri di vista che la conferma ha cambiato (R, quota, offset, ...), non la fotocamera.
    HU = stato che Undo ripristina; HR = stato che Redo ripristina. Ogni passo salva lo stato corrente nell’altro slot: Undo/Redo si possono alternare per confrontare prima e dopo.
    Una nuova conferma sostituisce HU e azzera HR; trascinare una radice sul piano azzera HR. ---- */
 let HU=null,HR=null;
-const snapState=()=>({K:K.slice(),KJ:KJ.slice(),pages:FACT?clonePages(FACT):null,view:JSON.parse(JSON.stringify(viewState()))});
+const snapState=()=>({K:K.slice(),KJ:KJ.slice(),A:FA.slice(),pages:FACT?clonePages(FACT):null,view:JSON.parse(JSON.stringify(viewState()))});
 const sameF=(a,b)=>a.K.every((v,k)=>v===b.K[k]&&a.KJ[k]===b.KJ[k])&&JSON.stringify(a.pages)===JSON.stringify(b.pages);
 function histUI(){const bu=$('fz-undo'),br=$('fz-redo'),off=!!DR||pickMode||delMode;bu.hidden=!HU;br.hidden=!HR;bu.disabled=br.disabled=off}
 function histPush(pre,cv){const post=snapState(),keys=Object.keys(post.view).filter(k=>JSON.stringify(post.view[k])!==JSON.stringify(pre.view[k])&&(k!=='camera'||(cv&&cv.camera)));
  if(sameF(pre,post)&&!keys.length)return;pre.keys=keys;HU=pre;HR=null;histUI()}
-function histRestore(st){const cur=snapState(),fch=!sameF(cur,st),o=normView(Object.fromEntries(st.keys.map(k=>[k,st.view[k]])));
- if(fch){K=st.K.slice();KJ=st.KJ.slice();FV++;SEED=null;SEEDP=st.pages&&clonePages(st.pages);syncHf();fzText();analyze()}
- applyView(o,fch);cur.keys=st.keys;return cur}
+function histRestore(st){const cur=snapState(),fch=!sameF(cur,st),o=normView(Object.fromEntries(st.keys.map(k=>[k,st.view[k]]))),ao=fch&&scalarMult(cur.K,cur.KJ,st.K,st.KJ);
+ if(fch){if(ao){RYH=RYL?Object.assign({},RYL):null;AHOLD=true}K=st.K.slice();KJ=st.KJ.slice();FV++;SEED=null;SEEDP=st.pages&&clonePages(st.pages);SEEDA=st.pages&&st.A?st.A.slice():null;syncHf();fzText();analyze()}
+ /* 2.5: per le modifiche del solo a′ la vista non salta e non torna a un'inquadratura precedente */
+ if(ao){try{HOLDV=true;build()}finally{HOLDV=false;AHOLD=false}}
+ applyView(o,fch&&!ao);cur.keys=st.keys;return cur}
 function histStep(dir){if(DR||pickMode||delMode||RD.on)return false;const st=dir<0?HU:HR;if(!st)return false;const cur=histRestore(st);if(dir<0){HU=null;HR=cur}else{HR=null;HU=cur}histUI();return true}
 $('fz-undo').onclick=()=>histStep(-1);$('fz-redo').onclick=()=>histStep(1);
 document.addEventListener('keydown',e=>{if(!(e.ctrlKey||e.metaKey)||e.altKey)return;const k=e.key.toLowerCase(),dir=k==='z'?(e.shiftKey?1:-1):k==='y'&&!e.shiftKey?1:0;if(!dir)return;
@@ -1132,7 +1163,7 @@ function startDrag(e,k){const p=pageOf(k);if(p<0)return false;const z=hz(e),a=FA
  DQ.on=true;DQ.scale=RDQ.scale0;DQ.ms=0;DQ.ema=0;DQ.n=0;setGLScale(DQ.scale);pc.style.cursor='grabbing';schedule();return true}
 const schedule=()=>{if(!RD.raf)RD.raf=requestAnimationFrame(dragFrame)};
 /* aggiorna la radice trascinata e, di conseguenza, coefficienti e analisi: i coefficienti si ottengono per espansione del prodotto (nessun solver per le radici) */
-function applyTarget(){if(HR){HR=null;histUI()}const a=FACT[RD.p].a;a[0]=RD.tgt[0];a[1]=RD.tgt[1];const[Kr,Ki]=expandPages(FACT);K=Kr;KJ=Ki;FV++;SEED=null;SEEDP=clonePages(FACT);syncHf();analyze();fzText()}
+function applyTarget(){if(HR){HR=null;histUI()}const a=FACT[RD.p].a;a[0]=RD.tgt[0];a[1]=RD.tgt[1];const[Kr,Ki]=expandPages(FACT,FA);K=Kr;KJ=Ki;FV++;SEED=null;SEEDP=clonePages(FACT);SEEDA=FA.slice();syncHf();analyze();fzText()}
 function dragFrame(ts){RD.raf=0;if(!RD.on)return;const t0=performance.now(),hf=half;applyTarget();calc();texts();renderPlan();drawReal();
  let did3=false;if(half!==hf||t0-RD.t3>=RD.int3){const b0=performance.now();build();drawSurf();const c=performance.now()-b0;RD.int3=Math.min(RDQ.maxInt3,Math.max(RDQ.minInt3,c*4));RD.t3=performance.now();RD.n3++;RD.sum3+=c;did3=true}
  const dt=RD.lastTs?ts-RD.lastTs:0;RD.lastTs=ts;
@@ -1186,7 +1217,7 @@ function delClose(){const was=delMode;delMode=false;DEL.sel=null;DEL.tap=null;$(
 function delOk(){const s=DEL.sel;if(!delMode||!s)return;const F=getFact(),q0=F&&F[s.p];
  if(DR||RT.length<2||!q0||q0.a[0]!==s.z[0]||q0.a[1]!==s.z[1]){delClose();return}
  delClose();DR=newDraft();const D=DR,p=s.p,q=D.pages[p];
- if(q.m>1)q.m--;else{D.pages.splice(p,1);if(!(q.ap[0]===1&&q.ap[1]===0)){const t=D.pages[Math.min(p,D.pages.length-1)];t.ap=cmul(t.ap,q.ap)}}
+ if(q.m>1)q.m--;else D.pages.splice(p,1);
  touch('root');applyDraft()}
 $('pl-del').onclick=delStart;$('delok').onclick=delOk;$('delx').onclick=delClose;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&delMode)delClose()});
@@ -1233,14 +1264,14 @@ $('p-an').onchange=e=>{anim=e.target.checked;$('an').checked=anim};
 $('an').onchange=e=>{anim=e.target.checked;$('p-an').checked=anim};
 
 $('fit').onclick=()=>{let m=0;for(const r of RT)m=Math.max(m,Math.hypot(r[0]-cx3,r[1]-cy3));for(const p of CX)m=Math.max(m,Math.hypot(p.x-cx3,cy3));setRv(Math.max(.5,Math.min(6,m>0?Math.ceil(m*13)/10:1.6)),'f')};
-$('bn').onchange=e=>{mode=e.target.checked?'new':'dom';const nw=mode==='new';for(const i of['it','pb','d1','d0','st','rs'])$(i).disabled=!nw;$('pp').disabled=nw;$('c').disabled=nw;rebuild()};
+$('bn').onchange=e=>{mode=e.target.checked?'new':'dom';const nw=mode==='new';for(const i of['it','pb','d1','st','rs'])$(i).disabled=!nw;$('pp').disabled=nw;$('c').disabled=nw;rebuild()};
 $('pp').onchange=e=>{pph=e.target.value;build();full()};$('pb').onchange=e=>{pbs=e.target.value;build();full()};
 $('c').onchange=e=>{cont=e.target.checked;renderPlan()};
 $('rc').onchange=e=>{showR=e.target.checked;$('p-rc').checked=showR;drawSurf()};
 $('p-rc').onchange=e=>{showR=e.target.checked;$('rc').checked=showR;drawSurf()};
 $('s1').onclick=()=>{if(CV.length){setLv(CV[ci%CV.length]);ci++;full()}};
-$('st').onclick=()=>{if(path.length>1){probe=path[1];probeUpdate()}};$('rs').onclick=()=>{probe=[.55,.85];probeUpdate()};const vistaIntera=()=>{resetView();renderPlan();drawReal()};$('vi').onclick=vistaIntera;
-const dive=(x,y,v1,ms)=>{tw={t0:-1,ms,x,y,x0:vcx,y0:vcy,v0:vs,v1}};$('d1').onclick=()=>dive(probe[0],probe[1],1.5e-3,6000);$('d0').onclick=()=>dive(0,0,1e-3,7000);
+$('st').onclick=()=>{if(path.length>1){probe=path[1];probeUpdate()}};$('rs').onclick=()=>{probe=START.slice();probeUpdate()};const vistaIntera=()=>{resetView();renderPlan();drawReal()};$('vi').onclick=vistaIntera;
+const dive=(x,y,v1,ms)=>{tw={t0:-1,ms,x,y,x0:vcx,y0:vcy,v0:vs,v1}};$('d1').onclick=()=>dive(probe[0],probe[1],1.5e-3,6000);
 let rzoom=false,rx=null,RV=null,rd=null,rauto=true;$('rz').onclick=()=>{rzoom=!rzoom;rx=null;$('rz').style.borderColor=rzoom?'var(--ac)':'';drawReal()};
 $('fsr').onclick=()=>toggleFS($('wr'));document.addEventListener('fullscreenchange',()=>setTimeout(size,80));
 
@@ -1293,8 +1324,8 @@ rl.onpointerup=rl.onpointercancel=()=>{rd=null};
 rl.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;RCP={x:e.clientX,y:e.clientY};rcur()});rl.addEventListener('pointerleave',()=>{RCP=null;rcur()});rl.addEventListener('pointercancel',()=>{RCP=null;rcur()});
 rl.onpointermove=e=>{if(rd===null||!RV)return;const b=rl.getBoundingClientRect(),w=RV[1]-RV[0],dx=(e.clientX-rd)*rl.width/b.width/(rl.width-62*dpr)*w;rd=e.clientX;rset((RV[0]+RV[1])/2-dx,w/2)};
 
-const setP=e=>{if(mode!=='new')return;probe=p2z(e.clientX,e.clientY);probeUpdate()};
-const setPT=e=>{probe=p2z(e.clientX,e.clientY);pdot=true;probeUpdate();chip()};
+const setP=e=>{if(mode!=='new')return;probe=p2z(e.clientX,e.clientY);START=probe.slice();probeUpdate()};
+const setPT=e=>{probe=p2z(e.clientX,e.clientY);START=probe.slice();pdot=true;probeUpdate();chip()};
 let pan=null,probing=false,lastTouch=0;pc.oncontextmenu=e=>e.preventDefault();sc.oncontextmenu=e=>{e.preventDefault();if(Date.now()-lastTouch<1500)return;if(rcSeen){rcSeen=false;return}pick(e)};
 const LPMS=450,LPPX=10;
 const zoomAt=(cx,cy,f)=>{const[px,py]=p2z(cx,cy),nv=Math.min(Math.max(8,R/.225),Math.max(2e-4,vs*f));vcx=px-(px-vcx)*nv/vs;vcy=py-(py-vcy)*nv/vs;vs=nv;tw=null};
@@ -1343,7 +1374,7 @@ sc.onpointermove=e=>{
   if(!p.moved&&Math.hypot(p.x-p.x0,p.y-p.y0)>=LPPX){p.moved=true;clearTimeout(t3LP)}}
  if(!drag)return;yaw+=(e.clientX-drag[0])*.01;pitch=Math.max(-1.5,Math.min(1.5,pitch+(e.clientY-drag[1])*.01));drag=[e.clientX,e.clientY];surfDirty=true};
 /* pannello del piano: copie speculari dei controlli (le originali restano la fonte di verità) */
-const plp=$('plan-panel'),PLM=[['bn'],['it','itv'],['pb'],['pp'],['c'],['lv','lvv']],PLB=['s1','st','rs','d1','d0','fit'];
+const plp=$('plan-panel'),PLM=[['bn'],['it','itv'],['pb'],['pp'],['c'],['lv','lvv']],PLB=['s1','st','rs','d1','fit'];
 function syncPl(){{const q=$('p-pp'),o=$('pp');if(q.value!==o.value)q.value=o.value;q.disabled=o.disabled}for(const[k,b]of PLM){const o=$(k),p=$('pl-'+k);if(o.type==='range'&&p.max!==o.max)p.max=o.max;
  if(o.type==='checkbox'){if(p.checked!==o.checked)p.checked=o.checked}else if(p.value!==o.value)p.value=o.value;
  if(p.disabled!==o.disabled)p.disabled=o.disabled;if(b&&$('pl-'+b).textContent!==$(b).textContent)$('pl-'+b).textContent=$(b).textContent}
@@ -1405,7 +1436,9 @@ window.addEventListener('resize',()=>setTimeout(eolAll,120));window.addEventList
 initGL();initSG();if(!g3)setGL3(false,sgErr);fzText();syncHf();analyze();build();size();capt();setOff(calibOff());rSync();loadHash();
 
 /* ---- 2.1: f(z) cliccabile, pagine del pannello 3D, palette condivisa, Ctrl+R, didascalie compatte ---- */
-$('fz').addEventListener('click',e=>{if(e.target.closest('#fzo')&&!$('coeffs-panel').classList.contains('open'))$('toggle-coeffs').click()});
+/* 2.5: etichetta f(z) = apre/chiude il pannello; formula = alterna forma normale e fattorizzata (anche a pannello chiuso) */
+$('fz').addEventListener('click',e=>{if(e.target.closest('#fzo'))$('toggle-coeffs').click();else if(e.target.closest('#fzf'))toggleFZF()});
+$('fz').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.id==='fzf'){e.preventDefault();toggleFZF()}});
 document.querySelectorAll('#p-seg button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#p-seg button').forEach(x=>x.setAttribute('aria-checked',x===b));document.querySelectorAll('#surf-panel [data-pg]').forEach(d=>d.hidden=d.dataset.pg!==b.dataset.pgb)});
 $('p-pp').onchange=e=>{const o=$('pp');o.value=e.target.value;o.dispatchEvent(new Event('change',{bubbles:true}));syncPl()};
 /* ---- 2.3: qualità grafica 3D (facoltativa, spenta di default; nessun effetto sui calcoli) ---- */

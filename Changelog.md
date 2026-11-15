@@ -11,6 +11,38 @@ updated: 2026-11-15
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
 
+## [2.5] - 2026-11-15
+
+### Added
+
+- **Coefficiente $a'$ globale:** le pagine radice ora sono $\{a, m\}$ ed è presente un unico $a'$ complesso in un blocco separato in cima alla forma a radici. Il coefficiente direttivo coincide con $a'$.
+- **Esportazione JSON:** nel file JSON esportato compare `f.ap` e le radici sono strutturate come $\{a, m\}$. I file della versione 2.4 (con $a'$ per singola radice) vengono importati correttamente ponendo $a'$ pari al prodotto.
+- **Vista ferma con solo $a'$:**
+- Rilevamento del caso solo-$a'$ quando i nuovi coefficienti sono un multiplo complesso $\neq 1$ dei precedenti (applicabile anche modificandoli da forma normale o da testo).
+- Viene saltato l'autoView e il `secReset`. Il rebuild avviene con $m_{\max}$ congelato (la superficie 3D cambia pendenza) e $l_v$ non viene più riclampato.
+- Congelamento analogo della scala verticale del grafico di sezione.
+- In caso di variazione delle radici, l'adeguamento automatico si comporta come in precedenza.
+
+- **Gestione TXT:** aggiunti i radio button per il formato normale (predefinito) e fattorizzato. Il testo fattorizzato è completamente rileggibile dal parser.
+- **Addendum - Gestione START e probe:** START è memorizzato separatamente da probe. Viene aggiornato da ogni selezione manuale (piano, 3D, pressione lunga) e dal caricamento di una vista con probe; i passi di Newton aggiornano esclusivamente il probe.
+- **Formattazione della forma fattorizzata:**
+- Le molteplicità sono gestite come esponenti (es. $(z - 1)^2$) anziché come fattori ripetuti.
+- Semplificazione grafica del coefficiente: se $A = 1$ viene omesso, mentre se $A = -1$ viene mostrato solo il segno $-$.
+
+- **Interpretazione testo invariato:** nella forma fattorizzata le radici sono arrotondate a 9 cifre, evitando una re-interpretazione superflua quando si esegue "Interpreta" su un testo non modificato.
+
+### Changed
+
+- **Interazione etichetta $f(z)$:** ora il click apre e chiude il pannello, replicando il comportamento del tasto "toggle-coeffs" in basso (incluso l'avviso sulle modifiche non confermate).
+- **Formula nell'intestazione:** il click alterna la visualizzazione tra forma normale e fattorizzata. L'etichetta e la formula costituiscono due zone distinte e l'interazione funziona anche a pannello chiuso.
+- **Rimozione funzione:** l'opzione "Tuffati nell'origine" è stata rimossa da entrambi i pannelli (resta invariato "Tuffati nel punto giallo").
+- **Indipendenza delle scelte:** la selezione della forma nel TXT e quella dell'intestazione sono indipendenti. Quella del TXT ritorna sullo stato "normale" a ogni nuova apertura dell'editor.
+- **Comportamento scala dopo solo-$a'$:** la scala resta invariata rispetto alla precedente fino alla successiva ricostruzione causata da altri fattori ($R$, dominio, centro, altezza), dopodiché riprende a seguire i dati.
+
+### Fixed
+
+- **Undo/Redo:** utilizzano lo stesso percorso e non interferiscono con $R$, centro o zoom. Verificato che un'azione di zoom successiva non viene annullata in modo errato dall'undo.
+- **Undo di solo-$a'$ e metà piano:** se l'azione di solo-$a'$ modifica anche lo stato "metà $\text{Im } z \geq 0$" (ad esempio passando $a'$ da reale a complesso e disattivandola), l'operazione di undo ripristina correttamente lo stato precedente, attivando la ricostruzione e la rinormalizzazione.
 
 ## [2.4] - 2026-11-15
 
