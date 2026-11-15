@@ -5,11 +5,33 @@ author: IK0VCK
 type: changelog
 product: polinomi-fz
 license: MIT
-updated: 2026-11-14
+updated: 2026-11-15
 ---
 # Changelog Esploratore di Polinomi
 
 Redatto seguendo le convenzioni di [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/)
+
+
+## [2.4] - 2026-11-15
+
+### Added
+
+- Modalità di cancellazione delle radici direttamente dal piano di Gauss, con riga di stato, X blu sulla radice selezionata e conferma delle coordinate. Sono disponibili i comandi Annulla e Conferma; Esc chiude la modalità.
+- Protezione dell’ultima radice: con una sola radice il comando di cancellazione è disabilitato e una nota ne spiega il motivo.
+
+### Changed
+
+- Pannello del piano di Gauss organizzato nelle due pagine Generale e Newton. Generale raccoglie i comandi per le radici, la palette di fase, le bande, la quota, Adatta e il valore critico di |f|; Newton raccoglie bacini, iterazioni, palette dei bacini, Passo, Riporta e tuffi.
+- Vista intera disponibile e sempre attiva in entrambe le pagine. Apertura e riapertura del pannello mostrano la pagina coerente con lo stato dei bacini; con i bacini spenti sono disabilitati tutti i controlli subordinati, inclusi Passo e Riporta.
+- La cancellazione di una radice multipla ne riduce la molteplicità di un’unità e conserva il coefficiente direttivo. Dopo la conferma, la modifica è annullabile con Ctrl+Z e vengono ricalcolati il raggio R e la quota |f|, come per l’inserimento di una radice dal piano.
+- Durante la modalità di cancellazione, il clic sul piano non posiziona il punto di Newton e Ctrl+Z è bloccato. Il comando di cancellazione è disabilitato mentre è aperta una bozza nell’editor f(z), per non scartarla.
+
+### Fixed
+
+- Corretta l’interpretazione degli esponenti decimali nel parser f(z) → Testo: espressioni come z^2.5, (z-1)^2.5, z2.5 e z².5 vengono rifiutate con un errore che indica la posizione, anziché essere interpretate come moltiplicazioni implicite. Il controllo riconosce sia il punto sia la virgola dopo l’esponente.
+- Bloccati i valori numerici non finiti già durante la lettura e aggiunti controlli sui risultati di prodotti e somme, evitando che input come 1e400 z + 1 introducano valori infiniti nei calcoli.
+- Aggiunto un controllo finale sulle radici per intercettare risultati non finiti generati dall’overflow del risolutore, anche quando i coefficienti iniziali sono finiti ma molto grandi.
+- In caso di errore di lettura o calcolo, lo stato precedente resta invariato. Restano supportate le sintassi esistenti, inclusi moltiplicazione implicita, prodotti misti, esponenti Unicode, coefficienti con i/j, notazione scientifica e numeri decimali.
 
 ## [2.3] - 2026-11-14
 
