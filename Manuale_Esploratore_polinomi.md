@@ -1,5 +1,5 @@
 ---
-updated: 2026-11-06
+updated: 2026-11-16
 ---
 # Esploratore di polinomi f(z)
 
@@ -48,11 +48,14 @@ Con l'Esploratore puoi:
 - **seguire** le curve di livello di |f| e trovare i *punti di sella*, dove due «valli» si incontrano;
 - **tagliare** il paesaggio lungo una retta qualunque e leggere modulo, parte reale e fase della funzione su quella retta;
 - **lanciare** il metodo di Newton da un punto qualsiasi e osservare i suoi **frattali**;
+- **spostare**, **aggiungere** e **cancellare** le radici direttamente sul piano di Gauss, con il mouse o con il dito;
+- **cambiare aspetto** alla superficie: resa liscia, materiale lucido, reticolo *wireframe*, quattro luci;
+- **esplorare** qualunque zona del piano complesso, non solo l'intorno dell'origine, spostando il centro della vista 3D;
 - **confrontare** una funzione prima e dopo una modifica, alternando **Annulla** e **Ripristina**;
 - **salvare** tutto ciò che hai costruito in un testo (un JSON) e ritrovarlo identico un altro giorno;
 - **condividere** la tua funzione e la tua vista con un semplice **link**, che chi lo riceve apre con un clic.
 
-Funziona nel browser, senza installare nulla, sul computer e sul telefono: lo trovi online all'indirizzo `https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html`. Tutto si decide da una finestra sola, quella che si apre dal pulsante **f(z)** (lo incontrerai nella sezione 5).
+Funziona nel browser, senza installare nulla, sul computer e sul telefono: lo trovi online all'indirizzo `https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html`. La funzione si decide da una finestra sola, quella che si apre dal pulsante **f(z)** (lo incontrerai nella sezione 5); per le radici ci sono anche comandi diretti sul piano di Gauss (sezione 8).
 
 ## 2. Due minuti di numeri complessi
 
@@ -120,57 +123,111 @@ Questo modo di colorare le funzioni complesse si chiama *domain coloring* (link 
 
 | Finestra | Cosa mostra | Cosa ci puoi fare |
 |---|---|---|
-| **Vista 3D** | La superficie |f(z)|, colorata con la fase. Dischi tratteggiati: |z| costante. Lungo la retta di sezione (all'inizio l'asse reale), due curve: Re f (rosso tratteggiato, con segno) e |f| (blu). | Trascina per ruotare; rotella o pizzico per ingrandire. |
-| **Piano di Gauss** | La mappa dall'alto: colore = fase, curve sottili = livelli di |f| (1, 2, 5, 10…), curva nera spessa = livello della *quota*. I pallini rossi numerati sono le radici. | Rotella o pizzico per zoomare verso il cursore; trascina (o tasto destro) per spostarti. |
-| **Sezione** (*Vista intersezione piano di sezione*) | Due grafici impilati, con lo stesso asse orizzontale **t**: sopra Re f (rosso tratteggiato) e |f| (blu) lungo una retta del piano; sotto la fase arg f. All'inizio la retta è l'asse reale, cioè il grafico «da scuola». Pallini rossi = radici sulla retta, cerchi = massimi e minimi relativi di Re f (solo quando lungo la retta i coefficienti sono reali). | Rotella per zoomare; trascina per spostarti; **Zoom radici** per centrare sulle radici; **⚙️** per scegliere la retta (sezione 11). |
+| **Vista 3D** | La superficie |f(z)|, colorata con la fase. Dischi tratteggiati: |z| costante. Lungo la retta di sezione (all'inizio l'asse reale), due curve: Re f (rosso tratteggiato, con segno) e |f| (blu). | Trascina per ruotare; rotella o pizzico per ingrandire; tasto destro e trascina (o Maiusc + trascina; telefono: pressione lunga e trascina) per spostare il centro della vista. |
+| **Piano di Gauss** | La mappa dall'alto: colore = fase, curve sottili = livelli di |f| (1, 2, 5, 10…), curva nera spessa = livello della *quota*. I pallini rossi numerati sono le radici. | Rotella o pizzico per zoomare verso il cursore; tasto destro e trascina (o Maiusc + trascina; telefono: un dito) per spostarti; clic sinistro (telefono: pressione lunga) per posizionare il punto giallo. |
+| **Sezione** (*Vista intersezione piano di sezione*) | Due grafici impilati, con lo stesso asse orizzontale **t**: sopra Re f (rosso tratteggiato), Im f (verde puntinato) e |f| (blu) lungo una retta del piano; sotto la fase arg f. All'inizio la retta è l'asse reale, cioè il grafico «da scuola». Pallini rossi = radici sulla retta, cerchi = massimi e minimi relativi di Re f (solo quando lungo la retta i coefficienti sono reali). | Rotella per zoomare; trascina per spostarti; **Zoom radici** per centrare sulle radici; **⚙️** per scegliere la retta (sezione 11). |
 
 Sotto le tre finestre trovi due riquadri: **Radici** (l'elenco `z0, z1, …` con valori e moduli) e **Punto scelto** (le informazioni sul punto giallo, quando i bacini di Newton sono attivi). Appena sopra c'è una riga di sintesi, per esempio *«Grado 3. Valori critici di |f| (sella): 1.000. |f| sopra l'ultimo valore critico: una sola curva chiusa che racchiude tutte le radici.»*
 
+Con un mouse o un trackpad, passando sopra il piano di Gauss o il grafico di sezione, una riga **Cursore:** mostra in tempo reale i valori nel punto sotto il puntatore: z, |z|, arg z, Re f(z), Im f(z), |f(z)| e arg f(z). Sul telefono, che non ha un puntatore in hover, la riga compare quando posizioni il pallino giallo con la pressione lunga. A schermo intero la riga diventa un pannello sovrapposto al grafico.
+
 ### I pulsanti importanti
 
-- **Readme - Ver. x.y**, a destra del titolo in alto: apre in una nuova scheda il Readme su GitHub, punto d'accesso a questo manuale, alle note storiche, al changelog e alle note legali. Il numero è la versione dell'Esploratore che stai usando.
-- **Condividi questa vista** (icona a tre nodi collegati), accanto al titolo e a sinistra di Readme: copia negli appunti un link alla tua funzione e alla tua vista (sezione 13). Funziona anche con l'editor chiuso.
-- **f(z)**, in basso a sinistra nella vista 3D: apre l'**editor della funzione** (sezione 5).
+- **Guida - Ver. x.y**, a destra del titolo in alto: apre in una nuova scheda il Readme su GitHub, punto d'accesso a questo manuale, alle note storiche, al changelog e alle note legali. Il numero è la versione dell'Esploratore che stai usando.
+- **Condividi questa vista** (icona a tre nodi collegati con la scritta «Condividi»), accanto al titolo e a sinistra di Guida: copia negli appunti un link alla tua funzione e alla tua vista (sezione 13). Funziona anche con l'editor chiuso.
+- **f(z)**, in basso a sinistra nella vista 3D: apre l'**editor della funzione** (sezione 5). Lo stesso fa un clic sull'etichetta **f(z)** della formula in cima alla pagina; un clic sulla formula stessa, invece, alterna la forma normale e la forma fattorizzata (`K·(z−a)^m·…`).
 - **↶** e **↷**, subito a destra di f(z): **annullano** e **ripristinano** l'ultima conferma (sezione 5). Compaiono solo quando c'è qualcosa da annullare o da ripristinare.
 - **⚙️ nella vista 3D**: i controlli della superficie.
 - **⚙️ nel piano di Gauss**: i controlli del piano e dei bacini di Newton.
-- **⚙️ nella vista Sezione**: la scelta della retta di sezione (sezione 11).
+- **⚙️ nella vista Sezione**: la scelta della retta di sezione e le caselle per mostrare o nascondere le curve Re f e Im f (sezione 11).
 - **⛶** (angolo in alto a destra delle finestre): schermo intero per quella finestra.
 - Solo su computer, in alto: **Disposizione** (le tre finestre su 1, 2 o 3 righe) e **Tutto schermo**.
 
 ### Il pannello ⚙️ della vista 3D
 
+Il pannello ha tre pagine, che scegli con i tre pulsanti in alto: **Vista**, **Dettaglio** e **Rendering**.
+
+**Pagina Vista**
+
 | Controllo | A che cosa serve |
 |---|---|
-| **Finestra R** | Quanto piano mostrare (il «raggio» della regione visibile). |
+| **Range pdg** | Quanto piano mostrare (*Range Piano di Gauss*, il «raggio» R della regione visibile). Accanto allo slider c'è un campo numerico: il valore può arrivare a **100**. Un clic sull'etichetta blu alterna il fondo scala dello slider tra 10 e 100 senza cambiare il valore. |
 | **Quota \|f\|** | L'altezza del *piano grigio* che taglia la superficie. |
+| **Centro** | Il punto del piano complesso al centro della finestra 3D (campi **Re** e **Im**). Il pulsante **0** lo riporta nell'origine. Vedi «Esplorare oltre l'origine» qui sotto. |
 | **Altezza** | Quanto è «alta» la superficie (amplifica o appiattisce). |
 | **Offset \|f\|** | Sposta il grafico in su o in giù nel riquadro. Doppio clic = ricalibra. |
-| **Dominio** | *Radiale* (un disco) oppure *Cartesiano* (un quadrato). |
 | **Metà Im z ≥ 0** | Mostra solo il semipiano superiore (vedi sezione 9). |
-| **Sopra la quota** | La parte di superficie sopra il piano grigio: *piena*, *trasparente* o *nascosta*. |
 | **Altezza logaritmica** | Comprime le altezze grandi, così si vedono anche i dettagli vicino alle radici. |
-| **Curve reali nel 3D** | Mostra o nasconde Re f e \|f\| sopra la retta di sezione (all'inizio l'asse reale). Le curve seguono la retta e restano dentro il dominio \|z\| ≤ R. |
 | **Rotazione** | Fa girare lentamente il grafico. |
 | **Anima \|f\|** | Fa salire e scendere la quota avanti e indietro, da sola. |
 
-### Il pannello ⚙️ del piano
+**Pagina Dettaglio**
 
 | Controllo | A che cosa serve |
 |---|---|
-| **Bacini di Newton** | Attiva il metodo di Newton (sezione 12). |
-| **Iterazioni** | Quanti passi del metodo di Newton si usano per colorare i bacini. |
-| **Palette bacini** / **Palette fase** | Altre tavolozze di colori, anche pensate per chi ha difficoltà a distinguere i colori (*Okabe–Ito*). |
-| **Bande di \|f\|** | Mostra le fasce di livello di |f|. |
+| **Sopra la quota** | La parte di superficie sopra il piano grigio: *piena*, *trasparente* o *nascosta*. |
+| **Dominio** | *Radiale* (un disco) oppure *Cartesiano* (un quadrato). |
+| **Curve reali nel 3D** | Mostra o nasconde Re f e \|f\| sopra la retta di sezione (all'inizio l'asse reale). Le curve seguono la retta e restano dentro il dominio \|z\| ≤ R. |
+| **Sezione di intersezione** | Mostra o nasconde la retta di sezione (la traccia magenta tratteggiata) nel 3D e sul piano di Gauss. È la stessa casella del pannello del piano: le due restano sincronizzate. |
+| **Palette fase** | La tavolozza dei colori della fase: *Attuale*, *OKLCH isoluminante*, *OKLCH luminanza variabile*, *Rosso/blu (segno della fase)*, *Grigi + giallo ogni 30°*, *Grigi + arancione ogni 45°*. |
+
+**Pagina Rendering**
+
+| Controllo | A che cosa serve |
+|---|---|
+| **Superficie liscia** | Colore e ombreggiatura vengono calcolati pixel per pixel, invece che per sfaccettature: la superficie appare liscia senza che la mesh cambi. Richiede WebGL2. |
+| **Materiale** | **Opaco**, **Lucido** (riflette un ambiente da studio fisso rispetto alla camera, anche a luci spente), **Wireframe adattivo** o **Wireframe denso** (solo il reticolo di triangoli, senza superficie; nell'adattivo la mesh si infittisce dove l'altezza varia di più). Nei due wireframe superficie liscia, luci e materiale non hanno effetto e i loro controlli si spengono. |
+| **Spot superiore**, **Softbox superiore** | Due luci da sopra la figura: un faretto e una sorgente larga e morbida. |
+| **Spot inferiore**, **Softbox inferiore** | Due luci da sotto il piano di Gauss. Contano solo dove illuminano il lato inferiore della superficie. |
+| **Mostra indicatori delle luci** | Piccoli coni (spot) e piramidi (softbox) nella posizione e nella direzione reali delle luci; quelle spente appaiono attenuate. |
+
+Ogni luce ha la sua casella e un suo slider di intensità (un *dimmer* logaritmico). Le quattro luci sono indipendenti: puoi accenderne una, tutte o nessuna. Sono fissate alla scena, non alla camera, quindi ruotano insieme alla superficie e agli assi. Luci, materiale e superficie liscia cambiano solo il disegno, non i calcoli.
+
+#### Esplorare oltre l'origine
+
+La vista 3D non è obbligata a restare attorno all'origine. **Tasto destro e trascina**, oppure **Maiusc + trascina** (telefono: **pressione lunga e trascina**), sposta il centro della finestra: il punto afferrato resta sotto il cursore e la superficie viene ricalcolata attorno al nuovo centro, così puoi guardare qualunque zona del piano. Gli stessi valori sono nei campi **Centro** (Re e Im) della pagina Vista, e un'etichetta «Centro …» in basso a destra ti ricorda che non sei sull'origine.
+
+Da sapere:
+
+- assi, cerchi di riferimento, radici, punto giallo e retta di sezione restano riferiti al piano complesso vero, non al centro della finestra; gli assi compaiono solo se rientrano nella finestra;
+- con **Metà Im z ≥ 0** il centro resta sull'asse reale: lo spostamento verticale è disattivato e il campo Im è bloccato;
+- il piano di Gauss e il grafico di sezione hanno finestre proprie e **non** seguono il centro 3D;
+- la scala verticale è normalizzata sul massimo visibile nella finestra: spostando il centro l'altezza del grafico può cambiare;
+- il centro viene salvato nel JSON e nei link, e Annulla/Ripristina lo tengono in conto; confermando una nuova f(z) il centro torna nell'origine;
+- con i **Bacini di Newton** attivi, il tasto destro **senza trascinare** (telefono: pressione lunga) posiziona il punto giallo sulla superficie; se trascini, sposti la vista. Sul telefono, dopo la pressione lunga il punto giallo viene posizionato subito e il trascinamento successivo sposta la vista.
+
+### Il pannello ⚙️ del piano
+
+Ha due pagine, **Generale** e **Newton**. La pagina che si apre è quella coerente con lo stato dei bacini; **Vista intera** è sempre disponibile in entrambe.
+
+**Pagina Generale**
+
+| Controllo | A che cosa serve |
+|---|---|
+| **Sposta radice** (✋) | Entra nella modalità per trascinare le radici sul piano (sezione 8). |
+| **Radice dal piano** (+) | Tocca un punto del piano e diventa una nuova radice (sezione 8). Resta spento se la scelta è già in corso, se il grado è già 8 o se f(z) è costante. |
+| **Modalità cancellazione radice** (X blu) | Seleziona una radice sul piano e la cancella (sezione 8). |
+| **Palette fase** | Come nel pannello 3D. |
+| **Bande di \|f\|** | Mostra le fasce di livello di \|f\|. |
+| **Sezione di intersezione** | Come nel pannello 3D (casella condivisa). |
+| **Range pdg** | Lo stesso controllo della vista 3D. |
 | **Quota \|f\|** | Lo stesso slider della vista 3D. |
 | **\|f\| = valore critico** | Porta la quota su un valore critico (a ogni clic passa al successivo). |
-| **Passo di Newton**, **Riporta il punto** | Muovono il punto giallo (sezione 12). |
-| **Tuffati nel punto giallo** / **nell'origine** | Uno zoom animato molto profondo. |
+| **Adatta R alle radici** | Sceglie una finestra che contenga tutte le radici, calcolata rispetto al centro corrente. |
 | **Vista intera** | Ripristina l'inquadratura del piano. |
-| **Adatta R alle radici** | Sceglie una finestra che contenga tutte le radici. |
-| **Radice dal piano** | Con la scelta sul piano: tocca un punto e diventa una nuova radice (apre da solo l'editor in Forma a radici). Resta spento se la scelta è già in corso, se il grado è già 8 o se f(z) è costante. |
 
-> 📱 **Sul telefono** le barre in alto non ci sono: tutto passa dai tre ingranaggi e dal pulsante **f(z)**. Per scegliere il punto di Newton nel piano **tieni premuto** un istante (come per far comparire un menu); nella vista 3D lo stesso gesto, oppure il tasto destro del mouse su computer.
+**Pagina Newton**
+
+| Controllo | A che cosa serve |
+|---|---|
+| **Bacini di Newton** | Attiva il metodo di Newton (sezione 12). Finché è spento, tutti i controlli qui sotto sono disabilitati. |
+| **Iterazioni** | Quanti passi del metodo di Newton si usano per colorare i bacini. |
+| **Palette bacini** | Altre tavolozze di colori, anche pensate per chi ha difficoltà a distinguere i colori (*Okabe–Ito*). |
+| **Passo di Newton**, **Riporta il punto** | Muovono il punto giallo (sezione 12). |
+| **Tuffati nel punto giallo** | Uno zoom animato molto profondo. |
+| **Vista intera** | Ripristina l'inquadratura del piano. |
+
+> 📱 **Sul telefono** le barre in alto non ci sono: tutto passa dai tre ingranaggi e dal pulsante **f(z)**. Sul piano un dito sposta e due dita fanno il pizzico (zoom). Per scegliere il punto giallo nel piano **tieni premuto** un istante (come per far comparire un menu); nella vista 3D lo stesso gesto, con i Bacini di Newton attivi, oppure il tasto destro del mouse (senza trascinare) su computer.
 
 ## 5. Primi passi: la tua prima funzione
 
@@ -188,7 +245,7 @@ Quello che modifichi nell'editor resta in una **bozza**: finché non premi **✓
 
 Quando confermi una nuova funzione, lo strumento fa anche due regolazioni utili al posto tuo:
 
-- sceglie una **Finestra R** che contenga tutte le radici;
+- sceglie un **Range pdg** (il raggio R della finestra) che contenga tutte le radici, e riporta il centro della vista 3D nell'origine;
 - mette la **quota |f|** sopra l'ultimo valore critico e a metà strada con il massimo visibile di |f|: così all'inizio vedi subito il quadro d'insieme.
 
 Se non ti piacciono, cambiale con gli slider dei pannelli ⚙️.
@@ -206,10 +263,10 @@ Passando il cursore sui pulsanti compare un suggerimento. Sulla tastiera funzion
 
 Come si comportano:
 
-- **Si ricorda un solo passo**: l'ultima conferma. Una nuova conferma prende il posto della precedente.
-- **Torna indietro più della sola formula.** Insieme alla funzione (coefficienti e radici) tornano anche i parametri di visualizzazione che la conferma aveva cambiato: la **Finestra R**, la **quota |f|** e l'**offset** scelti in automatico, oppure quelli contenuti in un JSON incollato (compresa la retta di sezione, se il JSON ne contiene una). L'inquadratura del 3D che hai ruotato non viene toccata, salvo che la conferma l'abbia cambiata (un JSON con la camera).
+- **Si ricorda un solo passo**: l'ultima conferma. Una nuova conferma prende il posto della precedente. Contano come «conferma» anche l'inserimento di una radice dal piano, la cancellazione di una radice e una sessione di **Sposta radice** (sezione 8).
+- **Torna indietro più della sola formula.** Insieme alla funzione (coefficienti e radici) tornano anche i parametri di visualizzazione che la conferma aveva cambiato: il **Range pdg**, la **quota |f|** e l'**offset** scelti in automatico, oppure quelli contenuti in un JSON incollato (compresa la retta di sezione, se il JSON ne contiene una). L'inquadratura del 3D che hai ruotato non viene toccata, salvo che la conferma l'abbia cambiata (un JSON con la camera).
 - **I pulsanti compaiono solo se servono.** Appena aperto lo strumento non c'è niente da annullare, quindi non si vede nessuno dei due. Dopo una conferma compare **↶**; dopo un Annulla scompare **↶** e compare **↷**, e viceversa.
-- **Con l'editor aperto sono spenti**, anche le scorciatoie: la bozza che stai scrivendo partiva dalla funzione attuale, e cambiarla sotto i tuoi piedi creerebbe confusione. Conferma o chiudi con ✕, poi usali.
+- **Con l'editor aperto sono spenti**, anche le scorciatoie: la bozza che stai scrivendo partiva dalla funzione attuale, e cambiarla sotto i tuoi piedi creerebbe confusione. Conferma o chiudi con ✕, poi usali. Lo stesso vale mentre sei in modalità Sposta radice, cancellazione o scelta di una radice dal piano.
 - **Nelle caselle di testo** (per esempio la modalità Testo) Ctrl+Z continua ad annullare la digitazione, come in qualsiasi altro programma.
 - Se premi **✓ Conferma** senza aver cambiato niente, non viene registrato nulla.
 
@@ -221,8 +278,8 @@ Annulla e Ripristina si scambiano lo stato: ogni volta che premi uno, l'altro ri
 
 Due cose da sapere:
 
-- Se dopo un Annulla **trascini una radice** sul piano (**Sposta radice**), il Ripristino non è più disponibile: la tua nuova modifica ha preso il posto di quella annullata.
-- Trascinare una radice non ha un Annulla suo: **↶** riporta la funzione a prima dell'ultima *conferma*, spostamenti compresi.
+- Se dopo un Annulla fai una nuova modifica confermata (compreso uno spostamento di radici con **Conferma**), il Ripristino non è più disponibile: la tua nuova modifica ha preso il posto di quella annullata.
+- Una sessione di **Sposta radice** vale come **una sola** operazione, anche se hai spostato più radici e più volte: **↶** le annulla tutte insieme. Mentre sei dentro la sessione hai però un tuo **Annulla** (sezione 8).
 
 ### Le regole del gioco
 
@@ -286,25 +343,24 @@ Quante radici *distinte* può avere un polinomio di grado 8? Da 1 (provaci con `
 
 Finora hai dato un polinomio e hai visto le radici. Adesso facciamo il contrario: **scegli le radici** e lascia che lo strumento costruisca il polinomio.
 
-Nell'editor passa a **Forma a radici**. Ogni pagina descrive una radice con tre ingredienti:
+Nell'editor passa a **Forma a radici**. In cima c'è il riquadro del **coefficiente globale K** (si apre e si chiude con la freccia ▾), poi una pagina per ogni radice distinta. Ogni pagina descrive una radice con due ingredienti:
 
 - la radice **a** (con i suoi due slider: parte reale `Re a` e immaginaria `Im a`);
-- una **molteplicità m** (quante volte la radice compare);
-- un **coefficiente di scala a′** (parti `Re a′` e `Im a′`), diverso da zero.
+- una **molteplicità molt** (quante volte la radice compare).
 
-Il polinomio è il prodotto: **f(z) = ∏ a′ · (z − a)^m**, con una pagina per ogni radice distinta. Il coefficiente a′ è un *fattore di scala*: moltiplicandosi con quelli delle altre pagine fissa il coefficiente direttivo di tutto il polinomio.
+Il polinomio è il prodotto: **f(z) = K · ∏ (z − a)^molt**, con una pagina per ogni radice distinta. **K** è un unico numero complesso, diverso da zero, per tutta la funzione (`Re(K)` e `Im(K)`; il riquadro mostra anche il modulo |K| e la fase arg(K)). K coincide con il **coefficiente direttivo** del polinomio.
 
-Le radici si numerano **z0, z1, …**: la pagina 1 comprende z0 (e z1 se m = 2, con etichetta tipo `z0–z1`), e così via. Lo stesso numero indica la stessa radice nel piano e nel box Radici.
+Le radici si numerano **z0, z1, …**: la pagina 1 comprende z0 (e z1 se molt = 2, con etichetta tipo `z0–z1`), e così via. Lo stesso numero indica la stessa radice nel piano e nel box Radici.
 
 ### Gli strumenti per aggiungere radici
 
 | Pulsante | Che cosa fa |
 |---|---|
-| **+ Radice** | Aggiunge una radice nuova (m = 1, a′ = 1). |
-| **🗑** | Diminuisce m di 1; se m = 1 elimina la pagina. L'ultima radice non si può cancellare. |
-| **Coniugata** | Aggiunge il **coniugato** della radice corrente (lo specchio rispetto all'asse reale). |
-| **Opposta** | Aggiunge l'**opposto** −a (lo specchio rispetto all'origine). |
-| **Radice dal piano** | L'editor si nasconde: **tocca un punto del piano di Gauss** e quella diventa la nuova radice (arrotondata a due decimali). |
+| **+ Radice** | Aggiunge una radice nuova (molt = 1). |
+| **🗑** | Diminuisce molt di 1; se molt = 1 elimina la pagina. L'ultima radice non si può cancellare. |
+| **Coniugata** | Aggiunge il **coniugato** della radice corrente (lo specchio rispetto all'asse reale). Se quella radice esiste già (per esempio il coniugato di una radice reale è la radice stessa) ne aumenta la molteplicità. |
+| **Opposta** | Aggiunge l'**opposto** −a (lo specchio rispetto all'origine); anche qui, se esiste già, cresce la molteplicità. |
+| **Radice dal piano** | L'editor si nasconde: **tocca un punto del piano di Gauss**, poi **Conferma**; quel punto diventa la nuova radice (arrotondata a due decimali). Dettagli più sotto. |
 
 Il grado totale (la somma delle molteplicità) non supera mai **8**: quando lo raggiungi, i pulsanti di aggiunta si spengono.
 
@@ -318,14 +374,38 @@ Il grado totale (la somma delle molteplicità) non supera mai **8**: quando lo r
 
 > 🎯 Hai appena fatto, a occhio, un'espansione di polinomi che a scuola richiede un foglio intero.
 
-### Che cosa fa a′?
+### Che cosa fa K?
 
-Torna in Forma a radici e prova a cambiare solo `a′`:
+Torna in Forma a radici, apri il riquadro **K** e prova a cambiarlo. Le radici non si muovono mai:
 
-- **Re a′ = 2**: la superficie si alza (tutti i moduli raddoppiano), le radici non si muovono;
-- **Im a′ = 1, Re a′ = 0** (cioè a′ = *i*): le radici restano ferme, la superficie ha la stessa forma, ma **tutti i colori ruotano di 90°**.
+- **Re(K) = 2**: la superficie si alza (tutti i moduli raddoppiano);
+- **Im(K) = 1, Re(K) = 0** (cioè K = *i*): le radici restano ferme, la superficie ha la stessa forma, ma **tutti i colori ruotano di 90°**.
 
 Moltiplicare la funzione per un numero complesso fa due cose: ne **scala il modulo** e ne **ruota la fase**. Ne parliamo ancora nella sezione 11.
+
+Quando cambi **solo K**, la vista non salta: lo strumento non rifà l'inquadratura e non ricalcola la scala verticale, così vedi proprio la superficie cambiare pendenza. La scala si riadatta alla prima ricostruzione dovuta ad altro (Range pdg, dominio, centro, altezza).
+
+### Lavorare direttamente sul piano di Gauss
+
+Per intervenire sulle radici non serve passare dall'editor: dalla pagina **Generale** del ⚙️ del piano hai tre modalità, che lavorano tutte sul piano.
+
+**Sposta radice (✋).** All'ingresso compare una barra con il solo pulsante **Annulla**. Sul computer clicca una radice e trascina; sul telefono tieni premuto su una radice e trascina. Puoi spostare più radici, e più volte la stessa. Dopo il primo spostamento effettivo compare anche **Conferma**.
+
+- **Conferma** applica tutto; se qualche radice è finita fuori dal dominio 3D, la vista si riadatta da sola, altrimenti non cambia niente.
+- **Annulla** (oppure **Esc**) riporta f(z) com'era prima di entrare nella modalità e non tocca ↶ e ↷.
+- L'intera sessione, anche con più radici e più trascinamenti, conta come **una sola** operazione per ↶ e ↷: i singoli trascinamenti non creano livelli intermedi.
+- Zoom e spostamento del piano di Gauss restano indipendenti dalla vista 3D.
+
+> 💡 **Prova subito:** parti da `z^3 - z`, entra in **Sposta radice**, trascina la radice in 1 fuori dall'asse reale e premi **Conferma**. Con coefficienti non più reali «Metà Im z ≥ 0» si spegne. Poi premi **↶**: tutto torna com'era, in un colpo solo.
+
+**Radice dal piano (+).** Clicca o tocca un punto del piano: compare una **radice candidata** (una croce rossa con contorno nero e un cerchio tratteggiato bianco) che puoi **trascinare** prima di decidere; le sue coordinate sono nel riquadro in basso. **Conferma** la aggiunge, **Annulla** (o **Esc**) esce senza cambiare niente. Se parti dal ⚙️ del piano tutto resta sul piano e l'editor non si apre; se parti dall'editor in Forma a radici, la radice finisce nella bozza e l'editor riappare.
+
+**Modalità cancellazione radice (X blu).** Clicca la radice da cancellare: compare una **X blu** sopra di essa e il riquadro ti chiede di confermare le coordinate. **Conferma** cancella, **Annulla** (o **Esc**) esce.
+
+- Se la radice è multipla perde **una** unità di molteplicità; il coefficiente K non cambia.
+- Dopo la conferma si ricalcolano il Range pdg e la quota |f|, come quando inserisci una radice dal piano, e la cancellazione si annulla con **↶** o **Ctrl+Z**.
+- Mentre la modalità è attiva il clic sul piano non posiziona il punto giallo e Ctrl+Z è bloccato.
+- Il comando è spento se resta una sola radice (una nota spiega il perché: puoi spostarla, oppure aggiungerne una nuova e poi cancellare quella vecchia) e anche mentre l'editor f(z) ha una bozza aperta, per non scartarla.
 
 ## 9. Esplorazione 4: simmetrie e coniugati
 
@@ -365,7 +445,7 @@ La riga sopra le finestre lo dice con parole tue: *«|f| sotto il primo valore c
 
 ### Più selle, più valori critici
 
-Prova con `z^4 - 5z^2 + 4`. Qui i valori critici sono **due**: 2,250 e 4,000 (la riga di sintesi li elenca). Usa il pulsante **|f| = valore critico** nel pannello del piano: a ogni clic la quota va sul valore critico successivo, e vedi due «isole» fondersi proprio al clic giusto.
+Prova con `z^4 - 5z^2 + 4`. Qui i valori critici sono **due**: 2,250 e 4,000 (la riga di sintesi li elenca). Usa il pulsante **|f| = valore critico** nel pannello del piano (pagina **Generale**): a ogni clic la quota va sul valore critico successivo, e vedi due «isole» fondersi proprio al clic giusto.
 
 > 🔭 **Un fatto bello:** i punti critici di un polinomio (gli zeri di f′) stanno **sempre dentro il più piccolo poligono convesso che contiene le radici**. È il *teorema di Gauss–Lucas*. Controllalo sul piano: i passi di montagna non vanno mai fuori dal «recinto» delle radici.
 
@@ -384,12 +464,13 @@ La terza finestra, appena aperta, mostra l'asse reale: scegli `z^3 - z`.
 
 - La curva **rossa tratteggiata** è **Re f**, la *parte reale* di f, con il segno: se i coefficienti sono reali, sull'asse reale è proprio la f(x) che sale e scende come nei grafici di scuola.
 - La curva **blu** è |f|: il valore assoluto (il modulo), sempre sopra lo zero.
+- La curva **verde puntinata** è **Im f**, la parte immaginaria. Con coefficienti reali, sull'asse reale vale sempre zero.
 - I **pallini rossi** sono le radici che stanno sulla retta: −1, 0, 1.
 - I **cerchi** sono massimi e minimi relativi di Re f.
 
-Rotella per zoomare, trascina per spostarti, **Zoom radici** per centrarti sulle radici, **⛶** per lo schermo intero. L'intervallo dell'asse orizzontale si adatta da solo, così valori molto grandi di |f| non schiacciano i dettagli (i valori non vengono alterati; le caratteristiche rimaste fuori intervallo sono elencate sotto il grafico).
+Rotella per zoomare, trascina per spostarti, **Zoom radici** per centrarti sulle radici, **⛶** per lo schermo intero. Le curve Re f e Im f si possono nascondere con le caselle **Mostra Re f(z)** e **Mostra Im f(z)** del ⚙️ della finestra (i loro valori restano sempre nella riga **Cursore:**). L'intervallo dell'asse orizzontale si adatta da solo, così valori molto grandi di |f| non schiacciano i dettagli (i valori non vengono alterati; le caratteristiche rimaste fuori intervallo sono elencate sotto il grafico).
 
-Se un coefficiente ha parte immaginaria, f non è più un numero reale: *massimo* e *minimo* non hanno più senso (non si possono ordinare i numeri complessi) e i cerchi spariscono. Restano il modulo |f| e la parte reale Re f. In quel caso, dove Re f si annulla compare una **freccia arancione** con la scritta «Im f = …»: **non è una radice**, perché la parte immaginaria è ancora diversa da zero. Una vera radice richiede che si annullino *entrambe* (e quindi il modulo): è il pallino rosso.
+Se un coefficiente ha parte immaginaria, f non è più un numero reale: *massimo* e *minimo* non hanno più senso (non si possono ordinare i numeri complessi) e i cerchi spariscono. Restano il modulo |f|, la parte reale Re f e la parte immaginaria Im f. In quel caso, dove Re f si annulla compare una **freccia arancione** con la scritta «Im f = …»: **non è una radice**, perché la parte immaginaria è ancora diversa da zero. Una vera radice richiede che si annullino *entrambe* (e quindi il modulo): è il pallino rosso.
 
 > 💡 Il modulo può toccare lo zero senza attraversarlo (è sempre ≥ 0), mentre Re f cambia segno. Un punto in cui Re f = 0 non è dunque una radice, e una radice è un punto dove |f| = 0.
 
@@ -487,10 +568,10 @@ Funziona meravigliosamente... quasi sempre. Ed è sul «quasi» che nascono i fr
 
 Ci sono due modi equivalenti:
 
-- apri il **⚙️ del piano** e spunta **Bacini di Newton**;
+- apri il **⚙️ del piano**, vai alla pagina **Newton** e spunta **Bacini di Newton**;
 - oppure, nel riquadro **Punto scelto**, clicca sulle parole blu **Attiva la spunta**.
 
-Poi **clicca nel piano** (sul telefono: *tieni premuto un istante*) per piazzare il **punto giallo**: da lì parte il metodo di Newton, con il suo percorso disegnato. Il riquadro **Punto scelto** scrive le coordinate. **Passo di Newton** lo fa avanzare di un passo, **Riporta il punto** lo rimette dov'era.
+Poi **clicca nel piano** (sul telefono: *tieni premuto un istante*) per piazzare il **punto giallo**: da lì parte il metodo di Newton, con il suo percorso disegnato. Sul computer, tenendo premuto il tasto sinistro puoi anche trascinare e il punto ti segue. Il riquadro **Punto scelto** scrive le coordinate. **Passo di Newton** lo fa avanzare di un passo; **Riporta il punto** lo rimette sull'ultimo punto di partenza che hai scelto (i passi di Newton muovono il punto giallo ma non cambiano il punto di partenza). Per spegnere i bacini e tornare ai colori della fase clicca sulla scritta blu **Modalità fase**, sempre nel riquadro Punto scelto.
 
 ### I bacini
 
@@ -506,7 +587,7 @@ Perché succede? Vicino ai punti dove `f′(z) = 0` (i passi di montagna della s
 
 ### Tuffati!
 
-Con i bacini attivi, premi **Tuffati nel punto giallo** (o **Tuffati nell'origine**). L'inquadratura si infila nel frattale con uno zoom animato di circa mille volte. Guarda i dettagli: spirali, copie in miniatura dell'insieme di partenza, bordi che non diventano mai lisci.
+Con i bacini attivi, premi **Tuffati nel punto giallo**. L'inquadratura si infila nel frattale con uno zoom animato di circa mille volte. Guarda i dettagli: spirali, copie in miniatura dell'insieme di partenza, bordi che non diventano mai lisci.
 
 ### Radici doppie, Newton lento
 
@@ -528,27 +609,31 @@ Nell'editor, la terza modalità è **Testo**: una casella dove scrivere il polin
 | `(z-1)^2(z+1)` | un prodotto: viene espanso da solo |
 | `i(z^2 - 1)` | moltiplicazione per *i* |
 
-Premi **Interpreta** (o direttamente **✓ Conferma**): se la formula è sbagliata, il messaggio ti dice *che cosa* non va e *dove* (la posizione è evidenziata nella casella), e la tua formula resta lì da correggere. Gli errori più comuni: parentesi non chiusa, un grado maggiore di 8, un simbolo non riconosciuto.
+Sotto la casella ci sono due scelte: **Forma normale** (quella di partenza, a ogni apertura dell'editor) e **Forma fattorizzata**, che mostra il testo come `K·(z−r₁)·…·(z−rₙ)` con le molteplicità come esponenti (`(z−1)^2` al posto di `(z−1)(z−1)`); un K uguale a 1 viene omesso, uno uguale a −1 lascia solo il segno −. **Interpreta** capisce entrambe le forme, qualunque sia quella selezionata, e la scelta è indipendente da quella della formula in cima alla pagina.
+
+Premi **Interpreta** (o direttamente **✓ Conferma**): se la formula è sbagliata, il messaggio ti dice *che cosa* non va e *dove* (la posizione è evidenziata nella casella), e la tua formula resta lì da correggere. Gli errori più comuni: parentesi non chiusa, un grado maggiore di 8, un simbolo non riconosciuto, un esponente non intero come `z^2.5` (sono ammessi solo esponenti interi ≥ 0), un numero troppo grande per essere rappresentato (come `1e400`). In caso di errore lo stato precedente resta com'era.
 
 ### Il salvataggio
 
-In ognuna delle tre forme dell'editor, il pulsante **Esporta JSON** copia negli appunti un testo con **tutto**: la funzione (coefficienti e radici) e l'aspetto (finestra R, quota, altezza, palette, dominio, bacini di Newton, inquadratura del 3D e del piano, retta di sezione…). Incollalo dove vuoi: nelle note, in un'e-mail, in un messaggio ai compagni, in un file di testo. Somiglia a questo:
+In ognuna delle tre forme dell'editor, il pulsante **Esporta JSON** copia negli appunti un testo con **tutto**: la funzione (coefficienti e radici) e l'aspetto (Range pdg, quota, altezza, palette, dominio, bacini di Newton, centro e inquadratura del 3D, inquadratura del piano, punto giallo, retta di sezione e range del grafico di sezione, superficie liscia e luci…). Incollalo dove vuoi: nelle note, in un'e-mail, in un messaggio ai compagni, in un file di testo. Somiglia a questo:
 
 ```json
 {
   "app": "polinomi-fz",
-  "version": "1.4",
+  "version": "2.8",
   "f": {
     "formula": "z3 − 1",
     "coeffs": [[-1, 0], [0, 0], [0, 0], [1, 0], [0, 0], …],
-    "roots": [ … ]
+    "ap": [1, 0],
+    "roots": [ {"a": [1, 0], "m": 1}, … ]
   },
   "view": { "R": 1.8, "level": 2, "domain": "polar",
+            "center3D": { "re": 0, "im": 0 },
             "section": { "mode": "A", "offset": 0, "angleDeg": 0 }, … }
 }
 ```
 
-Il campo `version` dice con quale versione del formato è stato scritto il file (ora **1.4**). I file salvati con le versioni precedenti si caricano senza problemi (se non contengono la retta di sezione, riparti dal taglio sull'asse reale); se il file è più recente del programma, i campi sconosciuti vengono ignorati e un avviso te lo segnala.
+Il campo `ap` è il coefficiente globale K (ha tenuto il vecchio nome per compatibilità con i file esistenti), e ogni radice è descritta da `a` e `m` (la molteplicità). Il campo `version` dice con quale versione del formato è stato scritto il file (ora **2.8**, come la versione dello strumento). I file salvati con le versioni precedenti si caricano senza problemi: quelli 1.x e 2.x, compresi i file fino alla 2.4 in cui ogni radice aveva un proprio fattore *a′* (il K globale è il loro prodotto); se non contengono la retta di sezione, riparti dal taglio sull'asse reale. Se il file è di una versione 2.x più recente dello strumento, i campi sconosciuti vengono ignorati e un avviso te lo segnala; un file con numero di versione maggiore (3.x e oltre) viene rifiutato.
 
 ### Il ripristino
 
@@ -558,19 +643,19 @@ Un altro giorno: apri l'Esploratore, **f(z)** → **Testo**, **incolla il JSON**
 
 Il JSON è completo ma scomodo da mandare in giro. Quando vuoi solo dire a qualcuno «guarda che bella», c'è il **link**.
 
-In alto, accanto al titolo e a sinistra di **Readme**, trovi l'icona **Condividi questa vista** (tre punti collegati). Funziona con l'editor chiuso o aperto. Premila: negli appunti finisce un indirizzo di questo tipo:
+In alto, accanto al titolo e a sinistra di **Guida**, trovi il pulsante **Condividi** (l'icona dei tre punti collegati). Funziona con l'editor chiuso o aperto. Premila: negli appunti finisce un indirizzo di questo tipo:
 
 ```
 https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html#v=eyJhcHAiOiJwb2xpbm9taS1meiIs…
 ```
 
-Chi lo apre, dal computer o dal telefono, vede **subito** la tua funzione con la tua vista (finestra R, quota, altezza, offset, dominio, tavolozze, bacini di Newton, inquadratura del 3D e del piano, punto giallo, retta di sezione): niente da incollare, niente da confermare. La parte dopo `#v=` è la configurazione codificata e resta nel browser: non viene inviata al server della pagina.
+Chi lo apre, dal computer o dal telefono, vede **subito** la tua funzione con la tua vista (Range pdg, quota, altezza, offset, dominio, tavolozze, bacini di Newton, centro e inquadratura del 3D, inquadratura del piano, punto giallo, retta di sezione): niente da incollare, niente da confermare. La parte dopo `#v=` è la configurazione codificata e resta nel browser: non viene inviata al server della pagina.
 
 Qualche cosa da sapere:
 
-- **Il link non sostituisce il JSON.** Contiene la funzione (i coefficienti) e i parametri di vista, ma non la forma a radici. Se avevi costruito la funzione a radici, chi apre il link trova la stessa funzione, ma con i coefficienti *a′* ridistribuiti (il coefficiente direttivo va sul primo fattore, gli altri valgono 1). Per conservare tutto, usa **Esporta JSON**.
-- **Con l'editor aperto condivide la bozza così com'è**, anche se non l'hai ancora confermata, come fa Esporta JSON; con l'editor chiuso condivide la funzione attuale. Con la funzione nulla, nell'editor, non è disponibile.
-- **Quanto è lungo?** Da circa 700 a circa 1300 caratteri, secondo la funzione: va bene per un messaggio o un'e-mail. Se per qualche motivo ti arriva troncato, la via sicura resta il JSON.
+- **Il link non sostituisce il JSON.** Contiene la funzione (i coefficienti) e i parametri di vista, ma non la forma a radici. Chi apre il link trova la stessa funzione, con le radici ricalcolate dai coefficienti (K coincide con il coefficiente direttivo): se le avevi costruite a mano, l'ordine delle radici e il raggruppamento in molteplicità possono risultare diversi, e due radici molto vicine possono comparire separate. Per conservare tutto, usa **Esporta JSON**.
+- **Con l'editor aperto condivide la bozza così com'è**, anche se non l'hai ancora confermata, come fa Esporta JSON; con l'editor chiuso condivide la funzione attuale. Con la funzione nulla (o, in Forma a radici, con K nullo) non è disponibile.
+- **Quanto è lungo?** Da circa 1300 a circa 2000 caratteri, secondo la funzione: va bene per un messaggio o un'e-mail. Se per qualche motivo ti arriva troncato, la via sicura resta il JSON.
 - **Il link si apre nel browser**: non va incollato nell'editor, dove serve invece il JSON.
 - **Aprire un link non si può annullare** con **↶**: lo strumento non ricorda la funzione con cui si era aperto.
 - **Se il link non è valido** (per esempio copiato a metà), sotto il sottotitolo compare un avviso rosso e lo strumento parte con la vista predefinita; con un clic sull'avviso lo chiudi. Lo stesso accade se il link contiene la funzione nulla.
@@ -667,6 +752,20 @@ d = −√2/2 ≈ −0,707 e θ = 135°. Le due radici compaiono in t = ∓0,707
 La freccia segna dove Re f = 0, ma la scritta «Im f = …» mostra che la parte immaginaria è ancora diversa da zero: f non è zero, e infatti |f| (la curva blu) non tocca lo zero in quel punto. Una radice richiede Re f = Im f = 0.
 </details>
 
+**Missione 14 — Solo K.** Con `z^2 - 1` in Forma a radici, quale K raddoppia l'altezza della superficie e ruota di 90° tutti i colori? Le radici si spostano? La vista salta?
+
+<details><summary>Soluzione</summary>
+
+K = 2*i* (modulo 2, fase 90°): `Re(K) = 0`, `Im(K) = 2`. Le radici restano in ±1 e, cambiando solo K, la vista non salta: cambia soltanto la pendenza della superficie.
+</details>
+
+**Missione 15 — Sposta e torna indietro.** Parti da `z^3 - z`. Con **Sposta radice** porta la radice in 1 fuori dall'asse reale e premi **Conferma**. Che cosa succede a «Metà Im z ≥ 0»? Come torni alla funzione di prima con un solo gesto?
+
+<details><summary>Soluzione</summary>
+
+Con una radice fuori dall'asse reale i coefficienti non sono più reali, quindi «Metà Im z ≥ 0» si spegne (grigio). **↶** (o **Ctrl+Z**) annulla in un colpo solo l'intera sessione di spostamento; **↷** la ripristina.
+</details>
+
 **Missione 10 — Caccia al frattale.** Trova un polinomio di grado ≤ 5 il cui bordo dei bacini di Newton sia, a tuo giudizio, il più bello. Esporta il JSON e confrontalo con quello dei compagni.
 
 ## 15. Trucchi e scorciatoie
@@ -675,33 +774,43 @@ La freccia segna dove Re f = 0, ma la scritta «Im f = …» mostra che la parte
 |---|---|
 | Ruotare la vista 3D | Trascina (un dito o il mouse) |
 | Ingrandire | Rotella o pizzico con due dita |
-| Spostare il piano o il grafico dell'asse reale | Trascina; sul piano anche il tasto destro |
-| Scegliere un punto sul piano per Newton | Clic; sul telefono tocco prolungato |
-| Scegliere un punto sulla superficie 3D | Tasto destro; sul telefono tocco prolungato |
+| Spostare il piano di Gauss | Tasto destro e trascina, o Maiusc + trascina; sul telefono un dito |
+| Spostare il grafico di sezione | Trascina |
+| Scegliere il punto giallo sul piano | Clic (tenendo premuto puoi trascinarlo); sul telefono tocco prolungato |
+| Scegliere il punto giallo sulla superficie 3D (con i Bacini di Newton attivi) | Tasto destro senza trascinare; sul telefono tocco prolungato |
+| Spostare il centro della vista 3D | Tasto destro e trascina, o Maiusc + trascina (telefono: pressione lunga e trascina); oppure i campi **Centro**, con **0** per tornare all'origine |
 | Centrare il grafico 3D nel riquadro | Slider **Offset |f|**; doppio clic = valore calibrato |
-| Vedere tutte le radici | **Adatta R alle radici** (⚙️ del piano) o slider **Finestra R** |
+| Vedere tutte le radici | **Adatta R alle radici** (⚙️ del piano) o **Range pdg** |
 | Tornare a un'inquadratura pulita | **Vista intera** (⚙️ del piano) |
 | Passare da una radice all'altra nell'editor | Le frecce **◀ ▶** o il menu a tendina; su computer anche le frecce ← → della tastiera |
 | Scartare le modifiche non ancora confermate | **✕** (premilo due volte se la bozza è modificata) |
-| Mandare a qualcuno la tua funzione e la tua vista | Icona **Condividi questa vista** accanto a Readme, poi incolla il link |
+| Mandare a qualcuno la tua funzione e la tua vista | Pulsante **Condividi** accanto a Guida, poi incolla il link |
 | Scegliere la retta di sezione | **⚙️** nella terza finestra: *Offset e angolo* oppure *Due punti* |
 | Tornare al taglio sull'asse reale | **Taglio sull'asse reale** nel pannello della sezione |
 | Mostrare la sola vista Sezione a tutto schermo | **⛶** a destra di **Zoom radici** |
 | Cambiare la forma di f(z) | I tre pulsanti **zⁿ**, **(z−a)**, **TXT** in alto nell'editor |
-| Aprire il Readme (manuale, changelog, note legali) | Pulsante **Readme - Ver. x.y** accanto al titolo |
+| Mostrare la formula in cima alla pagina in forma normale o fattorizzata | Clic sulla formula |
+| Aprire o chiudere l'editor di f(z) | Pulsante **f(z)** o clic sull'etichetta **f(z)** della formula |
+| Spostare una radice con il mouse o il dito | ⚙️ del piano → **Sposta radice**, poi **Conferma** (oppure **Annulla** o **Esc**) |
+| Aggiungere una radice dal piano | ⚙️ del piano → **Radice dal piano** |
+| Cancellare una radice dal piano | ⚙️ del piano → **Modalità cancellazione radice** |
+| Alzare la superficie o ruotare i colori senza spostare le radici | Il coefficiente globale **K**, in Forma a radici |
+| Cambiare materiale e luci | ⚙️ della vista 3D → pagina **Rendering** |
+| Portare il fondo scala di Range pdg a 100 (o a 10) | Clic sull'etichetta blu **Range pdg** |
+| Aprire la Guida (manuale, changelog, note legali) | Pulsante **Guida - Ver. x.y** accanto al titolo |
 | Annullare l'ultima funzione confermata | **↶** (a destra di f(z)) oppure **Ctrl+Z** |
 | Ripristinare la modifica annullata | **↷** oppure **Ctrl+Y** |
 | Confrontare prima e dopo una modifica | Dopo la conferma, alterna **Ctrl+Z** e **Ctrl+Y** |
 
 ## 16. Se qualcosa non va
 
-**Il pulsante ✓ Conferma è grigio.** Leggi il messaggio rosso nell'editor: o la funzione è nulla (tutti i coefficienti a zero), o un coefficiente *a′* è zero in Forma a radici.
+**Il pulsante ✓ Conferma è grigio.** Leggi il messaggio rosso nell'editor: o la funzione è nulla (tutti i coefficienti a zero), o il coefficiente globale **K** è zero in Forma a radici.
 
 **La modalità Forma a radici non si apre.** Succede se la funzione è costante (non ha radici da elencare) o è nulla. Scrivi una funzione di grado almeno 1.
 
 **«Metà Im z ≥ 0» è grigio.** Almeno un coefficiente ha parte immaginaria diversa da zero: le due metà non sono più simmetriche, quindi la scorciatoia non ha senso.
 
-**Non vedo le radici.** Prova **Adatta R alle radici** o aumenta **Finestra R** (massimo 10). Se hai una radice molto lontana dall'origine, potresti doverla cercare con il piano ingrandito al minimo.
+**Non vedo le radici.** Prova **Adatta R alle radici** o aumenta il **Range pdg** (fino a 100). Se hai spostato il centro della vista 3D, premi **0** accanto a **Centro**. Se hai una radice molto lontana dall'origine, potresti doverla cercare con il piano ingrandito al minimo.
 
 **Ho modificato i coefficienti ma niente cambia.** Ricorda la bozza: finché non premi **✓ Conferma** le finestre non si aggiornano.
 
@@ -713,11 +822,11 @@ La freccia segna dove Re f = 0, ma la scritta «Im f = …» mostra che la parte
 
 **I pulsanti ↶ e ↷ non ci sono.** È normale: compaiono solo quando c'è qualcosa da annullare o da ripristinare. Appena aperto lo strumento, o dopo aver premuto ✓ Conferma senza cambiare niente, non c'è nulla da annullare.
 
-**I pulsanti ↶ e ↷ sono grigi, o Ctrl+Z non fa niente.** L'editor di f(z) è aperto (o stai scegliendo una radice dal piano): chiudilo con **✕** o confermalo. Se il cursore è dentro una casella di testo, Ctrl+Z annulla la digitazione invece della funzione: clicca fuori dalla casella.
+**I pulsanti ↶ e ↷ sono grigi, o Ctrl+Z non fa niente.** L'editor di f(z) è aperto, oppure sei in modalità Sposta radice, cancellazione o scelta di una radice dal piano: chiudi con **✕**, o conferma o annulla l'operazione in corso. Se il cursore è dentro una casella di testo, Ctrl+Z annulla la digitazione invece della funzione: clicca fuori dalla casella.
 
-**Il Ripristino (↷) è sparito.** L'hai perso trascinando una radice sul piano dopo l'Annulla, oppure con una nuova conferma.
+**Il Ripristino (↷) è sparito.** L'hai perso confermando una nuova modifica dopo l'Annulla (anche uno spostamento di radici, un inserimento o una cancellazione dal piano).
 
-**«Condividi questa vista» dice «non disponibile».** Con l'editor aperto, la funzione è nulla (tutti i coefficienti a zero) oppure, in Forma a radici, un coefficiente *a′* è zero: correggi e riprova.
+**«Condividi questa vista» dice «non disponibile».** Con l'editor aperto, la funzione è nulla (tutti i coefficienti a zero) oppure, in Forma a radici, il coefficiente K è zero: correggi e riprova.
 
 **Apro un link e vedo la vista predefinita con un avviso rosso.** Il link è incompleto o rovinato (capita se viene troncato o se se ne copia solo una parte): chiedi di rimandartelo, o fatti mandare il JSON.
 
@@ -730,6 +839,16 @@ La freccia segna dove Re f = 0, ma la scritta «Im f = …» mostra che la parte
 **Nel grafico della fase la curva si interrompe.** È normale: si interrompe quando la fase passa da 360° a 0° e nelle radici, dove la fase non è definita.
 
 **La retta di sezione non si vede sul piano.** Controlla di non aver zoomato su una zona lontana: la retta è ritagliata alla finestra e può restarne fuori. **Vista intera** nel pannello del piano ti riporta all'inquadratura iniziale.
+
+**In «Sposta radice» non vedo il pulsante Conferma.** È normale: compare solo dopo che hai spostato davvero almeno una radice. All'ingresso c'è soltanto Annulla.
+
+**La modalità cancellazione radice è grigia.** Resta una sola radice, oppure l'editor f(z) ha una bozza aperta, oppure è in corso la scelta di una radice dal piano: il suggerimento sul pulsante dice quale caso.
+
+**Luci, materiale e superficie liscia non fanno niente.** Sei in uno dei due **Wireframe**: lì i tre controlli non hanno effetto e si spengono. La **Superficie liscia** richiede inoltre WebGL2.
+
+**La vista 3D non è centrata sull'origine.** Hai spostato il centro (l'etichetta «Centro …» in basso a destra lo segnala): premi **0** accanto ai campi **Centro**.
+
+**`z^2.5` dà errore.** Lo strumento tratta solo polinomi: gli esponenti devono essere interi ≥ 0.
 
 **Il pulsante Auto non c'è più.** Dalla 1.4 l'intervallo dell'asse t si adatta da solo; resta **Zoom radici**.
 
@@ -746,7 +865,8 @@ La freccia segna dove Re f = 0, ma la scritta «Im f = …» mostra che la parte
 | **Coniugato** | `a − bi`; lo specchio rispetto all'asse reale. |
 | **Polinomio, grado** | Somma di termini cₖ·zᵏ; il grado è l'esponente più alto con coefficiente non nullo. |
 | **Radice (zero)** | Un valore *z* con f(z) = 0. |
-| **Molteplicità** | Quante volte una radice compare nella fattorizzazione. |
+| **Molteplicità** | Quante volte una radice compare nella fattorizzazione (nello strumento: *molt*). |
+| **Coefficiente globale K** | Il numero complesso per cui si moltiplica il prodotto dei fattori (z − a)^molt; coincide con il coefficiente direttivo. \|K\| scala l'altezza, arg(K) ruota i colori. |
 | **Derivata f′** | La «pendenza» di f; nei polinomi si ottiene abbassando di uno gli esponenti. |
 | **Punto critico, valore critico** | Un punto dove f′ = 0, e il valore di |f| in quel punto. |
 | **Sella** | Un punto critico che è un passo di montagna: sale da un lato e scende dall'altro. |
@@ -823,7 +943,7 @@ poi sull'esploratore, vai su f(z), modalità Testo ed inserisci il json sottosta
   }
 }
 ```
-Noti le zone nere nella vista sul piano di Gauss? Sono dei punti che convergono con un numero di iterazioni del metodo di Newton > 20. Se apri il pannello dei settaggi premendo il pulsante della rotella ed aumenti il numero di iterazioni vedrai la parte nera colorarsi.
+Noti le zone nere nella vista sul piano di Gauss? Sono dei punti che convergono con un numero di iterazioni del metodo di Newton > 20. Se apri il ⚙️ del piano, vai alla pagina **Newton** e aumenti il numero di **Iterazioni**, vedrai la parte nera colorarsi.
 
 ![Esempio Frattale Come Nel Video](EsempioFrattaleComeNelVideo.png)
 
@@ -866,4 +986,4 @@ Esplora il seguente esempio intorno all'origine:
 
 ---
 
-*Manuale scritto per l'Esploratore di polinomi f(z), versione 1.4. Buone esplorazioni, e ricordati: dove i colori si annodano, c'è una radice.*
+*Manuale scritto per l'Esploratore di polinomi f(z), versione 2.8. Buone esplorazioni, e ricordati: dove i colori si annodano, c'è una radice.*
