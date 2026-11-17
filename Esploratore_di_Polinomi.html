@@ -405,7 +405,7 @@ function drawSurf2D(ph){secPre();sg=ph==='bg'?bg:sf;const xOff = setCam();const 
  {const XA=-1.18,top=mxA(HT,-Infinity),hl=(P,s,col,al)=>{const a=proj(...P,xOff);sg.lineWidth=3.5*u;sg.strokeStyle=css('--card');sg.textAlign=al;sg.strokeText(s,a[0],a[1]);sg.fillStyle=col;sg.fillText(s,a[0],a[1])};let fmn=0;if(showR)for(let k=0;k<=80;k++)fmn=Math.min(fmn,secF(t0+(-1+k/40)*tm)[0]);
   const cand=lg?Array.from({length:30},(_,k)=>[1,2,5][k%3]*10**(Math.floor(k/3)-1)).filter(v=>hm(v)<=top):ticks(0,mmax).filter(v=>v>0&&hm(v)<=top+1e-9),tk=[[0,0]],ng=[];let last=0;
   for(const v of cand){const h=hm(v);if(h-last>.07){tk.push([v,h]);last=h}}last=0;if(fmn<0)for(const v of cand){const h=hm(v);if(v<=-fmn&&h-last>.07){ng.push([-v,-h]);last=h}}
-  const lo=ng.length?ng[ng.length-1][1]:0;ln([XA,0,lo],[XA,0,top],mut,1);for(const[v,h]of[...ng,...tk]){ln([XA,0,h],[XA-.04,0,h],mut,1);hl([XA-.07,0,h],tf(v),v===0?ink:mut,'right')}hl([XA,0,top+.09],'|f|, f(x)',ink,'center')}
+  const lo=ng.length?ng[ng.length-1][1]:0;ln([XA,0,lo],[XA,0,top],mut,1);for(const[v,h]of[...ng,...tk]){ln([XA,0,h],[XA-.04,0,h],mut,1);hl([XA-.07,0,h],tf(v),v===0?ink:mut,'right')}hl([XA,0,top+.09],'|f(z)|',ink,'center')}
  }
  if(ph==='bg'){sg=sf;return}
  if(ph!=='fg'){const lo=[],hi=[],Pq=q=>{const o=[];for(const k of q.P)o.push(PX[k],PY[k]);return o},Dq=q=>PD[q.a]+PD[q.b]+PD[q.c]+PD[q.d];
