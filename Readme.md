@@ -7,7 +7,7 @@ type: root-readme
 version: 1.4
 updated: 2026-11-17
 ---
-# [Esploratore di polinomi](https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html)
+# [Esploratore di polinomi](https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html) <img src="CatSW.png" width=30 />
 
 [Guida Rapida Esploratore polinomi](Guida_Rapida_Esploratore_polinomi.md)
 
@@ -36,6 +36,8 @@ In modalità offline non si possono usare i link html per aprire il laboratorio 
 ## Licenza & Note Legali
 
 Questo progetto è distribuito sotto Licenza MIT. Per il testo completo, consultare il file `LICENSE` presente nella radice del repository.
+
+<div><img style="margin-left: 30px; margin-bottom: 5px;" src="CatSW_2.png"/></div>
 
 - Copyright: © 2026 Stefano Vesco (IK0VCK) - CatSW.
 - Uso Commerciale e Privato: Gratuito e consentito senza restrizioni.
