@@ -11,7 +11,9 @@ copyright: © 2026 Stefano Vesco (IK0VCK) - CatSW. All rights reserved.
 
 ![KubiMiao](KubiMiao.webp)
 
-Benvenuto! Scopri il mondo dei polinomi con l'app Esploratore dei Polinomi.
+> 😺 **KubiMiao** 🐾
+
+**Benvenuto!** Scopri il mondo dei polinomi con l'app Esploratore dei Polinomi.
 
 ## 1. Il Tuo Punto di Partenza: z³ - 1
 All'apertura, l'app ti accoglie con un classico. Osserva il piano di Gauss: i tre punti evidenziati sono le radici. Nota come la superficie 3D si solleva in corrispondenza di esse e come il colore cambi indicando la fase.

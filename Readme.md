@@ -4,8 +4,8 @@ copyright: © 2026 Stefano Vesco (IK0VCK) - CatSW. All rights reserved.
 author: IK0VCK
 product: polinomi-fz
 type: root-readme
-version: 1.3
-updated: 2026-11-12
+version: 1.4
+updated: 2026-11-17
 ---
 # [Esploratore di polinomi](https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html)
 
@@ -16,6 +16,8 @@ updated: 2026-11-12
 [Alcune note esplorando la cubica Z^3-1](Cubica.md)
 
 [Applicazioni dei polinomi nel mondo reale](applicazioni_dei_polinomi_nel_mondo_reale.md)
+
+[Recensione Gemini](RecensioneGemini4Hydogen.md)
 
 [Changelog](Changelog.md)
 
