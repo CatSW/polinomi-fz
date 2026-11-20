@@ -1,5 +1,5 @@
 ---
-title: Changelog TurboAI
+title: Changelog polinomi-fz
 copyright: "© 2026 Stefano Vesco (IK0VCK) - CatSW. All rights reserved."
 author: IK0VCK
 type: changelog

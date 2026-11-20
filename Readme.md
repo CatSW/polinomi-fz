@@ -4,8 +4,8 @@ copyright: © 2026 Stefano Vesco (IK0VCK) - CatSW. All rights reserved.
 author: IK0VCK
 product: polinomi-fz
 type: root-readme
-version: 1.4
-updated: 2026-11-17
+version: 1.5
+updated: 2026-11-20
 ---
 # [Esploratore di polinomi](https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html) <img src="CatSW.png" width=30 />
 
@@ -18,6 +18,8 @@ updated: 2026-11-17
 [Applicazioni dei polinomi nel mondo reale](applicazioni_dei_polinomi_nel_mondo_reale.md)
 
 [Recensione Gemini](RecensioneGemini4Hydogen.md)
+
+[Esploratore di Frattali](https://catsw.github.io/frattali/fractal-explorer.html)
 
 [Changelog](Changelog.md)
 
