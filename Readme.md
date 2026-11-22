@@ -4,14 +4,16 @@ copyright: © 2026 Stefano Vesco (IK0VCK) - CatSW. All rights reserved.
 author: IK0VCK
 product: polinomi-fz
 type: root-readme
-version: 1.5
-updated: 2026-11-20
+version: 1.6
+updated: 2026-11-22
 ---
 # [Esploratore di polinomi](https://catsw.github.io/polinomi-fz/Esploratore_di_Polinomi.html) <img src="CatSW.png" width=30 />
 
 [Guida Rapida Esploratore polinomi](Guida_Rapida_Esploratore_polinomi.md)
 
 [Manuale Esploratore polinomi](Manuale_Esploratore_polinomi.md)
+
+[Appunti su radici complesse e polinomi](appunti_su_radici_complesse_e_polinomi.md)
 
 [Alcune note esplorando la cubica Z^3-1](Cubica.md)
 
