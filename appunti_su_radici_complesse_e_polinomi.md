@@ -1,3 +1,12 @@
+---
+title: Esplorazione delle Radici Complesse dei Polinomi
+copyright: © 2026 Stefano Vesco (IK0VCK) - CatSW. All rights reserved.
+author: IK0VCK
+product: polinomi-fz
+type: dispensa di esplorazione
+version: 1.1
+updated: 2026-11-23
+---
 # Esplorazione delle Radici Complesse dei Polinomi
 
 > Prendendo in mano una calcolatrice capace di eseguire calcoli nel dominio complesso, se si calcola la radice $n$-esima di un numero negativo, si ottiene un singolo valore. Usiamo l'Esploratore di Polinomi per vedere dove sono finite le altre radici!
@@ -83,7 +92,7 @@ is the real root; for negative real arguments the principal value
 is one of the complex roots. To calculate the real bth root of 
 a real number a, key in the following program:
 
-   <<  -> a b 'SIGN(a)*ABS(a)^INV(b)' >>
+   << -> a b 'SIGN(a)*ABS(a)^INV(b)' >>
 
 Press 
 
